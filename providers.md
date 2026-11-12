@@ -17,6 +17,7 @@
 | [Starck Filmes](#starck-filmes) | `starckfilmes` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-12 |
 | [TheRARBG](#therarbg) | `therarbg` | filme, série | magnet, torrent:// | 🔴 Instável | 2026-11-12 |
 | [VaqueiroFilmes](#vaqueirofilmes) | `vaqueirofilmes` | filme | HLS | 🟢 Estável | 2026-11-12 |
+| [TopFilmes](#topfilmes) | `topfilmes` | filme | MP4 | 🟢 Estável | 2026-11-12 |
 
 ## MegaEmbed
 
@@ -308,4 +309,21 @@ Provedor de filmes em HLS pela cadeia EmbedPlay/Byse, com áudio dublado confirm
    3. `movie` `346698` · Barbie (2023) · **Resolvido** · 1/1 streams aproveitáveis
    4. `movie` `1630420` · Crime em Cena (2026) · **Resolvido** · 1/1 streams aproveitáveis
    5. `movie` `122` · O Senhor dos Anéis: O Retorno do Rei (2003) · **Sem resultado** · 0/0 streams aproveitáveis
+<!-- online-verification:end -->
+
+## TopFilmes
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes em MP4 pelo catálogo TopFilmes, com áudio dublado ou legendado conforme o contêiner da ficha. A fonte publica busca por título, ficha por slug e players próprios que entregam SD e HD por redirecionamento para hospedagem externa. Séries, temporadas e downloads ficam fora do contrato.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-12T23:14:24.193Z** · ID `2026-11-12T23-14-17-455Z-topfilmes-fdc3a68c-b05f` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `fdc3a68c8caeafd444957d31360d101f` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `680` · Pulp Fiction: Tempo de Violência (1994) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `118340` · Guardiões da Galáxia (2014) · **Resolvido** · 1/1 streams aproveitáveis
+   4. `movie` `502356` · Super Mario Bros. O Filme (2023) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `872585` · Oppenheimer (2023) · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->

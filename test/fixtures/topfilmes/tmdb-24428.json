@@ -1,0 +1,54 @@
+{
+  "adult": false,
+  "backdrop_path": "/fixture/avengers-backdrop.jpg",
+  "belongs_to_collection": {
+    "id": 86311,
+    "name": "Os Vingadores - Coleção",
+    "poster_path": "/fixture/avengers-collection.jpg",
+    "backdrop_path": "/fixture/avengers-collection-backdrop.jpg"
+  },
+  "budget": 220000000,
+  "genres": [
+    { "id": 28, "name": "Ação" },
+    { "id": 12, "name": "Aventura" },
+    { "id": 878, "name": "Ficção científica" }
+  ],
+  "homepage": "https://www.marvel.com/movies/the-avengers",
+  "id": 24428,
+  "imdb_id": "tt0848228",
+  "original_language": "en",
+  "original_title": "The Avengers",
+  "overview": "Os heróis mais poderosos da Terra precisam se unir para enfrentar uma ameaça.",
+  "popularity": 100,
+  "poster_path": "/fixture/avengers-poster.jpg",
+  "production_companies": [],
+  "production_countries": [],
+  "release_date": "2012-04-25",
+  "revenue": 1518815515,
+  "runtime": 143,
+  "spoken_languages": [
+    { "english_name": "English", "iso_639_1": "en", "name": "English" }
+  ],
+  "status": "Released",
+  "tagline": "Alguns homens são feitos para serem heróis.",
+  "title": "Os Vingadores",
+  "video": false,
+  "vote_average": 7.7,
+  "vote_count": 15000,
+  "external_ids": {
+    "imdb_id": "tt0848228",
+    "facebook_id": null,
+    "instagram_id": null,
+    "twitter_id": null
+  },
+  "alternative_titles": {
+    "titles": [
+      { "iso_3166_1": "BR", "title": "Os Vingadores", "type": "" },
+      { "iso_3166_1": "BR", "title": "Vingadores", "type": "" },
+      { "iso_3166_1": "BR", "title": "Avengers", "type": "" },
+      { "iso_3166_1": "BR", "title": "Os Vingadores - Assemble", "type": "" },
+      { "iso_3166_1": "US", "title": "Marvel's The Avengers", "type": "" }
+    ]
+  },
+  "origin_country": ["US"]
+}
