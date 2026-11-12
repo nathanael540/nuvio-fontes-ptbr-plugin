@@ -1,0 +1,44 @@
+{
+  "series": {
+    "id": "173",
+    "user_id": "27",
+    "title": "The Pitt",
+    "slug": "the-pitt"
+  },
+  "seasons": {
+    "1": [
+      {
+        "episode_number": "1",
+        "episode_title": "The%2520Pitt%2520S01E01%2520WEB-DL%25201080p%2520x264%2520DUAL%25205.1.mkv",
+        "video_slug": "TESTS1E1"
+      },
+      {
+        "episode_number": "2",
+        "episode_title": "The%2520Pitt%2520S01E02%2520WEB-DL%25201080p%2520x264%2520DUAL%25205.1.mkv",
+        "video_slug": "TESTS1E2"
+      },
+      {
+        "episode_number": "3",
+        "episode_title": "The%2520Pitt%2520S01E03%2520WEB-DL%25201080p%2520x264%2520DUAL%25205.1.mkv",
+        "video_slug": "TESTS1E3"
+      }
+    ],
+    "2": [
+      {
+        "episode_number": "1",
+        "episode_title": "The.Pitt.S02E01.1080p.AMZN.WEB-DL.DDP5.1.H.264.DUAL-BiOMA.mkv",
+        "video_slug": "TESTS2E1"
+      },
+      {
+        "episode_number": "2",
+        "episode_title": "The.Pitt.S02E02.1080p.AMZN.WEB-DL.DDP5.1.H.264.DUAL-BiOMA.mkv",
+        "video_slug": "TESTS2E2"
+      },
+      {
+        "episode_number": "3",
+        "episode_title": "The.Pitt.S02E03.1080p.AMZN.WEB-DL.DDP5.1.H.264.DUAL-BiOMA.mkv",
+        "video_slug": "TESTS2E3"
+      }
+    ]
+  }
+}

@@ -152,6 +152,10 @@ Casos cobertos:
 10. Um espelho falha e o outro resolve; todos falham; todos são ausência.
 11. `getStreams` captura a falha final e devolve lista vazia.
 
+### 9. Documentação global
+
+`README.md` e `docs/arch.md` não mudam: o provedor novo entrou na lista do `manifest.json` e do `providers.md`, mas não alterou contrato, formato, runtime, build ou convenção global. O método reaproveitável ficou em `docs/provider-investigation.md`, como exige a seção de documentação do `AGENTS.md`.
+
 ## Risks / Trade-offs
 
 1. **Mudança do tema DLE ou dos seletores.** → A extração usa elementos estáveis da caixa de informações e dos botões de player; uma mudança de layout quebra o parsing com erro explícito, não vira ausência.

@@ -1,0 +1,27 @@
+{
+  "id": 1665710,
+  "title": "Rent Free",
+  "original_title": "Rent Free",
+  "release_date": "2026-06-23",
+  "original_language": "en",
+  "genres": [
+    {
+      "id": 878,
+      "name": "Ficção científica"
+    }
+  ],
+  "external_ids": {
+    "imdb_id": "tt38066403"
+  },
+  "alternative_titles": {
+    "titles": [
+      {
+        "iso_3166_1": "US",
+        "title": "Rent Free"
+      }
+    ]
+  },
+  "origin_country": [
+    "US"
+  ]
+}
