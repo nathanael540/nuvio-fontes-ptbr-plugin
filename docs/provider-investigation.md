@@ -127,6 +127,14 @@ Mapa de metodologias para estudar uma fonte e escolher um caminho de implementa�
 5. **Referências.** [FirePlayer](../src/_blocks/fireplayer/index.mjs), [MegaEmbed](../src/megaembed/player.js), [RedeFlix](../src/_blocks/redeflix-player/index.mjs), [API FSHD](../src/fshd/api.js) e [configuração FSHD](../src/fshd/packer.js). Testes: [FirePlayer](../test/blocks/fireplayer/index.test.mjs), [MegaEmbed](../test/megaembed.test.js), [RedeFlix](../test/blocks/redeflix-player/index.test.mjs) e [FSHD](../test/fshd.test.js).
 6. **Limites.** Não baixe vídeo inteiro para descobrir metadados nem acrescente requisições só para descobrir qualidade; preserve `Desconhecida` sem evidência disponível. Resolução da URL não comprova reprodução no app.
 
+### 3.13. Busca paginada por parâmetro de página
+
+1. **Situação: Em uso no Redes Torrents.** A busca por palavra devolve 20 cartões por página e aceita `pagina=<n>` no mesmo `index.php?busca=<termo>`, com a mesma lista do caminho canônico `/pesquisa/<slug>/pagina/<n>/`.
+2. **Investigar.** Confirme o tamanho da página, a quantidade de páginas e o que a fonte devolve depois do fim. No Redes Torrents, em 12/11/2026, a busca por "the last of us" tinha a 2ª temporada na página 6 e a 1ª na página 11; a página 25 tinha 5 cartões e as seguintes repetiam esses 5 cartões.
+3. **Ação no provedor.** O leitor percorre a página 1 e avança enquanto houver 20 cartões e nenhuma ficha confirmada, com teto de 12 páginas. A comparação da lista de `href` da página detecta repetição e evita novo laço de fichas; a triagem de tipo, temporada e título continua em cada página antes da consulta de detalhe. Só o primeiro termo de busca recebe a paginação profunda; os termos alternativos leem uma única página.
+4. **Referências.** [Leitor `download-row`](../src/baixarapido/download-row.js) e [testes do Baixa Rápido](../test/baixarapido.test.js).
+5. **Limites.** O teto de 12 páginas é um limite adotado, não uma garantia de cobertura: títulos depois dele continuam fora da busca. A ordem por data pode mudar entre requisições e a comparação por `href` é heurística, não identidade do post. O método em uso é o do Redes Torrents; elevar o teto ou aplicar a paginação a outras fontes é hipótese até haver evidência e teste próprios.
+
 ## 4. Serviços intermediários e enriquecimento
 
 1. Use esta seção quando a fonte já fornecer uma página ou um hash, mas faltar conteúdo legível, o índice de um episódio ou evidência do que há na mídia. Esses serviços podem complementar métodos de catálogo sem pertencer à mesma fonte.

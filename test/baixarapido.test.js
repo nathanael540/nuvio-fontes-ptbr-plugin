@@ -375,6 +375,91 @@ test('série nos novos catálogos (semtorrent, redestorrents e apachetorrents): 
   assert.ok(app.logs.log.some((m) => /IMDb divergente/.test(m)));
 });
 
+test('Redes Torrents pagina a busca até a página 2, confirma a ficha e não consulta cartões triados', async () => {
+  const lastOfUs = { name: 'The Last of Us', original: 'The Last of Us', imdb: 'tt3581920', year: 2023 };
+  const detailHtml = `<main><h1 class="movie-title">The Last of Us - 2ª Temporada (2023)</h1>
+    <script type="application/ld+json">{"@type":"TVSeries","sameAs":"https://www.imdb.com/title/tt3581920/"}</script>
+    <div class="download-row"><div class="download-name">DUBLADO 720P S02E01</div>
+    <a class="download-btn" href="magnet:?xt=urn:btih:${HEX_720}&amp;dn=The.Last.of.Us.S02E01.720p">Baixar</a></div></main>`;
+
+  const app = runtime((url) => {
+    if (url.hostname === 'api.themoviedb.org') return { body: seriesPayload(lastOfUs) };
+    if (url.hostname === 'redestorrents.com') {
+      if (url.pathname === '/index.php') {
+        const page = url.searchParams.get('pagina');
+        if (page === null) return { body: fixture('redes-search-page1-unrelated.html') };
+        if (page === '2') return { body: fixture('redes-search-page2-target.html') };
+        throw new Error(`página inesperada: ${url.href}`);
+      }
+      if (url.pathname === '/the-last-of-us-2-temporada-download/') return { body: detailHtml };
+      return { status: 404, body: '' };
+    }
+    if (url.pathname.startsWith('/baixar/')) return { status: 404, body: '' };
+    return { body: emptySearchForHost(url.hostname) };
+  });
+
+  const streams = await app.getStreams('100088', 'tv', 2, 1);
+  assert.equal(app.logs.error.length, 0, app.logs.error.join('\n'));
+  assert.equal(app.logs.warn.length, 0, app.logs.warn.join('\n'));
+  assert.equal(streams.length, 1);
+  assert.equal(streams[0].infoHash, HEX_720);
+  assert.equal(streams[0].provider, 'redestorrents');
+
+  const redesCalls = app.calls.map((call) => new URL(call.url)).filter((url) => url.hostname === 'redestorrents.com');
+  const searchCalls = redesCalls.filter((url) => url.pathname === '/index.php');
+  assert.deepEqual(searchCalls.map((url) => url.searchParams.get('pagina')), [null, '2']);
+  assert.deepEqual(
+    redesCalls.filter((url) => url.pathname !== '/index.php').map((url) => url.pathname),
+    ['/the-last-of-us-2-temporada-download/'],
+  );
+
+  assert.ok(app.logs.log.includes('[Baixa Rápido/redestorrents] Busca "The Last of Us" página 1 em redestorrents.com: 20 cartão(ões)'));
+  assert.ok(app.logs.log.includes('[Baixa Rápido/redestorrents] Busca "The Last of Us" página 2 em redestorrents.com: 2 cartão(ões)'));
+  assert.ok(app.logs.log.includes('[Baixa Rápido/redestorrents] Busca "The Last of Us": 2 página(s) lidas, parada por ficha confirmada'));
+  assert.ok(app.logs.log.every((message) => !/magnet:|xt=urn:btih:/i.test(message)));
+});
+
+test('Redes Torrents para na última página, em página repetida e no limite de 12 páginas', async () => {
+  const lastOfUs = { name: 'The Last of Us', original: 'The Last of Us', imdb: 'tt3581920', year: 2023 };
+  const appFor = (searchPage) => runtime((url) => {
+    if (url.hostname === 'api.themoviedb.org') return { body: seriesPayload(lastOfUs) };
+    if (url.hostname === 'redestorrents.com' && url.pathname === '/index.php') return searchPage(url);
+    if (url.pathname.startsWith('/baixar/')) return { status: 404, body: '' };
+    return { body: emptySearchForHost(url.hostname) };
+  });
+  const searchCalls = (app) => app.calls
+    .map((call) => new URL(call.url))
+    .filter((url) => url.hostname === 'redestorrents.com' && url.pathname === '/index.php');
+
+  const lastPage = appFor(() => ({ body: fixture('redes-search-last-page.html') }));
+  assert.deepEqual(await lastPage.getStreams('100088', 'tv', 2, 1), []);
+  assert.equal(searchCalls(lastPage).length, 1);
+  assert.ok(lastPage.logs.log.includes('[Baixa Rápido/redestorrents] Busca "The Last of Us": 1 página(s) lidas, parada por última página'));
+
+  const repeated = appFor((url) => ({
+    body: fixture(url.searchParams.get('pagina') === '2' ? 'redes-search-repeated.html' : 'redes-search-full.html'),
+  }));
+  assert.deepEqual(await repeated.getStreams('100088', 'tv', 2, 1), []);
+  assert.equal(searchCalls(repeated).length, 2);
+  assert.deepEqual(
+    repeated.calls.map((call) => new URL(call.url)).filter((url) => url.hostname === 'redestorrents.com' && url.pathname !== '/index.php'),
+    [],
+  );
+  assert.ok(repeated.logs.log.includes('[Baixa Rápido/redestorrents] Busca "The Last of Us": 2 página(s) lidas, parada por página repetida'));
+
+  const fullPage = fixture('redes-search-full.html');
+  const limit = appFor((url) => {
+    const page = Number(url.searchParams.get('pagina') || '1');
+    if (page > 12) throw new Error(`página ${page} pedida`);
+    return { body: fullPage.replaceAll('full-card-', `full-card-p${page}-`) };
+  });
+  assert.deepEqual(await limit.getStreams('100088', 'tv', 2, 1), []);
+  const limitCalls = searchCalls(limit);
+  assert.equal(limitCalls.length, 12);
+  assert.ok(limitCalls.every((url) => Number(url.searchParams.get('pagina') || '1') <= 12));
+  assert.ok(limit.logs.log.includes('[Baixa Rápido/redestorrents] Busca "The Last of Us": 12 página(s) lidas, parada por limite de 12 páginas'));
+});
+
 test('um catálogo fora do ar registra console.warn e os outros entregam; todos falhando retorna [] com erro de cada um', async () => {
   const oneDown = runtime((url) => {
     if (url.hostname === 'api.themoviedb.org') return { body: moviePayload({ original: 'Matrix' }) };

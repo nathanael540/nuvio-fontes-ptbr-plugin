@@ -2262,6 +2262,8 @@ function readSizeField(html) {
 }
 
 // src/baixarapido/download-row.js
+var SEARCH_PAGE_SIZE = 20;
+var SEARCH_PAGE_LIMIT = 12;
 function collectDownloadRow(catalog, media, request) {
   return __async(this, null, function* () {
     const pages = catalog.cardVariant === "custom-card" ? yield locateCustomCardPages(catalog, media, request) : yield locateSlugPages(catalog, media, request);
@@ -2286,36 +2288,63 @@ function locateCustomCardPages(catalog, media, request) {
   return __async(this, null, function* () {
     let pinnedOrigin = null;
     const seen = /* @__PURE__ */ new Set();
-    for (const term of searchTerms(media)) {
-      const path = `/index.php?${new URLSearchParams({ busca: term })}`;
-      const response = yield fetchCatalogPage(catalog, path, {
-        pinnedOrigin,
-        validate: (html) => {
-          const parsed2 = parseSearch3(html);
-          if (parsed2.unrecognized) {
-            const err = new Error("layout de busca n\xE3o reconhecido");
-            err.retryable = true;
-            throw err;
+    const terms = searchTerms(media);
+    for (let termIndex = 0; termIndex < terms.length; termIndex += 1) {
+      const term = terms[termIndex];
+      const pageLimit = termIndex === 0 ? SEARCH_PAGE_LIMIT : 1;
+      const signatures = /* @__PURE__ */ new Set();
+      let pagesRead = 0;
+      let stopReason = null;
+      for (let pageNumber = 1; pageNumber <= pageLimit; pageNumber += 1) {
+        const query = new URLSearchParams({ busca: term });
+        if (pageNumber > 1) query.set("pagina", String(pageNumber));
+        const response = yield fetchCatalogPage(catalog, `/index.php?${query}`, {
+          pinnedOrigin,
+          validate: (html) => {
+            const parsed2 = parseSearch3(html);
+            if (parsed2.unrecognized) {
+              const err = new Error("layout de busca n\xE3o reconhecido");
+              err.retryable = true;
+              throw err;
+            }
           }
+        });
+        pinnedOrigin = response.origin;
+        const parsed = parseSearch3(response.text);
+        pagesRead += 1;
+        console.log(`[${catalog.logPrefix}] Busca "${term}" p\xE1gina ${pageNumber} em ${new URL(pinnedOrigin).host}: ${parsed.cards.length} cart\xE3o(\xF5es)`);
+        if (parsed.empty) {
+          stopReason = "estado vazio";
+          break;
         }
-      });
-      pinnedOrigin = response.origin;
-      const parsed = parseSearch3(response.text);
-      console.log(`[${catalog.logPrefix}] Busca "${term}" em ${new URL(pinnedOrigin).host}: ${parsed.cards.length} cart\xE3o(\xF5es)`);
-      if (parsed.empty) continue;
-      const cards = parsed.cards.filter((card) => prefilterCard3(card, media, request));
-      const pages = [];
-      for (const card of cards) {
-        const detailPath = resolvePathOnOrigin(card.href, pinnedOrigin);
-        if (seen.has(detailPath)) continue;
-        seen.add(detailPath);
-        const detail = yield fetchCatalogPage(catalog, detailPath, { pinnedOrigin, allow404: true });
-        if (detail.status === 404) continue;
-        const page = readContent(detail.text, detail.url);
-        if (page) pages.push(page);
+        const signature = parsed.cards.map((card) => card.href).join("\n");
+        if (signatures.has(signature)) {
+          stopReason = "p\xE1gina repetida";
+          break;
+        }
+        signatures.add(signature);
+        const pages = [];
+        for (const card of parsed.cards.filter((item) => prefilterCard3(item, media, request))) {
+          const detailPath = resolvePathOnOrigin(card.href, pinnedOrigin);
+          if (seen.has(detailPath)) continue;
+          seen.add(detailPath);
+          const detail = yield fetchCatalogPage(catalog, detailPath, { pinnedOrigin, allow404: true });
+          if (detail.status === 404) continue;
+          const page = readContent(detail.text, detail.url);
+          if (page) pages.push(page);
+        }
+        const selected = selectConfirmedPages(pages, media, request, catalog.logPrefix);
+        if (selected.length) {
+          console.log(`[${catalog.logPrefix}] Busca "${term}": ${pagesRead} p\xE1gina(s) lidas, parada por ficha confirmada`);
+          return selected;
+        }
+        if (parsed.cards.length < SEARCH_PAGE_SIZE) {
+          stopReason = "\xFAltima p\xE1gina";
+          break;
+        }
       }
-      const selected = selectConfirmedPages(pages, media, request, catalog.logPrefix);
-      if (selected.length) return selected;
+      if (!stopReason) stopReason = pageLimit === SEARCH_PAGE_LIMIT ? "limite de 12 p\xE1ginas" : "limite de 1 p\xE1gina";
+      console.log(`[${catalog.logPrefix}] Busca "${term}": ${pagesRead} p\xE1gina(s) lidas, parada por ${stopReason}`);
     }
     return [];
   });

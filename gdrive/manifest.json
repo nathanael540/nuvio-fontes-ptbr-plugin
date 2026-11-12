@@ -87,7 +87,7 @@
       "id": "baixarapido",
       "name": "Baixa Rápido",
       "description": "Rede Baixa Rápido (Baixa Rápido, Limpo Torrents, Bruto Torrent, Tem Torrents, Grátis Torrent, HDR Torrents, Salve Torrent, Para Baixar, Sem Torrent, Redes Torrents e Apache Torrents) numa lista só, sem torrents repetidos. Filmes e séries em magnet, dublados ou legendados; episódio em pacote de temporada aponta para o arquivo do episódio.",
-      "version": "1.4.0",
+      "version": "1.5.0",
       "author": "nathanael540",
       "supportedTypes": [
         "movie",

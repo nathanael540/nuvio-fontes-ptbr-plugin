@@ -104,17 +104,17 @@
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-12T16:27:44.324Z** · ID `2026-11-12T16-25-43-255Z-baixarapido-20261112-7a46` · **Estável** · pacote 1.4.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261112` · algoritmo `sha256-fisher-yates-v1`
-   1. `movie` `68718` · Django Livre (2012) · **Resolvido** · 2/2 streams aproveitáveis
-   2. `movie` `76600` · Avatar: O Caminho da Água (2022) · **Resolvido** · 13/13 streams aproveitáveis
-   3. `movie` `118340` · Guardiões da Galáxia (2014) · **Resolvido** · 9/9 streams aproveitáveis
-   4. `movie` `293660` · Deadpool (2016) · **Resolvido** · 7/7 streams aproveitáveis
-   5. `movie` `502356` · Super Mario Bros. O Filme (2023) · **Resolvido** · 7/7 streams aproveitáveis
-   6. `tv` `90447` · Hotel del Luna (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
-   7. `tv` `82856` · The Mandalorian (2019) · S01E01 · **Resolvido** · 7/7 streams aproveitáveis
-   8. `tv` `2316` · The Office (2005) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
-   9. `tv` `119051` · Wednesday (2022) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
-   10. `tv` `76479` · The Boys (2019) · S01E01 · **Inconclusivo** · 0/0 streams aproveitáveis · Motivo: Execução excedeu o limite externo de 30000 ms
+1. **2026-11-12T22:28:29.754Z** · ID `2026-11-12T22-26-40-348Z-baixarapido-03ed54b7-207d` · **Estável** · pacote 1.5.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `03ed54b79d90008d7d7ff8ac0603408e` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `693134` · Duna: Parte Dois (2024) · **Resolvido** · 8/8 streams aproveitáveis
+   2. `movie` `155` · Batman: O Cavaleiro das Trevas (2008) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `299534` · Vingadores: Ultimato (2019) · **Resolvido** · 11/11 streams aproveitáveis
+   4. `movie` `129` · A Viagem de Chihiro (2001) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `569094` · Homem-Aranha: Através do Aranhaverso (2023) · **Resolvido** · 4/4 streams aproveitáveis
+   6. `tv` `96162` · Itaewon Class (2020) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   7. `tv` `2316` · The Office (2005) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+   8. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `94997` · House of the Dragon (2022) · S01E01 · **Resolvido** · 8/8 streams aproveitáveis
+   10. `tv` `1416` · Grey's Anatomy (2005) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
 <!-- online-verification:end -->
 
 ## FirePlayer PT-BR
