@@ -99,7 +99,7 @@ Para série confirmada, o provedor SHALL exigir que a ficha liste o par exato de
 
 ### Requirement: Idioma pela evidência da mídia
 
-O idioma SHALL ser `Dublado` somente quando o caminho ou o nome do arquivo contiver `dub` ou `dublado`; `Legendado` somente com `leg` ou `legendado`; idioma estrangeiro conhecido sem português resulta em `Não PT-BR`; sem evidência, `Idioma Desconhecido`. O provedor SHALL NOT inferir idioma pelo título, pela descrição do site ou pelo país de origem.
+O idioma SHALL ser `Dublado` somente quando o caminho ou o nome do arquivo contiver `dub` ou `dublado`; `Legendado` somente com `leg` ou `legendado`; idioma estrangeiro conhecido sem português resulta em `Gringo`; sem evidência, `Idioma Desconhecido`. O provedor SHALL NOT inferir idioma pelo título, pela descrição do site ou pelo país de origem.
 
 #### Scenario: Série dublada
 

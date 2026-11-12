@@ -281,7 +281,7 @@ test('regex exata de Dublado ^🗣️ Dublado$ exclui os demais cinco valores', 
   }
 });
 
-test('sufixos com ressalva preservam parênteses e ? literal; Não PT-BR não tem ?', () => {
+test('sufixos com ressalva preservam parênteses e ? literal; Gringo não tem ?', () => {
   for (const template of [FORMATTER.GDRIVE, FORMATTER.PRISM]) {
     const dRes = format(template, { quality: '1080p', language: LANGUAGE.DUBBED_NON_PT_BR }, { addon: 'F' });
     assert.match(dRes.name, /^🗣️ Dublado \(Não PT-BR\?\)$/m);
@@ -292,8 +292,8 @@ test('sufixos com ressalva preservam parênteses e ? literal; Não PT-BR não te
     assert.match(lRes.title, /^🗣️ Legendado \(Não PT-BR\?\)$/m);
 
     const nonPtBr = format(template, { quality: '1080p', language: LANGUAGE.NON_PT_BR }, { addon: 'F' });
-    assert.match(nonPtBr.name, /^🗣️ Não PT-BR$/m);
-    assert.match(nonPtBr.title, /^🗣️ Não PT-BR$/m);
+    assert.match(nonPtBr.name, /^🗣️ Gringo$/m);
+    assert.match(nonPtBr.title, /^🗣️ Gringo$/m);
     assert.doesNotMatch(nonPtBr.name + nonPtBr.title, /\?/);
   }
 });
@@ -453,11 +453,11 @@ test('addon ausente lança erro', () => {
 test('stream.language ausente ou fora do enum lança erro citando os seis aceitos', () => {
   assert.throws(
     () => formatStream({ url: HTTP, quality: '720p' }, { template: FORMATTER.GDRIVE, addon: 'F' }),
-    /stream\.language inválido: undefined \(aceitos: Dublado, Dublado \(Não PT-BR\?\), Legendado, Legendado \(Não PT-BR\?\), Não PT-BR, Idioma Desconhecido\)/,
+    /stream\.language inválido: undefined \(aceitos: Dublado, Dublado \(Não PT-BR\?\), Legendado, Legendado \(Não PT-BR\?\), Gringo, Idioma Desconhecido\)/,
   );
   assert.throws(
     () => formatStream({ url: HTTP, quality: '720p', language: 'Dual Áudio' }, { template: FORMATTER.GDRIVE, addon: 'F' }),
-    /stream\.language inválido: "Dual Áudio" \(aceitos: Dublado, Dublado \(Não PT-BR\?\), Legendado, Legendado \(Não PT-BR\?\), Não PT-BR, Idioma Desconhecido\)/,
+    /stream\.language inválido: "Dual Áudio" \(aceitos: Dublado, Dublado \(Não PT-BR\?\), Legendado, Legendado \(Não PT-BR\?\), Gringo, Idioma Desconhecido\)/,
   );
   assert.throws(
     () => formatStream({ url: HTTP, quality: '720p', language: 'Inglês' }, { template: FORMATTER.GDRIVE, addon: 'F' }),

@@ -21,7 +21,7 @@ export const LANGUAGE = Object.freeze({
   DUBBED_NON_PT_BR: 'Dublado (Não PT-BR?)',
   SUBTITLED: 'Legendado',
   SUBTITLED_NON_PT_BR: 'Legendado (Não PT-BR?)',
-  NON_PT_BR: 'Não PT-BR',
+  NON_PT_BR: 'Gringo',
   UNKNOWN: 'Idioma Desconhecido',
 });
 
@@ -40,6 +40,7 @@ const EXACT_MAPPINGS = [
   ['legendado nao pt br', LANGUAGE.SUBTITLED_NON_PT_BR],
   ['legendado dialeto desconhecido', LANGUAGE.SUBTITLED_NON_PT_BR],
   ['nao pt br', LANGUAGE.NON_PT_BR],
+  ['gringo', LANGUAGE.NON_PT_BR],
   ['idioma desconhecido', LANGUAGE.UNKNOWN],
 ];
 

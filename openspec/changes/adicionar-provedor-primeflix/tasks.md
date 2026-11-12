@@ -35,7 +35,7 @@
 
 ## 6. Idioma, qualidade e contrato do stream
 
-- [ ] 6.1 Cobrir a classificação de idioma: `dub`/`dublado` → `Dublado`; `leg`/`legendado` → `Legendado`; idioma estrangeiro conhecido sem português → `Não PT-BR`; sem evidência → `Idioma Desconhecido`; título/descrição do site não alteram a classificação. Verificação: os casos de idioma passam e não há promoção a PT-BR sem evidência.
+- [ ] 6.1 Cobrir a classificação de idioma: `dub`/`dublado` → `Dublado`; `leg`/`legendado` → `Legendado`; idioma estrangeiro conhecido sem português → `Gringo`; sem evidência → `Idioma Desconhecido`; título/descrição do site não alteram a classificação. Verificação: os casos de idioma passam e não há promoção a PT-BR sem evidência.
 - [ ] 6.2 Cobrir a qualidade: `1080p` no nome do arquivo, `camrip` como `CAM` e ausência como `Desconhecida`; nenhuma requisição extra é feita para descobrir qualidade. Verificação: os casos de qualidade passam e o teste confirma que só os textos já obtidos são lidos.
 - [ ] 6.3 Validar o contrato comum: `format` em todo stream, `name`/`title` gerados pelo formatador, `headers` só quando o gate confirmar necessidade, `Range` nunca no stream e ordenação por `sortByQuality`. Verificação: teste de contrato de filme e série confere os campos e a ordenação.
 

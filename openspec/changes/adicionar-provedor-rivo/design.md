@@ -90,7 +90,7 @@ Essa distinção evita que uma mudança de contrato na fonte (por exemplo, `sour
 2. `portuguese`/`portugues` com `sub` → `LANGUAGE.SUBTITLED_NON_PT_BR` (`Legendado (Não PT-BR?)`).
 3. `brazilian portuguese` com `sub` → `LANGUAGE.SUBTITLED` (`Legendado`).
 4. `portuguese`/`portugues` sem `sub` → `LANGUAGE.DUBBED_NON_PT_BR` (`Dublado (Não PT-BR?)`).
-5. Idioma estrangeiro reconhecido (`english`, `spanish`, `french`, `german`, `italian`, `russian`, `hindi`, `arabic`, `bengali`, `tamil`, `telugu`, `tagalog`, `indonesian`, `kurdish`, `ukr`/`ukrainian`, entre outros observados) → `LANGUAGE.NON_PT_BR` (`Não PT-BR`).
+5. Idioma estrangeiro reconhecido (`english`, `spanish`, `french`, `german`, `italian`, `russian`, `hindi`, `arabic`, `bengali`, `tamil`, `telugu`, `tagalog`, `indonesian`, `kurdish`, `ukr`/`ukrainian`, entre outros observados) → `LANGUAGE.NON_PT_BR` (`Gringo`).
 6. Parêntese técnico (`5.0 Mbps AAC`, `Master`) ou ausência de parêntese → não define `language`; o `buildStream` resolve `Idioma Desconhecido` porque o `format` não leva `filename`/`folderName` nem `languageHints`.
 
 O rótulo `Portuguese` sem região não é promovido a `Dublado`, e o rótulo `English sub` não é promovido a `Legendado`.

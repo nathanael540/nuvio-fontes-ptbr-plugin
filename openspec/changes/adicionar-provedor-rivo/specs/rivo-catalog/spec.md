@@ -123,7 +123,7 @@ A qualidade SHALL ser descoberta no rótulo da fonte. Resolução reconhecida SH
 
 ### Requirement: Idioma da fonte
 
-O idioma SHALL ser classificado a partir do rótulo de idioma da fonte e a saída SHALL ser um dos seis valores de `LANGUAGE`. `Brazilian Portuguese` SHALL ser `Dublado`; `Portuguese` sem região SHALL ser `Dublado (Não PT-BR?)`; `Portuguese sub` SHALL ser `Legendado (Não PT-BR?)`; idioma estrangeiro SHALL ser `Não PT-BR`; rótulo sem idioma SHALL ser `Idioma Desconhecido`.
+O idioma SHALL ser classificado a partir do rótulo de idioma da fonte e a saída SHALL ser um dos seis valores de `LANGUAGE`. `Brazilian Portuguese` SHALL ser `Dublado`; `Portuguese` sem região SHALL ser `Dublado (Não PT-BR?)`; `Portuguese sub` SHALL ser `Legendado (Não PT-BR?)`; idioma estrangeiro SHALL ser `Gringo`; rótulo sem idioma SHALL ser `Idioma Desconhecido`.
 
 #### Scenario: Áudio brasileiro
 
@@ -143,7 +143,7 @@ O idioma SHALL ser classificado a partir do rótulo de idioma da fonte e a saíd
 #### Scenario: Idioma estrangeiro
 
 - **WHEN** o rótulo informa inglês, espanhol, hindi ou outro idioma estrangeiro
-- **THEN** o stream sai com `Não PT-BR`.
+- **THEN** o stream sai com `Gringo`.
 
 #### Scenario: Sem idioma no rótulo
 

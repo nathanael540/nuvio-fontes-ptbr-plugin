@@ -138,7 +138,7 @@ var LANGUAGE = Object.freeze({
   DUBBED_NON_PT_BR: "Dublado (N\xE3o PT-BR?)",
   SUBTITLED: "Legendado",
   SUBTITLED_NON_PT_BR: "Legendado (N\xE3o PT-BR?)",
-  NON_PT_BR: "N\xE3o PT-BR",
+  NON_PT_BR: "Gringo",
   UNKNOWN: "Idioma Desconhecido"
 });
 var LANGUAGE_MODES = Object.freeze(Object.values(LANGUAGE));
@@ -152,6 +152,7 @@ var EXACT_MAPPINGS = [
   ["legendado nao pt br", LANGUAGE.SUBTITLED_NON_PT_BR],
   ["legendado dialeto desconhecido", LANGUAGE.SUBTITLED_NON_PT_BR],
   ["nao pt br", LANGUAGE.NON_PT_BR],
+  ["gringo", LANGUAGE.NON_PT_BR],
   ["idioma desconhecido", LANGUAGE.UNKNOWN]
 ];
 var KNOWN_FOREIGN_REGEX = /\b(?:ingles|english|espanhol|espanol|spanish|latino|castellano|castelhano|japones|japanese|frances|francais|french|alemao|deutsch|german|italiano|italian|coreano|korean|russo|russian|mandarim|chines|chinese|turco|turca|turkce|turkish|arabe|arabic|hindi|tailandes|thai|vietnamita|vietnamese|polones|polaco|polski|polish|holandes|nederlands|dutch|sueco|sueca|svenska|swedish|dinamarques|dansk|danish|noruegues|norsk|norwegian|finlandes|suomi|finnish|grego|grega|greek|hebraico|hebrew|tcheco|checo|czech|hungaro|hungarian|romeno|romanian|ucraniano|ukrainian|persa|persian|indonesio|indonesian|malaio|malay|filipino|bengali|tamil|telugu|urdu|swahili)\b/;

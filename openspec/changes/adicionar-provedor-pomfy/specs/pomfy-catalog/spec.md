@@ -100,7 +100,7 @@ O stream SHALL usar como qualidade a maior `quality` pronta do arquivo Flyfile e
 
 ### Requirement: Classificação de idioma
 
-O idioma do stream SHALL ser derivado do áudio padrão do arquivo: áudio português com indicação de Brasil vira `Dublado`; português sem indicação de Brasil vira `Dublado (Não PT-BR?)`; áudio estrangeiro com legenda portuguesa vira `Legendado`; legenda portuguesa sem indicação de Brasil vira `Legendado (Não PT-BR?)`; sem áudio português nem legenda portuguesa, o resultado é `Não PT-BR` ou `Idioma Desconhecido`. O provedor SHALL NOT promover português sem região a `Dublado`.
+O idioma do stream SHALL ser derivado do áudio padrão do arquivo: áudio português com indicação de Brasil vira `Dublado`; português sem indicação de Brasil vira `Dublado (Não PT-BR?)`; áudio estrangeiro com legenda portuguesa vira `Legendado`; legenda portuguesa sem indicação de Brasil vira `Legendado (Não PT-BR?)`; sem áudio português nem legenda portuguesa, o resultado é `Gringo` ou `Idioma Desconhecido`. O provedor SHALL NOT promover português sem região a `Dublado`.
 
 #### Scenario: Áudio padrão brasileiro
 - **WHEN** o áudio padrão é português com rótulo ou região Brasil
@@ -112,7 +112,7 @@ O idioma do stream SHALL ser derivado do áudio padrão do arquivo: áudio portu
 
 #### Scenario: Sem evidência de idioma
 - **WHEN** o arquivo não informa áudio nem legenda em português
-- **THEN** o stream tem `language` `Não PT-BR` ou `Idioma Desconhecido`, conforme a evidência disponível, e nunca `Dublado`.
+- **THEN** o stream tem `language` `Gringo` ou `Idioma Desconhecido`, conforme a evidência disponível, e nunca `Dublado`.
 
 ### Requirement: Legendas externas
 

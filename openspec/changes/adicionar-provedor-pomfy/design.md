@@ -91,7 +91,7 @@ A classificação é feita no provedor, não por `languageHints`, porque a prese
 2. áudio `por`/`pt` com rótulo ou região Brasil → `Dublado`;
 3. áudio `por`/`pt` sem região Brasil → `Dublado (Não PT-BR?)`;
 4. áudio estrangeiro com legenda `por`/`pt` → `Legendado`; legenda portuguesa sem região Brasil → `Legendado (Não PT-BR?)`;
-5. áudio estrangeiro sem legenda portuguesa → `Não PT-BR`;
+5. áudio estrangeiro sem legenda portuguesa → `Gringo`;
 6. sem áudio e sem legenda portuguesa → `Idioma Desconhecido`.
 
 As legendas vêm de `videoAsset.subtitles`: `url` e `language` legível (`por` → `Português`, `eng` → `Inglês`; código desconhecido usa o rótulo). O campo `isDefault` não altera a lista. Uma legenda com URL fora de http(s) é descartada isoladamente; as demais permanecem. Não há `headers`: a URL de legenda respondeu sem contexto no teste.

@@ -122,9 +122,9 @@ test('extrai magnets do artigo e preserva os metadados do rótulo', async () => 
     assert.equal(streams[1].name, 'LimeFilmes 720p\n🗣️ Dublado (Não PT-BR?)\n🧲 P2P 👥 ?/?');
     assert.equal(streams[1].title, '🗣️ Dublado (Não PT-BR?)\n🧲 P2P 👥 ?/?');
     assert.equal(streams[2].quality, 'CAM');
-    assert.equal(streams[2].language, 'Não PT-BR');
-    assert.equal(streams[2].name, 'LimeFilmes CAM\n🗣️ Não PT-BR\n🧲 P2P 👥 ?/?');
-    assert.equal(streams[2].title, '🗣️ Não PT-BR\n🧲 P2P 👥 ?/?');
+    assert.equal(streams[2].language, 'Gringo');
+    assert.equal(streams[2].name, 'LimeFilmes CAM\n🗣️ Gringo\n🧲 P2P 👥 ?/?');
+    assert.equal(streams[2].title, '🗣️ Gringo\n🧲 P2P 👥 ?/?');
     assert.equal(streams[0].infoHash, hash);
     assert.equal('headers' in streams[0], false);
 

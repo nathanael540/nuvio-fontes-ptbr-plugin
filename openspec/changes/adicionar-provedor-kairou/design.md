@@ -118,7 +118,7 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 12
 6. **Deduplicação por URL** → duas opções com a mesma URL e idiomas diferentes viram uma só. A primeira é a dublada na ordem observada; se a fonte inverter a ordem, a classificação pode mudar.
 7. **`alive`/`status` não confiáveis** → não são usados para descartar. Um stream marcado como 504 pelo servidor ainda pode reproduzir; um marcado como vivo pode falhar.
 8. **Animes sem o addon Pleiades** → o Kairou usa um addon externo para parte dos animes; o provedor entrega somente o que a API do Kairou devolve. A cobertura de anime pode ser menor que a do site.
-9. **Idioma sem legenda PT** → a classificação usa `Não PT-BR` quando não há áudio dublado nem legenda portuguesa. É uma decisão conservadora, sem promover o stream a Legendado.
+9. **Idioma sem legenda PT** → a classificação usa `Gringo` quando não há áudio dublado nem legenda portuguesa. É uma decisão conservadora, sem promover o stream a Legendado.
 
 ## Migration Plan
 

@@ -64,8 +64,8 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 12
 
 ### D4. Idioma e qualidade pela evidência local
 
-1. Idioma: analisar o caminho/nome do arquivo final com o bloco `language-discovery`. `dub`/`dublado` comprova `Dublado`; `leg`/`legendado` comprova `Legendado`; idioma estrangeiro conhecido sem português vira `Não PT-BR`; sem prova, `Idioma Desconhecido`.
-2. A descrição do site (“Dublado e Legendado”), o título e o país de origem não são prova de áudio. O `eng` no nome de um arquivo não é reconhecido pelo bloco e não promove o stream a `Não PT-BR` sozinho.
+1. Idioma: analisar o caminho/nome do arquivo final com o bloco `language-discovery`. `dub`/`dublado` comprova `Dublado`; `leg`/`legendado` comprova `Legendado`; idioma estrangeiro conhecido sem português vira `Gringo`; sem prova, `Idioma Desconhecido`.
+2. A descrição do site (“Dublado e Legendado”), o título e o país de origem não são prova de áudio. O `eng` no nome de um arquivo não é reconhecido pelo bloco e não promove o stream a `Gringo` sozinho.
 3. Qualidade: `discoverQuality` nos textos já obtidos, com o nome do arquivo e a URL final. `CAMRIP`/`CAM` prevalece sobre `1080p`; sem pista, `Desconhecida`.
 4. Alternativa descartada: inferir dublado porque a ficha está em português. O catálogo pode publicar o arquivo original legendado.
 5. Alternativa descartada: baixar o MKV e ler as faixas de áudio para classificar. O arquivo pode ter gigabytes e o runtime não tem parser de Matroska.

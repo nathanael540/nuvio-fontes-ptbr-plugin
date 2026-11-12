@@ -25,7 +25,7 @@ test('LANGUAGE possui exatamente os seis valores do design e é imutável', () =
     'Dublado (Não PT-BR?)',
     'Legendado',
     'Legendado (Não PT-BR?)',
-    'Não PT-BR',
+    'Gringo',
     'Idioma Desconhecido',
   ]);
   assert.equal(UNKNOWN_LANGUAGE, LANGUAGE.UNKNOWN);
@@ -46,7 +46,7 @@ const EXACT_ENUM_CASES = {
     'legendado (nao pt-br?)',
     '  Legendado   (Não   PT-BR?)  ',
   ],
-  [LANGUAGE.NON_PT_BR]: ['Não PT-BR', 'NÃO PT-BR', 'nao pt br', '  Não   PT-BR  '],
+  [LANGUAGE.NON_PT_BR]: ['Gringo', 'GRINGO', 'gringo', 'Não PT-BR', 'NÃO PT-BR', 'nao pt br', '  Não   PT-BR  '],
   [LANGUAGE.UNKNOWN]: ['Idioma Desconhecido', 'IDIOMA DESCONHECIDO', 'idioma desconhecido'],
 };
 
@@ -109,7 +109,7 @@ test('normalizeLanguage reconhece convenções comuns de áudio, legenda e idiom
   assert.equal(normalizeLanguage('Legendado PT-PT'), LANGUAGE.SUBTITLED_NON_PT_BR);
   assert.equal(normalizeLanguage('Legendado Europeu'), LANGUAGE.SUBTITLED_NON_PT_BR);
 
-  // Idiomas estrangeiros conhecidos viram Não PT-BR
+  // Idiomas estrangeiros conhecidos viram Gringo
   assert.equal(normalizeLanguage('Inglês'), LANGUAGE.NON_PT_BR);
   assert.equal(normalizeLanguage('English'), LANGUAGE.NON_PT_BR);
   assert.equal(normalizeLanguage('Japonês'), LANGUAGE.NON_PT_BR);
@@ -274,7 +274,7 @@ test('discoverLanguage aceita legenda apenas sem áudio português elegível', (
   );
 });
 
-test('discoverLanguage classifica idioma estrangeiro conhecido como Não PT-BR', () => {
+test('discoverLanguage classifica idioma estrangeiro conhecido como Gringo', () => {
   assert.equal(discoverLanguage({ texts: ['Filme.1080p.Ingles.mkv'] }), LANGUAGE.NON_PT_BR);
   assert.equal(discoverLanguage({ texts: ['Filme.1080p.Japones.mkv'] }), LANGUAGE.NON_PT_BR);
   assert.equal(discoverLanguage({ texts: ['Filme.1080p.Spanish.mkv'] }), LANGUAGE.NON_PT_BR);

@@ -7,7 +7,7 @@ Classificar o idioma dos streams a partir da evidência local que a fonte já pu
 
 ### Requirement: Enum fechado e saída definida
 
-Todo stream SHALL sair com um dos seis valores do enum `LANGUAGE`: `Dublado`, `Dublado (Não PT-BR?)`, `Legendado`, `Legendado (Não PT-BR?)`, `Não PT-BR` ou `Idioma Desconhecido`. A classificação SHALL NOT criar valor novo e SHALL NOT omitir `language` na saída de `buildStream`.
+Todo stream SHALL sair com um dos seis valores do enum `LANGUAGE`: `Dublado`, `Dublado (Não PT-BR?)`, `Legendado`, `Legendado (Não PT-BR?)`, `Gringo` ou `Idioma Desconhecido`. A classificação SHALL NOT criar valor novo e SHALL NOT omitir `language` na saída de `buildStream`. `normalizeLanguage` SHALL aceitar tanto `Gringo` quanto o rótulo antigo `Não PT-BR` como entrada para o mesmo membro.
 
 #### Scenario: Evidência conclusiva
 
@@ -18,6 +18,16 @@ Todo stream SHALL sair com um dos seis valores do enum `LANGUAGE`: `Dublado`, `D
 
 - **WHEN** nenhum texto, campo de página ou faixa HLS comprova áudio ou legenda
 - **THEN** o stream sai com `Idioma Desconhecido`.
+
+#### Scenario: Idioma estrangeiro
+
+- **WHEN** a fonte comprova áudio estrangeiro e não comprova português
+- **THEN** o stream sai com `Gringo`.
+
+#### Scenario: Entrada antiga
+
+- **WHEN** uma fonte ou configuração ainda envia o texto `Não PT-BR` como idioma
+- **THEN** `normalizeLanguage` resolve para o membro exibido como `Gringo`.
 
 ### Requirement: Convenção Dual/Tri Áudio
 
@@ -54,12 +64,12 @@ Os leitores da rede Baixa Rápido SHALL ler `Idioma`, `Idiomas` ou `Áudio` da f
 
 ### Requirement: Legenda estrangeira não é Legendado
 
-Quando o texto cita legenda (`sub`, `legenda`, `legendado`) junto de um idioma estrangeiro conhecido, sem português explícito, a classificação SHALL ser `Não PT-BR`. `Legendado` sozinho SHALL continuar `Legendado`, pela convenção PT-BR.
+Quando o texto cita legenda (`sub`, `legenda`, `legendado`) junto de um idioma estrangeiro conhecido, sem português explícito, a classificação SHALL ser `Gringo`. `Legendado` sozinho SHALL continuar `Legendado`, pela convenção PT-BR.
 
 #### Scenario: English sub
 
 - **WHEN** o rótulo diz `English sub` ou `Legendado Inglês`
-- **THEN** o stream sai `Não PT-BR`.
+- **THEN** o stream sai `Gringo`.
 
 #### Scenario: Legendado sem idioma estrangeiro
 
@@ -78,16 +88,16 @@ Quando o texto cita legenda (`sub`, `legenda`, `legendado`) junto de um idioma e
 #### Scenario: Apenas estrangeiro
 
 - **WHEN** todos os textos conhecidos são estrangeiros e nenhum comprova português
-- **THEN** o stream sai `Não PT-BR`.
+- **THEN** o stream sai `Gringo`.
 
 ### Requirement: Áudio estrangeiro comprovado em HLS
 
-Quando a playlist HLS declara faixas de áudio estrangeiras conhecidas e não há legenda portuguesa, o stream SHALL sair `Não PT-BR`. Com legenda portuguesa, SHALL sair `Legendado`. Faixa `und` ou ausente SHALL NOT ser tratada como estrangeira.
+Quando a playlist HLS declara faixas de áudio estrangeiras conhecidas e não há legenda portuguesa, o stream SHALL sair `Gringo`. Com legenda portuguesa, SHALL sair `Legendado`. Faixa `und` ou ausente SHALL NOT ser tratada como estrangeira.
 
 #### Scenario: Áudio inglês sem legenda PT
 
 - **WHEN** a playlist declara apenas áudio `LANGUAGE="en"` e nenhuma legenda PT
-- **THEN** o stream sai `Não PT-BR`.
+- **THEN** o stream sai `Gringo`.
 
 #### Scenario: Áudio inglês com legenda PT
 

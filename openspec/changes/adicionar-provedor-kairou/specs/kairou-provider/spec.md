@@ -90,7 +90,7 @@ O provedor SHALL montar cada stream com `buildStream` e `format`, usando `qualit
 #### Scenario: Stream sem áudio PT e sem legenda PT
 
 - **WHEN** a opção tem `isDub: false` e não oferece legenda em português
-- **THEN** o stream sai com `language` "Não PT-BR".
+- **THEN** o stream sai com `language` "Gringo".
 
 #### Scenario: Qualidade não informada
 
