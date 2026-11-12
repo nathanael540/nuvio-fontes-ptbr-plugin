@@ -27,7 +27,7 @@ Referências:
 7. `build.js`: empacotador (esbuild) de `src/<id>/` para `providers/<id>.js` e as variantes de formato, e gerador dos `<formato>/manifest.json`.
 8. `test/`: toda a infraestrutura de testes, só em Node, sem o app instalado: suítes `node:test`, testes de blocos em `test/blocks/<bloco>/index.test.mjs`, fixtures em `test/fixtures/`, utilitários em `test/support/`, servidor local `test/server.js`, verificação online em `test/online/` e saídas geradas em `test/artifacts/` (ignorada pelo Git). Detalhes em [tests.md](tests.md).
 9. `openspec/`: especificações (`specs/`) e mudanças (`changes/`, com as concluídas em `changes/archive/`).
-10. `docs/`: arquitetura (`arch.md`) e testes (`tests.md`).
+10. `docs/`: arquitetura (`arch.md`), testes (`tests.md`) e mapa de métodos para investigar novos provedores (`provider-investigation.md`).
 11. `providers.md`: tabela dos provedores publicados, com uma seção de status por provedor. O teste `test/providers-catalog.test.js` o confere contra o `manifest.json`.
 
 Nunca edite manualmente `providers/`, `<formato>/providers/` nem `<formato>/manifest.json`.

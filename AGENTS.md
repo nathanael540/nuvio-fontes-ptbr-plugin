@@ -67,3 +67,4 @@ Guia para agentes de IA e contribuidores deste repositório.
 5. `docs/tests.md` descreve os tipos de teste; `test/README.md` traz os comandos.
 6. Decisões de um único provedor ou mudança, questões em aberto e validação da mudança ficam no `design.md` da change; registros operacionais das rodadas online ficam em `providers.md`; o comportamento esperado fica na spec da capacidade.
 7. Use listas numeradas; não use fluxogramas nem diagramas.
+8. Antes de investigar ou implementar um novo provedor, consulte [docs/provider-investigation.md](docs/provider-investigation.md). Quando a mudança introduzir um método novo ou uma variação relevante reutilizável, atualize o guia na mesma mudança, com referências de código e testes e os limites observados. Distinga método em uso, bloco disponível e hipótese; evidência online e status continuam em `providers.md`.

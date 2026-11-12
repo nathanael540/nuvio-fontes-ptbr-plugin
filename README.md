@@ -54,7 +54,8 @@ A tabela dos provedores, com o status de cada um (🟢 Estável, 🔵 Parcial, �
 5. [docs/tests.md](docs/tests.md) — tipos de teste, regras e limites.
 6. [AGENTS.md](AGENTS.md) — regras para agentes e contribuidores.
 7. [openspec/](openspec/) — especificações e mudanças (OpenSpec).
-8. [Documentação oficial de provedores do Nuvio](https://github.com/yoruix/nuvio-providers/blob/template/DOCUMENTATION.md).
+8. [docs/provider-investigation.md](docs/provider-investigation.md) — guia de investigação de novos provedores, com métodos usados, referências de código e limites.
+9. [Documentação oficial de provedores do Nuvio](https://github.com/yoruix/nuvio-providers/blob/template/DOCUMENTATION.md).
 
 ## Contribuindo
 
