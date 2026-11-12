@@ -11,7 +11,7 @@
 | [Baixar Filmes Via-Torrent](#baixar-filmes-via-torrent) | `baixarfilmestorrent123` | filme, série | magnet, torrent:// | 🔵 Parcial | 2026-11-12 |
 | [RedeFlix](#redeflix) | `redeflix` | filme, série | MP4 | 🟢 Estável | 2026-11-12 |
 | [PobreFlix NixPlay](#pobreflix-nixplay) | `pobreflix-nixplay` | filme, série | MP4 | 🟢 Estável | 2026-11-12 |
-| [Pobreflix HD](#pobreflix-hd) | `pobreflixtv` | filme, série | MP4 | 🔴 Instável | 2026-11-12 |
+| [Pobreflix HD](#pobreflix-hd) | `pobreflixtv` | filme, série | MP4 | 🟢 Estável | 2026-11-12 |
 | [FSHD](#fshd) | `fshd` | série | HLS | 🟢 Estável | 2026-11-12 |
 | [BeTor](#betor) | `betor` | filme, série | magnet, torrent:// | 🔵 Parcial | 2026-11-12 |
 | [Starck Filmes](#starck-filmes) | `starckfilmes` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-12 |
@@ -199,22 +199,22 @@
 
 ## Pobreflix HD
 
-**Status: 🔴 Instável.**
+**Status: 🟢 Estável.**
 
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-12T16:57:29.766Z** · ID `2026-11-12T16-56-14-623Z-pobreflixtv-20261113-aa69` · **Instável** · pacote 1.1.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261113` · algoritmo `sha256-fisher-yates-v1`
-   1. `movie` `693134` · Duna: Parte Dois (2024) · **Falha** · 0/0 streams aproveitáveis · Motivo: [Pobreflix HD] Falha: Todos os domínios falharam: [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <...
-   2. `movie` `372058` · Your Name (2016) · **Falha** · 0/0 streams aproveitáveis · Motivo: [Pobreflix HD] Falha: Todos os domínios falharam: [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <...
-   3. `movie` `324857` · Homem-Aranha: No Aranhaverso (2018) · **Falha** · 0/0 streams aproveitáveis · Motivo: [Pobreflix HD] Falha: Todos os domínios falharam: [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <...
-   4. `movie` `1184918` · Robô Selvagem (2024) · **Falha** · 0/0 streams aproveitáveis · Motivo: [Pobreflix HD] Falha: Todos os domínios falharam: [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <...
-   5. `movie` `149` · Akira (1988) · **Falha** · 0/0 streams aproveitáveis · Motivo: [Pobreflix HD] Falha: Todos os domínios falharam: [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <...
-   6. `tv` `456` · Os Simpsons (1989) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Pobreflix HD] Falha: Todos os domínios falharam: [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <...
-   7. `tv` `82856` · The Mandalorian (2019) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Pobreflix HD] Falha: Todos os domínios falharam: [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <...
-   8. `tv` `96162` · Itaewon Class (2020) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Pobreflix HD] Falha: Todos os domínios falharam: [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <...
-   9. `tv` `60574` · Peaky Blinders (2013) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Pobreflix HD] Falha: Todos os domínios falharam: [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <...
-   10. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Pobreflix HD] Falha: Todos os domínios falharam: [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <url> [Pobreflix HD] Domínio <url> Redirecionamento para fora da lista de domínios: <...
+1. **2026-11-12T17:59:31.201Z** · ID `2026-11-12T17-58-40-524Z-pobreflixtv-a7a03ebf-6b41` · **Estável** · pacote 1.2.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `a7a03ebf5d098466177d5e33efe8e003` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `293660` · Deadpool (2016) · **Resolvido** · 2/2 streams aproveitáveis
+   2. `movie` `24428` · Os Vingadores (2012) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `120` · O Senhor dos Anéis: A Sociedade do Anel (2001) · **Resolvido** · 3/3 streams aproveitáveis
+   4. `movie` `76341` · Mad Max: Estrada da Fúria (2015) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `122` · O Senhor dos Anéis: O Retorno do Rei (2003) · **Resolvido** · 2/2 streams aproveitáveis
+   6. `tv` `60574` · Peaky Blinders (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   7. `tv` `87108` · Chernobyl (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   8. `tv` `1416` · Grey's Anatomy (2005) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   9. `tv` `456` · Os Simpsons (1989) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Pobreflix HD] Falha: Todas as opções falharam: Host MixDrop (Dublado) em <url> MixDrop: script empacotado não encontrado; Host Streamtape (Dublado) em <url> HTTP 404 em <url> Host DoodStream (Dublado) em <url> HTTP 403 em <url>
+   10. `tv` `1396` · Breaking Bad (2008) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
 <!-- online-verification:end -->
 
 ## FSHD

@@ -102,10 +102,11 @@ async function discoverOptions(domain, media, request) {
   const content = await findConfirmedContent(domain, media, request.mediaType);
   if (!content || content.ambiguous) return content;
 
+  const contentOrigin = new URL(content.pageUrl).origin;
   let videoId;
   let contentPageUrl = content.pageUrl;
   if (request.mediaType === 'tv') {
-    const episode = await resolveSeriesEpisode(domain, content, request.season, request.episode, media);
+    const episode = await resolveSeriesEpisode(contentOrigin, content, request.season, request.episode, media);
     if (!episode) return null;
     videoId = episode.videoId;
     contentPageUrl = episode.pageUrl;
@@ -113,7 +114,7 @@ async function discoverOptions(domain, media, request) {
     videoId = extractDataAttribute(content.pageHtml, 'video-id') || /-([0-9]+)\/?$/.exec(content.pageUrl)?.[1];
     if (!videoId) throw new Error(`ID do filme não encontrado na página ${content.pageUrl}`);
   }
-  return { options: await fetchPlayerOptions(domain, videoId), contentPageUrl };
+  return { options: await fetchPlayerOptions(new URL(contentPageUrl).origin, videoId), contentPageUrl };
 }
 
 /**

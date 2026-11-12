@@ -9,7 +9,14 @@ import { extractDataAttribute } from '../_blocks/script-extract/index.mjs';
 import { titleSimilarity } from '../_blocks/title-match/index.mjs';
 
 /**
- * Lista ordenada de domínios conhecidos do Pobreflix HD (principal e 14 aliases).
+ * Bases de domínio oficiais do Pobreflix HD. O redirect aceita `base.tld` e `www.base.tld` com TLD
+ * alfabético de um rótulo; uma nova base exige alteração desta lista e teste.
+ * @type {ReadonlyArray<string>}
+ */
+export const ALLOWED_DOMAIN_BASES = Object.freeze(['pobreflixtv', 'flixtv', 'thepobretvflix']);
+
+/**
+ * Lista ordenada de domínios-semente do Pobreflix HD (principal e 14 aliases).
  * @type {ReadonlyArray<string>}
  */
 export const DOMAINS = Object.freeze([
@@ -31,33 +38,49 @@ export const DOMAINS = Object.freeze([
 ]);
 
 /**
- * Verifica se a URL pertence à lista permitida de domínios.
+ * Verifica se a URL usa HTTPS e pertence a uma base de domínio permitida.
+ *
+ * Aceita somente host `base.tld` ou `www.base.tld`, com `base` em ALLOWED_DOMAIN_BASES e `tld`
+ * alfabético com dois ou mais caracteres. Subdomínios arbitrários, lookalikes e HTTP são rejeitados.
  *
  * @param {string} url - URL para checar.
- * @returns {boolean} True se a origem pertencer a DOMAINS.
+ * @returns {boolean} True se a URL puder ser seguida.
  */
 export function isAllowedDomain(url) {
+  let parsed;
   try {
-    const origin = new URL(url).origin;
-    return DOMAINS.includes(origin);
+    parsed = new URL(url);
   } catch {
     return false;
   }
+  if (parsed.protocol !== 'https:') return false;
+
+  let hostname = parsed.hostname.toLowerCase();
+  if (hostname.startsWith('www.')) hostname = hostname.slice(4);
+
+  const labels = hostname.split('.');
+  if (labels.length !== 2) return false;
+  const [base, tld] = labels;
+  return ALLOWED_DOMAIN_BASES.includes(base) && /^[a-z]{2,}$/.test(tld);
 }
 
 /**
  * Executa requisição AJAX e trata redirecionamento por corpo JSON {"redirect": "..."}.
  *
+ * Segue um único redirect HTTPS dentro das bases permitidas; se o destino responder com outro
+ * redirect, a cascata é rejeitada.
+ *
  * @param {string} url - URL da requisição.
  * @returns {Promise<*>} Resposta JSON interpretada.
- * @throws {Error} Se houver erro de rede, HTTP fora de 2xx, JSON inválido ou redirecionamento fora da lista.
+ * @throws {Error} Se houver erro de rede, HTTP fora de 2xx, JSON inválido, redirecionamento fora
+ *   das bases permitidas ou redirecionamento em cascata.
  */
 export async function fetchAjax(url) {
   const data = await fetchJson(url, { profile: 'api' });
 
   if (typeof data === 'object' && data !== null && typeof data.redirect === 'string') {
     if (!isAllowedDomain(data.redirect)) {
-      throw new Error(`Redirecionamento para fora da lista de domínios: ${data.redirect}`);
+      throw new Error(`Redirecionamento para fora das bases permitidas: ${data.redirect}`);
     }
     const redirected = await fetchJson(data.redirect, { profile: 'api' });
     if (typeof redirected === 'object' && redirected !== null && typeof redirected.redirect === 'string') {
@@ -162,7 +185,7 @@ export async function findConfirmedContent(domain, media, mediaType) {
     for (const candidate of candidatesToProbe) {
       const page = await fetchPage(candidate.href, { profile: 'page' });
       if (!isAllowedDomain(page.url)) {
-        throw new Error(`Redirecionamento para fora da lista de domínios: ${page.url}`);
+        throw new Error(`Redirecionamento para fora das bases permitidas: ${page.url}`);
       }
 
       const pageTmdbId = extractDataAttribute(page.text, 'tmdb-id');
@@ -186,16 +209,16 @@ export async function findConfirmedContent(domain, media, mediaType) {
 }
 
 /**
- * Seleciona o episódio exato para série.
+ * Seleciona o episódio exato para série, consultando o host final do conteúdo.
  *
- * @param {string} domain - Domínio base.
+ * @param {string} contentOrigin - Origem da página do conteúdo, já no host final permitido.
  * @param {object} seriesContent - Resultado de findConfirmedContent para série.
  * @param {number} targetSeason - Temporada (1-based).
  * @param {number} targetEpisode - Episódio (1-based).
  * @param {object} media - Dados do TMDB.
  * @returns {Promise<{ videoId: string, pageUrl: string, pageHtml: string, hasHd: boolean }|null>}
  */
-export async function resolveSeriesEpisode(domain, seriesContent, targetSeason, targetEpisode, media) {
+export async function resolveSeriesEpisode(contentOrigin, seriesContent, targetSeason, targetEpisode, media) {
   const seriesVideoId =
     extractDataAttribute(seriesContent.pageHtml, 'video-id') ||
     /-([0-9]+)\/?$/.exec(seriesContent.pageUrl)?.[1];
@@ -214,9 +237,9 @@ export async function resolveSeriesEpisode(domain, seriesContent, targetSeason, 
     season: String(targetSeason),
     audio: 'Dublado',
   });
-  const dubRes = await fetchAjax(`${domain}/index.php?${dubParams.toString()}`);
+  const dubRes = await fetchAjax(`${contentOrigin}/index.php?${dubParams.toString()}`);
   if (!Array.isArray(dubRes?.episodes)) {
-    throw new Error(`episodesList não retornou array de episódios em ${domain}`);
+    throw new Error(`episodesList não retornou array de episódios em ${contentOrigin}`);
   }
 
   let episodeItem = dubRes.episodes.find((ep) => parseInt(ep.number, 10) === targetEpisode);
@@ -232,9 +255,9 @@ export async function resolveSeriesEpisode(domain, seriesContent, targetSeason, 
       season: String(targetSeason),
       audio: 'Legendado',
     });
-    const legRes = await fetchAjax(`${domain}/index.php?${legParams.toString()}`);
+    const legRes = await fetchAjax(`${contentOrigin}/index.php?${legParams.toString()}`);
     if (!Array.isArray(legRes?.episodes)) {
-      throw new Error(`episodesList legendado não retornou array de episódios em ${domain}`);
+      throw new Error(`episodesList legendado não retornou array de episódios em ${contentOrigin}`);
     }
     episodeItem = legRes.episodes.find((ep) => parseInt(ep.number, 10) === targetEpisode);
   }
@@ -246,7 +269,7 @@ export async function resolveSeriesEpisode(domain, seriesContent, targetSeason, 
 
   const epPage = await fetchPage(episodeItem.url, { profile: 'page' });
   if (!isAllowedDomain(epPage.url)) {
-    throw new Error(`Redirecionamento para fora da lista de domínios: ${epPage.url}`);
+    throw new Error(`Redirecionamento para fora das bases permitidas: ${epPage.url}`);
   }
 
   const epTmdb = extractDataAttribute(epPage.text, 'tmdb-id');
@@ -282,11 +305,11 @@ export async function resolveSeriesEpisode(domain, seriesContent, targetSeason, 
 /**
  * Consulta playerData e extrai as opções de servidores.
  *
- * @param {string} domain - Domínio base.
+ * @param {string} contentOrigin - Origem final do conteúdo/episódio, já no host permitido.
  * @param {string} videoId - ID do vídeo no VideoBox.
  * @returns {Promise<Array<{ hostKey: string, hostName: string, embedUrl: string, language: string }>>}
  */
-export async function fetchPlayerOptions(domain, videoId) {
+export async function fetchPlayerOptions(contentOrigin, videoId) {
   const params = new URLSearchParams({
     app: 'videobox',
     module: 'video',
@@ -294,7 +317,7 @@ export async function fetchPlayerOptions(domain, videoId) {
     do: 'playerData',
     id: videoId,
   });
-  const url = `${domain}/index.php?${params.toString()}`;
+  const url = `${contentOrigin}/index.php?${params.toString()}`;
   const data = await fetchAjax(url);
 
   if (typeof data === 'string' && data.includes('Conteúdo bloqueado')) {

@@ -1192,6 +1192,7 @@ function bigrams(text) {
 }
 
 // src/pobreflixtv/site.js
+var ALLOWED_DOMAIN_BASES = Object.freeze(["pobreflixtv", "flixtv", "thepobretvflix"]);
 var DOMAINS = Object.freeze([
   "https://www.pobreflixtv.golf",
   "https://www.pobreflixtv.sarl",
@@ -1210,19 +1211,26 @@ var DOMAINS = Object.freeze([
   "https://www.pobreflixtv.bond"
 ]);
 function isAllowedDomain(url) {
+  let parsed;
   try {
-    const origin = new URL(url).origin;
-    return DOMAINS.includes(origin);
+    parsed = new URL(url);
   } catch (e) {
     return false;
   }
+  if (parsed.protocol !== "https:") return false;
+  let hostname = parsed.hostname.toLowerCase();
+  if (hostname.startsWith("www.")) hostname = hostname.slice(4);
+  const labels = hostname.split(".");
+  if (labels.length !== 2) return false;
+  const [base, tld] = labels;
+  return ALLOWED_DOMAIN_BASES.includes(base) && /^[a-z]{2,}$/.test(tld);
 }
 function fetchAjax(url) {
   return __async(this, null, function* () {
     const data = yield fetchJson(url, { profile: "api" });
     if (typeof data === "object" && data !== null && typeof data.redirect === "string") {
       if (!isAllowedDomain(data.redirect)) {
-        throw new Error(`Redirecionamento para fora da lista de dom\xEDnios: ${data.redirect}`);
+        throw new Error(`Redirecionamento para fora das bases permitidas: ${data.redirect}`);
       }
       const redirected = yield fetchJson(data.redirect, { profile: "api" });
       if (typeof redirected === "object" && redirected !== null && typeof redirected.redirect === "string") {
@@ -1302,7 +1310,7 @@ function findConfirmedContent(domain, media, mediaType) {
       for (const candidate of candidatesToProbe) {
         const page = yield fetchPage(candidate.href, { profile: "page" });
         if (!isAllowedDomain(page.url)) {
-          throw new Error(`Redirecionamento para fora da lista de dom\xEDnios: ${page.url}`);
+          throw new Error(`Redirecionamento para fora das bases permitidas: ${page.url}`);
         }
         const pageTmdbId = extractDataAttribute(page.text, "tmdb-id");
         if (pageTmdbId === String(media.tmdbId)) {
@@ -1319,7 +1327,7 @@ function findConfirmedContent(domain, media, mediaType) {
     return null;
   });
 }
-function resolveSeriesEpisode(domain, seriesContent, targetSeason, targetEpisode, media) {
+function resolveSeriesEpisode(contentOrigin, seriesContent, targetSeason, targetEpisode, media) {
   return __async(this, null, function* () {
     var _a, _b;
     const seriesVideoId = extractDataAttribute(seriesContent.pageHtml, "video-id") || ((_a = /-([0-9]+)\/?$/.exec(seriesContent.pageUrl)) == null ? void 0 : _a[1]);
@@ -1335,9 +1343,9 @@ function resolveSeriesEpisode(domain, seriesContent, targetSeason, targetEpisode
       season: String(targetSeason),
       audio: "Dublado"
     });
-    const dubRes = yield fetchAjax(`${domain}/index.php?${dubParams.toString()}`);
+    const dubRes = yield fetchAjax(`${contentOrigin}/index.php?${dubParams.toString()}`);
     if (!Array.isArray(dubRes == null ? void 0 : dubRes.episodes)) {
-      throw new Error(`episodesList n\xE3o retornou array de epis\xF3dios em ${domain}`);
+      throw new Error(`episodesList n\xE3o retornou array de epis\xF3dios em ${contentOrigin}`);
     }
     let episodeItem = dubRes.episodes.find((ep) => parseInt(ep.number, 10) === targetEpisode);
     if (!episodeItem) {
@@ -1350,9 +1358,9 @@ function resolveSeriesEpisode(domain, seriesContent, targetSeason, targetEpisode
         season: String(targetSeason),
         audio: "Legendado"
       });
-      const legRes = yield fetchAjax(`${domain}/index.php?${legParams.toString()}`);
+      const legRes = yield fetchAjax(`${contentOrigin}/index.php?${legParams.toString()}`);
       if (!Array.isArray(legRes == null ? void 0 : legRes.episodes)) {
-        throw new Error(`episodesList legendado n\xE3o retornou array de epis\xF3dios em ${domain}`);
+        throw new Error(`episodesList legendado n\xE3o retornou array de epis\xF3dios em ${contentOrigin}`);
       }
       episodeItem = legRes.episodes.find((ep) => parseInt(ep.number, 10) === targetEpisode);
     }
@@ -1361,7 +1369,7 @@ function resolveSeriesEpisode(domain, seriesContent, targetSeason, targetEpisode
     }
     const epPage = yield fetchPage(episodeItem.url, { profile: "page" });
     if (!isAllowedDomain(epPage.url)) {
-      throw new Error(`Redirecionamento para fora da lista de dom\xEDnios: ${epPage.url}`);
+      throw new Error(`Redirecionamento para fora das bases permitidas: ${epPage.url}`);
     }
     const epTmdb = extractDataAttribute(epPage.text, "tmdb-id");
     const epTemp = extractDataAttribute(epPage.text, "temp");
@@ -1387,7 +1395,7 @@ function resolveSeriesEpisode(domain, seriesContent, targetSeason, targetEpisode
     };
   });
 }
-function fetchPlayerOptions(domain, videoId) {
+function fetchPlayerOptions(contentOrigin, videoId) {
   return __async(this, null, function* () {
     const params = new URLSearchParams({
       app: "videobox",
@@ -1396,7 +1404,7 @@ function fetchPlayerOptions(domain, videoId) {
       do: "playerData",
       id: videoId
     });
-    const url = `${domain}/index.php?${params.toString()}`;
+    const url = `${contentOrigin}/index.php?${params.toString()}`;
     const data = yield fetchAjax(url);
     if (typeof data === "string" && data.includes("Conte\xFAdo bloqueado")) {
       throw new Error(`Conte\xFAdo bloqueado em playerData para ID ${videoId}`);
@@ -1507,10 +1515,11 @@ function discoverOptions(domain, media, request2) {
     var _a;
     const content = yield findConfirmedContent(domain, media, request2.mediaType);
     if (!content || content.ambiguous) return content;
+    const contentOrigin = new URL(content.pageUrl).origin;
     let videoId;
     let contentPageUrl = content.pageUrl;
     if (request2.mediaType === "tv") {
-      const episode = yield resolveSeriesEpisode(domain, content, request2.season, request2.episode, media);
+      const episode = yield resolveSeriesEpisode(contentOrigin, content, request2.season, request2.episode, media);
       if (!episode) return null;
       videoId = episode.videoId;
       contentPageUrl = episode.pageUrl;
@@ -1518,7 +1527,7 @@ function discoverOptions(domain, media, request2) {
       videoId = extractDataAttribute(content.pageHtml, "video-id") || ((_a = /-([0-9]+)\/?$/.exec(content.pageUrl)) == null ? void 0 : _a[1]);
       if (!videoId) throw new Error(`ID do filme n\xE3o encontrado na p\xE1gina ${content.pageUrl}`);
     }
-    return { options: yield fetchPlayerOptions(domain, videoId), contentPageUrl };
+    return { options: yield fetchPlayerOptions(new URL(contentPageUrl).origin, videoId), contentPageUrl };
   });
 }
 function resolveOptions(discovery, media, request2, providerName, domain) {

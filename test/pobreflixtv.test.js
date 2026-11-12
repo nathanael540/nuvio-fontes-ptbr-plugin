@@ -11,6 +11,7 @@ const codes = {};
 let code;
 let hostsCode;
 let extractorCode;
+let siteCode;
 
 test.before(async () => {
   const outDir = createTempDir('pobreflixtv-test-');
@@ -42,6 +43,15 @@ test.before(async () => {
       external: ['cheerio-without-node-native'],
     });
     extractorCode = extractorBuild.outputFiles[0].text;
+    const siteBuild = await esbuild.build({
+      entryPoints: ['src/pobreflixtv/site.js'],
+      bundle: true,
+      write: false,
+      format: 'cjs',
+      platform: 'neutral',
+      external: ['cheerio-without-node-native'],
+    });
+    siteCode = siteBuild.outputFiles[0].text;
   } finally {
     fs.rmSync(outDir, { recursive: true, force: true });
   }
@@ -188,6 +198,32 @@ function fullRoute(mediaType = 'movie') {
   };
 }
 
+const GOLF_HOST = 'www.pobreflixtv.golf';
+const TOWN_HOST = 'www.pobreflixtv.town';
+
+function replaceHost(value, from, to) {
+  if (typeof value === 'string') return value.split(from).join(to);
+  if (Array.isArray(value)) return value.map((item) => replaceHost(item, from, to));
+  if (value && typeof value === 'object') {
+    const replaced = {};
+    for (const key of Object.keys(value)) replaced[key] = replaceHost(value[key], from, to);
+    return replaced;
+  }
+  return value;
+}
+
+function withTownRedirect(route, from = GOLF_HOST, to = TOWN_HOST) {
+  return (url, init) => {
+    if (url.hostname === from) {
+      return { body: { redirect: url.href.replace(from, to), message: '' } };
+    }
+    if (url.hostname === to) {
+      return replaceHost(route(new URL(url.href.replace(to, from)), init), from, to);
+    }
+    return route(url, init);
+  };
+}
+
 // 1.1 Estrutura, CommonJS sem rede, coordenadas e TMDB key
 test('1.1 carregamento CommonJS sem rede, coordenadas inválidas e TMDB key ausente', async () => {
   const app = runtime();
@@ -224,6 +260,117 @@ test('1.1 carregamento CommonJS sem rede, coordenadas inválidas e TMDB key ause
   assert.match(appNoKey.logs[0], /TMDB_API_KEY indisponível/);
 });
 
+// 1.2 Allowlist por base e redirect único
+test('1.2 allowlist por base aceita base.tld/www.base.tld e rejeita lookalikes', () => {
+  const site = runtime(undefined, undefined, siteCode).context.module.exports;
+  assert.deepEqual([...site.ALLOWED_DOMAIN_BASES], ['pobreflixtv', 'flixtv', 'thepobretvflix']);
+
+  for (const url of [
+    'https://www.pobreflixtv.golf/filmes/online/duna-dublado-2021/',
+    'https://pobreflixtv.town/',
+    'https://www.pobreflixtv.app/',
+    'https://flixtv.town/',
+    'https://www.flixtv.app/',
+    'https://thepobretvflix.com/',
+    'https://www.thepobretvflix.app/',
+  ]) {
+    assert.equal(site.isAllowedDomain(url), true, url);
+  }
+
+  for (const url of [
+    'https://evilpobreflixtv.com/lander',
+    'https://pobreflixtv.evil.com/',
+    'https://meupobreflixtv.com/',
+    'https://sub.pobreflixtv.town/',
+    'https://outrabase.town/',
+    'http://www.pobreflixtv.town/',
+    'https://www.pobreflixtv.c0m/',
+    'https://www.pobreflixtv.com.br/',
+    'não é url',
+  ]) {
+    assert.equal(site.isAllowedDomain(url), false, url);
+  }
+});
+
+test('1.2 fetchAjax segue um único redirect permitido e rejeita fora da regra ou repetido', async () => {
+  const allowed = runtime((url) => {
+    if (url.hostname === GOLF_HOST) {
+      return { body: { redirect: `https://${TOWN_HOST}/index.php?app=videobox&do=buscarContent` } };
+    }
+    if (url.hostname === TOWN_HOST) return { body: { players: [] } };
+    throw new Error(`Inesperado: ${url}`);
+  }, undefined, siteCode);
+  const allowedResult = await allowed.context.module.exports.fetchAjax(`https://${GOLF_HOST}/index.php?app=videobox`);
+  assert.deepEqual([...allowedResult.players], []);
+  assert.deepEqual(allowed.calls.map((c) => new URL(c.url).hostname), [GOLF_HOST, TOWN_HOST]);
+
+  const outside = runtime((url) => {
+    if (url.hostname === GOLF_HOST) return { body: { redirect: 'https://evilpobreflixtv.com/lander' } };
+    throw new Error(`Não deveria buscar ${url}`);
+  }, undefined, siteCode);
+  await assert.rejects(
+    outside.context.module.exports.fetchAjax(`https://${GOLF_HOST}/index.php`),
+    /Redirecionamento para fora das bases permitidas/
+  );
+  assert.equal(outside.calls.length, 1);
+
+  const insecure = runtime((url) => {
+    if (url.hostname === GOLF_HOST) return { body: { redirect: `http://${TOWN_HOST}/index.php` } };
+    throw new Error(`Não deveria buscar ${url}`);
+  }, undefined, siteCode);
+  await assert.rejects(
+    insecure.context.module.exports.fetchAjax(`https://${GOLF_HOST}/index.php`),
+    /Redirecionamento para fora das bases permitidas/
+  );
+  assert.equal(insecure.calls.length, 1);
+
+  const cascade = runtime((url) => {
+    if (url.hostname === GOLF_HOST) return { body: { redirect: `https://${TOWN_HOST}/index.php` } };
+    if (url.hostname === TOWN_HOST) return { body: { redirect: 'https://www.pobreflixtv.app/index.php' } };
+    throw new Error(`Inesperado: ${url}`);
+  }, undefined, siteCode);
+  await assert.rejects(
+    cascade.context.module.exports.fetchAjax(`https://${GOLF_HOST}/index.php`),
+    /Redirecionamento repetido em cascata/
+  );
+  assert.deepEqual(cascade.calls.map((c) => new URL(c.url).hostname), [GOLF_HOST, TOWN_HOST]);
+});
+
+test('1.2 redirect permitido continua busca, página e playerData no host final', async () => {
+  const app = runtime(withTownRedirect(fullRoute('movie')));
+  const streams = await app.getStreams('438631', 'movie', null, null);
+  assert.ok(streams.length > 0, app.logs.join(' | '));
+
+  const siteCalls = app.calls.filter((c) => {
+    const host = new URL(c.url).hostname;
+    return host === GOLF_HOST || host === TOWN_HOST;
+  });
+  assert.equal(new URL(siteCalls[0].url).hostname, GOLF_HOST);
+  assert.ok(siteCalls.slice(1).every((c) => new URL(c.url).hostname === TOWN_HOST));
+  assert.ok(siteCalls.some((c) => c.url.includes('do=playerData')));
+});
+
+test('1.3 fluxo .golf -> .town cobre busca, TMDB, episodesList, playerData e players no host final', async () => {
+  const app = runtime(withTownRedirect(fullRoute('tv')));
+  const streams = await app.getStreams('1396', 'tv', 2, 3);
+  assert.ok(streams.length > 0, app.logs.join(' | '));
+
+  const isSite = (call) => {
+    const host = new URL(call.url).hostname;
+    return host === GOLF_HOST || host === TOWN_HOST;
+  };
+  const siteCalls = app.calls.filter(isSite);
+  assert.equal(new URL(siteCalls[0].url).hostname, GOLF_HOST);
+  assert.ok(siteCalls.slice(1).every((c) => new URL(c.url).hostname === TOWN_HOST));
+  assert.ok(app.calls.some((c) => c.url.includes('do=buscarContent') && new URL(c.url).hostname === TOWN_HOST));
+  assert.ok(app.calls.some((c) => c.url.includes('breaking-bad-dublado-3424') && new URL(c.url).hostname === TOWN_HOST));
+  assert.ok(app.calls.some((c) => c.url.includes('do=episodesList') && new URL(c.url).hostname === TOWN_HOST));
+  assert.ok(app.calls.some((c) => c.url.includes('breaking-bad-2x3-dublado-3434') && new URL(c.url).hostname === TOWN_HOST));
+  assert.ok(app.calls.some((c) => c.url.includes('do=playerData') && new URL(c.url).hostname === TOWN_HOST));
+  assert.ok(!siteCalls.some((c) => new URL(c.url).hostname === GOLF_HOST && c.url.includes('do=episodesList')));
+  assert.deepEqual([...new Set(streams.map((s) => s.provider))].sort(), ['MixDrop', 'Streamtape']);
+});
+
 // 1.2 Fallback de domínio no extractor
 test('1.2 principal com erro de conexão usa primeiro alias válido', async () => {
   const route = fullRoute('movie');
@@ -249,7 +396,7 @@ test('1.2 principal com erro de conexão usa primeiro alias válido', async () =
   assert.ok(app.logs.some((l) => l.includes('Sucesso no alias https://www.pobreflixtv.sarl')));
 });
 
-test('1.2 alias com redirect JSON para lista de domínios segue para o canônico', async () => {
+test('1.2 alias com redirect JSON para base permitida segue para o host final', async () => {
   const route = fullRoute('movie');
   const app = runtime((url, init) => {
     if (url.hostname === 'www.pobreflixtv.sarl') {
@@ -263,7 +410,7 @@ test('1.2 alias com redirect JSON para lista de domínios segue para o canônico
   assert.ok(streams.length > 0);
 });
 
-test('1.2 alias com redirect JSON para fora da lista falha a tentativa e segue ao próximo', async () => {
+test('1.2 alias com redirect JSON para fora das bases falha a tentativa e segue ao próximo', async () => {
   const route = fullRoute('movie');
   const app = runtime((url, init) => {
     if (url.hostname === 'www.pobreflixtv.golf') {
