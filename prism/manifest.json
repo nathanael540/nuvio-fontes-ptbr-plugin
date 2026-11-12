@@ -1,0 +1,286 @@
+{
+  "name": "Nuvio Fontes PT-BR (prism)",
+  "version": "0.1.0",
+  "scrapers": [
+    {
+      "id": "megaembed",
+      "name": "MegaEmbed",
+      "description": "Filmes e séries em HLS e MP4, dublados ou legendados conforme as faixas anunciadas pela MegaEmbed.",
+      "version": "1.3.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/megaembed.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://megaembed.com/assets/logo.png"
+    },
+    {
+      "id": "dooplay",
+      "name": "DooPlay PT-BR",
+      "description": "Filmes e séries em HLS, dublados ou legendados quando a opção ou a playlist comprova o idioma.",
+      "version": "1.3.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/dooplay.js",
+      "enabled": true,
+      "formats": [
+        "m3u8"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://filmesamadoresgratis.com/wp-content/uploads/2026/02/cropped-favicon10-32x32.png"
+    },
+    {
+      "id": "filmestorrent",
+      "name": "Filmestorrent",
+      "description": "Rede Comando (Filmestorrent, Comando Torrents e Mestre dos Filmes) numa lista só, sem torrents repetidos. Filmes e séries em magnet, dublados ou legendados; episódio em pacote de temporada aponta para o arquivo do episódio.",
+      "version": "1.4.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/filmestorrent.js",
+      "enabled": true,
+      "formats": [
+        "magnet"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://filmestorrent.tv/wp-content/uploads/2022/05/favicon.tor_-250x250.png"
+    },
+    {
+      "id": "limefilmes",
+      "name": "LimeFilmes",
+      "description": "Filmes e séries em magnet, dublados ou no idioma informado pelo rótulo da fonte.",
+      "version": "1.3.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/limefilmes.js",
+      "enabled": true,
+      "formats": [
+        "magnet"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.limefilmes.com/wp-content/themes/LimeFilmes/favicon/favicon-32x32.png"
+    },
+    {
+      "id": "baixarapido",
+      "name": "Baixa Rápido",
+      "description": "Rede Baixa Rápido (Baixa Rápido, Limpo Torrents, Bruto Torrent, Tem Torrents, Grátis Torrent, HDR Torrents, Salve Torrent, Para Baixar, Sem Torrent, Redes Torrents e Apache Torrents) numa lista só, sem torrents repetidos. Filmes e séries em magnet, dublados ou legendados; episódio em pacote de temporada aponta para o arquivo do episódio.",
+      "version": "1.4.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/baixarapido.js",
+      "enabled": true,
+      "formats": [
+        "magnet"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://baixarapido.com/icon.png"
+    },
+    {
+      "id": "fireplayer",
+      "name": "FirePlayer PT-BR",
+      "description": "Filmes e séries em HLS por consultas diretas aos agregadores de FirePlayer, dublados ou legendados conforme disponibilidade comprovada.",
+      "version": "1.3.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/fireplayer.js",
+      "enabled": true,
+      "formats": [
+        "m3u8"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://plenoflu.com/favicon.ico"
+    },
+    {
+      "id": "baixarfilmestorrent123",
+      "name": "Baixar Filmes Via-Torrent",
+      "description": "Filmes e séries do blog Baixar Filmes Via-Torrent em magnet, dublados ou legendados; episódio em pacote de temporada aponta para o arquivo do episódio.",
+      "version": "1.3.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/baixarfilmestorrent123.js",
+      "enabled": true,
+      "formats": [
+        "magnet"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://baixarfilmestorrent123.blogspot.com/favicon.ico"
+    },
+    {
+      "id": "redeflix",
+      "name": "RedeFlix",
+      "description": "Filmes e séries em MP4 direto do RedeFlixApi por TMDB, com opções de áudio Dublado e Legendado conforme anunciado pelo título.",
+      "version": "1.3.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/redeflix.js",
+      "enabled": true,
+      "formats": [
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=redeflixapi.click&sz=128"
+    },
+    {
+      "id": "pobreflix-nixplay",
+      "name": "PobreFlix NixPlay",
+      "description": "Filmes e séries em MP4 da fonte PobreFlix NixPlay por TMDB, com recuperação automática e áudio dublado.",
+      "version": "1.1.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/pobreflix-nixplay.js",
+      "enabled": true,
+      "formats": [
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=pobreflix.boutique&sz=128"
+    },
+    {
+      "id": "pobreflixtv",
+      "name": "Pobreflix HD",
+      "description": "Filmes e séries em MP4 direto da rede Pobreflix HD por VideoBox, dublados e legendados conforme disponibilidade.",
+      "version": "1.1.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/pobreflixtv.js",
+      "enabled": true,
+      "formats": [
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=www.pobreflixtv.golf&sz=128"
+    },
+    {
+      "id": "fshd",
+      "name": "FSHD",
+      "description": "Séries em HLS do sistema FSHD por TMDB direto, com opções de áudio dublado e legendado e legendas externas.",
+      "version": "1.2.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "tv"
+      ],
+      "filename": "providers/fshd.js",
+      "enabled": true,
+      "formats": [
+        "m3u8"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=fshd.link&sz=128"
+    },
+    {
+      "id": "betor",
+      "name": "BeTor",
+      "description": "Torrents do catálogo público BeTor para filmes e séries por identificador exato, em magnet e torrent://, dublados ou legendados conforme disponibilidade comprovada; episódios em pacote apontam para o arquivo do episódio.",
+      "version": "1.1.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/betor.js",
+      "enabled": true,
+      "formats": [
+        "magnet"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=betor.top&sz=128"
+    },
+    {
+      "id": "starckfilmes",
+      "name": "Starck Filmes",
+      "description": "Filmes e séries em magnet, dublados ou legendados conforme disponibilidade na Starck Filmes; episódio em pacote de temporada aponta para o arquivo do episódio.",
+      "version": "1.1.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/starckfilmes.js",
+      "enabled": true,
+      "formats": [
+        "magnet"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://starckfilmes-v29.com/adjust-icon-192x192.png"
+    },
+    {
+      "id": "therarbg",
+      "name": "TheRARBG",
+      "description": "Filmes e séries verificados no TheRARBG em magnet e torrent://, com áudio ou legenda em português; episódio em pacote aponta para o arquivo verificado.",
+      "version": "1.1.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/therarbg.js",
+      "enabled": true,
+      "formats": [
+        "magnet"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=therarbg.com&sz=128"
+    }
+  ]
+}

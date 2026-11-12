@@ -1,0 +1,51 @@
+{
+  "infoHash": "c14c14c14c14c14c14c14c14c14c14c14c14c14c",
+  "post": {
+    "id": "960014",
+    "name": "Breaking.Bad.S05E14.1080p.WEB-DL.POR",
+    "category": "TV"
+  },
+  "name": "Breaking.Bad.S05E14.1080p.WEB-DL.POR",
+  "verifile": "verified",
+  "status": "done",
+  "result": {
+    "file": "Breaking.Bad.S05E14.1080p.WEB-DL.POR.mkv",
+    "size": 2300000000,
+    "duration": 2820,
+    "video": {
+      "hdr": "",
+      "codec": "h264",
+      "width": 1920,
+      "height": 1080,
+      "bitrate": 6500000
+    },
+    "audio": [
+      {
+        "lang": "por",
+        "codec": "aac",
+        "title": null,
+        "layout": "2.0",
+        "channels": 2,
+        "profile": null,
+        "default": true
+      },
+      {
+        "lang": "eng",
+        "codec": "aac",
+        "title": null,
+        "layout": "2.0",
+        "channels": 2,
+        "profile": null,
+        "default": false
+      }
+    ],
+    "subtitles": [
+      {
+        "lang": "por",
+        "codec": "subrip",
+        "title": "Brazilian",
+        "forced": false
+      }
+    ]
+  }
+}

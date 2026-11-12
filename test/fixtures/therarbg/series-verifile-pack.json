@@ -1,0 +1,51 @@
+{
+  "infoHash": "4def9e7e8c5729738d0d24f2af5ce856db5d37d2",
+  "post": {
+    "id": "95cd74",
+    "name": "Breaking Bad. S05. 2008  2160P.Ai Upscaled.BluRay.60FPS.H265.SDR.DTS5.1_Marjenbo",
+    "category": "TV"
+  },
+  "name": "Breaking Bad. S05. 2008  2160P.Ai Upscaled.BluRay.60FPS.H265.SDR.DTS5.1_Marjenbo",
+  "verifile": "verified",
+  "status": "done",
+  "result": {
+    "file": "Breaking.Bad.S05E14.2160p.mkv",
+    "size": 2147483648,
+    "duration": 2820,
+    "video": {
+      "hdr": "",
+      "codec": "hevc",
+      "width": 3840,
+      "height": 2160,
+      "bitrate": 5000000
+    },
+    "audio": [
+      {
+        "lang": "eng",
+        "codec": "dts",
+        "title": null,
+        "layout": "5.1",
+        "channels": 6,
+        "profile": "DTS",
+        "default": true
+      },
+      {
+        "lang": "por",
+        "codec": "aac",
+        "title": null,
+        "layout": "2.0",
+        "channels": 2,
+        "profile": null,
+        "default": false
+      }
+    ],
+    "subtitles": [
+      {
+        "lang": "por",
+        "codec": "subrip",
+        "title": "Brazilian",
+        "forced": false
+      }
+    ]
+  }
+}

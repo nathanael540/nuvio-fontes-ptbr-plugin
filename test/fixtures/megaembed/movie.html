@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head><title>Filme Fictício</title></head>
+<body>
+<script>
+var sources = [
+  {
+    "file": "https://strm1.uqload.vc/fiction/master.m3u8",
+    "type": "hls",
+    "label": "Opção 1",
+    "direct": true,
+    "noReferrer": true,
+    "tracks": [
+      {"file": "https://img.example/thumb.jpg", "kind": "thumbnails", "label": "Preview"},
+      {"file": "https://subs.example/fiction-en.vtt", "url": "https://subs.example/fiction-en.vtt", "label": "English", "language": "en", "kind": "subtitles"}
+    ]
+  },
+  {
+    "file": "https://megaembed.com/includes/hls.php?url=v2fiction&file=master.m3u8&referer=fiction",
+    "type": "hls",
+    "label": "Opção 2"
+  },
+  {
+    "file": "https://cdn.playercdns.workers.dev/ps/includes/hls.php?url=v2fiction",
+    "type": "hls",
+    "label": "Opção 3"
+  },
+  {
+    "file": "https://streamtape.com/get_video?id=fictionbound&expires=999&ip=203.0.113.10&token=fiction&stream=1",
+    "type": "mp4",
+    "label": "Opção 4",
+    "serverBound": true,
+    "noWorkers": true
+  },
+  {
+    "file": "https://streamtape.com/get_video?id=fictiondirect&expires=999&ip=203.0.113.11&token=fiction&stream=1",
+    "type": "mp4",
+    "label": "Opção 5",
+    "noWorkers": true,
+    "refresh": "id=fictiondirect&exp=999&sig=fiction"
+  }
+];
+</script>
+</body>
+</html>

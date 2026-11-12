@@ -1,0 +1,11 @@
+{
+  "players": [
+    { "name": "MixDrop", "url": "https://mixdrop.top/e/" },
+    { "name": "Streamtape", "url": "https://streamtape.com/e/" },
+    { "name": "Byse", "url": "https://bysebuho.com/e/" }
+  ],
+  "servers_dub": "mixdrop=md_dub_123&amp;streamtape=st_dub_123&amp;byse=byse_dub_123",
+  "servers_leg": "mixdrop=md_leg_456&streamtape=st_leg_456",
+  "current_audio": "Dublado",
+  "is_episode": 0
+}

@@ -1,0 +1,75 @@
+{
+  "infoHash": "6ff479e8c37929b883268c6849a56e0caecec8c8",
+  "post": {
+    "id": 942153,
+    "name": "Heart.Of.The.Beast.2026.2160p.iT.WEB-DL.DV.HDR10+.MULTi.LAT.FRE.GER.POR.MP4-BTM",
+    "url": "https://therarbg.com/post-detail/942153/heart-of-the-beast-2026-2160p-it-web-dl-dv-hdr10-multi-lat-fre-ger-por-mp4-btm/",
+    "category": "Movies"
+  },
+  "name": "Heart.Of.The.Beast.2026.2160p.iT.WEB-DL.DV.HDR10+.MULTi.LAT.FRE.GER.POR.MP4-BTM",
+  "verifile": "verified",
+  "status": "done",
+  "result": {
+    "file": "Heart.Of.The.Beast.2026.2160p.iT.WEB-DL.DV.HDR10+.MULTi[Ben The Men].mp4",
+    "size": 21413312432,
+    "container": "MP4",
+    "duration": 6299.68,
+    "video": {
+      "fps": 23.976,
+      "hdr": "DV+HDR10+",
+      "codec": "hevc",
+      "width": 3840,
+      "height": 1608,
+      "bitrate": 24066276,
+      "profile": "Main 10",
+      "bit_depth": 10,
+      "dv_profile": 8
+    },
+    "audio": [
+      {
+        "lang": "eng",
+        "codec": "eac3",
+        "title": null,
+        "layout": "5.1(side)",
+        "bitrate": 768000,
+        "default": true,
+        "profile": "Dolby Digital Plus + Dolby Atmos",
+        "channels": 6
+      },
+      {
+        "lang": "spa",
+        "codec": "eac3",
+        "title": null,
+        "layout": "5.1(side)",
+        "bitrate": 640000,
+        "default": false,
+        "profile": null,
+        "channels": 6
+      },
+      {
+        "lang": "por",
+        "codec": "eac3",
+        "title": null,
+        "layout": "5.1(side)",
+        "bitrate": 640000,
+        "default": false,
+        "profile": null,
+        "channels": 6
+      }
+    ],
+    "subtitles": [
+      {
+        "lang": "eng",
+        "codec": "mov_text",
+        "title": null,
+        "forced": false
+      },
+      {
+        "lang": "por",
+        "codec": "mov_text",
+        "title": null,
+        "forced": false
+      }
+    ]
+  }
+}

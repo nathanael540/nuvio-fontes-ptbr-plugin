@@ -1,0 +1,30 @@
+# Dependências
+node_modules/
+npm-debug.log*
+.npm/
+*.tgz
+
+# Ambiente e segredos (chaves só via variável de ambiente; nunca no repositório)
+.env
+.env.*
+!.env.example
+
+# Ferramentas locais de agentes e IDE
+.claude/settings.local.json
+.vscode/
+.idea/
+
+# Caches e relatórios
+.eslintcache
+coverage/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Scripts locais de depuração
+scratch/
+*.log
+
+# Artefatos gerados pela infraestrutura de testes
+test/artifacts/

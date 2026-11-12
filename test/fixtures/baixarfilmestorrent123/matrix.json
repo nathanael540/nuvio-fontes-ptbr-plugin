@@ -1,0 +1,21 @@
+{
+  "version": "1.0",
+  "encoding": "UTF-8",
+  "feed": {
+    "xmlns": "http://www.w3.org/2005/Atom",
+    "xmlns$openSearch": "http://a9.com/-/spec/opensearchrss/1.0/",
+    "title": {
+      "type": "text",
+      "$t": "Baixar Filmes Via-Torrent"
+    },
+    "openSearch$totalResults": {
+      "$t": "0"
+    },
+    "openSearch$startIndex": {
+      "$t": "1"
+    },
+    "openSearch$itemsPerPage": {
+      "$t": "20"
+    }
+  }
+}

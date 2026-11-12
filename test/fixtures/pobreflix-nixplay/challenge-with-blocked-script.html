@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Assistir Filme Online - RedeFlix</title>
+</head>
+<body>
+  <div id="player-container">
+    <div class="server-selection">
+      <button class="server-pill" data-server="default">
+        <span class="server-pill-label">Dublado</span>
+      </button>
+    </div>
+    <p class="server-subtitle">
+      <strong>Homem-Aranha: Um Novo Dia</strong>
+      <span> - 2026 - 1080p</span>
+    </p>
+  </div>
+  <script>
+    // Detector de sandbox com string <title>Blocked</title>
+    const detector = "<!DOCTYPE html><title>Blocked</title><body>Sandbox bloqueada</body>";
+    const playbackResolveTicket = "ticket-resolve-1";
+    const fastLaunchTickets = {"default":"ticket-fast-1"};
+    const fastLaunchSubtitles = {};
+    const playbackResolveUrl = "https://redeflixapi.click/playback-resolve.php";
+    const playerKysShellBaseUrl = "https://redeflixapi.click/playerkys/shell.php";
+  </script>
+</body>
+</html>

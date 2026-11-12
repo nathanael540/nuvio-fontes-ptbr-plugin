@@ -1,0 +1,32 @@
+{
+  "name": "nuvio-fontes-ptbr-plugin",
+  "version": "0.1.0",
+  "description": "Repositório de provedores (plugins) do Nuvio para conteúdo em português do Brasil.",
+  "private": true,
+  "license": "GPL-3.0-only",
+  "engines": {
+    "node": "^22.22.2 || >=24.15.0"
+  },
+  "scripts": {
+    "build": "node build.js",
+    "build:min": "node build.js --minify",
+    "start": "node test/server.js",
+    "lint": "eslint src test *.js *.mjs",
+    "test": "node --test \"test/*.test.js\" \"test/*.test.mjs\" \"test/blocks/*/index.test.mjs\""
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.14.0",
+    "eslint-plugin-jsdoc": "^65.4.5",
+    "globals": "^17.14.0"
+  },
+  "keywords": [
+    "nuvio",
+    "providers",
+    "pt-br"
+  ],
+  "overrides": {
+    "minimatch": "^11.0.5"
+  }
+}
