@@ -32,7 +32,7 @@ O BeTor SHALL consultar primeiro `imdb_id` com `item_type`; se a consulta conclu
 
 ### Requirement: Validação de tipo e título
 
-Itens com `item_type` preenchido e diferente do tipo pedido SHALL ser descartados. Itens sem `item_type` SHALL ser aceitos somente quando o texto da release contiver o título esperado, considerando título, título original e alternativos, e o ano quando conhecido. Para `tv`, a triagem de temporada e episódio SHALL continuar valendo.
+Itens com `item_type` preenchido e diferente do tipo pedido SHALL ser descartados. Itens sem `item_type` SHALL ser aceitos somente quando o texto da release contiver o título esperado, considerando título, título original e alternativos; para `movie`, o ano SHALL ser exigido quando conhecido. Para `tv`, a triagem de temporada e episódio SHALL continuar valendo.
 
 #### Scenario: Item sem tipo compatível
 

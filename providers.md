@@ -13,7 +13,7 @@
 | [PobreFlix NixPlay](#pobreflix-nixplay) | `pobreflix-nixplay` | filme, série | MP4 | 🟢 Estável | 2026-11-12 |
 | [Pobreflix HD](#pobreflix-hd) | `pobreflixtv` | filme, série | MP4 | 🔴 Instável | 2026-11-12 |
 | [FSHD](#fshd) | `fshd` | série | HLS | 🟢 Estável | 2026-11-12 |
-| [BeTor](#betor) | `betor` | filme, série | magnet, torrent:// | 🔴 Instável | 2026-11-12 |
+| [BeTor](#betor) | `betor` | filme, série | magnet, torrent:// | 🔵 Parcial | 2026-11-12 |
 | [Starck Filmes](#starck-filmes) | `starckfilmes` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-12 |
 | [TheRARBG](#therarbg) | `therarbg` | filme, série | magnet, torrent:// | 🔴 Instável | 2026-11-12 |
 
@@ -234,13 +234,13 @@
 
 ## BeTor
 
-**Status: 🔴 Instável.**
+**Status: 🔵 Parcial.**
 
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-12T16:55:57.206Z** · ID `2026-11-12T16-55-47-549Z-betor-20261113-5151` · **Instável** · pacote 1.1.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261113` · algoritmo `sha256-fisher-yates-v1`
-   1. `movie` `13` · Forrest Gump: O Contador de Histórias (1994) · **Sem resultado** · 0/0 streams aproveitáveis
+1. **2026-11-12T17:23:13.750Z** · ID `2026-11-12T17-22-57-848Z-betor-20261113-3481` · **Parcial** · pacote 1.2.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261113` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `13` · Forrest Gump: O Contador de Histórias (1994) · **Resolvido** · 1/1 streams aproveitáveis
    2. `movie` `680` · Pulp Fiction: Tempo de Violência (1994) · **Sem resultado** · 0/0 streams aproveitáveis
    3. `movie` `122` · O Senhor dos Anéis: O Retorno do Rei (2003) · **Sem resultado** · 0/0 streams aproveitáveis
    4. `movie` `872585` · Oppenheimer (2023) · **Sem resultado** · 0/0 streams aproveitáveis

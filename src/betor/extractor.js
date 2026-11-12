@@ -10,6 +10,7 @@ import { FORMATTER } from '../_blocks/custom-formatter/index.mjs';
 import { fetchJson } from '../_blocks/http/index.mjs';
 import { languageFromTexts } from '../_blocks/language-discovery/index.mjs';
 import { discoverQuality } from '../_blocks/quality-discovery/index.mjs';
+import { normalizeText } from '../_blocks/slugify/index.mjs';
 import { buildStream, buildTorrentFileUrl } from '../_blocks/stream-build/index.mjs';
 import { fetchTorrentFiles, findEpisodeFile } from '../_blocks/torrent-files/index.mjs';
 import {
@@ -28,22 +29,37 @@ const PAGE_SIZE = 100;
 /**
  * Consulta o BeTor Search por identificador exato e percorre todas as páginas.
  *
+ * Tenta IMDb + tipo, TMDB + tipo e TMDB sem tipo, nessa ordem, e devolve a primeira
+ * lista não vazia. Erros interrompem a busca sem tentar o identificador seguinte.
+ *
  * @param {import('../_blocks/tmdb-info/index.mjs').MediaInfo} media - Metadados do TMDB.
  * @param {{ mediaType: 'movie'|'tv' }} request - Pedido validado.
  * @returns {Promise<object[]>} Lista de todos os itens encontrados.
  * @throws {Error} Em falha HTTP, JSON inválido ou paginação sem progresso/truncada.
  */
 export async function searchBeTor(media, request) {
-  const baseParams = {
-    item_type: request.mediaType,
-    size: String(PAGE_SIZE),
-  };
+  const attempts = [];
   if (media.imdbId) {
-    baseParams.imdb_id = media.imdbId;
-  } else {
-    baseParams.tmdb_id = media.tmdbId;
+    attempts.push({ imdb_id: media.imdbId, item_type: request.mediaType });
   }
+  attempts.push({ tmdb_id: media.tmdbId, item_type: request.mediaType });
+  attempts.push({ tmdb_id: media.tmdbId });
 
+  for (const attempt of attempts) {
+    const items = await searchPages({ ...attempt, size: String(PAGE_SIZE) });
+    if (items.length > 0) return items;
+  }
+  return [];
+}
+
+/**
+ * Lê todas as páginas de uma tentativa de busca, validando a integridade da resposta.
+ *
+ * @param {Record<string, string>} baseParams - Parâmetros da tentativa, sem a página.
+ * @returns {Promise<object[]>} Itens encontrados.
+ * @throws {Error} Em falha HTTP, JSON inválido ou paginação sem progresso/truncada.
+ */
+async function searchPages(baseParams) {
   const allItems = [];
   let page = 1;
   let total = null;
@@ -108,12 +124,23 @@ export async function collectStreams(media, request) {
   const items = await searchBeTor(media, request);
   if (!items.length) return [];
 
+  const compatibleItems = [];
+  for (const [index, item] of items.entries()) {
+    const issue = itemCompatibilityIssue(item, media, request);
+    if (issue) {
+      console.log(`[${PROVIDER_NAME}] Opção ${optionLabel(item, index)} descartada por triagem: ${issue}`);
+      continue;
+    }
+    compatibleItems.push(item);
+  }
+  if (!compatibleItems.length) return [];
+
   const streams = new Map();
   const failures = [];
   const candidates = new Map();
 
   // A triagem e os magnets são locais; nenhum pacote inicia rede nesta etapa.
-  for (const [index, item] of items.entries()) {
+  for (const [index, item] of compatibleItems.entries()) {
     const result = settleItem(item, index, media, request);
     if (result.failure) {
       failures.push(result.failure);
@@ -151,6 +178,53 @@ export async function collectStreams(media, request) {
   }
 
   return [...streams.values()];
+}
+
+/**
+ * Motivo para descartar um item que não corresponde ao tipo ou ao título pedido.
+ *
+ * Itens com tipo preenchido são aceitos somente quando o tipo coincide. Itens sem tipo
+ * precisam de evidência local de título e, para filmes, de ano.
+ *
+ * @param {object} item - Item da API do BeTor.
+ * @param {import('../_blocks/tmdb-info/index.mjs').MediaInfo} media - Metadados do TMDB.
+ * @param {{ mediaType: 'movie'|'tv' }} request - Pedido validado.
+ * @returns {string|null} Motivo da triagem ou null quando o item é compatível.
+ */
+function itemCompatibilityIssue(item, media, request) {
+  if (!item || typeof item !== 'object') return null;
+  const itemType = typeof item.item_type === 'string' ? item.item_type.trim() : '';
+  if (itemType !== '' && itemType !== request.mediaType) {
+    return `tipo "${itemType}" diferente de "${request.mediaType}"`;
+  }
+  if (itemType !== '') return null;
+  if (!matchesMediaText(item, media, request.mediaType)) {
+    return 'item sem tipo e sem título/ano compatíveis';
+  }
+  return null;
+}
+
+/**
+ * Confere se o texto da release contém um título conhecido e, para filmes, o ano.
+ *
+ * @param {object} item - Item da API do BeTor.
+ * @param {import('../_blocks/tmdb-info/index.mjs').MediaInfo} media - Metadados do TMDB.
+ * @param {'movie'|'tv'} mediaType - Tipo pedido.
+ * @returns {boolean} True quando há evidência local suficiente.
+ */
+function matchesMediaText(item, media, mediaType) {
+  const text = normalizeText(`${item.torrent_name || ''} ${item.magnet_dn || ''}`);
+  if (text === '') return false;
+  const padded = ` ${text} `;
+  const titles = [media.title, media.originalTitle, ...(Array.isArray(media.alternativeTitles) ? media.alternativeTitles : [])]
+    .filter((title) => typeof title === 'string' && title.trim() !== '')
+    .map((title) => normalizeText(title))
+    .filter((title) => title !== '');
+  if (!titles.some((title) => padded.includes(` ${title} `))) return false;
+  if (mediaType === 'movie' && Number.isInteger(media.year)) {
+    return padded.includes(` ${media.year} `);
+  }
+  return true;
 }
 
 /**

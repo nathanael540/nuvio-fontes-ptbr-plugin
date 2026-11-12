@@ -1304,15 +1304,21 @@ var PROVIDER_NAME = "BeTor";
 var PAGE_SIZE = 100;
 function searchBeTor(media, request2) {
   return __async(this, null, function* () {
-    const baseParams = {
-      item_type: request2.mediaType,
-      size: String(PAGE_SIZE)
-    };
+    const attempts = [];
     if (media.imdbId) {
-      baseParams.imdb_id = media.imdbId;
-    } else {
-      baseParams.tmdb_id = media.tmdbId;
+      attempts.push({ imdb_id: media.imdbId, item_type: request2.mediaType });
     }
+    attempts.push({ tmdb_id: media.tmdbId, item_type: request2.mediaType });
+    attempts.push({ tmdb_id: media.tmdbId });
+    for (const attempt of attempts) {
+      const items = yield searchPages(__spreadProps(__spreadValues({}, attempt), { size: String(PAGE_SIZE) }));
+      if (items.length > 0) return items;
+    }
+    return [];
+  });
+}
+function searchPages(baseParams) {
+  return __async(this, null, function* () {
     const allItems = [];
     let page = 1;
     let total = null;
@@ -1359,10 +1365,20 @@ function collectStreams(media, request2) {
     var _a, _b;
     const items = yield searchBeTor(media, request2);
     if (!items.length) return [];
+    const compatibleItems = [];
+    for (const [index, item] of items.entries()) {
+      const issue = itemCompatibilityIssue(item, media, request2);
+      if (issue) {
+        console.log(`[${PROVIDER_NAME}] Op\xE7\xE3o ${optionLabel(item, index)} descartada por triagem: ${issue}`);
+        continue;
+      }
+      compatibleItems.push(item);
+    }
+    if (!compatibleItems.length) return [];
     const streams = /* @__PURE__ */ new Map();
     const failures = [];
     const candidates = /* @__PURE__ */ new Map();
-    for (const [index, item] of items.entries()) {
+    for (const [index, item] of compatibleItems.entries()) {
       const result = settleItem(item, index, media, request2);
       if (result.failure) {
         failures.push(result.failure);
@@ -1397,6 +1413,29 @@ function collectStreams(media, request2) {
     }
     return [...streams.values()];
   });
+}
+function itemCompatibilityIssue(item, media, request2) {
+  if (!item || typeof item !== "object") return null;
+  const itemType = typeof item.item_type === "string" ? item.item_type.trim() : "";
+  if (itemType !== "" && itemType !== request2.mediaType) {
+    return `tipo "${itemType}" diferente de "${request2.mediaType}"`;
+  }
+  if (itemType !== "") return null;
+  if (!matchesMediaText(item, media, request2.mediaType)) {
+    return "item sem tipo e sem t\xEDtulo/ano compat\xEDveis";
+  }
+  return null;
+}
+function matchesMediaText(item, media, mediaType) {
+  const text = normalizeText(`${item.torrent_name || ""} ${item.magnet_dn || ""}`);
+  if (text === "") return false;
+  const padded = ` ${text} `;
+  const titles = [media.title, media.originalTitle, ...Array.isArray(media.alternativeTitles) ? media.alternativeTitles : []].filter((title) => typeof title === "string" && title.trim() !== "").map((title) => normalizeText(title)).filter((title) => title !== "");
+  if (!titles.some((title) => padded.includes(` ${title} `))) return false;
+  if (mediaType === "movie" && Number.isInteger(media.year)) {
+    return padded.includes(` ${media.year} `);
+  }
+  return true;
 }
 function settleItem(item, index, media, request2) {
   try {

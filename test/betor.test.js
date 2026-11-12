@@ -91,7 +91,7 @@ function seriesPayload(extra = {}) {
 function betorItem(extra = {}) {
   return {
     id: extra.id || 'item-1',
-    item_type: extra.item_type || 'movie',
+    item_type: extra.item_type !== undefined ? extra.item_type : 'movie',
     torrent_name: extra.name !== undefined ? extra.name : 'Matrix.1999.1080p.WEB-DL.DUAL',
     magnet_uri: extra.magnet !== undefined ? extra.magnet : `magnet:?xt=urn:btih:${HEX_1080}&dn=Matrix.1080p`,
     magnet_dn: extra.dn !== undefined ? extra.dn : 'Matrix.1080p',
@@ -154,6 +154,31 @@ function runtime(route, bundle = code) {
   };
 }
 
+function forrestGumpPayload() {
+  return moviePayload({
+    title: 'Forrest Gump: O Contador de Histórias',
+    original: 'Forrest Gump',
+    year: 1994,
+    imdb: 'tt0109830',
+  });
+}
+
+function fallbackMovieRunner(item) {
+  const searchUrls = [];
+  const runner = runtime((url) => {
+    if (url.hostname === 'api.themoviedb.org') return { body: forrestGumpPayload() };
+    if (url.hostname === 'search.betor.top') {
+      searchUrls.push(url);
+      if (url.searchParams.get('item_type') === null) {
+        return { body: { items: [item], total: 1, page: 1, size: 100 } };
+      }
+      return { body: { items: [], total: 0, page: 1, size: 100 } };
+    }
+    throw new Error(`URL inesperada: ${url}`);
+  });
+  return { runner, searchUrls };
+}
+
 test('1.1 carregamento do provedor não faz requisições e rejeita entrada inválida antes do fetch', async () => {
   const runner = runtime(() => {
     throw new Error('fetch não deve ser chamado');
@@ -171,14 +196,14 @@ test('1.1 carregamento do provedor não faz requisições e rejeita entrada inv�
   assert.equal(runner.calls.length, 0, 'nenhum fetch deve ser executado para parâmetros inválidos');
 });
 
-test('1.1 e 1.2 identificação por IMDb e fallback exato para TMDB; resultado vazio encerra sem busca por título', async () => {
-  let searchUrlCalled;
+test('1.1 e 1.2 identificação por IMDb e fallback para TMDB com tipo e sem tipo', async () => {
+  const searchUrls = [];
   const runner = runtime((url) => {
     if (url.hostname === 'api.themoviedb.org') {
       return { body: moviePayload({ imdb: 'tt0133093' }) };
     }
     if (url.hostname === 'search.betor.top') {
-      searchUrlCalled = url;
+      searchUrls.push(url);
       return { body: { items: [], total: 0, page: 1, size: 100 } };
     }
     throw new Error(`URL inesperada: ${url}`);
@@ -186,30 +211,172 @@ test('1.1 e 1.2 identificação por IMDb e fallback exato para TMDB; resultado v
 
   const streams = await runner.getStreams('603', 'movie', null, null);
   assert.deepEqual(streams, []);
-  assert.equal(searchUrlCalled.searchParams.get('item_type'), 'movie');
-  assert.equal(searchUrlCalled.searchParams.get('imdb_id'), 'tt0133093');
-  assert.equal(searchUrlCalled.searchParams.get('tmdb_id'), null);
-  assert.equal(searchUrlCalled.searchParams.get('size'), '100');
-  assert.equal(searchUrlCalled.searchParams.get('page'), '1');
-  assert.equal(runner.calls.length, 2, 'TMDB + busca BeTor, sem fallback de busca por título');
+  assert.equal(searchUrls.length, 3, 'IMDb, TMDB com tipo e TMDB sem tipo');
+  assert.equal(searchUrls[0].searchParams.get('item_type'), 'movie');
+  assert.equal(searchUrls[0].searchParams.get('imdb_id'), 'tt0133093');
+  assert.equal(searchUrls[0].searchParams.get('tmdb_id'), null);
+  assert.equal(searchUrls[1].searchParams.get('tmdb_id'), '603');
+  assert.equal(searchUrls[1].searchParams.get('imdb_id'), null);
+  assert.equal(searchUrls[1].searchParams.get('item_type'), 'movie');
+  assert.equal(searchUrls[2].searchParams.get('tmdb_id'), '603');
+  assert.equal(searchUrls[2].searchParams.get('item_type'), null);
+  for (const url of searchUrls) {
+    assert.equal(url.searchParams.get('size'), '100');
+    assert.equal(url.searchParams.get('page'), '1');
+  }
+  assert.equal(runner.calls.length, 4, 'TMDB + três tentativas de busca, sem busca por título');
 
-  // Fallback para TMDB quando IMDb for nulo
-  let tmdbSearchUrl;
+  // Sem IMDb, o primeiro fallback já é o TMDB com tipo.
+  const searchUrlsNoImdb = [];
   const runnerNoImdb = runtime((url) => {
     if (url.hostname === 'api.themoviedb.org') {
       return { body: moviePayload({ imdb: null }) };
     }
     if (url.hostname === 'search.betor.top') {
-      tmdbSearchUrl = url;
+      searchUrlsNoImdb.push(url);
       return { body: { items: [], total: 0, page: 1, size: 100 } };
     }
     throw new Error(`URL inesperada: ${url}`);
   });
 
   await runnerNoImdb.getStreams('603', 'movie', null, null);
-  assert.equal(tmdbSearchUrl.searchParams.get('item_type'), 'movie');
-  assert.equal(tmdbSearchUrl.searchParams.get('tmdb_id'), '603');
-  assert.equal(tmdbSearchUrl.searchParams.get('imdb_id'), null);
+  assert.equal(searchUrlsNoImdb.length, 2);
+  assert.equal(searchUrlsNoImdb[0].searchParams.get('item_type'), 'movie');
+  assert.equal(searchUrlsNoImdb[0].searchParams.get('tmdb_id'), '603');
+  assert.equal(searchUrlsNoImdb[0].searchParams.get('imdb_id'), null);
+  assert.equal(searchUrlsNoImdb[1].searchParams.get('item_type'), null);
+  assert.equal(runnerNoImdb.calls.length, 3, 'TMDB + duas tentativas de busca');
+});
+
+test('1.2 fallback sem tipo aceita item sem item_type com título e ano compatíveis', async () => {
+  const item = betorItem({
+    id: 'forrest',
+    item_type: '',
+    name: 'Forrest.Gump.O.Contador.de.Historias.1994.BluRay.1080p.DUAL',
+    dn: 'Forrest.Gump.O.Contador.de.Historias.1994.BluRay.1080p.DUAL',
+    magnet: `magnet:?xt=urn:btih:${HEX_1080}`,
+  });
+  const { runner, searchUrls } = fallbackMovieRunner(item);
+
+  const streams = await runner.getStreams('13', 'movie', null, null);
+  assert.equal(streams.length, 1);
+  assert.equal(streams[0].quality, '1080p');
+  assert.equal(searchUrls.length, 3);
+  assert.equal(searchUrls[2].searchParams.get('item_type'), null);
+  assert.equal(searchUrls[2].searchParams.get('tmdb_id'), '13');
+});
+
+test('1.3 item sem tipo incompatível ou de outro tipo é descartado', async () => {
+  const wrongTitle = betorItem({
+    id: 'outro-titulo',
+    item_type: '',
+    name: 'Another.Movie.1994.1080p.DUAL',
+    dn: 'Another.Movie.1994.1080p.DUAL',
+    magnet: `magnet:?xt=urn:btih:${HEX_720}`,
+  });
+  const wrongYear = betorItem({
+    id: 'outro-ano',
+    item_type: '',
+    name: 'Forrest.Gump.O.Contador.de.Historias.1995.1080p.DUAL',
+    dn: 'Forrest.Gump.O.Contador.de.Historias.1995.1080p.DUAL',
+    magnet: `magnet:?xt=urn:btih:${HEX_4K}`,
+  });
+  const wrongType = betorItem({
+    id: 'tipo-errado',
+    item_type: 'tv',
+    name: 'Forrest.Gump.O.Contador.de.Historias.1994.1080p.DUAL',
+    dn: 'Forrest.Gump.O.Contador.de.Historias.1994.1080p.DUAL',
+    magnet: `magnet:?xt=urn:btih:${UNKNOWN_HASH}`,
+  });
+
+  for (const [item, pattern] of [
+    [wrongTitle, /sem título\/ano compatíveis/],
+    [wrongYear, /sem título\/ano compatíveis/],
+    [wrongType, /tipo "tv" diferente de "movie"/],
+  ]) {
+    const { runner } = fallbackMovieRunner(item);
+    const streams = await runner.getStreams('13', 'movie', null, null);
+    assert.deepEqual(streams, []);
+    assert.match(runner.logs.log.join('\n'), pattern);
+  }
+});
+
+test('1.2 erro na primeira tentativa não aciona fallback', async () => {
+  const searchUrls = [];
+  const runner = runtime((url) => {
+    if (url.hostname === 'api.themoviedb.org') return { body: forrestGumpPayload() };
+    if (url.hostname === 'search.betor.top') {
+      searchUrls.push(url);
+      return { status: 500, body: 'Erro interno' };
+    }
+    throw new Error(`URL inesperada: ${url}`);
+  });
+
+  const streams = await runner.getStreams('13', 'movie', null, null);
+  assert.deepEqual(streams, []);
+  assert.equal(searchUrls.length, 1, 'não deve tentar TMDB depois de falha HTTP');
+  assert.equal(searchUrls[0].searchParams.get('imdb_id'), 'tt0109830');
+  assert.ok(runner.logs.error.length > 0);
+});
+
+test('1.2 fallback sem tipo percorre todas as páginas', async () => {
+  const searchUrls = [];
+  const runner = runtime((url) => {
+    if (url.hostname === 'api.themoviedb.org') return { body: moviePayload() };
+    if (url.hostname === 'search.betor.top') {
+      searchUrls.push(url);
+      if (url.searchParams.get('item_type') !== null) {
+        return { body: { items: [], total: 0, page: 1, size: 100 } };
+      }
+      const page = url.searchParams.get('page');
+      if (page === '1') {
+        const items = Array.from({ length: 100 }, (_, index) => betorItem({
+          id: `fallback-${index}`,
+          magnet: `magnet:?xt=urn:btih:${String(index + 1).padStart(40, 'a')}`,
+        }));
+        return { body: { items, total: 101, page: 1, size: 100 } };
+      }
+      if (page === '2') {
+        return {
+          body: {
+            items: [betorItem({ id: 'fallback-last', magnet: `magnet:?xt=urn:btih:${'f'.repeat(40)}` })],
+            total: 101,
+            page: 2,
+            size: 100,
+          },
+        };
+      }
+    }
+    throw new Error(`URL inesperada: ${url}`);
+  });
+
+  const streams = await runner.getStreams('603', 'movie', null, null);
+  assert.equal(streams.length, 101);
+  assert.equal(searchUrls.filter((url) => url.searchParams.get('item_type') === null).length, 2);
+});
+
+test('1.3 série sem item_type mantém a triagem de episódio', async () => {
+  const item = betorItem({
+    id: 'serie-sem-tipo',
+    item_type: '',
+    name: 'Breaking.Bad.S01E02.1080p.DUAL',
+    dn: 'Breaking.Bad.S01E02.1080p.DUAL',
+    magnet: `magnet:?xt=urn:btih:${HEX_720}`,
+  });
+  const runner = runtime((url) => {
+    if (url.hostname === 'api.themoviedb.org') return { body: seriesPayload({ imdb: 'tt0903747' }) };
+    if (url.hostname === 'search.betor.top') {
+      if (url.searchParams.get('item_type') === null) {
+        return { body: { items: [item], total: 1, page: 1, size: 100 } };
+      }
+      return { body: { items: [], total: 0, page: 1, size: 100 } };
+    }
+    throw new Error(`URL inesperada: ${url}`);
+  });
+
+  const streams = await runner.getStreams('1396', 'tv', 1, 1);
+  assert.deepEqual(streams, []);
+  assert.match(runner.logs.log.join('\n'), /não contém o episódio 1/);
 });
 
 test('1.2 paginação com size=100 percorre múltiplas páginas; falha posterior não produz lista parcial', async () => {

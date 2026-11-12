@@ -44,7 +44,7 @@
 ### 3. Validação local por título, ano e triagem existente
 
 1. Usar `normalizeText` do bloco `slugify` para comparar o texto de `torrent_name`/`magnet_dn` com `title`, `originalTitle` e `alternativeTitles`.
-2. Exigir o ano quando `media.year` existir.
+2. Exigir o ano para `movie` quando `media.year` existir; para `tv`, exigir o título e manter a triagem de temporada e episódio, porque releases de episódio frequentemente omitem o ano.
 3. Para `tv`, depois da validação de título/ano, manter a triagem de temporada e episódio já existente; o item sem tipo não pode ignorar essa checagem.
 4. Itens sem tipo que não comprovem título/ano são descartados por triagem, sem compor falha agregada.
 5. Alternativa considerada: aceitar qualquer item sem tipo retornado pelo ID. Foi descartada pela colisão de IDs entre tipos e títulos.
@@ -68,3 +68,12 @@
 2. Subir a versão do provedor no `manifest.json` e rodar `node build.js betor`.
 3. Executar `npm run test:online -- --provider betor --record` com o pacote final e atualizar `providers.md`.
 4. Reverter o código e os arquivos gerados em conjunto se a fonte voltar a um comportamento incompatível; não manter uma aprovação online de outro pacote.
+
+## Validação da implementação
+
+1. `node --test test/betor.test.js`: 14 testes passaram, incluindo o fallback de IMDb para TMDB com e sem tipo, item sem `item_type` compatível, título/ano divergente, tipo conflitante, erro sem fallback, paginação do fallback e triagem de episódio para série sem tipo.
+2. `npm run lint`: passou.
+3. `npm test`: 1013 testes, 989 passaram e 24 falharam. As 24 falhas são as mesmas suítes legadas preexistentes que importam `test/maestro/` e `test/scenarios/`, ausentes desde o reset; nenhuma falha nova.
+4. `openspec validate corrigir-busca-betor --strict`: passou.
+5. Rodada online com o pacote 1.2.0, semente `20261113`, ID `2026-11-12T17-22-57-848Z-betor-20261113-3481`: `tmdb_id=13` (Forrest Gump) passou a `Resolvido` com 1/1 stream aproveitável, `movie 1/5`, `tv 0/5`, status `Parcial`. Na versão 1.1.0 o mesmo título era `Sem resultado`.
+6. `providers.md` foi atualizado com a nova rodada e sem hashes, URLs ou chave no resumo público.
