@@ -16,6 +16,7 @@
 | [BeTor](#betor) | `betor` | filme, série | magnet, torrent:// | 🔵 Parcial | 2026-11-12 |
 | [Starck Filmes](#starck-filmes) | `starckfilmes` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-12 |
 | [TheRARBG](#therarbg) | `therarbg` | filme, série | magnet, torrent:// | 🔴 Instável | 2026-11-12 |
+| [VaqueiroFilmes](#vaqueirofilmes) | `vaqueirofilmes` | filme | HLS | 🟢 Estável | 2026-11-12 |
 
 ## MegaEmbed
 
@@ -290,4 +291,21 @@
    8. `tv` `96162` · Itaewon Class (2020) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    9. `tv` `1668` · Friends (1994) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    10. `tv` `87108` · Chernobyl (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+<!-- online-verification:end -->
+
+## VaqueiroFilmes
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes em HLS pela cadeia EmbedPlay/Byse, com áudio dublado confirmado pelo grupo Dublado. A rodada de 2026-11-12 usou a semente `byse-20261112-8` e resolveu 2/5: Barbie e Crime em Cena ofereceram a opção Byse; os outros três títulos sorteados não. O catálogo `movie` foi ampliado com cinco títulos que expõem Byse (Cara-de-Barro, O Natal Perfeito de um Cachorro, Um Ano de Vida, Compre Um Homem, Crime em Cena e Frequência Explosiva) para melhorar a cobertura da amostra. Séries e downloads ficam fora do contrato.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-12T22:59:03.089Z** · ID `2026-11-12T22-58-48-875Z-vaqueirofilmes-byse-202-b0d6` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `byse-20261112-8` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `76341` · Mad Max: Estrada da Fúria (2015) · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `movie` `135397` · Jurassic World: O Mundo dos Dinossauros (2015) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `346698` · Barbie (2023) · **Resolvido** · 1/1 streams aproveitáveis
+   4. `movie` `1630420` · Crime em Cena (2026) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `122` · O Senhor dos Anéis: O Retorno do Rei (2003) · **Sem resultado** · 0/0 streams aproveitáveis
 <!-- online-verification:end -->

@@ -183,6 +183,19 @@
       "formats": ["magnet"],
       "contentLanguage": ["pt"],
       "logo": "https://www.google.com/s2/favicons?domain=therarbg.com&sz=128"
+    },
+    {
+      "id": "vaqueirofilmes",
+      "name": "VaqueiroFilmes",
+      "description": "Filmes em HLS pelo catálogo VaqueiroFilmes, com áudio dublado confirmado pelo grupo Dublado da cadeia EmbedPlay.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": ["movie"],
+      "filename": "providers/vaqueirofilmes.js",
+      "enabled": true,
+      "formats": ["m3u8"],
+      "contentLanguage": ["pt"],
+      "logo": "https://www.google.com/s2/favicons?domain=vaqueirofilmes.com&sz=128"
     }
   ]
 }

@@ -1,0 +1,10 @@
+{
+  "title": "Os Vingadores",
+  "original_title": "The Avengers",
+  "release_date": "1998-08-13",
+  "original_language": "en",
+  "origin_country": ["US"],
+  "genres": [{ "id": 28 }, { "id": 12 }, { "id": 35 }],
+  "external_ids": { "imdb_id": "tt0118661" },
+  "alternative_titles": { "titles": [] }
+}

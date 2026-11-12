@@ -54,7 +54,7 @@ Usar `GET /wp-json/wp/v2/search?search=<título>&subtype=movie&per_page=20&_fiel
 Cada resultado é aberto e o JSON-LD `@type: Movie` é lido para obter `name`, `alternateName` e `datePublished`.
 
 - O JSON-LD é mais estável do que os seletores visuais e já separa filme de série (`TVSeries`).
-- O ano é comparado com o ano do TMDB quando conhecido. O título é comparado com título PT-BR, original e alternativos, usando `titleSimilarity` (limiar 0.85) para ordenar e para a decisão local de correspondência, com ano exato. O bloco `findBestMatch` não é usado porque devolve só o melhor candidato e não permite detectar a ambiguidade de dois candidatos válidos.
+- O ano é comparado com o ano do TMDB quando conhecido. O título é comparado com título PT-BR, original e alternativos, usando `titleSimilarity` (limiar 0.85) para a decisão local de correspondência, com ano exato. A ordenação dos candidatos usa a mesma similaridade sem corte, porque o corte de 0.85 na ordenação excluía o resultado de 2012 de “Os Vingadores” antes da confirmação. O bloco `findBestMatch` não é usado porque devolve só o melhor candidato e não permite detectar a ambiguidade de dois candidatos válidos.
 - Para não abrir 40 páginas, os resultados são ordenados pelo título da busca e no máximo três candidatos são confirmados. Se exatamente um passar, ele é aceito; se nenhum ou mais de um passar, a resposta é ausência.
 - Alternativa considerada: confiar só no primeiro resultado da busca. Rejeitada porque “Os Vingadores” retorna o filme de 1998 e o de 2012, e o primeiro resultado não é garantia de identidade.
 
@@ -122,6 +122,10 @@ A URL HLS é assinada e curta. Ela é obtida a cada pedido; nenhum cache entre p
 - `crypto-js` entra em `devDependencies` para o teste Node; o build já o mantém externo para o app.
 - Casos: busca PT-BR, fallback original, lista vazia, erro HTTP, ano divergente, resultado de série, candidato confirmado, EmbedPlay ausente, opção desconhecida, API recusando, opção dublada válida, opção dublada falhando, host Byse não suportado, playback inválido, duas chamadas gerando URLs distintas (mock) e falha total.
 
+### 9. Documentação global inalterada
+
+`README.md` aponta para `providers.md` em vez de repetir a lista de provedores, e `docs/arch.md` descreve apenas estrutura, contrato e convenções globais. O novo provedor não muda nenhuma dessas regras, então os dois arquivos permanecem como estão; a documentação específica fica em `providers.md` e no guia de investigação.
+
 ## Risks / Trade-offs
 
 1. **A API EmbedPlay pode mudar ou exigir token/captcha.** → Validar cada resposta e falhar com mensagem explícita; a fixture registra o contrato observado em 12/11/2026.
@@ -146,3 +150,12 @@ A URL HLS é assinada e curta. Ela é obtida a cada pedido; nenhum cache entre p
 ## Open Questions
 
 Nenhuma questão bloqueante. A existência de fontes MP4 no Byse e a cobertura de títulos menos populares podem ser observadas na rodada online sem mudar as specs ou o desenho.
+
+## Validation
+
+1. `npm run lint` e `npm test` passaram com a suíte completa, incluindo `test/vaqueirofilmes.test.js`.
+2. A primeira rodada online, em 2026-11-12, registrou 0/5 títulos resolvidos e status `Instável`: os cinco títulos sorteados ofereceram ABYS, UPNS ou LOAD no grupo Dublado, não a opção Byse.
+3. Em conferência manual com o título de referência `9320` (Os Vingadores, 1998), a cadeia EmbedPlay/Byse devolveu um stream HLS 1080p dublado.
+4. Foram identificados 19 títulos com a opção Byse no catálogo da fonte e validados sete de ponta a ponta. Cinco títulos foram acrescentados ao catálogo `movie` da verificação online, todos com HLS 1080p dublado: `1400940` Cara-de-Barro (2026), `1570488` O Natal Perfeito de um Cachorro (2026), `1654940` Um Ano de Vida, Compre Um Homem (2026), `1630420` Crime em Cena (2026) e `1570467` Frequência Explosiva (2026).
+5. A nova rodada online usou a semente `byse-20261112-8`, resolveu 2/5 (Barbie e Crime em Cena) e registrou status `Estável` em `providers.md`. A revisão do catálogo foi mantida em `2026-11-12.1` porque a lista é a baseline do mesmo dia; a adição não altera o perfil dos outros provedores nem remove títulos das amostras já registradas.
+6. A limitação fica declarada: o provedor não cobre os hosts ABYS, UPNS, LOAD, VidSrc e Superflixapi. Ampliar a cobertura exige uma nova mudança e a validação de cada host no runtime do app.
