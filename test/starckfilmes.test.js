@@ -281,7 +281,7 @@ test('1.2 seleção de fichas: tipo, ano, temporada exata e metadados .infos div
   assert.equal(streams.length, 1);
   assert.equal(streams[0].quality, '1080p');
   assert.equal(streams[0].infoHash, hashHex);
-  assert.equal(streams[0].language, 'Idioma Desconhecido');
+  assert.equal(streams[0].language, 'Dublado (Não PT-BR?)');
   assert.equal(streams[0].size, '2.09 GB');
 });
 

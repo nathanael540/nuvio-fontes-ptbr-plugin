@@ -146,6 +146,7 @@ var UNKNOWN_LANGUAGE = LANGUAGE.UNKNOWN;
 var EXACT_MAPPINGS = [
   ["dublado", LANGUAGE.DUBBED],
   ["dublado nao pt br", LANGUAGE.DUBBED_NON_PT_BR],
+  ["por", LANGUAGE.DUBBED_NON_PT_BR],
   ["portugues dialeto desconhecido", LANGUAGE.DUBBED_NON_PT_BR],
   ["legendado", LANGUAGE.SUBTITLED],
   ["legendado nao pt br", LANGUAGE.SUBTITLED_NON_PT_BR],
@@ -153,10 +154,11 @@ var EXACT_MAPPINGS = [
   ["nao pt br", LANGUAGE.NON_PT_BR],
   ["idioma desconhecido", LANGUAGE.UNKNOWN]
 ];
-var KNOWN_FOREIGN_REGEX = /\b(?:ingles|english|espanhol|spanish|japones|japanese|frances|french|alemao|german|italiano|italian|coreano|korean|russo|russian|mandarim|chines|chinese)\b/;
+var KNOWN_FOREIGN_REGEX = /\b(?:ingles|english|espanhol|espanol|spanish|latino|castellano|castelhano|japones|japanese|frances|francais|french|alemao|deutsch|german|italiano|italian|coreano|korean|russo|russian|mandarim|chines|chinese|turco|turca|turkce|turkish|arabe|arabic|hindi|tailandes|thai|vietnamita|vietnamese|polones|polaco|polski|polish|holandes|nederlands|dutch|sueco|sueca|svenska|swedish|dinamarques|dansk|danish|noruegues|norsk|norwegian|finlandes|suomi|finnish|grego|grega|greek|hebraico|hebrew|tcheco|checo|czech|hungaro|hungarian|romeno|romanian|ucraniano|ukrainian|persa|persian|indonesio|indonesian|malaio|malay|filipino|bengali|tamil|telugu|urdu|swahili)\b/;
 var BRAZIL_REGION_REGEX = /\b(?:ptbr|pt br|pob|brazil|brasil|brazilian|brasileiro|brasileira|br)\b/;
 var NON_BR_REGION_REGEX = /\b(?:ptpt|pt pt|portugal|european|europeu|europeia)\b/;
-var EXPLICIT_PT_REGEX = /\b(?:portugues|portuguese|por)\b/;
+var EXPLICIT_PT_REGEX = /\b(?:portugues|portuguese)\b/;
+var DUAL_AUDIO_REGEX = /\b(?:dual|tri)\s+audio\b/;
 function inspectText(text2) {
   if (typeof text2 !== "string") return null;
   const trimmed = text2.trim();
@@ -172,25 +174,31 @@ function inspectText(text2) {
     if (exact[1] === LANGUAGE.NON_PT_BR) return { foreign: true };
     if (exact[1] === LANGUAGE.UNKNOWN) return { unknown: true };
   }
-  const cleaned = normalized.replace(/\b(?:brrip|bdrip|br rip|bd rip)\b/g, " ").replace(/\bdublada\b/g, "dublado").replace(/\blegendada\b/g, "legendado").trim();
+  const cleaned = normalized.replace(/\b(?:brrip|bdrip|br rip|bd rip)\b/g, " ").replace(/\b(dual|tri)\s+audio(?=(?:hdr|mkv|mp4|web|bluray|dublado|legendado)\b)/g, "$1 audio ").replace(/\bdublada\b/g, "dublado").replace(/\blegendada\b/g, "legendado").trim();
   const hasExplicitPt = EXPLICIT_PT_REGEX.test(cleaned);
   const hasBr = BRAZIL_REGION_REGEX.test(cleaned);
   const hasNonBr = NON_BR_REGION_REGEX.test(cleaned);
   const hasForeign = KNOWN_FOREIGN_REGEX.test(cleaned);
-  const hasAudio = /\b(?:dub|dublado|dubbed|nacional)\b/.test(cleaned) || /\baudio\b/.test(cleaned) && (hasBr || hasNonBr || hasExplicitPt);
-  const hasSub = /\b(?:leg|legendado|legenda|legendas|sub|subbed|subtitled|softsub)\b/.test(cleaned);
+  const hasDualAudio = DUAL_AUDIO_REGEX.test(cleaned);
+  const hasDublado = /\b(?:dublado|dublados|dubladas|dubbed|nacional)\b/.test(cleaned);
+  const hasAudio = hasDublado || /\b(?:dub|dublagem|dublagens)\b/.test(cleaned) || hasDualAudio || /\baudio\b/.test(cleaned) && (hasBr || hasNonBr || hasExplicitPt);
+  const hasSub = /\b(?:leg|legendado|legendados|legendadas|legendagem|legendagens|legenda|legendas|sub|subbed|subtitled|subtitles?|softsub)\b/.test(cleaned);
   const result = {};
   if (hasAudio) {
     if (hasNonBr) {
       result.audio = "non_pt_br";
     } else if (hasExplicitPt && !hasBr) {
       result.audio = "non_pt_br";
+    } else if (hasDualAudio && !hasBr && !hasDublado) {
+      result.audio = "non_pt_br";
     } else {
       result.audio = "pt_br";
     }
   }
   if (hasSub) {
-    if (hasNonBr) {
+    if (hasForeign && !hasExplicitPt && !hasBr && !hasNonBr) {
+      result.foreign = true;
+    } else if (hasNonBr) {
       result.sub = "non_pt_br";
     } else if (hasExplicitPt && !hasBr) {
       result.sub = "non_pt_br";
@@ -895,9 +903,128 @@ function describe3(value) {
 // src/_blocks/fireplayer/index.mjs
 var MAX_HOPS = 6;
 var PT = /* @__PURE__ */ new Set(["pt", "ptbr", "por", "portuguese", "portugues", "brasil", "brazil", "brazilian", "legendado"]);
-var FOREIGN = /* @__PURE__ */ new Set(["en", "eng", "english"]);
+var FOREIGN = /* @__PURE__ */ new Set([
+  "en",
+  "eng",
+  "english",
+  "es",
+  "spa",
+  "esp",
+  "spanish",
+  "latino",
+  "castellano",
+  "fr",
+  "fra",
+  "fre",
+  "french",
+  "de",
+  "deu",
+  "ger",
+  "german",
+  "it",
+  "ita",
+  "italian",
+  "ja",
+  "jpn",
+  "japanese",
+  "ko",
+  "kor",
+  "korean",
+  "zh",
+  "zho",
+  "chi",
+  "chinese",
+  "ru",
+  "rus",
+  "russian",
+  "ar",
+  "ara",
+  "arabic",
+  "tr",
+  "tur",
+  "turkish",
+  "nl",
+  "nld",
+  "dut",
+  "dutch",
+  "pl",
+  "pol",
+  "polish",
+  "sv",
+  "swe",
+  "swedish",
+  "da",
+  "dan",
+  "danish",
+  "nb",
+  "nor",
+  "norwegian",
+  "fi",
+  "fin",
+  "finnish",
+  "el",
+  "ell",
+  "gre",
+  "greek",
+  "he",
+  "heb",
+  "hebrew",
+  "th",
+  "tha",
+  "thai",
+  "vi",
+  "vie",
+  "vietnamese",
+  "id",
+  "ind",
+  "indonesian",
+  "ms",
+  "msa",
+  "may",
+  "malay",
+  "tl",
+  "tgl",
+  "filipino",
+  "uk",
+  "ukr",
+  "ukrainian",
+  "ro",
+  "ron",
+  "rum",
+  "romanian",
+  "cs",
+  "ces",
+  "cze",
+  "czech",
+  "hu",
+  "hun",
+  "hungarian",
+  "fa",
+  "fas",
+  "per",
+  "persian",
+  "bn",
+  "ben",
+  "bengali",
+  "ta",
+  "tam",
+  "tamil",
+  "te",
+  "tel",
+  "telugu",
+  "ml",
+  "mal",
+  "malayalam",
+  "ur",
+  "urd",
+  "urdu",
+  "sw",
+  "swa",
+  "swahili",
+  "original"
+]);
 var DUB = /* @__PURE__ */ new Set(["pt", "ptbr", "por", "portuguese", "portugues", "dublado", "dub", "brasil", "brazil", "brazilian"]);
-var ORIGINAL = /* @__PURE__ */ new Set(["en", "eng", "english"]);
+var ORIGINAL = FOREIGN;
 function loadHtml(html) {
   const { load } = require("cheerio-without-node-native");
   return load(html);
@@ -1593,9 +1720,13 @@ function audioOf(medias, variants) {
   let dub = false;
   let original = false;
   for (const track of tracks) {
-    const words2 = wordsOf(`${track.NAME || ""} ${track.LANGUAGE || ""}`);
-    if (words2.some((word) => DUB.has(word))) dub = true;
-    if (words2.some((word) => ORIGINAL.has(word))) original = true;
+    const text2 = `${track.NAME || ""} ${track.LANGUAGE || ""}`;
+    const words2 = wordsOf(text2);
+    const tag = normalizeLanguage(text2);
+    if (words2.some((word) => DUB.has(word)) || tag === LANGUAGE.DUBBED || tag === LANGUAGE.DUBBED_NON_PT_BR) {
+      dub = true;
+    }
+    if (words2.some((word) => ORIGINAL.has(word)) || tag === LANGUAGE.NON_PT_BR) original = true;
   }
   if (dub) return { language: LANGUAGE.DUBBED, foreignOnly: false };
   if (original) return { language: null, foreignOnly: true };

@@ -97,10 +97,11 @@ export function parsePostMeta(html) {
  *
  * @param {string} html - HTML da página da ficha.
  * @param {string} postTitle - Título da postagem para contexto.
+ * @param {string} [audioType] - Áudio anunciado no cartão de busca (`Dublado`, `Dual Áudio`, ...).
  * @returns {object[]} Opções preparadas para classifyMagnetOption.
  * @throws {Error} Se a ficha não contiver botões no seletor observado na fonte.
  */
-export function extractOptions(html, postTitle) {
+export function extractOptions(html, postTitle, audioType = '') {
   const $ = htmlDocument(html);
   const buttons = $('.post-buttons .btn-down');
   if (!buttons.length) {
@@ -132,6 +133,7 @@ export function extractOptions(html, postTitle) {
         href: magnet,
         labelText,
         contextText: postTitle,
+        audio: audioType || null,
       });
     } catch (error) {
       options.push({
@@ -220,7 +222,7 @@ export async function extractStreams(media, request) {
 
   const rawOptions = posts.flatMap(({ post, html }) => {
     try {
-      return extractOptions(html, post.title);
+      return extractOptions(html, post.title, post.audioType);
     } catch (error) {
       return [{ label: `Ficha ${post.link}`, failure: error }];
     }

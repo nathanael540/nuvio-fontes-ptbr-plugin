@@ -24,6 +24,7 @@ import {
   fetchCatalogPage,
   loadHtml,
   readImdbIds,
+  readPageLanguage,
   readYear,
   resolvePathOnOrigin,
   searchTerms,
@@ -234,6 +235,7 @@ function parseContent(html, url, card) {
     rawTitle,
     year: card.year || readYear(rawTitle) || readYear(infoText),
     imdbIds: pageImdbIds,
+    audio: readPageLanguage(html),
     infoSize: humanSize(infoText),
     anchors,
   };
@@ -290,6 +292,7 @@ function optionsFromPage(page, media, request) {
       href: anchor.href,
       labelText: anchor.label,
       contextText: page.rawTitle,
+      audio: page.audio,
       size: humanSize(anchor.label) || singlePageSize,
       addFallbackTrackers: true,
     }, media, request));

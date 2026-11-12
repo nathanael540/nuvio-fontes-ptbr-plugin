@@ -76,8 +76,18 @@ test('normalizeLanguage reconhece convenções comuns de áudio, legenda e idiom
   // Áudio brasileiro antes Dual Áudio passa a Dublado
   assert.equal(normalizeLanguage('DUAL ÁUDIO PT-BR'), LANGUAGE.DUBBED);
   assert.equal(normalizeLanguage('DUBLADO DUAL AUDIO'), LANGUAGE.DUBBED);
+  // Dual/Tri Áudio em fonte PT-BR: português confirmado sem região comprovada
+  assert.equal(normalizeLanguage('Dual Áudio'), LANGUAGE.DUBBED_NON_PT_BR);
+  assert.equal(normalizeLanguage('DUAL ÁUDIO 5.1'), LANGUAGE.DUBBED_NON_PT_BR);
+  assert.equal(normalizeLanguage('Dual ÁudioHDR'), LANGUAGE.DUBBED_NON_PT_BR);
+  assert.equal(normalizeLanguage('Tri Áudio'), LANGUAGE.DUBBED_NON_PT_BR);
+  assert.equal(normalizeLanguage('Dublagem'), LANGUAGE.DUBBED);
+  assert.equal(normalizeLanguage('Legendagem'), LANGUAGE.SUBTITLED);
   // Prioridade de áudio sobre legenda
   assert.equal(normalizeLanguage('Dublado e Legendado'), LANGUAGE.DUBBED);
+  // Legenda estrangeira não vira Legendado
+  assert.equal(normalizeLanguage('English sub'), LANGUAGE.NON_PT_BR);
+  assert.equal(normalizeLanguage('Legendado Inglês'), LANGUAGE.NON_PT_BR);
 
   // Dublado sem confirmação brasileira (com sufixo)
   assert.equal(normalizeLanguage('Dublado Portugal'), LANGUAGE.DUBBED_NON_PT_BR);
@@ -106,6 +116,17 @@ test('normalizeLanguage reconhece convenções comuns de áudio, legenda e idiom
   assert.equal(normalizeLanguage('Japanese'), LANGUAGE.NON_PT_BR);
   assert.equal(normalizeLanguage('Espanhol'), LANGUAGE.NON_PT_BR);
   assert.equal(normalizeLanguage('Spanish'), LANGUAGE.NON_PT_BR);
+  assert.equal(normalizeLanguage('Latino'), LANGUAGE.NON_PT_BR);
+  assert.equal(normalizeLanguage('Castellano'), LANGUAGE.NON_PT_BR);
+  assert.equal(normalizeLanguage('Español'), LANGUAGE.NON_PT_BR);
+  assert.equal(normalizeLanguage('Deutsch'), LANGUAGE.NON_PT_BR);
+  assert.equal(normalizeLanguage('Français'), LANGUAGE.NON_PT_BR);
+  assert.equal(normalizeLanguage('Turco'), LANGUAGE.NON_PT_BR);
+  assert.equal(normalizeLanguage('Tailandês'), LANGUAGE.NON_PT_BR);
+  assert.equal(normalizeLanguage('Hindi'), LANGUAGE.NON_PT_BR);
+  // Código ISO 639-2 isolado continua sendo idioma, mas "por" dentro de frase não conta.
+  assert.equal(normalizeLanguage('por'), LANGUAGE.DUBBED_NON_PT_BR);
+  assert.equal(normalizeLanguage('Filme por Acaso'), null);
 });
 
 const INCONCLUSIVE_INPUTS = [
@@ -126,7 +147,6 @@ const INCONCLUSIVE_INPUTS = [
   'DUAL',
   'multi',
   'Multi Audio',
-  'DUAL ÁUDIO',
   // Tags técnicas de vídeo/encode não são idioma
   'BR-Rip',
   'BRRip',
@@ -153,6 +173,11 @@ test('languageFromTexts percorre lista na ordem e retorna membro ou null', () =>
   assert.equal(languageFromTexts([null, '', 'BR-Rip']), null);
   assert.equal(languageFromTexts(['DUAL']), null);
   assert.equal(languageFromTexts(['PT-BR']), null);
+  // Texto estrangeiro não anula áudio/legenda em português de outro candidato
+  assert.equal(languageFromTexts(['Filme.English.1080p', 'Dublado']), LANGUAGE.DUBBED);
+  assert.equal(languageFromTexts(['English sub', 'Legendado']), LANGUAGE.SUBTITLED);
+  assert.equal(languageFromTexts(['English']), LANGUAGE.NON_PT_BR);
+  assert.equal(languageFromTexts(['Dual Áudio']), LANGUAGE.DUBBED_NON_PT_BR);
   assert.throws(() => languageFromTexts('dub'), /parts deve ser lista/);
 });
 
@@ -173,6 +198,9 @@ test('discoverLanguage descobre modalidade e aplica convenção PT-BR nos nomes'
   assert.equal(discoverLanguage({ texts: ['DUBLADA'] }), LANGUAGE.DUBBED);
   assert.equal(discoverLanguage({ texts: ['LEGENDADA'] }), LANGUAGE.SUBTITLED);
   assert.equal(discoverLanguage({ texts: ['Filme.PT-BR.DUBLADO.mkv'] }), LANGUAGE.DUBBED);
+  assert.equal(discoverLanguage({ texts: ['Filme.Dual.Audio.mkv'] }), LANGUAGE.DUBBED_NON_PT_BR);
+  assert.equal(discoverLanguage({ texts: ['Filme.Dual.Audio.PT-BR.mkv'] }), LANGUAGE.DUBBED);
+  assert.equal(discoverLanguage({ texts: ['Filme.English.sub.mkv'] }), LANGUAGE.NON_PT_BR);
 });
 
 test('discoverLanguage trata casos inconclusivos como Idioma Desconhecido', () => {

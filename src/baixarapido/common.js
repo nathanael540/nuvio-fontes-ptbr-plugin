@@ -36,6 +36,46 @@ export function readYear(text) {
   return match ? Number(match[0]) : null;
 }
 
+const PAGE_LANGUAGE_LABEL = /(?:^|[\s>|])(?:Idiomas?|[ÁA]udio)\s*:/gi;
+const PAGE_LANGUAGE_STOP = /\s+(?:Qualidade(?:\s+(?:de|do))?|Legendas?|Tamanho|Duração|Formato|País|Gênero|IMDb|Servidor|Título Original|Lançamento|Temporadas?|Episódios?|Direção|Elenco|Vídeo)\b/i;
+
+/**
+ * Lê o campo de idioma/áudio da ficha de um catálogo da rede.
+ *
+ * Aceita os rótulos observados nas páginas (`Idioma:`, `Idiomas :`, `Áudio:`) e ignora
+ * `Qualidade de Áudio`/`Qualidade do Áudio`. O valor é devolvido como a fonte escreveu, para
+ * que `languageFromTexts` aplique a convenção do enum `LANGUAGE`.
+ *
+ * @param {string} html - HTML bruto da página do conteúdo.
+ * @returns {string|null} Valor do campo ou `null` quando a ficha não o informa.
+ * @throws {Error} Se `html` não for texto.
+ * @example
+ * readPageLanguage('<b>Idioma:</b> Português | Inglês'); // 'Português | Inglês'
+ */
+export function readPageLanguage(html) {
+  if (typeof html !== 'string') throw new Error('html deve ser texto');
+  const text = html
+    .replace(/<script\b[\s\S]*?<\/script>/gi, ' ')
+    .replace(/<style\b[\s\S]*?<\/style>/gi, ' ')
+    .replace(/<[^>]+>/g, ' ')
+    .replace(/&nbsp;|&#160;/gi, ' ')
+    .replace(/&amp;/gi, '&')
+    .replace(/\s+/g, ' ')
+    .trim();
+  PAGE_LANGUAGE_LABEL.lastIndex = 0;
+  let match;
+  while ((match = PAGE_LANGUAGE_LABEL.exec(text)) !== null) {
+    const before = text.slice(Math.max(0, match.index - 24), match.index);
+    if (/Qualidade\s+(?:de|do)\s*$/i.test(before)) continue;
+    const rest = text.slice(match.index + match[0].length);
+    const stop = PAGE_LANGUAGE_STOP.exec(rest);
+    const raw = stop ? rest.slice(0, stop.index) : rest.slice(0, 120);
+    const value = raw.replace(/^[\s:|;,\-–—]+/, '').trim();
+    if (value && !/^\d+(?:\s*\/\s*\d+)?$/.test(value)) return value;
+  }
+  return null;
+}
+
 /**
  * Extrai IDs do IMDb (`tt...`) presentes no HTML.
  * @param {string} html - HTML bruto da página.

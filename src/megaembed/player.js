@@ -1,6 +1,6 @@
 /** Resolução de uma opção HLS ou MP4. Falha lança; triagem sem prova devolve lista vazia. */
 import { DEFAULT_USER_AGENT, fetchPage, playbackHeaders } from '../_blocks/http/index.mjs';
-import { LANGUAGE } from '../_blocks/language-discovery/index.mjs';
+import { LANGUAGE, normalizeLanguage } from '../_blocks/language-discovery/index.mjs';
 import { UNKNOWN_QUALITY } from '../_blocks/quality-discovery/index.mjs';
 import { normalizeText } from '../_blocks/slugify/index.mjs';
 
@@ -169,13 +169,20 @@ function classifyLanguage(renditions, subtitles) {
   let dub = false;
   let original = false;
   for (const rendition of renditions) {
-    const words = wordsOf(`${rendition.NAME || ''} ${rendition.LANGUAGE || ''}`);
-    if (words.some((word) => DUB_WORDS.has(word))) dub = true;
-    if (words.some((word) => ORIGINAL_WORDS.has(word))) original = true;
+    const text = `${rendition.NAME || ''} ${rendition.LANGUAGE || ''}`;
+    const words = wordsOf(text);
+    const tag = normalizeLanguage(text);
+    if (words.some((word) => DUB_WORDS.has(word)) || tag === LANGUAGE.DUBBED || tag === LANGUAGE.DUBBED_NON_PT_BR) {
+      dub = true;
+    }
+    if (words.some((word) => ORIGINAL_WORDS.has(word)) || tag === LANGUAGE.NON_PT_BR) original = true;
   }
   if (dub) return LANGUAGE.DUBBED;
-  if (original && (subtitles || []).some((subtitle) => wordsOf(`${subtitle.language} ${subtitle.name || ''}`).some((word) => SUBTITLE_PT.has(word)))) {
-    return LANGUAGE.SUBTITLED;
+  if (original) {
+    const hasPortugueseSubtitle = (subtitles || []).some(
+      (subtitle) => wordsOf(`${subtitle.language} ${subtitle.name || ''}`).some((word) => SUBTITLE_PT.has(word)),
+    );
+    return hasPortugueseSubtitle ? LANGUAGE.SUBTITLED : LANGUAGE.NON_PT_BR;
   }
   return null;
 }

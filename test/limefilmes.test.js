@@ -92,7 +92,7 @@ test('extrai magnets do artigo e preserva os metadados do rótulo', async () => 
     const prismFile = await buildProvider('limefilmes', { outDir: prismDir, formatter: 'prism' });
     const hash = '51ca3ba90f04bf50394e9eb7e448ceea214d5ad6';
     const oldHash = '8cc4fdc2c777d1464d9043397309f45859b9297b';
-    const html = `<title>Dual Áudio 4K</title><article class="col">Outro conteúdo</article><article class="post-block"><a class="download-btn" href="magnet:?xt=urn%3Abtih%3A${hash}&amp;dn=Duna.1080p">1080p | 3.50 GB | Português-BR</a><h3>CAMRip | Inglês</h3><a href="magnet:?xt=urn:btih:${oldHash}"><img></a><a class="download-btn" href="magnet:?xt=urn:btih:${hash}">1080p | 3.50 GB | Português-BR</a><a class="download-btn" href="magnet:?xt=urn:btih:tg4qittt7aulezavga3sya5fglaejhyc">720p</a><a class="download-btn" href="magnet:?xt=urn:btih:00000000000000000000000000000000">720p</a><iframe src="https://youtube.com/embed/x"></iframe><div class="related-section"><a href="magnet:?xt=urn:btih:${'a'.repeat(40)}">720p</a></div></article>`;
+    const html = `<title>Dual Áudio 4K</title><article class="col">Outro conteúdo</article><article class="post-block"><a class="download-btn" href="magnet:?xt=urn%3Abtih%3A${hash}&amp;dn=Duna.1080p">1080p | 3.50 GB | Português-BR</a><h3>CAMRip | Inglês</h3><a href="magnet:?xt=urn:btih:${oldHash}"><img></a><a class="download-btn" href="magnet:?xt=urn:btih:${hash}">1080p | 3.50 GB | Português-BR</a><a class="download-btn" href="magnet:?xt=urn:btih:tg4qittt7aulezavga3sya5fglaejhyc">720p | Dual Áudio</a><a class="download-btn" href="magnet:?xt=urn:btih:00000000000000000000000000000000">720p</a><iframe src="https://youtube.com/embed/x"></iframe><div class="related-section"><a href="magnet:?xt=urn:btih:${'a'.repeat(40)}">720p</a></div></article>`;
     const makeContext = () => ({
       module: { exports: {} }, TMDB_API_KEY: 'teste', URL, URLSearchParams,
       console: { log() {}, warn() {}, error: console.error },
@@ -118,9 +118,9 @@ test('extrai magnets do artigo e preserva os metadados do rótulo', async () => 
     assert.equal(streams[0].title, '🗣️ Dublado\n🧲 P2P 📦 3.50 GB 👥 ?/?');
     assert.equal(streams[1].quality, '720p');
     assert.equal(streams[1].infoHash, '99b9044e73f828b2641530372c03a532c0449f02');
-    assert.equal(streams[1].language, 'Idioma Desconhecido');
-    assert.equal(streams[1].name, 'LimeFilmes 720p\n🗣️ Idioma Desconhecido\n🧲 P2P 👥 ?/?');
-    assert.equal(streams[1].title, '🗣️ Idioma Desconhecido\n🧲 P2P 👥 ?/?');
+    assert.equal(streams[1].language, 'Dublado (Não PT-BR?)');
+    assert.equal(streams[1].name, 'LimeFilmes 720p\n🗣️ Dublado (Não PT-BR?)\n🧲 P2P 👥 ?/?');
+    assert.equal(streams[1].title, '🗣️ Dublado (Não PT-BR?)\n🧲 P2P 👥 ?/?');
     assert.equal(streams[2].quality, 'CAM');
     assert.equal(streams[2].language, 'Não PT-BR');
     assert.equal(streams[2].name, 'LimeFilmes CAM\n🗣️ Não PT-BR\n🧲 P2P 👥 ?/?');

@@ -16,9 +16,20 @@ import { buildStream } from '../stream-build/index.mjs';
 
 const MAX_HOPS = 6;
 const PT = new Set(['pt', 'ptbr', 'por', 'portuguese', 'portugues', 'brasil', 'brazil', 'brazilian', 'legendado']);
-const FOREIGN = new Set(['en', 'eng', 'english']);
+const FOREIGN = new Set([
+  'en', 'eng', 'english', 'es', 'spa', 'esp', 'spanish', 'latino', 'castellano', 'fr', 'fra', 'fre',
+  'french', 'de', 'deu', 'ger', 'german', 'it', 'ita', 'italian', 'ja', 'jpn', 'japanese', 'ko', 'kor',
+  'korean', 'zh', 'zho', 'chi', 'chinese', 'ru', 'rus', 'russian', 'ar', 'ara', 'arabic', 'tr', 'tur',
+  'turkish', 'nl', 'nld', 'dut', 'dutch', 'pl', 'pol', 'polish', 'sv', 'swe', 'swedish', 'da', 'dan',
+  'danish', 'nb', 'nor', 'norwegian', 'fi', 'fin', 'finnish', 'el', 'ell', 'gre', 'greek', 'he', 'heb',
+  'hebrew', 'th', 'tha', 'thai', 'vi', 'vie', 'vietnamese', 'id', 'ind', 'indonesian', 'ms', 'msa',
+  'may', 'malay', 'tl', 'tgl', 'filipino', 'uk', 'ukr', 'ukrainian', 'ro', 'ron', 'rum', 'romanian',
+  'cs', 'ces', 'cze', 'czech', 'hu', 'hun', 'hungarian', 'fa', 'fas', 'per', 'persian', 'bn', 'ben',
+  'bengali', 'ta', 'tam', 'tamil', 'te', 'tel', 'telugu', 'ml', 'mal', 'malayalam', 'ur', 'urd', 'urdu',
+  'sw', 'swa', 'swahili', 'original',
+]);
 const DUB = new Set(['pt', 'ptbr', 'por', 'portuguese', 'portugues', 'dublado', 'dub', 'brasil', 'brazil', 'brazilian']);
-const ORIGINAL = new Set(['en', 'eng', 'english']);
+const ORIGINAL = FOREIGN;
 
 /**
  * @typedef {object} FireRequest
@@ -933,9 +944,13 @@ function audioOf(medias, variants) {
   let dub = false;
   let original = false;
   for (const track of tracks) {
-    const words = wordsOf(`${track.NAME || ''} ${track.LANGUAGE || ''}`);
-    if (words.some((word) => DUB.has(word))) dub = true;
-    if (words.some((word) => ORIGINAL.has(word))) original = true;
+    const text = `${track.NAME || ''} ${track.LANGUAGE || ''}`;
+    const words = wordsOf(text);
+    const tag = normalizeLanguage(text);
+    if (words.some((word) => DUB.has(word)) || tag === LANGUAGE.DUBBED || tag === LANGUAGE.DUBBED_NON_PT_BR) {
+      dub = true;
+    }
+    if (words.some((word) => ORIGINAL.has(word)) || tag === LANGUAGE.NON_PT_BR) original = true;
   }
   if (dub) return { language: LANGUAGE.DUBBED, foreignOnly: false };
   if (original) return { language: null, foreignOnly: true };

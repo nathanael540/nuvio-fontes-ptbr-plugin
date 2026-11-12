@@ -18,6 +18,7 @@ import {
   fetchCatalogPage,
   loadHtml,
   readImdbIds,
+  readPageLanguage,
   readYear,
   resolvePathOnOrigin,
   searchTerms,
@@ -173,6 +174,7 @@ function parseContent(html, url) {
     rawTitle,
     year: readYear(rawTitle),
     imdbIds: readImdbIds(html),
+    audio: readPageLanguage(html),
     sizeField: readSizeField(html),
     anchors,
   };
@@ -193,6 +195,7 @@ function optionsFromPage(page, media, request) {
       href: anchor.href,
       labelText: anchor.label,
       contextText: page.rawTitle,
+      audio: page.audio,
       size: fallbackSize,
       addFallbackTrackers: true,
       allowSeriesPackWithoutSeason: true,

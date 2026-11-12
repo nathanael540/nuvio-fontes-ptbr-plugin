@@ -260,7 +260,7 @@ for (const formatter of ['gdrive', 'prism']) {
     assert.equal(streams[0].provider, 'Torrent dos Filmes');
     assert.equal(streams[0].type, 'torrent');
     assert.equal(streams[0].quality, '1080p');
-    assert.equal(streams[0].language, 'Idioma Desconhecido');
+    assert.equal(streams[0].language, 'Dublado (Não PT-BR?)');
     assert.equal(streams[0].size, '1.50 GB');
     assert.equal('headers' in streams[0], false);
     assert.match(streams[0].name, /🧲 P2P 📦 pacote 4\.8 GB/);
@@ -345,7 +345,7 @@ test('converte hash base32 para o hexadecimal de 40 caracteres', async () => {
   assert.equal(streams[0].infoHash, BASE32_HEX);
   assert.ok(streams[0].url.includes(`xt=urn:btih:${BASE32_HEX}`));
   assert.equal(streams[0].url.includes('tg4qittt'), false);
-  assert.equal(streams[0].name, 'Filmestorrent 1080p\n🗣️ Idioma Desconhecido\n🧲 P2P 👥 ?/? 🔍 Comando\n📁 Matrix 1080p Dual Audio');
+  assert.equal(streams[0].name, 'Filmestorrent 1080p\n🗣️ Dublado (Não PT-BR?)\n🧲 P2P 👥 ?/? 🔍 Comando\n📁 Matrix 1080p Dual Audio');
 });
 
 test('hash base32 inválido não vaza para a URL e não derruba o magnet válido', async () => {
@@ -591,7 +591,7 @@ test('rede: mesmo torrent nos dois catálogos aparece uma vez e o exclusivo do M
   assert.deepEqual(streams.map((item) => item.infoHash).sort(), [HEX_1080, HEX_720, 'e'.repeat(40)].sort());
   const exclusive = streams.find((item) => item.infoHash === 'e'.repeat(40));
   assert.equal(exclusive.provider, 'Mestre dos Filmes');
-  assert.equal(exclusive.name, 'Filmestorrent 4K\n🗣️ Idioma Desconhecido\n🧲 P2P 👥 ?/? 🔍 Mestre dos Filmes\n📁 Matrix 2160p 4K Dual Audio');
+  assert.equal(exclusive.name, 'Filmestorrent 4K\n🗣️ Dublado (Não PT-BR?)\n🧲 P2P 👥 ?/? 🔍 Mestre dos Filmes\n📁 Matrix 2160p 4K Dual Audio');
   assert.equal(streams.find((item) => item.infoHash === HEX_720).provider, 'Comando', 'repetido fica com o catálogo Comando');
   assert.ok(app.logs.log.some((message) => /^\[Filmestorrent\/Mestre dos Filmes\] Post 185464 descartado por triagem: coleção de filmes/.test(message)));
   assert.equal(app.logs.warn.length, 0);

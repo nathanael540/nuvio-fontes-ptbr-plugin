@@ -2,7 +2,7 @@ import { fetchJson, fetchText } from '../_blocks/http/index.mjs';
 import { normalizeText } from '../_blocks/slugify/index.mjs';
 import { findBestMatch } from '../_blocks/title-match/index.mjs';
 import { isCollectionTitle, seasonNumbers, readMagnet, episodeTarget, formatBytes } from '../_blocks/torrent-release/index.mjs';
-import { normalizeLanguage } from '../_blocks/language-discovery/index.mjs';
+import { languageFromTexts } from '../_blocks/language-discovery/index.mjs';
 import { buildStream, buildTorrentFileUrl } from '../_blocks/stream-build/index.mjs';
 import { fetchTorrentFiles, findEpisodeFile } from '../_blocks/torrent-files/index.mjs';
 import { discoverQuality } from '../_blocks/quality-discovery/index.mjs';
@@ -139,9 +139,7 @@ async function makeStream(option, media, request) {
   if (!option.label) throw new Error('Magnet sem rótulo');
   const magnet = readMagnet(option.href);
   const quality = discoverQuality([option.label, magnet.dn]);
-  const fields = option.label.split('|').map((part) => part.trim());
-  const audio = fields.find((part) => /dual|dublad|legendad|portugu[eê]s|ingl[eê]s/i.test(part));
-  const language = audio ? normalizeLanguage(audio) || undefined : undefined;
+  const language = languageFromTexts([option.label, magnet.dn]);
   const sizeMatch = /\b\d+(?:[.,]\d+)?\s*(?:GB|MB)\b/i.exec(option.label);
   const size = sizeMatch ? sizeMatch[0] : null;
   let url = magnet.href;
@@ -195,9 +193,9 @@ async function makeStream(option, media, request) {
     quality,
     infoHash: magnet.hash,
     type: url.startsWith('magnet:') ? 'magnet' : 'torrent',
+    language: language || undefined,
     format,
   };
-  if (language) stream.language = language;
   if (streamSize) stream.size = streamSize;
   return buildStream(stream);
 }

@@ -157,6 +157,7 @@ var UNKNOWN_LANGUAGE = LANGUAGE.UNKNOWN;
 var EXACT_MAPPINGS = [
   ["dublado", LANGUAGE.DUBBED],
   ["dublado nao pt br", LANGUAGE.DUBBED_NON_PT_BR],
+  ["por", LANGUAGE.DUBBED_NON_PT_BR],
   ["portugues dialeto desconhecido", LANGUAGE.DUBBED_NON_PT_BR],
   ["legendado", LANGUAGE.SUBTITLED],
   ["legendado nao pt br", LANGUAGE.SUBTITLED_NON_PT_BR],
@@ -164,10 +165,11 @@ var EXACT_MAPPINGS = [
   ["nao pt br", LANGUAGE.NON_PT_BR],
   ["idioma desconhecido", LANGUAGE.UNKNOWN]
 ];
-var KNOWN_FOREIGN_REGEX = /\b(?:ingles|english|espanhol|spanish|japones|japanese|frances|french|alemao|german|italiano|italian|coreano|korean|russo|russian|mandarim|chines|chinese)\b/;
+var KNOWN_FOREIGN_REGEX = /\b(?:ingles|english|espanhol|espanol|spanish|latino|castellano|castelhano|japones|japanese|frances|francais|french|alemao|deutsch|german|italiano|italian|coreano|korean|russo|russian|mandarim|chines|chinese|turco|turca|turkce|turkish|arabe|arabic|hindi|tailandes|thai|vietnamita|vietnamese|polones|polaco|polski|polish|holandes|nederlands|dutch|sueco|sueca|svenska|swedish|dinamarques|dansk|danish|noruegues|norsk|norwegian|finlandes|suomi|finnish|grego|grega|greek|hebraico|hebrew|tcheco|checo|czech|hungaro|hungarian|romeno|romanian|ucraniano|ukrainian|persa|persian|indonesio|indonesian|malaio|malay|filipino|bengali|tamil|telugu|urdu|swahili)\b/;
 var BRAZIL_REGION_REGEX = /\b(?:ptbr|pt br|pob|brazil|brasil|brazilian|brasileiro|brasileira|br)\b/;
 var NON_BR_REGION_REGEX = /\b(?:ptpt|pt pt|portugal|european|europeu|europeia)\b/;
-var EXPLICIT_PT_REGEX = /\b(?:portugues|portuguese|por)\b/;
+var EXPLICIT_PT_REGEX = /\b(?:portugues|portuguese)\b/;
+var DUAL_AUDIO_REGEX = /\b(?:dual|tri)\s+audio\b/;
 function inspectText(text) {
   if (typeof text !== "string") return null;
   const trimmed = text.trim();
@@ -183,25 +185,31 @@ function inspectText(text) {
     if (exact[1] === LANGUAGE.NON_PT_BR) return { foreign: true };
     if (exact[1] === LANGUAGE.UNKNOWN) return { unknown: true };
   }
-  const cleaned = normalized.replace(/\b(?:brrip|bdrip|br rip|bd rip)\b/g, " ").replace(/\bdublada\b/g, "dublado").replace(/\blegendada\b/g, "legendado").trim();
+  const cleaned = normalized.replace(/\b(?:brrip|bdrip|br rip|bd rip)\b/g, " ").replace(/\b(dual|tri)\s+audio(?=(?:hdr|mkv|mp4|web|bluray|dublado|legendado)\b)/g, "$1 audio ").replace(/\bdublada\b/g, "dublado").replace(/\blegendada\b/g, "legendado").trim();
   const hasExplicitPt = EXPLICIT_PT_REGEX.test(cleaned);
   const hasBr = BRAZIL_REGION_REGEX.test(cleaned);
   const hasNonBr = NON_BR_REGION_REGEX.test(cleaned);
   const hasForeign = KNOWN_FOREIGN_REGEX.test(cleaned);
-  const hasAudio = /\b(?:dub|dublado|dubbed|nacional)\b/.test(cleaned) || /\baudio\b/.test(cleaned) && (hasBr || hasNonBr || hasExplicitPt);
-  const hasSub = /\b(?:leg|legendado|legenda|legendas|sub|subbed|subtitled|softsub)\b/.test(cleaned);
+  const hasDualAudio = DUAL_AUDIO_REGEX.test(cleaned);
+  const hasDublado = /\b(?:dublado|dublados|dubladas|dubbed|nacional)\b/.test(cleaned);
+  const hasAudio = hasDublado || /\b(?:dub|dublagem|dublagens)\b/.test(cleaned) || hasDualAudio || /\baudio\b/.test(cleaned) && (hasBr || hasNonBr || hasExplicitPt);
+  const hasSub = /\b(?:leg|legendado|legendados|legendadas|legendagem|legendagens|legenda|legendas|sub|subbed|subtitled|subtitles?|softsub)\b/.test(cleaned);
   const result = {};
   if (hasAudio) {
     if (hasNonBr) {
       result.audio = "non_pt_br";
     } else if (hasExplicitPt && !hasBr) {
       result.audio = "non_pt_br";
+    } else if (hasDualAudio && !hasBr && !hasDublado) {
+      result.audio = "non_pt_br";
     } else {
       result.audio = "pt_br";
     }
   }
   if (hasSub) {
-    if (hasNonBr) {
+    if (hasForeign && !hasExplicitPt && !hasBr && !hasNonBr) {
+      result.foreign = true;
+    } else if (hasNonBr) {
       result.sub = "non_pt_br";
     } else if (hasExplicitPt && !hasBr) {
       result.sub = "non_pt_br";
@@ -234,23 +242,20 @@ function resolveInfo(info) {
   if (info.unknown) return LANGUAGE.UNKNOWN;
   return null;
 }
-function normalizeLanguage(value) {
-  if (typeof value !== "string") {
-    throw new Error(`Idioma deve ser texto (recebido: ${String(value)})`);
-  }
-  const info = inspectText(value);
-  return resolveInfo(info);
-}
 function languageFromTexts(parts) {
   if (!Array.isArray(parts)) {
     throw new Error("parts deve ser lista");
   }
+  let fallback = null;
   for (const part2 of parts) {
     if (typeof part2 !== "string" || part2.trim() === "") continue;
-    const recognized = normalizeLanguage(part2);
-    if (recognized) return recognized;
+    const info = inspectText(part2);
+    if (!info) continue;
+    if (info.audio || info.sub) return resolveInfo(info);
+    if (info.foreign) fallback = LANGUAGE.NON_PT_BR;
+    else if (info.unknown && fallback === null) fallback = LANGUAGE.UNKNOWN;
   }
-  return null;
+  return fallback;
 }
 function discoverLanguage({ codes, texts = [] } = {}) {
   if (codes !== void 0 && !Array.isArray(codes)) {
@@ -1554,6 +1559,24 @@ function readYear(text) {
   const match = /\b(?:19|20)\d{2}\b/.exec(String(text || ""));
   return match ? Number(match[0]) : null;
 }
+var PAGE_LANGUAGE_LABEL = /(?:^|[\s>|])(?:Idiomas?|[ÁA]udio)\s*:/gi;
+var PAGE_LANGUAGE_STOP = /\s+(?:Qualidade(?:\s+(?:de|do))?|Legendas?|Tamanho|Duração|Formato|País|Gênero|IMDb|Servidor|Título Original|Lançamento|Temporadas?|Episódios?|Direção|Elenco|Vídeo)\b/i;
+function readPageLanguage(html) {
+  if (typeof html !== "string") throw new Error("html deve ser texto");
+  const text = html.replace(/<script\b[\s\S]*?<\/script>/gi, " ").replace(/<style\b[\s\S]*?<\/style>/gi, " ").replace(/<[^>]+>/g, " ").replace(/&nbsp;|&#160;/gi, " ").replace(/&amp;/gi, "&").replace(/\s+/g, " ").trim();
+  PAGE_LANGUAGE_LABEL.lastIndex = 0;
+  let match;
+  while ((match = PAGE_LANGUAGE_LABEL.exec(text)) !== null) {
+    const before = text.slice(Math.max(0, match.index - 24), match.index);
+    if (/Qualidade\s+(?:de|do)\s*$/i.test(before)) continue;
+    const rest = text.slice(match.index + match[0].length);
+    const stop = PAGE_LANGUAGE_STOP.exec(rest);
+    const raw = stop ? rest.slice(0, stop.index) : rest.slice(0, 120);
+    const value = raw.replace(/^[\s:|;,\-–—]+/, "").trim();
+    if (value && !/^\d+(?:\s*\/\s*\d+)?$/.test(value)) return value;
+  }
+  return null;
+}
 function readImdbIds(html) {
   return [...new Set([...String(html || "").matchAll(/imdb\.com\/(?:pt\/)?title\/(tt\d+)/gi)].map((match) => match[1].toLowerCase()))];
 }
@@ -1874,6 +1897,7 @@ function parseContent(html, url) {
     rawTitle,
     year: readYear(rawTitle),
     imdbIds: readImdbIds(html),
+    audio: readPageLanguage(html),
     anchors
   };
 }
@@ -1882,6 +1906,7 @@ function optionsFromPage(page, media, request) {
     href: anchor.href,
     labelText: anchor.label,
     contextText: page.rawTitle,
+    audio: page.audio,
     size: humanSize(anchor.label),
     addFallbackTrackers: false,
     allowSeriesPackWithoutSeason: true
@@ -2038,6 +2063,7 @@ function parseContent2(html, url) {
     rawTitle,
     year: readYear(rawTitle),
     imdbIds: readImdbIds(html),
+    audio: readPageLanguage(html),
     isTvSchema,
     isMovieSchema,
     anchors
@@ -2072,6 +2098,7 @@ function optionsFromPage2(page, media, request) {
     href: anchor.href,
     labelText: anchor.label,
     contextText: page.rawTitle,
+    audio: page.audio,
     addFallbackTrackers: true,
     allowSeriesPackWithoutSeason: true
   }, media, request));
@@ -2195,6 +2222,7 @@ function parseContent3(html, url) {
     rawTitle,
     year: readYear(rawTitle),
     imdbIds: readImdbIds(html),
+    audio: readPageLanguage(html),
     sizeField: readSizeField(html),
     anchors
   };
@@ -2208,6 +2236,7 @@ function optionsFromPage3(page, media, request) {
       href: anchor.href,
       labelText: anchor.label,
       contextText: page.rawTitle,
+      audio: page.audio,
       size: fallbackSize,
       addFallbackTrackers: true,
       allowSeriesPackWithoutSeason: true
@@ -2468,6 +2497,7 @@ function readContent(html, pageUrl) {
     rawTitle: headline,
     year: readYear(headline.split("\xB7")[0]) || readYear(specs.Lan\u00E7amento),
     imdbIds: readImdbIds(html),
+    audio: readPageLanguage(html),
     rows,
     specs,
     yearTolerance: 0
@@ -2506,7 +2536,7 @@ function optionsFromPage4(page, media, request) {
     href: row.href,
     labelText: row.name,
     contextText: page.headline,
-    audio: page.specs.Idiomas || null,
+    audio: page.audio || page.specs.Idiomas || page.specs.Idioma || page.specs["\xC1udio"] || null,
     qualityFallback: page.specs.Qualidade || null,
     size: humanSize(row.name) || singlePageSize,
     addFallbackTrackers: false
@@ -2675,6 +2705,7 @@ function parseContent4(html, url, card) {
     rawTitle,
     year: card.year || readYear(rawTitle) || readYear(infoText),
     imdbIds: pageImdbIds,
+    audio: readPageLanguage(html),
     infoSize: humanSize(infoText),
     anchors
   };
@@ -2708,6 +2739,7 @@ function optionsFromPage5(page, media, request) {
     href: anchor.href,
     labelText: anchor.label,
     contextText: page.rawTitle,
+    audio: page.audio,
     size: humanSize(anchor.label) || singlePageSize,
     addFallbackTrackers: true
   }, media, request));
@@ -2857,6 +2889,7 @@ function parseContent5(html, url) {
     rawTitle,
     year: readYear(rawTitle) || readYear($(".infos").text()),
     imdbIds: readImdbIds(html),
+    audio: readPageLanguage(html),
     anchors
   };
 }
@@ -2865,6 +2898,7 @@ function optionsFromPage6(page, media, request) {
     href: anchor.href,
     labelText: anchor.label,
     contextText: page.rawTitle,
+    audio: page.audio,
     size: humanSize(anchor.label),
     addFallbackTrackers: true
   }, media, request));

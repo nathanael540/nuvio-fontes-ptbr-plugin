@@ -146,6 +146,7 @@ var UNKNOWN_LANGUAGE = LANGUAGE.UNKNOWN;
 var EXACT_MAPPINGS = [
   ["dublado", LANGUAGE.DUBBED],
   ["dublado nao pt br", LANGUAGE.DUBBED_NON_PT_BR],
+  ["por", LANGUAGE.DUBBED_NON_PT_BR],
   ["portugues dialeto desconhecido", LANGUAGE.DUBBED_NON_PT_BR],
   ["legendado", LANGUAGE.SUBTITLED],
   ["legendado nao pt br", LANGUAGE.SUBTITLED_NON_PT_BR],
@@ -153,10 +154,11 @@ var EXACT_MAPPINGS = [
   ["nao pt br", LANGUAGE.NON_PT_BR],
   ["idioma desconhecido", LANGUAGE.UNKNOWN]
 ];
-var KNOWN_FOREIGN_REGEX = /\b(?:ingles|english|espanhol|spanish|japones|japanese|frances|french|alemao|german|italiano|italian|coreano|korean|russo|russian|mandarim|chines|chinese)\b/;
+var KNOWN_FOREIGN_REGEX = /\b(?:ingles|english|espanhol|espanol|spanish|latino|castellano|castelhano|japones|japanese|frances|francais|french|alemao|deutsch|german|italiano|italian|coreano|korean|russo|russian|mandarim|chines|chinese|turco|turca|turkce|turkish|arabe|arabic|hindi|tailandes|thai|vietnamita|vietnamese|polones|polaco|polski|polish|holandes|nederlands|dutch|sueco|sueca|svenska|swedish|dinamarques|dansk|danish|noruegues|norsk|norwegian|finlandes|suomi|finnish|grego|grega|greek|hebraico|hebrew|tcheco|checo|czech|hungaro|hungarian|romeno|romanian|ucraniano|ukrainian|persa|persian|indonesio|indonesian|malaio|malay|filipino|bengali|tamil|telugu|urdu|swahili)\b/;
 var BRAZIL_REGION_REGEX = /\b(?:ptbr|pt br|pob|brazil|brasil|brazilian|brasileiro|brasileira|br)\b/;
 var NON_BR_REGION_REGEX = /\b(?:ptpt|pt pt|portugal|european|europeu|europeia)\b/;
-var EXPLICIT_PT_REGEX = /\b(?:portugues|portuguese|por)\b/;
+var EXPLICIT_PT_REGEX = /\b(?:portugues|portuguese)\b/;
+var DUAL_AUDIO_REGEX = /\b(?:dual|tri)\s+audio\b/;
 function inspectText(text2) {
   if (typeof text2 !== "string") return null;
   const trimmed = text2.trim();
@@ -172,25 +174,31 @@ function inspectText(text2) {
     if (exact[1] === LANGUAGE.NON_PT_BR) return { foreign: true };
     if (exact[1] === LANGUAGE.UNKNOWN) return { unknown: true };
   }
-  const cleaned = normalized.replace(/\b(?:brrip|bdrip|br rip|bd rip)\b/g, " ").replace(/\bdublada\b/g, "dublado").replace(/\blegendada\b/g, "legendado").trim();
+  const cleaned = normalized.replace(/\b(?:brrip|bdrip|br rip|bd rip)\b/g, " ").replace(/\b(dual|tri)\s+audio(?=(?:hdr|mkv|mp4|web|bluray|dublado|legendado)\b)/g, "$1 audio ").replace(/\bdublada\b/g, "dublado").replace(/\blegendada\b/g, "legendado").trim();
   const hasExplicitPt = EXPLICIT_PT_REGEX.test(cleaned);
   const hasBr = BRAZIL_REGION_REGEX.test(cleaned);
   const hasNonBr = NON_BR_REGION_REGEX.test(cleaned);
   const hasForeign = KNOWN_FOREIGN_REGEX.test(cleaned);
-  const hasAudio = /\b(?:dub|dublado|dubbed|nacional)\b/.test(cleaned) || /\baudio\b/.test(cleaned) && (hasBr || hasNonBr || hasExplicitPt);
-  const hasSub = /\b(?:leg|legendado|legenda|legendas|sub|subbed|subtitled|softsub)\b/.test(cleaned);
+  const hasDualAudio = DUAL_AUDIO_REGEX.test(cleaned);
+  const hasDublado = /\b(?:dublado|dublados|dubladas|dubbed|nacional)\b/.test(cleaned);
+  const hasAudio = hasDublado || /\b(?:dub|dublagem|dublagens)\b/.test(cleaned) || hasDualAudio || /\baudio\b/.test(cleaned) && (hasBr || hasNonBr || hasExplicitPt);
+  const hasSub = /\b(?:leg|legendado|legendados|legendadas|legendagem|legendagens|legenda|legendas|sub|subbed|subtitled|subtitles?|softsub)\b/.test(cleaned);
   const result = {};
   if (hasAudio) {
     if (hasNonBr) {
       result.audio = "non_pt_br";
     } else if (hasExplicitPt && !hasBr) {
       result.audio = "non_pt_br";
+    } else if (hasDualAudio && !hasBr && !hasDublado) {
+      result.audio = "non_pt_br";
     } else {
       result.audio = "pt_br";
     }
   }
   if (hasSub) {
-    if (hasNonBr) {
+    if (hasForeign && !hasExplicitPt && !hasBr && !hasNonBr) {
+      result.foreign = true;
+    } else if (hasNonBr) {
       result.sub = "non_pt_br";
     } else if (hasExplicitPt && !hasBr) {
       result.sub = "non_pt_br";
@@ -212,6 +220,23 @@ function inspectText(text2) {
     }
   }
   return Object.keys(result).length > 0 ? result : null;
+}
+function resolveInfo(info) {
+  if (!info) return null;
+  if (info.audio === "pt_br") return LANGUAGE.DUBBED;
+  if (info.audio === "non_pt_br") return LANGUAGE.DUBBED_NON_PT_BR;
+  if (info.sub === "pt_br") return LANGUAGE.SUBTITLED;
+  if (info.sub === "non_pt_br") return LANGUAGE.SUBTITLED_NON_PT_BR;
+  if (info.foreign) return LANGUAGE.NON_PT_BR;
+  if (info.unknown) return LANGUAGE.UNKNOWN;
+  return null;
+}
+function normalizeLanguage(value) {
+  if (typeof value !== "string") {
+    throw new Error(`Idioma deve ser texto (recebido: ${String(value)})`);
+  }
+  const info = inspectText(value);
+  return resolveInfo(info);
 }
 function discoverLanguage({ codes, texts = [] } = {}) {
   if (codes !== void 0 && !Array.isArray(codes)) {
@@ -1065,13 +1090,20 @@ function classifyLanguage(renditions, subtitles) {
   let dub = false;
   let original = false;
   for (const rendition of renditions) {
-    const words2 = wordsOf(`${rendition.NAME || ""} ${rendition.LANGUAGE || ""}`);
-    if (words2.some((word) => DUB_WORDS.has(word))) dub = true;
-    if (words2.some((word) => ORIGINAL_WORDS.has(word))) original = true;
+    const text2 = `${rendition.NAME || ""} ${rendition.LANGUAGE || ""}`;
+    const words2 = wordsOf(text2);
+    const tag = normalizeLanguage(text2);
+    if (words2.some((word) => DUB_WORDS.has(word)) || tag === LANGUAGE.DUBBED || tag === LANGUAGE.DUBBED_NON_PT_BR) {
+      dub = true;
+    }
+    if (words2.some((word) => ORIGINAL_WORDS.has(word)) || tag === LANGUAGE.NON_PT_BR) original = true;
   }
   if (dub) return LANGUAGE.DUBBED;
-  if (original && (subtitles || []).some((subtitle) => wordsOf(`${subtitle.language} ${subtitle.name || ""}`).some((word) => SUBTITLE_PT.has(word)))) {
-    return LANGUAGE.SUBTITLED;
+  if (original) {
+    const hasPortugueseSubtitle = (subtitles || []).some(
+      (subtitle) => wordsOf(`${subtitle.language} ${subtitle.name || ""}`).some((word) => SUBTITLE_PT.has(word))
+    );
+    return hasPortugueseSubtitle ? LANGUAGE.SUBTITLED : LANGUAGE.NON_PT_BR;
   }
   return null;
 }

@@ -278,6 +278,7 @@ function classifyItem(item, media, request) {
     }
 
     const quality = discoverQuality([item.torrent_name, item.magnet_dn, magnet.dn]);
+    // item.languages mistura áudio e legenda embutida (há releases com centenas de .srt), então não comprova áudio.
     const language = languageFromTexts([item.torrent_name, item.magnet_dn, magnet.dn]);
     const size = formatItemSize(item, magnet);
 

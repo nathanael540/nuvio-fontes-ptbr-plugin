@@ -190,6 +190,16 @@ test('Dual Áudio e Legendado exigem prova; sem faixa o idioma sai', async () =>
   assert.equal((await plain.getStreams('1', 'movie', null, null))[0].language, 'Idioma Desconhecido');
 });
 
+test('áudio estrangeiro comprovado sem legenda PT sai como Não PT-BR', async () => {
+  const english = '#EXTM3U\n#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="aac",NAME="English",LANGUAGE="en"\n#EXT-X-STREAM-INF:RESOLUTION=1280x720,AUDIO="aac"\nhttps://cdn.example/en.m3u8\n';
+  const app = runtime((url) => url.pathname === '/embed/1'
+    ? page([hls('https://cdn.example/master.m3u8', 'Opção 1')])
+    : english);
+  const stream = (await app.getStreams('1', 'movie', null, null))[0];
+  assert.equal(stream.language, 'Não PT-BR');
+  assert.equal(stream.name, 'MegaEmbed 720p\n🗣️ Não PT-BR\n🌐 HTTP 🔍 cdn.example');
+});
+
 test('lista vazia encerra a rotação; HTML sem sources e falha de rede passam ao próximo espelho', async () => {
   const absent = runtime(library);
   assert.deepEqual(await absent.getStreams('99999999', 'movie', null, null), []);

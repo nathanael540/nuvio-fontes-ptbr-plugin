@@ -303,8 +303,8 @@ test('onze catálogos em paralelo: deduplica mesmo hash na ordem da decisão 4, 
   assert.equal(matching1080.length, 1);
   assert.equal(matching1080[0].provider, 'baixarapido');
   assert.deepEqual({ name: matching1080[0].name, title: matching1080[0].title }, {
-    name: 'Baixa Rápido 1080p\n🗣️ Idioma Desconhecido\n🧲 P2P 👥 ?/? 🔍 baixarapido\n📁 Matrix (1999) 1080p Dual Audio',
-    title: ['🗣️ Idioma Desconhecido', '🧲 P2P 📦 2.03 GB 👥 ?/? 🔍 baixarapido', '📁 Matrix (1999) 1080p Dual Audio'].join('\n'),
+    name: 'Baixa Rápido 1080p\n🗣️ Dublado (Não PT-BR?)\n🧲 P2P 👥 ?/? 🔍 baixarapido\n📁 Matrix (1999) 1080p Dual Audio',
+    title: ['🗣️ Dublado (Não PT-BR?)', '🧲 P2P 📦 2.03 GB 👥 ?/? 🔍 baixarapido', '📁 Matrix (1999) 1080p Dual Audio'].join('\n'),
   });
 
   // O 4K exclusivo do limpotorrents entra com provider 'limpotorrents'
@@ -507,7 +507,7 @@ test('formatador: a variante Prism usa o selo e o título do TMDB', async () => 
   assert.equal(app.logs.error.length, 0, app.logs.error.join('\n'));
   assert.deepEqual(streams.map((stream) => stream.name).sort(), [
     '💿 HD 720p\n🎬 Matrix (1999)\n🗣️ Dublado\n🧲 P2P 🌱 ?/?\n📡 baixarapido',
-    '🚀 FHD 1080p\n🎬 Matrix (1999)\n🗣️ Idioma Desconhecido\n🧲 P2P 🌱 ?/?\n📡 baixarapido',
+    '🚀 FHD 1080p\n🎬 Matrix (1999)\n🗣️ Dublado (Não PT-BR?)\n🧲 P2P 🌱 ?/?\n📡 baixarapido',
   ]);
   for (const stream of streams) {
     const lines = stream.title.split('\n');
@@ -557,4 +557,19 @@ test('release sem qualidade no rótulo, no dn e na URL continua na lista com Des
   assert.equal(unknown.quality, 'Desconhecida');
   assert.equal(streams[streams.length - 1].quality, 'Desconhecida');
   assert.equal(unknown.name, 'Baixa Rápido Desconhecida\n🗣️ Dublado\n🧲 P2P 👥 ?/? 🔍 baixarapido\n📁 Matrix.1999.SemQualidade');
+});
+
+test('readPageLanguage lê Idioma/Idiomas/Áudio e ignora Qualidade de Áudio', async () => {
+  const { readPageLanguage } = await import('../src/baixarapido/common.js');
+  assert.equal(
+    readPageLanguage('<span class="info_p">Idiomas</span>: Português / Inglês<br><span>Qualidade</span>: 1080p'),
+    'Português / Inglês',
+  );
+  assert.equal(
+    readPageLanguage('<b>Qualidade de Áudio:</b> 10 <b>Idioma:</b> Português, Inglês<br><b>Tamanho:</b> 2 GB'),
+    'Português, Inglês',
+  );
+  assert.equal(readPageLanguage('<b>Qualidade do Áudio:</b> 10'), null);
+  assert.equal(readPageLanguage('<b>Áudio:</b> Original'), 'Original');
+  assert.throws(() => readPageLanguage(null), /html deve ser texto/);
 });

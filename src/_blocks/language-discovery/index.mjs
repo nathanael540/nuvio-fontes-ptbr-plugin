@@ -34,6 +34,7 @@ export const UNKNOWN_LANGUAGE = LANGUAGE.UNKNOWN;
 const EXACT_MAPPINGS = [
   ['dublado', LANGUAGE.DUBBED],
   ['dublado nao pt br', LANGUAGE.DUBBED_NON_PT_BR],
+  ['por', LANGUAGE.DUBBED_NON_PT_BR],
   ['portugues dialeto desconhecido', LANGUAGE.DUBBED_NON_PT_BR],
   ['legendado', LANGUAGE.SUBTITLED],
   ['legendado nao pt br', LANGUAGE.SUBTITLED_NON_PT_BR],
@@ -42,10 +43,12 @@ const EXACT_MAPPINGS = [
   ['idioma desconhecido', LANGUAGE.UNKNOWN],
 ];
 
-const KNOWN_FOREIGN_REGEX = /\b(?:ingles|english|espanhol|spanish|japones|japanese|frances|french|alemao|german|italiano|italian|coreano|korean|russo|russian|mandarim|chines|chinese)\b/;
+const KNOWN_FOREIGN_REGEX = /\b(?:ingles|english|espanhol|espanol|spanish|latino|castellano|castelhano|japones|japanese|frances|francais|french|alemao|deutsch|german|italiano|italian|coreano|korean|russo|russian|mandarim|chines|chinese|turco|turca|turkce|turkish|arabe|arabic|hindi|tailandes|thai|vietnamita|vietnamese|polones|polaco|polski|polish|holandes|nederlands|dutch|sueco|sueca|svenska|swedish|dinamarques|dansk|danish|noruegues|norsk|norwegian|finlandes|suomi|finnish|grego|grega|greek|hebraico|hebrew|tcheco|checo|czech|hungaro|hungarian|romeno|romanian|ucraniano|ukrainian|persa|persian|indonesio|indonesian|malaio|malay|filipino|bengali|tamil|telugu|urdu|swahili)\b/;
 const BRAZIL_REGION_REGEX = /\b(?:ptbr|pt br|pob|brazil|brasil|brazilian|brasileiro|brasileira|br)\b/;
 const NON_BR_REGION_REGEX = /\b(?:ptpt|pt pt|portugal|european|europeu|europeia)\b/;
-const EXPLICIT_PT_REGEX = /\b(?:portugues|portuguese|por)\b/;
+const EXPLICIT_PT_REGEX = /\b(?:portugues|portuguese)\b/;
+// "Dual Áudio"/"Tri Áudio" em catálogo PT-BR: há áudio português, mas a fonte não comprova a região.
+const DUAL_AUDIO_REGEX = /\b(?:dual|tri)\s+audio\b/;
 
 /**
  * Analisa um texto e extrai indícios linguísticos normalizados.
@@ -73,6 +76,7 @@ function inspectText(text) {
   // Remove encode/format tags que contenham "br" ou "bd" para evitar falsos positivos
   const cleaned = normalized
     .replace(/\b(?:brrip|bdrip|br rip|bd rip)\b/g, ' ')
+    .replace(/\b(dual|tri)\s+audio(?=(?:hdr|mkv|mp4|web|bluray|dublado|legendado)\b)/g, '$1 audio ')
     .replace(/\bdublada\b/g, 'dublado')
     .replace(/\blegendada\b/g, 'legendado')
     .trim();
@@ -81,10 +85,14 @@ function inspectText(text) {
   const hasBr = BRAZIL_REGION_REGEX.test(cleaned);
   const hasNonBr = NON_BR_REGION_REGEX.test(cleaned);
   const hasForeign = KNOWN_FOREIGN_REGEX.test(cleaned);
+  const hasDualAudio = DUAL_AUDIO_REGEX.test(cleaned);
 
-  const hasAudio = /\b(?:dub|dublado|dubbed|nacional)\b/.test(cleaned)
+  const hasDublado = /\b(?:dublado|dublados|dubladas|dubbed|nacional)\b/.test(cleaned);
+  const hasAudio = hasDublado
+    || /\b(?:dub|dublagem|dublagens)\b/.test(cleaned)
+    || hasDualAudio
     || (/\baudio\b/.test(cleaned) && (hasBr || hasNonBr || hasExplicitPt));
-  const hasSub = /\b(?:leg|legendado|legenda|legendas|sub|subbed|subtitled|softsub)\b/.test(cleaned);
+  const hasSub = /\b(?:leg|legendado|legendados|legendadas|legendagem|legendagens|legenda|legendas|sub|subbed|subtitled|subtitles?|softsub)\b/.test(cleaned);
 
   const result = {};
 
@@ -93,13 +101,18 @@ function inspectText(text) {
       result.audio = 'non_pt_br';
     } else if (hasExplicitPt && !hasBr) {
       result.audio = 'non_pt_br';
+    } else if (hasDualAudio && !hasBr && !hasDublado) {
+      result.audio = 'non_pt_br';
     } else {
       result.audio = 'pt_br';
     }
   }
 
   if (hasSub) {
-    if (hasNonBr) {
+    // "English sub"/"Legendado Inglês" citam legenda estrangeira, não legenda PT-BR.
+    if (hasForeign && !hasExplicitPt && !hasBr && !hasNonBr) {
+      result.foreign = true;
+    } else if (hasNonBr) {
       result.sub = 'non_pt_br';
     } else if (hasExplicitPt && !hasBr) {
       result.sub = 'non_pt_br';
@@ -168,9 +181,12 @@ export function normalizeLanguage(value) {
  * Procura o modo de idioma em uma lista de textos candidatos em ordem de prioridade.
  *
  * Função auxiliar de resultado intermediário: percorre os textos e retorna o primeiro membro
- * do enum `LANGUAGE` reconhecido, ou `null` se nenhum texto for conclusivo, permitindo que a
- * tentativa continue em outras fontes ou caia na descoberta final. O valor `null` é restrito a
- * este resultado intermediário e nunca compõe a saída final.
+ * do enum `LANGUAGE` com áudio ou legenda reconhecidos. Texto apenas estrangeiro fica como
+ * reserva e só vence quando nenhum candidato posterior comprova áudio ou legenda em português;
+ * assim, um nome de release com "English" não anula um rótulo "Dublado" do mesmo candidato.
+ * Retorna `null` se nenhum texto for conclusivo, permitindo que a tentativa continue em outras
+ * fontes ou caia na descoberta final. O valor `null` é restrito a este resultado intermediário
+ * e nunca compõe a saída final.
  *
  * @param {(string|null|undefined)[]} parts - Textos candidatos em ordem de prioridade.
  * @returns {string|null} Membro do enum `LANGUAGE` reconhecido ou `null` se inconclusivo.
@@ -183,12 +199,18 @@ export function languageFromTexts(parts) {
   if (!Array.isArray(parts)) {
     throw new Error('parts deve ser lista');
   }
+  // Primeiro áudio/legenda PT: um nome de release com "English" não pode anular
+  // um rótulo posterior "Dublado" do mesmo candidato.
+  let fallback = null;
   for (const part of parts) {
     if (typeof part !== 'string' || part.trim() === '') continue;
-    const recognized = normalizeLanguage(part);
-    if (recognized) return recognized;
+    const info = inspectText(part);
+    if (!info) continue;
+    if (info.audio || info.sub) return resolveInfo(info);
+    if (info.foreign) fallback = LANGUAGE.NON_PT_BR;
+    else if (info.unknown && fallback === null) fallback = LANGUAGE.UNKNOWN;
   }
-  return null;
+  return fallback;
 }
 
 /**

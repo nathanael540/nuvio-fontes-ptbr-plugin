@@ -173,7 +173,7 @@ function readPost(item) {
     title,
     html,
     imdbIds: [...new Set([...html.matchAll(/imdb\.com\/title\/(tt\d+)/gi)].map((match) => match[1]))],
-    audio: labeled(html, ['Áudio', 'Audio', 'Idioma']),
+    audio: labeled(html, ['Áudio', 'Audio', 'Idioma', 'Idiomas', 'Idioma do Áudio']),
     sizeField: labeled(html, ['Tamanho']),
     year: readYear(html, title),
   };
