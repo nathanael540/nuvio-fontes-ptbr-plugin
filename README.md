@@ -6,14 +6,14 @@ Repositório de provedores (plugins) para o [Nuvio](https://github.com/tapframe/
 
 ## Provedores
 
-A tabela dos provedores, com o status de cada um (Estável, Parcial, Instável ou Desativado), está em [providers.md](providers.md).
+A tabela dos provedores, com o status de cada um (🟢 Estável, 🔵 Parcial, 🔴 Instável, 🟠 Não verificado ou ⚫ Desativado) e a data da última verificação online, está em [providers.md](providers.md).
 
 ## Como este repositório é construído
 
 > **O código e a documentação deste repositório são gerados por agentes de IA.**
 
 1. O desenvolvimento é feito por agentes de IA guiados pela metodologia [OpenSpec](https://openspec.dev) (desenvolvimento orientado a especificações): cada mudança parte de uma especificação em [openspec/](openspec/), e as regras que os agentes seguem estão em [AGENTS.md](AGENTS.md).
-2. O mantenedor define o escopo, aprova as decisões de arquitetura (refletidas em [docs/arch.md](docs/arch.md)) e exige testes Node de cada provedor antes de publicar.
+2. O mantenedor define o escopo, aprova as decisões de arquitetura (refletidas em [docs/arch.md](docs/arch.md)) e exige testes Node de desenvolvimento e evidência online antes de publicar.
 3. Lint e testes Node reduzem erros, mas não os eliminam. O código é fornecido como está, sem garantias: se for usar, adaptar ou redistribuir, revise-o antes, principalmente porque os provedores rodam no seu aparelho.
 
 ## Usar no Nuvio
@@ -33,7 +33,8 @@ A tabela dos provedores, com o status de cada um (Estável, Parcial, Instável o
 2. Testes Node e fixtures ficam em `test/`; cada teste de bloco fica em `test/blocks/<bloco>/index.test.mjs` e o código em `src/_blocks/<bloco>/index.mjs`.
 3. O servidor está em `test/server.js`.
 4. Pacotes temporários, fluxos gerados, relatórios, logs e capturas ficam em `test/artifacts/`, ignorada pelo Git, pelo lint e pela descoberta de testes.
-5. `npm test`, `npm run lint` e `npm start` foram preservados; a descoberta Node seleciona explicitamente apenas `*.test.js` e `*.test.mjs` sob `test/`. `build.js`, código publicado, specs e catálogos ficam fora de `test/`.
+5. `npm test` continua offline; `npm run test:online -- --provider <id>` é a verificação explícita com rede real e usa os catálogos em `test/online/`.
+6. `npm test`, `npm run lint` e `npm start` foram preservados; a descoberta Node seleciona explicitamente apenas `*.test.js` e `*.test.mjs` sob `test/`. `build.js`, código publicado e specs ficam fora de `test/`; os catálogos de referência da verificação online ficam em `test/online/catalogs/`.
 
 ## Scripts
 
@@ -41,11 +42,12 @@ A tabela dos provedores, com o status de cada um (Estável, Parcial, Instável o
 2. `npm run build:min` — empacota com minificação (publicação).
 3. `npm run lint` — verifica o código com ESLint: restrições do runtime do app em `src/` e JSDoc obrigatório nos blocos.
 4. `npm test` — valida o manifest, o catálogo de provedores (`providers.md`), o pipeline de build, o catálogo de blocos, os blocos, o servidor local e os provedores com respostas controladas, sem internet.
-5. `npm start` — servidor estático local de manifests e pacotes (ver [test/README.md](test/README.md)).
+5. `npm run test:online -- --provider <id>` — executa o pacote publicado com rede real, sorteia cinco títulos por tipo e registra a evidência online (ver [test/README.md](test/README.md)).
+6. `npm start` — servidor estático local de manifests e pacotes (ver [test/README.md](test/README.md)).
 
 ## Documentação
 
-1. [providers.md](providers.md) — tabela dos provedores e status.
+1. [providers.md](providers.md) — tabela dos provedores, status visual, data da última verificação e resumo da última rodada.
 2. [docs/arch.md](docs/arch.md) — arquitetura, restrições do runtime e contrato do provedor.
 3. [src/\_blocks/index.md](src/_blocks/index.md) — catálogo de blocos reutilizáveis para montar provedores.
 4. [test/README.md](test/README.md) — comandos e operação da infraestrutura de testes.
@@ -69,7 +71,7 @@ Contribuições são bem-vindas, feitas por pessoas ou com ajuda de agentes de I
 1. Faça um fork e crie um branch descritivo, ex.: `add-<id>` para um provedor novo ou `fix-<id>` para uma correção.
 2. Leia o [AGENTS.md](AGENTS.md) e siga as regras de código, blocos e validação. Mudanças de comportamento (provedor novo, contrato, build ou manifest) começam por uma proposta em `openspec/changes/`.
 3. Monte o provedor a partir de `src/_template/` e dos blocos do [catálogo](src/_blocks/index.md). Código reutilizável entre provedores vai para `src/_blocks/`, com JSDoc e testes.
-4. Antes de abrir o PR, rode `npm run lint`, `npm test` e `node build.js <id>`. Cubra o provedor com testes Node, conforme [docs/tests.md](docs/tests.md); todos os testes rodam em Node, sem o app Nuvio instalado.
+4. Antes de abrir o PR, rode `npm run lint`, `npm test` e `node build.js <id>`. Cubra o provedor com testes Node de desenvolvimento, conforme [docs/tests.md](docs/tests.md); eles rodam em Node, sem o app Nuvio instalado e sem internet. A evidência de funcionamento para publicação é a rodada online explícita com `npm run test:online -- --provider <id>`, também descrita em [docs/tests.md](docs/tests.md).
 5. Inclua no PR os arquivos gerados, a entrada no `manifest.json` e a linha e a seção do provedor em [providers.md](providers.md).
 6. Nunca inclua chaves, tokens ou senhas: o repositório é público. Bypass, proxy, VPN e qualquer outro serviço são permitidos quando forem abertos, públicos e utilizáveis sem conta e sem chave. É proibido o que exige chave, token, senha ou criação de conta. A única chave externa é a do catálogo, entregue pelo app (`TMDB_API_KEY`). Cálculo local, sem conta e sem chave, é permitido.
 

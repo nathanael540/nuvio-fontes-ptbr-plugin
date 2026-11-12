@@ -53,16 +53,17 @@ Guia para agentes de IA e contribuidores deste repositório.
 
 1. Rode `npm run lint` e `npm test` após qualquer alteração em `manifest.json`, `build.js`, `src/` ou `test/`. Não desative regras do lint sem justificar no próprio comentário (`-- motivo`).
 2. Rode `node build.js <id>` para o provedor alterado e confirme que o build não falha.
-3. Todos os testes são em Node, sem o app Nuvio instalado e sem acesso à internet. Mudanças em provedores exigem testes Node em `test/<id>.test.js` cobrindo filme, episódio, pacote e ausência quando aplicáveis, com fixtures de respostas reais da fonte (ver `docs/tests.md`).
-4. Preencha todos os campos opcionais do stream que a fonte fornecer (contrato em `docs/arch.md`), mesmo os que o app ainda não usa.
-5. Toda a infraestrutura de testes fica em `test/`; saídas geradas vão para `test/artifacts/`, ignorada pelo Git.
+3. Testes de desenvolvimento são em Node, sem o app Nuvio instalado e sem acesso à internet. Mudanças em provedores exigem testes Node em `test/<id>.test.js` cobrindo filme, episódio, pacote e ausência quando aplicáveis, com fixtures de respostas reais da fonte (ver `docs/tests.md`). A aprovação offline não comprova funcionamento nem autoriza publicação.
+4. Funcionamento e publicação exigem evidência online do pacote final, obtida com `npm run test:online -- --provider <id>` após o build, e registrada em `providers.md`. A rodada usa rede real e `TMDB_API_KEY` apenas do ambiente quando o provedor consulta o TMDB; nenhuma chave entra no repositório.
+5. Preencha todos os campos opcionais do stream que a fonte fornecer (contrato em `docs/arch.md`), mesmo os que o app ainda não usa.
+6. Toda a infraestrutura de testes fica em `test/`; saídas geradas vão para `test/artifacts/`, ignorada pelo Git.
 
 ## Documentação
 
 1. Mantenha `README.md`, `providers.md`, `docs/` e as specs sincronizados com o código na mesma mudança.
-2. `providers.md` contém só a tabela dos provedores publicados e uma seção por provedor com o status. Atualize-o na mesma mudança que cria, altera ou remove um provedor ou muda seu status (critérios em `docs/tests.md`).
+2. `providers.md` contém a tabela dos provedores publicados, uma seção por provedor com o status e o bloco da última rodada online. Atualize-o na mesma mudança que cria, altera ou remove um provedor ou muda seu status (critérios em `docs/tests.md`). Registros operacionais e evidência de funcionamento ficam nele; decisões de mudança, questões em aberto e validação ficam no `design.md` da change.
 3. `docs/arch.md` descreve só a estrutura, os padrões e as convenções globais. Edite-o só quando um deles mudar, sem justificativas, registros datados ou detalhes de provedores.
 4. Decisões que valem para todos os provedores ou para a estrutura e as ferramentas do repositório viram regra em `docs/arch.md` ou neste arquivo, na mesma mudança que as adota; o motivo fica no `design.md` da change.
 5. `docs/tests.md` descreve os tipos de teste; `test/README.md` traz os comandos.
-6. Decisões de um único provedor ou mudança, questões em aberto e registros de teste ficam no `design.md` da change; o comportamento esperado fica na spec da capacidade.
+6. Decisões de um único provedor ou mudança, questões em aberto e validação da mudança ficam no `design.md` da change; registros operacionais das rodadas online ficam em `providers.md`; o comportamento esperado fica na spec da capacidade.
 7. Use listas numeradas; não use fluxogramas nem diagramas.

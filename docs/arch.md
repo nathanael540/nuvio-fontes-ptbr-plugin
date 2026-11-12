@@ -25,7 +25,7 @@ Referências:
 5. `gdrive/` e `prism/`: uma pasta por template de formatação, cada uma com `manifest.json` e `providers/<id>.js` com o template fixo. Geradas pelo build e versionadas.
 6. `manifest.json`: registro do repositório e dos provedores publicados, escrito à mão. Os `<formato>/manifest.json` são gerados a partir dele.
 7. `build.js`: empacotador (esbuild) de `src/<id>/` para `providers/<id>.js` e as variantes de formato, e gerador dos `<formato>/manifest.json`.
-8. `test/`: toda a infraestrutura de testes, só em Node, sem o app instalado: suítes `node:test`, testes de blocos em `test/blocks/<bloco>/index.test.mjs`, fixtures em `test/fixtures/`, utilitários em `test/support/`, servidor local `test/server.js` e saídas geradas em `test/artifacts/` (ignorada pelo Git). Detalhes em [tests.md](tests.md).
+8. `test/`: toda a infraestrutura de testes, só em Node, sem o app instalado: suítes `node:test`, testes de blocos em `test/blocks/<bloco>/index.test.mjs`, fixtures em `test/fixtures/`, utilitários em `test/support/`, servidor local `test/server.js`, verificação online em `test/online/` e saídas geradas em `test/artifacts/` (ignorada pelo Git). Detalhes em [tests.md](tests.md).
 9. `openspec/`: especificações (`specs/`) e mudanças (`changes/`, com as concluídas em `changes/archive/`).
 10. `docs/`: arquitetura (`arch.md`) e testes (`tests.md`).
 11. `providers.md`: tabela dos provedores publicados, com uma seção de status por provedor. O teste `test/providers-catalog.test.js` o confere contra o `manifest.json`.
@@ -103,9 +103,19 @@ Nunca edite manualmente `providers/`, `<formato>/providers/` nem `<formato>/mani
 3. `npm run lint` roda o ESLint com três perfis em `eslint.config.mjs`: runtime do app (`src/`, só as globais e módulos da seção 3, item 5), blocos (`src/_blocks/**/index.mjs`, mais JSDoc completo nas funções exportadas) e Node (scripts da raiz e `test/`).
 4. Requer Node.js `^22.22.2 || >=24.15.0` (campo `engines`).
 5. `overrides` do `package.json` fixa `minimatch@^11.0.5`, versão corrigida exigida pelas dependências do ESLint. Remova quando elas aceitarem a versão corrigida sem o override.
-6. Antes de publicar, `npm audit` deve terminar sem vulnerabilidades.
+6. Antes de publicar, `npm audit` deve terminar sem vulnerabilidades. Exceção conhecida: a dependência somente de desenvolvimento `cheerio-without-node-native` mantém a cadeia `css-select`/`nth-check` sinalizada, sem versão corrigida compatível com a API usada pelos provedores; ela não entra no pacote publicado e a pendência fica registrada no design da mudança que a adotou.
 7. Publicação pelo branch `main`; renomeá-lo quebra a URL de quem já adicionou o repositório.
 
-## 7. Convenção de commits
+## 7. Verificação online
+
+1. `npm test` continua offline e não executa rede. A verificação de funcionamento é o comando explícito `npm run test:online -- --provider <id>`, que lê o pacote já gerado em `providers/<id>.js` e não reconstrói o arquivo.
+2. O runner identifica o pacote por SHA-256, usa os catálogos e perfis de `test/online/`, sorteia cinco títulos por tipo de `supportedTypes` e executa cada caso em um worker isolado. A semente e a seleção ficam no relatório e no resumo.
+3. A execução usa `fetch` real e os módulos externos reais, sem fixture, `basic-html` ou resposta simulada. `TMDB_API_KEY` entra só pelo ambiente local; sem ela, um provedor que consulta o TMDB fica inconclusivo por configuração, não por falha da fonte.
+4. O limite de tempo é externo, por caso, configurável no harness (padrão 120 segundos). O provedor publicado continua sem timeout próprio. Um caso expirado é `Inconclusivo` e não interrompe os demais.
+5. O relatório transitório fica em `test/artifacts/online/<run-id>/result.json` e é sanitizado: sem streams completos, URLs, corpos de resposta, cabeçalhos ou credenciais. O resumo público fica em `providers.md`, com uma única rodada por provedor, status visual e data curta, sem hashes.
+6. O status público usa somente evidência online da mesma identidade (pacote, tipos, perfil e catálogos). Testes de desenvolvimento não aprovam funcionamento nem alteram `providers.md`.
+7. O harness Node não reproduz o QuickJS, não abre o app, não reproduz vídeo e não baixa mídia por P2P. A rodada comprova a resolução e o contrato dos streams, não a reprodução no aparelho.
+
+## 8. Convenção de commits
 
 1. Conventional Commits, com tipos em inglês e descrição em pt-BR. As regras ficam em [AGENTS.md — Commits](../AGENTS.md#commits), com exemplos no [README](../README.md#commits).

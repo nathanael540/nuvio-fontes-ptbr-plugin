@@ -12,10 +12,12 @@
     "build:min": "node build.js --minify",
     "start": "node test/server.js",
     "lint": "eslint src test *.js *.mjs",
-    "test": "node --test \"test/*.test.js\" \"test/*.test.mjs\" \"test/blocks/*/index.test.mjs\""
+    "test": "node --test \"test/*.test.js\" \"test/*.test.mjs\" \"test/blocks/*/index.test.mjs\"",
+    "test:online": "node test/online/run.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "cheerio-without-node-native": "1.0.0-rc.2",
     "esbuild": "^0.28.2",
     "eslint": "^10.14.0",
     "eslint-plugin-jsdoc": "^65.4.5",
