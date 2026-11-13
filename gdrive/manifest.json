@@ -523,6 +523,27 @@
         "pt"
       ],
       "logo": "https://www.google.com/s2/favicons?domain=dattebayo-br.com&sz=128"
+    },
+    {
+      "id": "anitube",
+      "name": "AniTube",
+      "description": "Filmes e séries de anime em HLS e MP4 do AniTube, dublados ou legendados conforme a ficha e o player.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/anitube.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=www.anitube.zip&sz=128"
     }
   ]
 }

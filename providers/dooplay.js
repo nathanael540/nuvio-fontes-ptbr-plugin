@@ -1869,11 +1869,30 @@ function toMediaInfo(data, tmdbId, mediaType) {
     year: releaseDate ? Number(releaseDate.slice(0, 4)) : null,
     imdbId: data.external_ids.imdb_id || null,
     alternativeTitles: brazilianAlternativeTitles(alternatives, title),
+    romajiTitles: romajiAlternativeTitles(alternatives),
+    seasons: isMovie ? [] : readSeasons(data.seasons),
     originalLanguage,
     originCountries: data.origin_country || [],
-    genreIds,
-    seasons: readSeasons(data.seasons)
+    genreIds
   };
+}
+function romajiAlternativeTitles(alternatives) {
+  const titles = [];
+  const seen = /* @__PURE__ */ new Set();
+  for (const item of alternatives) {
+    if (!item || typeof item !== "object") continue;
+    const type = typeof item.type === "string" ? item.type : "";
+    if (!/romaji|romanized/i.test(type)) continue;
+    const title = typeof item.title === "string" ? item.title.trim() : "";
+    if (title === "") continue;
+    const match = /season\s+(\d+)/i.exec(type);
+    const season = match ? Number(match[1]) : null;
+    const key = `${title.toLowerCase()}\0${season === null ? "" : season}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    titles.push({ title, season });
+  }
+  return titles;
 }
 function readSeasons(raw) {
   if (!Array.isArray(raw)) return [];
@@ -1886,9 +1905,14 @@ function readSeasons(raw) {
       number,
       episodeCount,
       name: typeof name === "string" ? name : "",
-      airDate: typeof airDate === "string" && airDate !== "" ? airDate : null
+      airDate: typeof airDate === "string" && airDate !== "" ? airDate : null,
+      year: readYear(airDate)
     };
   });
+}
+function readYear(value) {
+  if (typeof value !== "string" || !/^\d{4}/.test(value)) return null;
+  return Number(value.slice(0, 4));
 }
 function brazilianAlternativeTitles(alternatives, title) {
   const titles = alternatives.filter((item) => item.iso_3166_1 === BRAZIL).map((item) => item.title);
@@ -2166,7 +2190,7 @@ function searchJson(source, query, media) {
         throw new Error("Item de busca incompleto");
       }
       const address = httpUrl(item.url, source.origin);
-      return { url: address, title: cleanTitle(item.title), year: readYear(String(item.year || item.title)), type: item.type, keep: accepts(address, media.mediaType) };
+      return { url: address, title: cleanTitle(item.title), year: readYear2(String(item.year || item.title)), type: item.type, keep: accepts(address, media.mediaType) };
     }).filter((item) => item.keep);
   });
 }
@@ -2191,7 +2215,7 @@ function searchHtml(source, query, media) {
       if (!accepts(address, media.mediaType)) continue;
       const raw = article.find(".title").text().trim();
       if (!raw) throw new Error("Cart\xE3o de busca sem t\xEDtulo");
-      found.push({ url: address, title: cleanTitle(raw), year: readYear(article.find(".year").text()) || readYear(raw) });
+      found.push({ url: address, title: cleanTitle(raw), year: readYear2(article.find(".year").text()) || readYear2(raw) });
     }
     return found;
   });
@@ -2329,7 +2353,7 @@ function accepts(url, mediaType) {
 function cleanTitle(value) {
   return value.replace(/\s+\((?:19|20)\d{2}\)\s*$/, "").trim();
 }
-function readYear(text2) {
+function readYear2(text2) {
   const match = /\b(?:19|20)\d{2}\b/.exec(text2 || "");
   return match ? Number(match[0]) : null;
 }

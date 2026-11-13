@@ -9,6 +9,7 @@
     "doramogo": { "exclusiveTag": "dorama" },
     "dattebayo": {
       "exclusiveTag": "anime"
-    }
+    },
+    "anitube": { "exclusiveTag": "anime" }
   }
 }

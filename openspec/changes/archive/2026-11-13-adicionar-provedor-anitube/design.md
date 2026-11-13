@@ -139,3 +139,11 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 12
 1. Confirmar, na primeira rodada online, se a busca do site permanece em página única para consultas com muitos resultados. A resposta não muda o desenho atual; se houver paginação, vira uma mudança própria.
 2. Confirmar se o rótulo `720p HD` do player FHD é estável em todo o acervo. Hoje a qualidade é lida do player; um rótulo diferente é normalizado ou vira `Desconhecida`, sem requisição extra.
 3. Confirmar se algum episódio antigo publica somente o player FHD ou nenhum dos dois. Os testes cobrem a ausência de player como erro de estrutura; a rodada online mede a frequência real.
+
+## Validation
+
+1. A rodada online de 2026-11-13, com o perfil `anime` e o pacote 1.0.0, resolveu 3/5 filmes e 5/5 séries, resultando em `Estável`. Akira e Princesa Mononoke terminaram como `Sem resultado` porque a busca do site não devolve página correspondente no recorte observado; não houve falha de rede ou de estrutura nesses casos.
+2. A busca permaneceu em página única nas consultas amostradas; `.centerPagination` veio vazio e nenhuma paginação foi necessária.
+3. Os players FHD amostrados usaram `720p HD`; os MP4 do Blogger anunciaram `360p` e `720p`. A descoberta local cobre rótulos diferentes sem requisição extra.
+4. Naruto Shippuden episódio 001 publicou somente o Player 1, confirmando que ele não pode ser descartado. Nenhum episódio amostrado publicou somente o FHD.
+5. As fixtures de desenvolvimento e a suíte `test/anitube.test.js` cobrem filme direto, filme agregado, filme por página de série, episódio com os dois players, episódio só com Player 1, temporada posterior, spin-off descartado, ausência, qualidade desconhecida e falha isolada de player. A aprovação offline não substitui a rodada online.

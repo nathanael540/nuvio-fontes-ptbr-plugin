@@ -18,6 +18,21 @@ const DORAMA_LANGUAGES = ['ko', 'zh', 'cn', 'ja', 'th'];
  */
 
 /**
+ * @typedef {object} RomajiTitle
+ * @property {string} title - Título em romaji ou romanizado.
+ * @property {number|null} season - Temporada nomeada pelo tipo do título (ex.: `Season 2 Romaji`); `null` quando o tipo não nomeia temporada.
+ */
+
+/**
+ * @typedef {object} SeasonInfo
+ * @property {number} number - Número da temporada no TMDB (0 para especiais).
+ * @property {string} name - Nome da temporada.
+ * @property {string|null} airDate - Data de estreia no formato AAAA-MM-DD; `null` quando ausente.
+ * @property {number|null} year - Ano de estreia derivado de `airDate`; `null` quando ausente.
+ * @property {number} episodeCount - Quantidade de episódios informada pelo TMDB.
+ */
+
+/**
  * @typedef {object} MediaInfo
  * @property {string} tmdbId - ID numérico do TMDB.
  * @property {'movie'|'tv'} mediaType - Tipo recebido do app.
@@ -27,11 +42,11 @@ const DORAMA_LANGUAGES = ['ko', 'zh', 'cn', 'ja', 'th'];
  * @property {number|null} year - Ano de lançamento; `null` quando o TMDB não tem data.
  * @property {string|null} imdbId - ID do IMDb (ex.: "tt15239678"); `null` quando o TMDB não tem.
  * @property {string[]} alternativeTitles - Títulos alternativos registrados para o Brasil, sem repetir `title`.
+ * @property {RomajiTitle[]} romajiTitles - Títulos romaji/romanizados de `alternative_titles`, sem repetir título e temporada.
+ * @property {SeasonInfo[]} seasons - Temporadas regulares e especiais da série, na ordem do TMDB, incluindo a temporada 0; lista vazia em filme ou quando o TMDB não traz a lista.
  * @property {string} originalLanguage - Código ISO 639-1 do idioma original (ex.: "en", "ja").
  * @property {string[]} originCountries - Códigos ISO 3166-1 dos países de origem.
  * @property {number[]} genreIds - IDs de gênero do TMDB.
- * @property {{ number: number, episodeCount: number, name: string, airDate: string|null }[]} seasons -
- *   Temporadas regulares e especiais da série, na ordem do TMDB, incluindo a temporada 0; lista vazia em filme.
  */
 
 /**
@@ -118,18 +133,43 @@ function toMediaInfo(data, tmdbId, mediaType) {
     year: releaseDate ? Number(releaseDate.slice(0, 4)) : null,
     imdbId: data.external_ids.imdb_id || null,
     alternativeTitles: brazilianAlternativeTitles(alternatives, title),
+    romajiTitles: romajiAlternativeTitles(alternatives),
+    seasons: isMovie ? [] : readSeasons(data.seasons),
     originalLanguage,
     originCountries: data.origin_country || [],
     genreIds,
-    seasons: readSeasons(data.seasons),
   };
+}
+
+/**
+ * Títulos romaji ou romanizados de `alternative_titles`, sem repetir título e temporada.
+ * @param {{ title: string, type?: string }[]} alternatives
+ * @returns {RomajiTitle[]}
+ */
+function romajiAlternativeTitles(alternatives) {
+  const titles = [];
+  const seen = new Set();
+  for (const item of alternatives) {
+    if (!item || typeof item !== 'object') continue;
+    const type = typeof item.type === 'string' ? item.type : '';
+    if (!/romaji|romanized/i.test(type)) continue;
+    const title = typeof item.title === 'string' ? item.title.trim() : '';
+    if (title === '') continue;
+    const match = /season\s+(\d+)/i.exec(type);
+    const season = match ? Number(match[1]) : null;
+    const key = `${title.toLowerCase()}\u0000${season === null ? '' : season}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    titles.push({ title, season });
+  }
+  return titles;
 }
 
 /**
  * Lê as temporadas da resposta de série, preservando a temporada 0 e a ordem do TMDB.
  * Resposta sem a lista é série sem esse dado; filme e série sem `seasons` devolvem lista vazia.
  * @param {*} raw - Valor de `data.seasons`.
- * @returns {{ number: number, episodeCount: number, name: string, airDate: string|null }[]}
+ * @returns {SeasonInfo[]}
  * @throws {Error} Se a lista existir com uma temporada sem número ou sem contagem de episódios.
  */
 function readSeasons(raw) {
@@ -144,8 +184,19 @@ function readSeasons(raw) {
       episodeCount,
       name: typeof name === 'string' ? name : '',
       airDate: typeof airDate === 'string' && airDate !== '' ? airDate : null,
+      year: readYear(airDate),
     };
   });
+}
+
+/**
+ * Lê um ano de uma data do TMDB.
+ * @param {*} value - Data em texto (ex.: "2024-02-27").
+ * @returns {number|null} Ano de quatro dígitos ou `null` quando a data não existe ou está fora do formato.
+ */
+function readYear(value) {
+  if (typeof value !== 'string' || !/^\d{4}/.test(value)) return null;
+  return Number(value.slice(0, 4));
 }
 
 /**

@@ -20,8 +20,10 @@ const MOVIE = {
       { iso_3166_1: 'BR', title: 'Duna 2' },
       { iso_3166_1: 'BR', title: 'Duna: Parte Dois' },
       { iso_3166_1: 'PT', title: 'Dune: Parte Dois' },
+      { iso_3166_1: 'JP', title: 'Duna Romaji', type: 'Romaji' },
     ],
   },
+  seasons: [{ season_number: 1, name: 'Temporada 1', air_date: '2024-02-27', episode_count: 1 }],
 };
 
 const SERIES = {
@@ -33,7 +35,15 @@ const SERIES = {
   origin_country: ['US'],
   genres: [{ id: 18, name: 'Drama' }],
   external_ids: { imdb_id: 'tt0903747' },
-  alternative_titles: { results: [] },
+  alternative_titles: {
+    results: [
+      { iso_3166_1: 'JP', title: 'Breaking Bad Romaji', type: 'Romaji' },
+      { iso_3166_1: 'JP', title: 'Breaking Bad Season 2 Romaji', type: 'Season 2 Romaji' },
+      { iso_3166_1: 'JP', title: 'Breaking Bad Romanized', type: 'Romanized' },
+      { iso_3166_1: 'JP', title: 'Breaking Bad Romaji', type: 'Romaji' },
+      { iso_3166_1: 'BR', title: 'Breaking Bad: A Química do Mal', type: 'Alternative' },
+    ],
+  },
   seasons: [
     { season_number: 0, episode_count: 2, name: 'Especiais', air_date: '2009-02-17' },
     { season_number: 1, episode_count: 7, name: 'Temporada 1', air_date: '2008-01-20' },
@@ -77,10 +87,11 @@ test('filme: retorna dados em pt-BR com uma única requisição', async (t) => {
     year: 2024,
     imdbId: 'tt15239678',
     alternativeTitles: ['Duna 2'],
+    romajiTitles: [{ title: 'Duna Romaji', season: null }],
+    seasons: [],
     originalLanguage: 'en',
     originCountries: ['US'],
     genreIds: [878],
-    seasons: [],
   });
   assert.equal(calls.urls.length, 1);
   assert.equal(
@@ -99,10 +110,15 @@ test('série: usa os campos de TV e aceita ID numérico', async (t) => {
   assert.equal(info.originalTitle, 'Breaking Bad');
   assert.equal(info.year, 2008);
   assert.deepEqual(info.alternativeTitles, []);
+  assert.deepEqual(info.romajiTitles, [
+    { title: 'Breaking Bad Romaji', season: null },
+    { title: 'Breaking Bad Season 2 Romaji', season: 2 },
+    { title: 'Breaking Bad Romanized', season: null },
+  ]);
   assert.deepEqual(info.seasons, [
-    { number: 0, episodeCount: 2, name: 'Especiais', airDate: '2009-02-17' },
-    { number: 1, episodeCount: 7, name: 'Temporada 1', airDate: '2008-01-20' },
-    { number: 2, episodeCount: 13, name: 'Temporada 2', airDate: '2009-03-08' },
+    { number: 0, episodeCount: 2, name: 'Especiais', airDate: '2009-02-17', year: 2009 },
+    { number: 1, episodeCount: 7, name: 'Temporada 1', airDate: '2008-01-20', year: 2008 },
+    { number: 2, episodeCount: 13, name: 'Temporada 2', airDate: '2009-03-08', year: 2009 },
   ]);
   assert.match(calls.urls[0], /\/3\/tv\/1396\?/);
 });
@@ -115,7 +131,7 @@ test('série sem seasons no corpo devolve lista vazia', async (t) => {
   assert.deepEqual(info.seasons, []);
 });
 
-test('temporada sem air_date devolve null no campo', async (t) => {
+test('temporada sem air_date devolve null em airDate e year', async (t) => {
   mockTmdb(t, {
     body: {
       ...SERIES,
@@ -125,7 +141,7 @@ test('temporada sem air_date devolve null no campo', async (t) => {
 
   const info = await getMediaInfo({ tmdbId: 1396, mediaType: 'tv' });
 
-  assert.deepEqual(info.seasons, [{ number: 1, episodeCount: 7, name: 'Temporada 1', airDate: null }]);
+  assert.deepEqual(info.seasons, [{ number: 1, episodeCount: 7, name: 'Temporada 1', airDate: null, year: null }]);
 });
 
 const KIND_CASES = [

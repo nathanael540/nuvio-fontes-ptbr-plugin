@@ -956,11 +956,30 @@ function toMediaInfo(data, tmdbId, mediaType) {
     year: releaseDate ? Number(releaseDate.slice(0, 4)) : null,
     imdbId: data.external_ids.imdb_id || null,
     alternativeTitles: brazilianAlternativeTitles(alternatives, title),
+    romajiTitles: romajiAlternativeTitles(alternatives),
+    seasons: isMovie ? [] : readSeasons(data.seasons),
     originalLanguage,
     originCountries: data.origin_country || [],
-    genreIds,
-    seasons: readSeasons(data.seasons)
+    genreIds
   };
+}
+function romajiAlternativeTitles(alternatives) {
+  const titles = [];
+  const seen = /* @__PURE__ */ new Set();
+  for (const item of alternatives) {
+    if (!item || typeof item !== "object") continue;
+    const type = typeof item.type === "string" ? item.type : "";
+    if (!/romaji|romanized/i.test(type)) continue;
+    const title = typeof item.title === "string" ? item.title.trim() : "";
+    if (title === "") continue;
+    const match = /season\s+(\d+)/i.exec(type);
+    const season = match ? Number(match[1]) : null;
+    const key = `${title.toLowerCase()}\0${season === null ? "" : season}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    titles.push({ title, season });
+  }
+  return titles;
 }
 function readSeasons(raw) {
   if (!Array.isArray(raw)) return [];
@@ -973,9 +992,14 @@ function readSeasons(raw) {
       number,
       episodeCount,
       name: typeof name === "string" ? name : "",
-      airDate: typeof airDate === "string" && airDate !== "" ? airDate : null
+      airDate: typeof airDate === "string" && airDate !== "" ? airDate : null,
+      year: readYear(airDate)
     };
   });
+}
+function readYear(value) {
+  if (typeof value !== "string" || !/^\d{4}/.test(value)) return null;
+  return Number(value.slice(0, 4));
 }
 function brazilianAlternativeTitles(alternatives, title) {
   const titles = alternatives.filter((item) => item.iso_3166_1 === BRAZIL).map((item) => item.title);
@@ -1082,9 +1106,9 @@ function hasType(node, type) {
 }
 function readIdentityNode(node, type) {
   const names = [node.name, node.alternateName].flatMap((value) => Array.isArray(value) ? value : [value]).filter(isText).map(cleanText).filter(isText);
-  return { type, names: [...new Set(names)], year: readYear(node.datePublished) };
+  return { type, names: [...new Set(names)], year: readYear2(node.datePublished) };
 }
-function readYear(value) {
+function readYear2(value) {
   if (typeof value !== "string") return null;
   const match = /\b(\d{4})\b/.exec(value);
   return match ? Number(match[1]) : null;
@@ -1575,7 +1599,7 @@ function readSearchItem(item) {
   if (typeof item.url !== "string" || item.url.trim() === "") throw new Error("Resultado de busca sem endere\xE7o");
   const title = decodeEntities(item.title.replace(/<[^>]*>/g, " ")).replace(/\s+/g, " ").trim();
   const url = new URL(item.url, SOURCE_URL).href;
-  const year = readYear2(title);
+  const year = readYear3(title);
   return { title: stripYear(title), url, year };
 }
 function dedupe(results) {
@@ -1588,7 +1612,7 @@ function dedupe(results) {
   }
   return kept;
 }
-function readYear2(title) {
+function readYear3(title) {
   const match = /\b(?:19|20)\d{2}\b/.exec(title);
   return match ? Number(match[0]) : null;
 }

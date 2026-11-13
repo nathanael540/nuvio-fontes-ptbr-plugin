@@ -845,11 +845,30 @@ function toMediaInfo(data, tmdbId, mediaType) {
     year: releaseDate ? Number(releaseDate.slice(0, 4)) : null,
     imdbId: data.external_ids.imdb_id || null,
     alternativeTitles: brazilianAlternativeTitles(alternatives, title),
+    romajiTitles: romajiAlternativeTitles(alternatives),
+    seasons: isMovie ? [] : readSeasons(data.seasons),
     originalLanguage,
     originCountries: data.origin_country || [],
-    genreIds,
-    seasons: readSeasons(data.seasons)
+    genreIds
   };
+}
+function romajiAlternativeTitles(alternatives) {
+  const titles = [];
+  const seen = /* @__PURE__ */ new Set();
+  for (const item of alternatives) {
+    if (!item || typeof item !== "object") continue;
+    const type = typeof item.type === "string" ? item.type : "";
+    if (!/romaji|romanized/i.test(type)) continue;
+    const title = typeof item.title === "string" ? item.title.trim() : "";
+    if (title === "") continue;
+    const match = /season\s+(\d+)/i.exec(type);
+    const season = match ? Number(match[1]) : null;
+    const key = `${title.toLowerCase()}\0${season === null ? "" : season}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    titles.push({ title, season });
+  }
+  return titles;
 }
 function readSeasons(raw) {
   if (!Array.isArray(raw)) return [];
@@ -862,9 +881,14 @@ function readSeasons(raw) {
       number,
       episodeCount,
       name: typeof name === "string" ? name : "",
-      airDate: typeof airDate === "string" && airDate !== "" ? airDate : null
+      airDate: typeof airDate === "string" && airDate !== "" ? airDate : null,
+      year: readYear(airDate)
     };
   });
+}
+function readYear(value) {
+  if (typeof value !== "string" || !/^\d{4}/.test(value)) return null;
+  return Number(value.slice(0, 4));
 }
 function brazilianAlternativeTitles(alternatives, title) {
   const titles = alternatives.filter((item) => item.iso_3166_1 === BRAZIL).map((item) => item.title);
@@ -1184,7 +1208,7 @@ function readDetail(html, url) {
     url,
     title,
     type,
-    year: readYear(infoText),
+    year: readYear2(infoText),
     availableEpisodes: counts === null ? null : counts.available,
     totalEpisodes: counts === null ? null : counts.total,
     previousUrl: readChainLink($, "a.tempAnterior", url),
@@ -1209,7 +1233,7 @@ function readType(infoText, url) {
   if (!match) throw new Error(`Ficha ${url} sem Tipo`);
   return match[1].toLowerCase() === "filme" ? "Filme" : "TV";
 }
-function readYear(infoText) {
+function readYear2(infoText) {
   const match = /Ano\s*:?\s*(\d{4})/i.exec(infoText);
   return match ? Number(match[1]) : null;
 }

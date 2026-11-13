@@ -28,6 +28,7 @@
 | [AnimeFire](#animefire) | `animefire` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
 | [Doramogo](#doramogo) | `doramogo` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
 | [Dattebayo BR](#dattebayo-br) | `dattebayo` | filme, série | MP4 | 🟢 Estável | 2026-11-13 |
+| [AniTube](#anitube) | `anitube` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-13 |
 
 ## MegaEmbed
 
@@ -554,3 +555,26 @@ Provedor de animes, tokusatsus, doramas e donghuas em MP4 do catálogo Dattebayo
    9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    10. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
 <!-- online-verification:end -->
+
+## AniTube
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e séries de anime em HLS e MP4 do AniTube, com busca por títulos romaji do TMDB, confirmação de temporada e ano, e dois players independentes: FHD em HLS e Player 1 em MP4 do Blogger. A rodada de 2026-11-13 resolveu 3/5 filmes e 5/5 séries; Akira e Princesa Mononoke não têm página correspondente no recorte do site.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-13T12:00:32.479Z** · ID `2026-11-13T11-59-56-821Z-anitube-fe4b1d3a-15ca` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `fe4b1d3a6f23ea675adc698a25d286f9` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `129` · A Viagem de Chihiro (2001) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `128` · Princesa Mononoke (1997) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `149` · Akira (1988) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `372058` · Your Name (2016) · **Resolvido** · 2/2 streams aproveitáveis
+   6. `tv` `37854` · One Piece (1999) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+   7. `tv` `30984` · Bleach (2004) · S01E01 · **Resolvido** · 5/5 streams aproveitáveis
+   8. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+   9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 5/5 streams aproveitáveis
+   10. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+<!-- online-verification:end -->
+

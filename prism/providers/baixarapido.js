@@ -888,11 +888,30 @@ function toMediaInfo(data, tmdbId, mediaType) {
     year: releaseDate ? Number(releaseDate.slice(0, 4)) : null,
     imdbId: data.external_ids.imdb_id || null,
     alternativeTitles: brazilianAlternativeTitles(alternatives, title),
+    romajiTitles: romajiAlternativeTitles(alternatives),
+    seasons: isMovie ? [] : readSeasons(data.seasons),
     originalLanguage,
     originCountries: data.origin_country || [],
-    genreIds,
-    seasons: readSeasons(data.seasons)
+    genreIds
   };
+}
+function romajiAlternativeTitles(alternatives) {
+  const titles = [];
+  const seen = /* @__PURE__ */ new Set();
+  for (const item of alternatives) {
+    if (!item || typeof item !== "object") continue;
+    const type = typeof item.type === "string" ? item.type : "";
+    if (!/romaji|romanized/i.test(type)) continue;
+    const title = typeof item.title === "string" ? item.title.trim() : "";
+    if (title === "") continue;
+    const match = /season\s+(\d+)/i.exec(type);
+    const season = match ? Number(match[1]) : null;
+    const key = `${title.toLowerCase()}\0${season === null ? "" : season}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    titles.push({ title, season });
+  }
+  return titles;
 }
 function readSeasons(raw) {
   if (!Array.isArray(raw)) return [];
@@ -905,9 +924,14 @@ function readSeasons(raw) {
       number,
       episodeCount,
       name: typeof name === "string" ? name : "",
-      airDate: typeof airDate === "string" && airDate !== "" ? airDate : null
+      airDate: typeof airDate === "string" && airDate !== "" ? airDate : null,
+      year: readYear(airDate)
     };
   });
+}
+function readYear(value) {
+  if (typeof value !== "string" || !/^\d{4}/.test(value)) return null;
+  return Number(value.slice(0, 4));
 }
 function brazilianAlternativeTitles(alternatives, title) {
   const titles = alternatives.filter((item) => item.iso_3166_1 === BRAZIL).map((item) => item.title);
@@ -1572,7 +1596,7 @@ function loadHtml(html) {
 function collapse(text) {
   return String(text || "").replace(/\s+/g, " ").trim();
 }
-function readYear(text) {
+function readYear2(text) {
   const match = /\b(?:19|20)\d{2}\b/.exec(String(text || ""));
   return match ? Number(match[0]) : null;
 }
@@ -1842,7 +1866,7 @@ function parseSearch(html) {
       href,
       title,
       tipo,
-      year: readYear(title)
+      year: readYear2(title)
     });
   }
   if (cards.length) return { cards, empty: false };
@@ -1912,7 +1936,7 @@ function parseContent(html, url) {
   return {
     url,
     rawTitle,
-    year: readYear(rawTitle),
+    year: readYear2(rawTitle),
     imdbIds: readImdbIds(html),
     audio: readPageLanguage(html),
     anchors
@@ -2024,7 +2048,7 @@ function parseSearch2(html) {
     if (!href) throw new Error("cart\xE3o de busca sem endere\xE7o");
     const title = collapse(card.find(".movie-title").text() || link.attr("title"));
     if (!title) throw new Error("cart\xE3o de busca sem t\xEDtulo");
-    const year = readYear(card.find(".badge-year").text()) || readYear(title);
+    const year = readYear2(card.find(".badge-year").text()) || readYear2(title);
     const imgAlt = collapse(card.find("img").attr("alt"));
     const itemtype = collapse(card.attr("itemtype"));
     let tipo = "";
@@ -2078,7 +2102,7 @@ function parseContent2(html, url) {
   return {
     url,
     rawTitle,
-    year: readYear(rawTitle),
+    year: readYear2(rawTitle),
     imdbIds: readImdbIds(html),
     audio: readPageLanguage(html),
     isTvSchema,
@@ -2196,7 +2220,7 @@ function parseSearch3(html) {
       href,
       title,
       tipo: collapse(card.attr("data-tipo")),
-      year: readYear(card.find(".badge-year").text()) || readYear(title)
+      year: readYear2(card.find(".badge-year").text()) || readYear2(title)
     });
   }
   if (cards.length) return { cards, empty: false };
@@ -2237,7 +2261,7 @@ function parseContent3(html, url) {
   return {
     url,
     rawTitle,
-    year: readYear(rawTitle),
+    year: readYear2(rawTitle),
     imdbIds: readImdbIds(html),
     audio: readPageLanguage(html),
     sizeField: readSizeField(html),
@@ -2425,7 +2449,7 @@ function readMediaCardLinks($) {
     if (!tipo) throw new Error("Busca: cart\xE3o sem tipo");
     const title = collapse(card.find(".media-card-title").text()) || collapse(card.attr("title"));
     if (!title) throw new Error("Busca: cart\xE3o sem t\xEDtulo");
-    const year = readYear(card.find(".media-card-year").text()) || readYear(card.find(".badge-ano").text()) || readYear(title);
+    const year = readYear2(card.find(".media-card-year").text()) || readYear2(card.find(".badge-ano").text()) || readYear2(title);
     found.push({ href, tipo, title, year });
   }
   return found;
@@ -2450,7 +2474,7 @@ function readBrutoCards($) {
     if (!title) throw new Error("Busca: cart\xE3o sem t\xEDtulo");
     const meta = collapse(card.find("p.media-card-meta").text());
     const tipo = /\bfilmes?\b/i.test(meta) ? "Filmes" : /\bs[eé]ries?\b/i.test(meta) ? "S\xE9ries" : "Desenhos";
-    const year = readYear(meta) || readYear(title);
+    const year = readYear2(meta) || readYear2(title);
     found.push({ href, tipo, title, year });
   }
   return found;
@@ -2473,7 +2497,7 @@ function readMediaListItems($) {
     if (!title) throw new Error("Busca: cart\xE3o sem t\xEDtulo");
     const meta = collapse(card.find("ul.media-meta").text());
     const tipo = collapse(card.attr("data-tipo")) || (/\bfilmes?\b/i.test(meta) ? "Filmes" : "S\xE9ries");
-    const year = readYear(meta) || readYear(title);
+    const year = readYear2(meta) || readYear2(title);
     found.push({ href, tipo, title, year });
   }
   return found;
@@ -2541,7 +2565,7 @@ function readContent(html, pageUrl) {
     url: pageUrl,
     headline,
     rawTitle: headline,
-    year: readYear(headline.split("\xB7")[0]) || readYear(specs.Lan\u00E7amento),
+    year: readYear2(headline.split("\xB7")[0]) || readYear2(specs.Lan\u00E7amento),
     imdbIds: readImdbIds(html),
     audio: readPageLanguage(html),
     rows,
@@ -2675,7 +2699,7 @@ function parseLimpoSearch(html) {
       href,
       title,
       tipo: firstStrong,
-      year: readYear(title),
+      year: readYear2(title),
       imdbIds
     });
   }
@@ -2695,7 +2719,7 @@ function parseSalveSearch(html) {
     const title = collapse(item.find("h3").text() || item.find("a").attr("title"));
     if (!title) throw new Error("cart\xE3o de busca sem t\xEDtulo");
     const tipo = collapse(item.find(".capa_categoria").text());
-    const year = readYear(item.text()) || readYear(title);
+    const year = readYear2(item.text()) || readYear2(title);
     cards.push({
       href,
       title,
@@ -2749,7 +2773,7 @@ function parseContent4(html, url, card) {
   return {
     url,
     rawTitle,
-    year: card.year || readYear(rawTitle) || readYear(infoText),
+    year: card.year || readYear2(rawTitle) || readYear2(infoText),
     imdbIds: pageImdbIds,
     audio: readPageLanguage(html),
     infoSize: humanSize(infoText),
@@ -2866,7 +2890,7 @@ function parseSearch5(html) {
       href,
       title,
       tipo,
-      year: readYear(title)
+      year: readYear2(title)
     });
   }
   if (cards.length) return { cards, empty: false };
@@ -2933,7 +2957,7 @@ function parseContent5(html, url) {
   return {
     url,
     rawTitle,
-    year: readYear(rawTitle) || readYear($(".infos").text()),
+    year: readYear2(rawTitle) || readYear2($(".infos").text()),
     imdbIds: readImdbIds(html),
     audio: readPageLanguage(html),
     anchors

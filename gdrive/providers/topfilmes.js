@@ -1003,11 +1003,30 @@ function toMediaInfo(data, tmdbId, mediaType) {
     year: releaseDate ? Number(releaseDate.slice(0, 4)) : null,
     imdbId: data.external_ids.imdb_id || null,
     alternativeTitles: brazilianAlternativeTitles(alternatives, title),
+    romajiTitles: romajiAlternativeTitles(alternatives),
+    seasons: isMovie ? [] : readSeasons(data.seasons),
     originalLanguage,
     originCountries: data.origin_country || [],
-    genreIds,
-    seasons: readSeasons(data.seasons)
+    genreIds
   };
+}
+function romajiAlternativeTitles(alternatives) {
+  const titles = [];
+  const seen = /* @__PURE__ */ new Set();
+  for (const item of alternatives) {
+    if (!item || typeof item !== "object") continue;
+    const type = typeof item.type === "string" ? item.type : "";
+    if (!/romaji|romanized/i.test(type)) continue;
+    const title = typeof item.title === "string" ? item.title.trim() : "";
+    if (title === "") continue;
+    const match = /season\s+(\d+)/i.exec(type);
+    const season = match ? Number(match[1]) : null;
+    const key = `${title.toLowerCase()}\0${season === null ? "" : season}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    titles.push({ title, season });
+  }
+  return titles;
 }
 function readSeasons(raw) {
   if (!Array.isArray(raw)) return [];
@@ -1020,9 +1039,14 @@ function readSeasons(raw) {
       number,
       episodeCount,
       name: typeof name === "string" ? name : "",
-      airDate: typeof airDate === "string" && airDate !== "" ? airDate : null
+      airDate: typeof airDate === "string" && airDate !== "" ? airDate : null,
+      year: readYear(airDate)
     };
   });
+}
+function readYear(value) {
+  if (typeof value !== "string" || !/^\d{4}/.test(value)) return null;
+  return Number(value.slice(0, 4));
 }
 function brazilianAlternativeTitles(alternatives, title) {
   const titles = alternatives.filter((item) => item.iso_3166_1 === BRAZIL).map((item) => item.title);
@@ -1096,7 +1120,7 @@ function parseSearchResults(html) {
     if (title === "") throw new Error(`Cart\xE3o ${index + 1} da busca sem t\xEDtulo`);
     results.push({
       title,
-      year: readYear(card.find(".year").text()),
+      year: readYear2(card.find(".year").text()),
       url: new URL(href, SOURCE_URL).href
     });
   }
@@ -1274,7 +1298,7 @@ function formatDetails(providerName, media, year) {
   if (Number.isInteger(year)) format.year = year;
   return format;
 }
-function readYear(text) {
+function readYear2(text) {
   const match = /\b(\d{4})\b/.exec(text);
   return match === null ? null : Number(match[1]);
 }
