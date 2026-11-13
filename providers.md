@@ -21,6 +21,7 @@
 | [CineAgora](#cineagora) | `cineagora` | filme, série | HLS | 🟢 Estável | 2026-11-12 |
 | [BRFlix](#brflix) | `brflix` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-12 |
 | [RIVO](#rivo) | `rivo` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-12 |
+| [Raflix](#raflix) | `raflix` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
 
 ## MegaEmbed
 
@@ -394,3 +395,24 @@ Provedor de filmes e séries em HLS e MP4 do player público RIVO por ID do TMDB
    9. `tv` `60574` · Peaky Blinders (2013) · S01E01 · **Resolvido** · 8/8 streams aproveitáveis
    10. `tv` `66732` · Stranger Things (2016) · S01E01 · **Resolvido** · 15/15 streams aproveitáveis
 <!-- online-verification:end -->
+
+## Raflix
+
+**Status: 🟢 Estável.**
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-13T00:30:52.192Z** · ID `2026-11-13T00-30-17-566Z-raflix-6cc3cfa5-719a` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `6cc3cfa5d2daa4e54e164ec24df47363` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `1570488` · O Natal Perfeito de um Cachorro (2026) · **Resolvido** · 3/3 streams aproveitáveis
+   2. `movie` `155` · Batman: O Cavaleiro das Trevas (2008) · **Resolvido** · 3/3 streams aproveitáveis
+   3. `movie` `293660` · Deadpool (2016) · **Resolvido** · 3/3 streams aproveitáveis
+   4. `movie` `438631` · Duna (2021) · **Resolvido** · 4/4 streams aproveitáveis
+   5. `movie` `1022789` · Divertida Mente 2 (2024) · **Resolvido** · 3/3 streams aproveitáveis
+   6. `tv` `71912` · The Witcher (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   7. `tv` `94796` · Pousando no Amor (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   8. `tv` `87108` · Chernobyl (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   9. `tv` `136283` · The Glory (2022) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   10. `tv` `60625` · Rick and Morty (2013) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+<!-- online-verification:end -->
+

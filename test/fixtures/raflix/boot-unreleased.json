@@ -1,0 +1,15 @@
+{
+  "meta": {
+    "tmdbId": "1003596",
+    "type": "movie",
+    "season": null,
+    "episode": null,
+    "unreleased": "2026-12-16",
+    "inCinemas": null,
+    "airsSoon": null,
+    "playbackToken": "fixture-playback-token",
+    "orionStreams": null
+  },
+  "isOwnSite": false,
+  "ad": null
+}

@@ -1,0 +1,16 @@
+{
+  "tracks": [
+    {
+      "code": "mb-en",
+      "label": "English · Orion",
+      "lang": "en",
+      "url": "/api/orion/original/sub-en.vtt"
+    },
+    {
+      "code": "mb-fr",
+      "label": "Français · Orion",
+      "lang": "fr",
+      "url": "/api/orion/original/sub-fr.vtt"
+    }
+  ]
+}

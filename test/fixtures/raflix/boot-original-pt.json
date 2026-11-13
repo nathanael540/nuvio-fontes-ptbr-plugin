@@ -1,0 +1,54 @@
+{
+  "meta": {
+    "tmdbId": "550",
+    "type": "movie",
+    "season": null,
+    "episode": null,
+    "unreleased": null,
+    "inCinemas": null,
+    "airsSoon": null,
+    "playbackToken": "fixture-playback-token",
+    "orionStreams": [
+      {
+        "index": 0,
+        "url": "/api/orion/original/master.m3u8",
+        "proxyUrl": "",
+        "type": "hls",
+        "provider": "Orion",
+        "direct": true,
+        "name": "Orion · Original",
+        "rungs": [
+          { "width": 1154, "height": 480 }
+        ],
+        "subtitleListUrl": "/api/orion/original/subtitles.json"
+      },
+      {
+        "index": 1,
+        "url": "/api/orion/french/master.m3u8",
+        "proxyUrl": "",
+        "type": "hls",
+        "provider": "Orion",
+        "direct": true,
+        "name": "Orion · French",
+        "rungs": [
+          { "width": 1920, "height": 1080 },
+          { "width": 1280, "height": 720 },
+          { "width": 854, "height": 480 }
+        ],
+        "subtitleListUrl": "/api/orion/french/subtitles.json"
+      },
+      {
+        "index": 2,
+        "url": "https://media.example.test/orion/ptbr/video.mp4",
+        "proxyUrl": "",
+        "type": "mp4",
+        "provider": "Orion",
+        "direct": true,
+        "name": "Orion · Brazilian Portuguese",
+        "subtitleListUrl": "/api/orion/ptbr/subtitles.json"
+      }
+    ]
+  },
+  "isOwnSite": false,
+  "ad": null
+}

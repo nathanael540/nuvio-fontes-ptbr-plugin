@@ -1,0 +1,13 @@
+{
+  "ok": true,
+  "type": "movie",
+  "tmdbId": "299534",
+  "sources": [
+    {
+      "id": "xpass",
+      "label": "XPass",
+      "kind": "embed",
+      "url": "https://example.test/xpass/movie/299534"
+    }
+  ]
+}

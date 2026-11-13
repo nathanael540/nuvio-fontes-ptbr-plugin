@@ -1,0 +1,22 @@
+{
+  "success": true,
+  "provider": "vela",
+  "maxRes": 1080,
+  "streams": [
+    {
+      "url": "",
+      "proxyUrl": "/api/proxy/hls/filme-1080p/index.m3u8",
+      "type": "hls",
+      "provider": "Vela",
+      "direct": false
+    },
+    {
+      "url": "",
+      "proxyUrl": "/api/proxy/hls/filme-1080p/index.m3u8",
+      "type": "hls",
+      "provider": "Vela",
+      "direct": false
+    }
+  ],
+  "subtitles": []
+}

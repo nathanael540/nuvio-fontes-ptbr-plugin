@@ -1,0 +1,15 @@
+{
+  "success": true,
+  "provider": "titan",
+  "maxRes": null,
+  "streams": [
+    {
+      "url": "https://media.example.test/hls/filme/master.m3u8",
+      "proxyUrl": "",
+      "type": "hls",
+      "provider": "Titan",
+      "direct": true
+    }
+  ],
+  "subtitles": []
+}
