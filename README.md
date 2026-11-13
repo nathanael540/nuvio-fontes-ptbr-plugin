@@ -19,11 +19,59 @@ A tabela dos provedores, com o status de cada um (🟢 Estável, 🔵 Parcial, �
 ## Usar no Nuvio
 
 1. Abra **Settings > Plugins** no app.
-2. Adicione a URL raw de **um** dos manifests deste repositório. Eles têm os mesmos provedores e mudam só a apresentação de cada stream na lista:
-   1. Formato sorteado a cada carregamento: `https://raw.githubusercontent.com/nathanael540/nuvio-fontes-ptbr-plugin/main/manifest.json`
-   2. Formato Google Drive: `https://raw.githubusercontent.com/nathanael540/nuvio-fontes-ptbr-plugin/main/gdrive/manifest.json`
-   3. Formato Prism: `https://raw.githubusercontent.com/nathanael540/nuvio-fontes-ptbr-plugin/main/prism/manifest.json`
-3. Atualize a lista e ative os provedores desejados. Não instale mais de um manifest: cada stream apareceria repetido.
+2. Adicione a URL raw de **apenas um** dos manifests abaixo. Os três trazem exatamente os mesmos provedores e encontram os mesmos streams; a única diferença é o texto que descreve cada stream na lista do app.
+
+   | Manifest | Formatação dos streams | URL |
+   | --- | --- | --- |
+   | Padrão | Sorteia Google Drive ou Prism sempre que o app carrega o provedor | `https://raw.githubusercontent.com/nathanael540/nuvio-fontes-ptbr-plugin/main/manifest.json` |
+   | Google Drive | Sempre Google Drive | `https://raw.githubusercontent.com/nathanael540/nuvio-fontes-ptbr-plugin/main/gdrive/manifest.json` |
+   | Prism | Sempre Prism | `https://raw.githubusercontent.com/nathanael540/nuvio-fontes-ptbr-plugin/main/prism/manifest.json` |
+
+3. Atualize a lista e ative os provedores desejados.
+
+### Um manifest basta
+
+1. Escolha só pela aparência que preferir: nenhum manifest tem provedores, fontes ou qualidade a mais que os outros.
+2. Instalar dois ou três não amplia a busca. O app executa os mesmos provedores uma vez por manifest, e cada stream aparece repetido na lista.
+3. Para trocar de formatação, remova o manifest atual em **Settings > Plugins** e adicione o novo.
+4. No app, o repositório aparece como `Nuvio Fontes PT-BR`, `Nuvio Fontes PT-BR (gdrive)` ou `Nuvio Fontes PT-BR (prism)`, conforme o manifest instalado.
+
+### Exemplos de formatação
+
+O mesmo stream (filme *Matrix*, 1080p, dublado, por torrent, encontrado pelo provedor Baixa Rápido no catálogo `limpotorrents`) aparece assim em cada formatação. Ao lado do texto, o app ainda mostra sua própria linha com qualidade, tamanho e idioma.
+
+1. **Google Drive:** cabeçalho com o nome do provedor e a qualidade; destaca o nome do arquivo.
+
+   ```text
+   Baixa Rápido 1080p
+   🎥 BluRay 🎞️ x264
+   🗣️ Dublado
+   🧲 P2P 👥 120/15 🔍 limpotorrents
+   📁 Matrix.1999.1080p.BluRay.DUAL.mkv
+   ```
+
+2. **Prism:** cabeçalho com um selo de qualidade; destaca o título e o ano.
+
+   ```text
+   🚀 FHD 1080p
+   🎬 Matrix (1999)
+   🎥 BluRay 🎞️ x264
+   🗣️ Dublado
+   🧲 P2P 🌱 120/15
+   📡 limpotorrents
+   ```
+
+3. **Padrão:** usa um dos dois formatos acima, sorteado quando o app carrega o provedor. Cada provedor faz o próprio sorteio, então provedores diferentes podem aparecer com formatos diferentes. O formato se mantém até o provedor ser carregado de novo (por exemplo, ao reabrir o app ou atualizar os plugins).
+
+Legenda dos símbolos:
+
+1. `🗣️` idioma do áudio: `Dublado`, `Legendado`, `Dublado (Não PT-BR?)`, `Legendado (Não PT-BR?)`, `Gringo` ou `Idioma Desconhecido`.
+2. `🧲 P2P` stream por torrent; `🌐 HTTP` stream direto.
+3. `👥` ou `🌱` seeders/peers do torrent (`?` quando a fonte não informa).
+4. `🔍` ou `📡` catálogo ou servidor de origem dentro do provedor.
+5. `🎥` origem do vídeo e `🎞️` codec; `📁` arquivo da release.
+
+Informações que a fonte não fornece simplesmente não aparecem.
 
 ## Desenvolvimento
 
