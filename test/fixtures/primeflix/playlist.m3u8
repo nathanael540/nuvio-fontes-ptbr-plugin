@@ -1,0 +1,6 @@
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-TARGETDURATION:11
+#EXT-X-MEDIA-SEQUENCE:0
+#EXTINF:10.927589,
+https://media.exemplo.test/a1/out/3045/3045_s01e01_dub_0.ts?assinatura=<assinatura>

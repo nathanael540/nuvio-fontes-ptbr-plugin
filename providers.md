@@ -22,6 +22,7 @@
 | [BRFlix](#brflix) | `brflix` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-12 |
 | [RIVO](#rivo) | `rivo` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-12 |
 | [Raflix](#raflix) | `raflix` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
+| [Primeflix](#primeflix) | `primeflix` | filme, série | HLS, MKV | 🟢 Estável | 2026-11-13 |
 
 ## MegaEmbed
 
@@ -414,5 +415,27 @@ Provedor de filmes e séries em HLS e MP4 do player público RIVO por ID do TMDB
    8. `tv` `87108` · Chernobyl (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
    9. `tv` `136283` · The Glory (2022) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
    10. `tv` `60625` · Rick and Morty (2013) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+<!-- online-verification:end -->
+
+## Primeflix
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e séries em HLS ou MKV do catálogo Primeflix, com busca JSON e ficha que identifica o tipo pelo player `/vvv`. O áudio e a qualidade são classificados somente pelo arquivo final, sem seletor de idioma na página. A rodada de 2026-11-13 resolveu 4/5 séries e 2/5 filmes; um filme respondeu 404 no player e dois ficaram sem resultado, então a cobertura de filme é parcial embora o mínimo de Estável seja atendido pelos dois tipos.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-13T01:01:51.086Z** · ID `2026-11-13T00-58-39-248Z-primeflix-72d87ff3-b133` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `72d87ff3eab9c917d1c71ade87045671` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `299534` · Vingadores: Ultimato (2019) · **Falha** · 0/0 streams aproveitáveis · Motivo: [Primeflix] Player do Primeflix respondeu HTTP 404
+   2. `movie` `1570488` · O Natal Perfeito de um Cachorro (2026) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `128` · Princesa Mononoke (1997) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `24428` · Os Vingadores (2012) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `346698` · Barbie (2023) · **Resolvido** · 1/1 streams aproveitáveis
+   6. `tv` `100088` · The Last of Us (2023) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   7. `tv` `94796` · Pousando no Amor (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   8. `tv` `94605` · Arcane (2021) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   9. `tv` `1668` · Friends (1994) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   10. `tv` `1622` · Supernatural (2005) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 

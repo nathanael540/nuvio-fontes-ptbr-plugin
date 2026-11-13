@@ -15,6 +15,13 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 12
 9. O idioma não tem seletor na página. A única evidência observada é o caminho da mídia (`dub` no episódio; `eng` no nome de um filme, que o bloco `language-discovery` não reconhece sozinho). Qualidade aparece no nome do arquivo (`1080p`, `camrip`), não em campo estruturado. Tamanho, legendas externas, seeders e peers não foram observados.
 10. O login por Telegram existe para favoritos; a busca e o player são públicos, sem conta, cookie ou chave. O runtime do app tem `fetch`, `URL`, `URLSearchParams`, `atob`/`btoa`, cheerio básico e `crypto-js`; o provedor não usa `WebAssembly`, `setTimeout`, `TextDecoder` nem APIs do Node.
 
+## Gate de viabilidade (12/11/2026)
+
+1. **Filme confirmado.** Busca por `duna` em `/live-search?q=duna`; ficha `/movie/duna-parte-dois`, título `Duna: Parte Dois`, ano `2024`, tipo filme, `v_id` 5002 e nenhum par `season`/`episode`. `/vvv?id=5002&mobile=1&get=video` com `Referer` da ficha respondeu 307 e terminou em `https://primeflix.sh/a1/out/7/5002/...1080p-web-dl-dual-5.1.m3u8`, HTTP 200 com `Content-Type: application/x-mpegurl`; a URL final é reproduzível na consulta. `Range: bytes=0-0` não foi necessário para o corpo (playlist pequena), mas a URL final foi obtida sem baixar arquivo de mídia.
+2. **Série confirmada.** Busca por `the last of us` em `/live-search?q=the%20last%20of%20us`; ficha `/movie/the-last-of-us`, título `The Last of Us`, ano `2023–`, tipo série, `v_id` 3045 e pares `season=1&episode=1` até `season=1&episode=9`. `/vvv?id=3045&season=1&episode=1&mobile=1&get=video` com `Referer` terminou em `https://primeflix.sh/a1/out/old/7/3045/3045_s01e01_dub_mostbet.m3u8`, HTTP 200, playlist com `#EXTM3U` e segmentos `.ts`.
+3. **Cabeçalhos.** Sem `Referer`, o `Location` do `/vvv` volta malformado (`:///a1/...`) e a URL resolvida no domínio responde 404; o `Referer` da ficha é obrigatório na resolução. A playlist e o segmento `.ts` responderam 200/206 com e sem `Referer`; o primeiro segmento com `Range: bytes=0-0` respondeu 206 `video/mp2t` nos dois casos. Nenhum download completo foi feito.
+4. **Decisão do manifest.** Filme e série confirmados: `supportedTypes` `["movie", "tv"]` e `formats` `["m3u8", "mkv"]`. O filme da amostra entrega HLS, e o código aceita MKV/MP4 se a fonte redirecionar para arquivo direto; as tarefas 4 e 5 continuam aplicáveis.
+
 ## Goals / Non-Goals
 
 **Goals:**
