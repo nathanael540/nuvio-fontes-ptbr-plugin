@@ -1,0 +1,14 @@
+{
+  "provider": "rivo",
+  "server": "3",
+  "sources": [
+    {
+      "url": "https://media.example.test/movie/duna-dash/manifest.mpd",
+      "kind": "dash",
+      "quality": "1080p (Brazilian Portuguese)",
+      "subProvider": "Server 3",
+      "provider": "rivo"
+    }
+  ],
+  "subtitles": []
+}

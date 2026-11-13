@@ -1,0 +1,25 @@
+{
+  "ok": true,
+  "enc": false,
+  "url": "https://cdn.example/brflix/movie/master.m3u8",
+  "type": "hls",
+  "provider": "BRFLIX Exemplo",
+  "dubbed": true,
+  "quality": 720,
+  "candidates": [
+    {
+      "provider": "BRFLIX Exemplo",
+      "url": "https://cdn.example/brflix/movie/master.m3u8",
+      "type": "hls",
+      "dubbed": true,
+      "quality": 720
+    },
+    {
+      "provider": "BRFLIX Alternativo",
+      "url": "https://cdn.example/brflix/movie/alternativo.mp4",
+      "type": "mp4",
+      "dubbed": false,
+      "quality": 1080
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "provider": "rivo",
+  "server": "1",
+  "sources": [
+    {
+      "kind": "hls",
+      "quality": "1080p (Brazilian Portuguese)",
+      "subProvider": "Server 1",
+      "provider": "rivo"
+    },
+    {
+      "url": "nao-e-url",
+      "kind": "mp4",
+      "quality": "720p",
+      "subProvider": "Server 1",
+      "provider": "rivo"
+    },
+    null
+  ],
+  "subtitles": []
+}

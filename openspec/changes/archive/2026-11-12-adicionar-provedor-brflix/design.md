@@ -137,4 +137,13 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 12
 7. Arquivar a mudança somente com os testes previstos passando ou com as exclusões declaradas.
 8. Rollback: remover a entrada do manifest, `src/brflix/`, o teste, as fixtures, a dependência e a seção de `providers.md`; nenhum dado persistente é migrado.
 
+## Validation
+
+1. `npm run lint` terminou sem falhas para `src/brflix/` e `test/brflix.test.js`.
+2. `npm test` terminou com 1108 testes passando, incluindo os 14 casos da suíte do BRFlix.
+3. `node build.js brflix` gerou `providers/brflix.js`, `gdrive/providers/brflix.js` e `prism/providers/brflix.js`, e os três pacotes exportam `getStreams`.
+4. `npm run test:online -- --provider brflix --seed 2e0c5f3343e8aa7e8ea55ae6f3ad255d --record` resultou **Estável**, com `movie 5/5` e `tv 5/5` resolvidos. Rodada `2026-11-12T23-54-26-474Z-brflix-2e0c5f33-c247`; relatório em `test/artifacts/online/2026-11-12T23-54-26-474Z-brflix-2e0c5f33-c247/result.json`.
+5. As fixtures cifradas guardam apenas o envelope opaco; nenhuma contém URL de mídia real, `md5=`, `expires=`, cookie ou token. A fixture sem cifra usa o domínio reservado `cdn.example` e existe só para cobrir a leitura direta do contrato.
+6. A rodada online comprova resolução e contrato dos streams, não a reprodução no aparelho. A tag GCM continua não verificada por decisão de D2, e títulos cujo único candidato é `iframe` continuam fora do contrato atual.
+
 

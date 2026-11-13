@@ -1,0 +1,28 @@
+{
+  "provider": "rivo",
+  "server": "1",
+  "sources": [
+    {
+      "url": "https://media.example.test/tv/pitt-s02e03/master.m3u8",
+      "kind": "hls",
+      "quality": "1080p (Portuguese)",
+      "subProvider": "Server 1",
+      "provider": "rivo"
+    },
+    {
+      "url": "https://media.example.test/tv/pitt-auto/master.m3u8",
+      "kind": "hls",
+      "quality": "Auto (5.0 Mbps AAC)",
+      "subProvider": "Server 1",
+      "provider": "rivo"
+    }
+  ],
+  "subtitles": [
+    {
+      "url": "https://subs.example.test/pitt-ptbr.vtt",
+      "lang": "pb",
+      "label": "Portuguese (BR)",
+      "direct": true
+    }
+  ]
+}

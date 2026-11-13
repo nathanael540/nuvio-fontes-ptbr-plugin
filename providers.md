@@ -19,6 +19,8 @@
 | [VaqueiroFilmes](#vaqueirofilmes) | `vaqueirofilmes` | filme | HLS | 🟢 Estável | 2026-11-12 |
 | [TopFilmes](#topfilmes) | `topfilmes` | filme | MP4 | 🟢 Estável | 2026-11-12 |
 | [CineAgora](#cineagora) | `cineagora` | filme, série | HLS | 🟢 Estável | 2026-11-12 |
+| [BRFlix](#brflix) | `brflix` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-12 |
+| [RIVO](#rivo) | `rivo` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-12 |
 
 ## MegaEmbed
 
@@ -349,4 +351,46 @@ Provedor de filmes e séries em HLS pelo catálogo CineAgora, com espelhos Dubla
    8. `tv` `37854` · One Piece (1999) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    9. `tv` `1668` · Friends (1994) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    10. `tv` `87108` · Chernobyl (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+<!-- online-verification:end -->
+
+## BRFlix
+
+**Status: 🟢 Estável.**
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-12T23:54:28.679Z** · ID `2026-11-12T23-54-26-474Z-brflix-2e0c5f33-c247` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `2e0c5f3343e8aa7e8ea55ae6f3ad255d` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `1400940` · Cara-de-Barro (2026) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `13` · Forrest Gump: O Contador de Histórias (1994) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `550` · Clube da Luta (1999) · **Resolvido** · 2/2 streams aproveitáveis
+   4. `movie` `693134` · Duna: Parte Dois (2024) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `346698` · Barbie (2023) · **Resolvido** · 2/2 streams aproveitáveis
+   6. `tv` `100088` · The Last of Us (2023) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   7. `tv` `94605` · Arcane (2021) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   8. `tv` `76479` · The Boys (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   9. `tv` `117376` · Vincenzo (2021) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   10. `tv` `60059` · Better Call Saul (2015) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+<!-- online-verification:end -->
+
+## RIVO
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e séries em HLS e MP4 do player público RIVO por ID do TMDB. A consulta é distribuída pelos servidores de mídia, com qualidade, idioma e legendas conforme o anúncio de cada fonte; o servidor 4 fica fora enquanto suas URLs de mídia responderem HTTP 401.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-12T23:55:29.634Z** · ID `2026-11-12T23-54-42-202Z-rivo-a5d58595-718e` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `a5d585956a9367c2bffebb2d72b994a8` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Resolvido** · 5/5 streams aproveitáveis
+   2. `movie` `550` · Clube da Luta (1999) · **Resolvido** · 14/14 streams aproveitáveis
+   3. `movie` `1630420` · Crime em Cena (2026) · **Resolvido** · 8/8 streams aproveitáveis
+   4. `movie` `346698` · Barbie (2023) · **Resolvido** · 7/7 streams aproveitáveis
+   5. `movie` `122` · O Senhor dos Anéis: O Retorno do Rei (2003) · **Resolvido** · 16/16 streams aproveitáveis
+   6. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 14/14 streams aproveitáveis
+   7. `tv` `84958` · Loki (2021) · S01E01 · **Resolvido** · 15/15 streams aproveitáveis
+   8. `tv` `1622` · Supernatural (2005) · S01E01 · **Resolvido** · 9/9 streams aproveitáveis
+   9. `tv` `60574` · Peaky Blinders (2013) · S01E01 · **Resolvido** · 8/8 streams aproveitáveis
+   10. `tv` `66732` · Stranger Things (2016) · S01E01 · **Resolvido** · 15/15 streams aproveitáveis
 <!-- online-verification:end -->

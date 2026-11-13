@@ -192,3 +192,13 @@ O `npm test` atual tem 24 falhas por `test/maestro/` e `test/scenarios/` ausente
 5. Rodar `npm run test:online -- --provider rivo` e atualizar `providers.md` com a rodada real.
 6. Atualizar `docs/provider-investigation.md` na mesma mudança.
 7. Rollback: remover `src/rivo/` e a entrada do manifest, reconstruir os formatos e reverter a documentação; não há dados persistidos, migração nem estado de servidor.
+
+## Validation
+
+1. `node --test test/rivo.test.js test/manifest.test.js test/providers-catalog.test.js` passou em 12/11/2026: 45 testes, sem falhas.
+2. `npm run lint` passou sem avisos.
+3. `npm test` passou com 1108 testes e nenhuma falha em 12/11/2026. A linha de base descrita na proposta não se confirmou no checkout desta rodada: `test/maestro/` e `test/scenarios/` continuam ausentes, mas o `npm test` não apresentou as 24 falhas antes registradas.
+4. `node build.js rivo` gerou `providers/rivo.js`, `gdrive/providers/rivo.js` e `prism/providers/rivo.js`, além dos manifests de formato.
+5. `npm run test:online -- --provider rivo --record` concluiu com status **Estável**: 5/5 filmes e 5/5 séries resolvidos, 0 sem resultado, 0 falha e 0 inconclusivo. A rodada foi registrada em `providers.md`.
+6. `docs/arch.md`, `src/_blocks/index.md` e `README.md` não mudaram; nenhum contrato global, bloco ou comando novo.
+7. `test/maestro/` e `test/scenarios/` continuam ausentes no checkout. O cenário e o fluxo Maestro do RIVO ficam pendentes para quando a infraestrutura voltar; ela não foi recriada nesta mudança.

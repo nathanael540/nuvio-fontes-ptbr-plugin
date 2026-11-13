@@ -339,6 +339,48 @@
         "pt"
       ],
       "logo": "https://www.google.com/s2/favicons?domain=cineagora.club&sz=128"
+    },
+    {
+      "id": "brflix",
+      "name": "BRFlix",
+      "description": "Filmes e séries em HLS e MP4 pelo agregador BRFlix por TMDB, dublados ou legendados conforme o candidato, com decifragem local do payload.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/brflix.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://brflix.lat/favicon.png"
+    },
+    {
+      "id": "rivo",
+      "name": "RIVO",
+      "description": "Filmes e séries em HLS e MP4 do catálogo RIVO por ID do TMDB, com áudio e legendas conforme o anúncio de cada servidor.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/rivo.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=rivo.st&sz=128"
     }
   ]
 }

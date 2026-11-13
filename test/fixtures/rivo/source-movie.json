@@ -1,0 +1,45 @@
+{
+  "provider": "rivo",
+  "server": "1",
+  "sources": [
+    {
+      "url": "https://media.example.test/movie/duna-1080/master.m3u8",
+      "kind": "hls",
+      "quality": "1080p (Brazilian Portuguese)",
+      "subProvider": "Server 1",
+      "provider": "rivo"
+    },
+    {
+      "url": "https://mp4.example.test/movie/duna-720.mp4",
+      "kind": "mp4",
+      "quality": "720p (Brazilian Portuguese sub)",
+      "subProvider": "Server 1",
+      "provider": "rivo"
+    }
+  ],
+  "subtitles": [
+    {
+      "url": "https://subs.example.test/duna-ptbr.vtt",
+      "lang": "pt",
+      "label": "Portuguese (BR)",
+      "direct": true
+    },
+    {
+      "url": "https://subs.example.test/duna-en.vtt",
+      "lang": "en",
+      "label": "English"
+    },
+    {
+      "url": "https://subs.example.test/duna-en.vtt",
+      "lang": "en",
+      "label": "English"
+    },
+    {
+      "label": "Spanish"
+    },
+    {
+      "url": "https://subs.example.test/duna-es.vtt",
+      "lang": "es"
+    }
+  ]
+}
