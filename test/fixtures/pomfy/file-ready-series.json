@@ -1,0 +1,23 @@
+{
+  "id": "fixtureFileSeries01",
+  "name": "Serie.Exemplo.S01E01.720p.mkv",
+  "size": 900000000,
+  "mimeType": "video/x-matroska",
+  "status": "READY",
+  "videoAsset": {
+    "audioTracks": [
+      { "lang": "eng", "label": "English", "default": true },
+      { "lang": "por", "label": "Portuguese (Brazil)", "default": false }
+    ],
+    "subtitles": [
+      { "lang": "por", "label": "Portuguese (Brazil)", "url": "https://subs.example.test/fixture-serie-pt.vtt", "isDefault": false }
+    ],
+    "qualities": [
+      { "quality": "720p", "resolution": "1280x720", "sizeBytes": 900000000, "status": "READY" }
+    ],
+    "originalMetadata": "{\"bitrateKbps\":1500,\"durationSec\":1800}"
+  },
+  "videoSettings": {
+    "defaultAudioLanguage": "pt"
+  }
+}

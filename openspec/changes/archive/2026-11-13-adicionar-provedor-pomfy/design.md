@@ -133,7 +133,7 @@ Casos previstos:
 
 `providers.md` ganha a linha e a seção `## Pomfy` com `🟠 Não verificado` até a rodada online; depois da rodada, o status segue `docs/tests.md`, seção 7. A descrição e a tabela deixam explícito que o provedor é parcial: Flyfile apenas.
 
-`docs/provider-investigation.md` ganha a seção 3.13, “Catálogo por ID do TMDB com token de embed e API pública do player”, com:
+`docs/provider-investigation.md` ganha a seção 3.19, “Catálogo por ID do TMDB com token de embed e API pública do player” (a numeração 3.13 já estava duplicada no guia e a 3.18 foi ocupada pelo Kairou durante a integração; a nova seção entra após a 3.18), com:
 1. sinal: página com `statusToken` e endpoint local de troca;
 2. investigação: `Sec-Fetch-Dest: iframe`, troca por player, API do Flyfile e `assign`;
 3. referências: `src/pomfy/extractor.js` e `test/pomfy.test.js`;

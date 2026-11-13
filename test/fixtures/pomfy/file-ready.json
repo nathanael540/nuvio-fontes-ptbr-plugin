@@ -1,0 +1,25 @@
+{
+  "id": "fixtureFileMovie01",
+  "name": "Filme.Exemplo.2024.1080p.mkv",
+  "size": 2000000000,
+  "mimeType": "video/x-matroska",
+  "status": "READY",
+  "videoAsset": {
+    "audioTracks": [
+      { "lang": "por", "label": "Portuguese (Brazil)", "default": true },
+      { "lang": "eng", "label": "English", "default": false }
+    ],
+    "subtitles": [
+      { "lang": "por", "label": "Portuguese (Brazil)", "url": "https://subs.example.test/fixture-pt.vtt", "isDefault": false },
+      { "lang": "eng", "label": "English", "url": "https://subs.example.test/fixture-en.vtt", "isDefault": false }
+    ],
+    "qualities": [
+      { "quality": "720p", "resolution": "1280x720", "sizeBytes": 1200000000, "status": "READY" },
+      { "quality": "1080p", "resolution": "1920x1080", "sizeBytes": 2000000000, "status": "READY" }
+    ],
+    "originalMetadata": "{\"resolution\":\"1920x1080\",\"height\":1080,\"bitrateKbps\":2474,\"durationSec\":2597.762}"
+  },
+  "videoSettings": {
+    "defaultAudioLanguage": "pt"
+  }
+}

@@ -443,6 +443,26 @@
         "pt"
       ],
       "logo": "https://www.kairou.space/assets/kairou-spiral.png"
+    },
+    {
+      "id": "pomfy",
+      "name": "Pomfy",
+      "description": "Filmes e séries em HLS pelo catálogo Pomfy por ID do TMDB, com a mídia resolvida pelo player Flyfile; títulos publicados apenas no Byse não retornam stream.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/pomfy.js",
+      "enabled": true,
+      "formats": [
+        "m3u8"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://api.pomfy.stream/apipomfywhiteblue.png"
     }
   ]
 }

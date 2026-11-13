@@ -1,0 +1,20 @@
+{
+  "id": "fixtureFileNoQualities01",
+  "name": "Filme.Exemplo.2024.1080p.mkv",
+  "size": 2000000000,
+  "mimeType": "video/x-matroska",
+  "status": "READY",
+  "videoAsset": {
+    "audioTracks": [
+      { "lang": "por", "label": "Portuguese (Brazil)", "default": true }
+    ],
+    "subtitles": [],
+    "qualities": [
+      { "quality": "1080p", "resolution": "1920x1080", "sizeBytes": 2000000000, "status": "ENCODING" }
+    ],
+    "originalMetadata": "{\"bitrateKbps\":2474,\"durationSec\":2597.762}"
+  },
+  "videoSettings": {
+    "defaultAudioLanguage": "pt"
+  }
+}

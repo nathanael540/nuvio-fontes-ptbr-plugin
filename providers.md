@@ -24,6 +24,7 @@
 | [Primeflix](#primeflix) | `primeflix` | filme, série | HLS, MKV | 🟢 Estável | 2026-11-13 |
 | [EmbedMovies](#embedmovies) | `embedmovies` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
 | [Kairou](#kairou) | `kairou` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-13 |
+| [Pomfy](#pomfy) | `pomfy` | filme, série | HLS | 🔵 Parcial | 2026-11-13 |
 
 ## MegaEmbed
 
@@ -460,5 +461,27 @@ Provedor de filmes e séries em HLS e MP4 pela API pública de extração do Kai
    8. `tv` `96162` · Itaewon Class (2020) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
    9. `tv` `60735` · The Flash (2014) · S01E01 · **Resolvido** · 7/7 streams aproveitáveis
    10. `tv` `66732` · Stranger Things (2016) · S01E01 · **Resolvido** · 5/5 streams aproveitáveis
+<!-- online-verification:end -->
+
+## Pomfy
+
+**Status: 🔵 Parcial.**
+
+Provedor de filmes e séries em HLS pelo catálogo Pomfy por ID do TMDB. A mídia é resolvida somente no player Flyfile; títulos publicados apenas no Byse devolvem lista vazia, então a cobertura do catálogo é parcial.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-13T10:35:08.233Z** · ID `2026-11-13T10-34-54-512Z-pomfy-40836da2-833e` · **Parcial** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `40836da285cfbd01a2443492504affd6` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `1654940` · Um Ano de Vida, Compre Um Homem (2026) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `372058` · Your Name (2016) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `155` · Batman: O Cavaleiro das Trevas (2008) · **Resolvido** · 1/1 streams aproveitáveis
+   4. `movie` `76600` · Avatar: O Caminho da Água (2022) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `120` · O Senhor dos Anéis: A Sociedade do Anel (2001) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `94796` · Pousando no Amor (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   7. `tv` `60625` · Rick and Morty (2013) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   8. `tv` `117376` · Vincenzo (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `456` · Os Simpsons (1989) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   10. `tv` `76479` · The Boys (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
 <!-- online-verification:end -->
 
