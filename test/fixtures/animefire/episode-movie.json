@@ -1,0 +1,26 @@
+{
+  "data": {
+    "streams": [
+      {
+        "audio": "dublado",
+        "is_mtl": false,
+        "is_offline": false,
+        "url": "https://cdn.example.test/animefire/51/master.m3u8",
+        "qualities": [
+          "480p",
+          "720p"
+        ]
+      },
+      {
+        "audio": "legendado",
+        "is_mtl": false,
+        "is_offline": false,
+        "url": "https://cdn.example.test/animefire/52/master.m3u8",
+        "qualities": [
+          "480p",
+          "720p"
+        ]
+      }
+    ]
+  }
+}

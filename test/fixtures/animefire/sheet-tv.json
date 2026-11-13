@@ -1,0 +1,41 @@
+{
+  "data": {
+    "format": "tv",
+    "hero": {
+      "titles": {
+        "BR": "Naruto"
+      },
+      "published_at": "2002-10-03"
+    },
+    "episodes": [
+      {
+        "id": "WCrJufyJmQn",
+        "season": 1,
+        "number": 1,
+        "title": "Naruto Uzumaki Chegando!",
+        "audio": "Dublado & Legendado"
+      },
+      {
+        "id": "5y0jBDHTS7V",
+        "season": 1,
+        "number": 2,
+        "title": "Meu Nome é Konohamaru!",
+        "audio": "Dublado & Legendado"
+      },
+      {
+        "id": "uRXCchzMB9k",
+        "season": 1,
+        "number": 3,
+        "title": "Sasuke e Sakura: Amigos ou Inimigos?",
+        "audio": "Dublado & Legendado"
+      },
+      {
+        "id": "f_SJ-68YN3p",
+        "season": 2,
+        "number": 3,
+        "title": "Um Sentimento de Anseio, Uma Flor Cheia de Esperança",
+        "audio": "Dublado & Legendado"
+      }
+    ]
+  }
+}

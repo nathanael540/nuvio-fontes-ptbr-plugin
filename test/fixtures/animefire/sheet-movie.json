@@ -1,0 +1,22 @@
+{
+  "data": {
+    "format": "movie",
+    "hero": {
+      "titles": {
+        "BR": "Demon Slayer: Mugen Train - O Filme",
+        "US": "Demon Slayer -Kimetsu no Yaiba- The Movie: Mugen Train",
+        "JP": "Kimetsu no Yaiba: Mugen Ressha-hen"
+      },
+      "published_at": "2020-10-16"
+    },
+    "episodes": [
+      {
+        "id": "aRqrnG1yOCE",
+        "season": null,
+        "number": 1,
+        "title": null,
+        "audio": "Dublado & Legendado"
+      }
+    ]
+  }
+}

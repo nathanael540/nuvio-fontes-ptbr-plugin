@@ -1,0 +1,40 @@
+{
+  "data": [
+    {
+      "id": "OZLtRqzPHBm",
+      "titles": {
+        "BR": "Tomb Raider King",
+        "JP": "Dogul Wang"
+      },
+      "audio": "Dublado & Legendado",
+      "published_at": "2026-07-09",
+      "status": "completed"
+    },
+    {
+      "id": "oQ-SseDdHXF",
+      "titles": {
+        "BR": "King's Raid: Ishi wo Tsugumono-tachi",
+        "US": "KING's RAID: Successors of the Will",
+        "JP": "King's Raid: Ishi wo Tsugumonotachi"
+      },
+      "audio": "Legendado",
+      "published_at": "2020-10-03",
+      "status": "completed"
+    },
+    {
+      "id": "gHsVucxFuh8",
+      "titles": {
+        "BR": "Reborn to Master the Blade: From Hero-King to Extraordinary Squire",
+        "JP": "Eiyuu-ou, Bu wo Kiwameru Tame Tenseisu: Soshite, Sekai Saikyou no Minarai Kishi♀"
+      },
+      "audio": "Legendado",
+      "published_at": "2023-01-10",
+      "status": "completed"
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 1,
+    "total": 3
+  }
+}

@@ -463,6 +463,26 @@
         "pt"
       ],
       "logo": "https://api.pomfy.stream/apipomfywhiteblue.png"
+    },
+    {
+      "id": "animefire",
+      "name": "AnimeFire",
+      "description": "Filmes e séries de anime em HLS do catálogo AnimeFire, dublados ou legendados conforme as opções de áudio publicadas.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/animefire.js",
+      "enabled": true,
+      "formats": [
+        "m3u8"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://animefire.one/favicons/favicon-192x192.png"
     }
   ]
 }

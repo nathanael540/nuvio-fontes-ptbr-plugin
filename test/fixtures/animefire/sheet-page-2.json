@@ -1,0 +1,21 @@
+{
+  "data": {
+    "format": "movie",
+    "hero": {
+      "titles": {
+        "BR": "Jujutsu Kaisen 0: O Filme",
+        "JP": "Jujutsu Kaisen 0"
+      },
+      "published_at": "2021-12-24"
+    },
+    "episodes": [
+      {
+        "id": "1g-56fcNMDP",
+        "season": null,
+        "number": 1,
+        "title": null,
+        "audio": "Dublado & Legendado"
+      }
+    ]
+  }
+}

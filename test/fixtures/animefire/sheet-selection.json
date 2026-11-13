@@ -1,0 +1,28 @@
+{
+  "data": {
+    "format": "tv",
+    "hero": {
+      "titles": {
+        "BR": "Tomb Raider King",
+        "JP": "Dogul Wang"
+      },
+      "published_at": "2026-07-09"
+    },
+    "episodes": [
+      {
+        "id": "agBI4h7PQv-",
+        "season": 1,
+        "number": 11,
+        "title": "A Relíquia de Tian Fu",
+        "audio": "Dublado & Legendado"
+      },
+      {
+        "id": "3yBBx4G2tnw",
+        "season": 1,
+        "number": 12,
+        "title": "Tomb Raider King",
+        "audio": "Dublado & Legendado"
+      }
+    ]
+  }
+}

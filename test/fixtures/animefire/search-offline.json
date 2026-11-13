@@ -1,0 +1,101 @@
+{
+  "data": [
+    {
+      "id": "xtLcr_tF4Tv",
+      "titles": {
+        "BR": "Attack on Titan",
+        "JP": "Shingeki no Kyojin"
+      },
+      "audio": "Dublado & Legendado",
+      "published_at": "2013-04-07",
+      "status": "completed"
+    },
+    {
+      "id": "eiUTGoFDi9R",
+      "titles": {
+        "BR": "Attack on Titan: Chronicle",
+        "US": "Attack on Titan ~Chronicle~",
+        "JP": "Shingeki no Kyojin: Chronicle"
+      },
+      "audio": "Legendado",
+      "published_at": "2020-07-17",
+      "status": "completed"
+    },
+    {
+      "id": "7y3XYHO0cKh",
+      "titles": {
+        "BR": "Attack on Titan: Junior High",
+        "JP": "Shingeki! Kyojin Chuugakkou"
+      },
+      "audio": "Legendado",
+      "published_at": "2015-10-04",
+      "status": "completed"
+    },
+    {
+      "id": "gB7CdUjOK6Y",
+      "titles": {
+        "BR": "Attack on Titan: O Arco e Flecha Escarlate",
+        "US": "Attack on Titan Part I: Crimson Bow and Arrow",
+        "JP": "Shingeki no Kyojin Zenpen: Guren no Yumiya"
+      },
+      "audio": "Dublado",
+      "published_at": "2014-11-22",
+      "status": "completed"
+    },
+    {
+      "id": "6aracZUudkk",
+      "titles": {
+        "BR": "Attack on Titan - Parte 2: Asas da Liberadade",
+        "US": "Attack on Titan Part II: Wings of Freedom",
+        "JP": "Shingeki no Kyojin Kouhen: Jiyuu no Tsubasa"
+      },
+      "audio": "Dublado",
+      "published_at": "2015-06-27",
+      "status": "completed"
+    },
+    {
+      "id": "FbuL9FUMPW1",
+      "titles": {
+        "BR": "Loner Life in Another World",
+        "JP": "Hitoribocchi no Isekai Kouryaku"
+      },
+      "audio": "Legendado",
+      "published_at": "2024-09-27",
+      "status": "completed"
+    },
+    {
+      "id": "byZ2GneAvKM",
+      "titles": {
+        "BR": "DON'T TOY WITH ME, MISS NAGATORO",
+        "JP": "Ijiranaide, Nagatoro-san"
+      },
+      "audio": "Dublado & Legendado",
+      "published_at": "2021-04-11",
+      "status": "completed"
+    },
+    {
+      "id": "dzECrTjbWdR",
+      "titles": {
+        "BR": "Juusou Kikou Dancougar Nova"
+      },
+      "audio": "Legendado",
+      "published_at": "2007-02-15",
+      "status": "completed"
+    },
+    {
+      "id": "4xxR21LrQ9A",
+      "titles": {
+        "BR": "Do You Love Your Mom and Her Two-Hit Multi-Target Attacks?",
+        "JP": "Tsuujou Kougeki ga Zentai Kougeki de Ni-kai Kougeki no Okaasan wa Suki desu ka?"
+      },
+      "audio": "Legendado",
+      "published_at": "2019-07-13",
+      "status": "completed"
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 1,
+    "total": 9
+  }
+}

@@ -25,6 +25,7 @@
 | [EmbedMovies](#embedmovies) | `embedmovies` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
 | [Kairou](#kairou) | `kairou` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-13 |
 | [Pomfy](#pomfy) | `pomfy` | filme, série | HLS | 🔵 Parcial | 2026-11-13 |
+| [AnimeFire](#animefire) | `animefire` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
 
 ## MegaEmbed
 
@@ -483,5 +484,27 @@ Provedor de filmes e séries em HLS pelo catálogo Pomfy por ID do TMDB. A mídi
    8. `tv` `117376` · Vincenzo (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    9. `tv` `456` · Os Simpsons (1989) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    10. `tv` `76479` · The Boys (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+<!-- online-verification:end -->
+
+## AnimeFire
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e séries de anime em HLS pela API pública do AnimeFire, com busca por título do TMDB, confirmação de tipo na ficha e seleção de episódio pelo par temporada/número. A rodada de 2026-11-13 com o perfil `anime` resolveu filmes 3/5 e séries 5/5; Princesa Mononoke e Akira terminaram sem resultado na busca. Limite de retenção: a fonte mantém `is_offline: false` em opções antigas mesmo quando o master pode responder 404 e marca como offline parte do acervo (por exemplo, Naruto Shippuden e o áudio legendado da primeira temporada de Attack on Titan). O provedor entrega a URL publicada e não sonda o CDN; a rodada comprova o contrato, não a reprodução.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-13T10:29:33.381Z** · ID `2026-11-13T10-29-17-955Z-animefire-b9b4dea5-0859` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `b9b4dea521dda0a78679565630f81e25` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `372058` · Your Name (2016) · **Resolvido** · 2/2 streams aproveitáveis
+   2. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Resolvido** · 2/2 streams aproveitáveis
+   3. `movie` `128` · Princesa Mononoke (1997) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `129` · A Viagem de Chihiro (2001) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `149` · Akira (1988) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   7. `tv` `30984` · Bleach (2004) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   8. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   9. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   10. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 

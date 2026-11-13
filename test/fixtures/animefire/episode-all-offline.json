@@ -1,0 +1,24 @@
+{
+  "data": {
+    "streams": [
+      {
+        "audio": "dublado",
+        "is_mtl": false,
+        "is_offline": true,
+        "url": null,
+        "qualities": [
+          "480p"
+        ]
+      },
+      {
+        "audio": "legendado",
+        "is_mtl": false,
+        "is_offline": true,
+        "url": null,
+        "qualities": [
+          "480p"
+        ]
+      }
+    ]
+  }
+}

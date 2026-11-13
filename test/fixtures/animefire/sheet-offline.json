@@ -1,0 +1,21 @@
+{
+  "data": {
+    "format": "tv",
+    "hero": {
+      "titles": {
+        "BR": "Attack on Titan",
+        "JP": "Shingeki no Kyojin"
+      },
+      "published_at": "2013-04-07"
+    },
+    "episodes": [
+      {
+        "id": "3R-N-u7fqxN",
+        "season": 1,
+        "number": 1,
+        "title": "Para você a 2 mil anos no futuro - A queda de Shiganshina (1)",
+        "audio": "Dublado & Legendado"
+      }
+    ]
+  }
+}

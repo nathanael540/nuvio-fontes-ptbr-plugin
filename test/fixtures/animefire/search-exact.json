@@ -1,0 +1,319 @@
+{
+  "data": [
+    {
+      "id": "eU7t5IvcNKU",
+      "titles": {
+        "BR": "Naruto"
+      },
+      "audio": "Dublado & Legendado",
+      "published_at": "2002-10-03",
+      "status": "completed"
+    },
+    {
+      "id": "V2Q_qcvaKhb",
+      "titles": {
+        "BR": "Naruto Shippuden",
+        "US": "Naruto: Shippuden",
+        "JP": "NARUTO: Shippuuden"
+      },
+      "audio": "Dublado & Legendado",
+      "published_at": "2007-02-15",
+      "status": "completed"
+    },
+    {
+      "id": "TT00doc6Kg5",
+      "titles": {
+        "BR": "Naruto Shippuden O Filme: Laços",
+        "US": "Naruto Shippuden the Movie: Bonds",
+        "JP": "NARUTO: Shippuuden - Kizuna"
+      },
+      "audio": "Legendado",
+      "published_at": "2008-08-02",
+      "status": "completed"
+    },
+    {
+      "id": "zPEpStCVqlQ",
+      "titles": {
+        "BR": "Naruto: A Lenda da Pedra de Gelel",
+        "US": "Naruto the Movie: Legend of the Stone of Gelel",
+        "JP": "NARUTO: Dai Gekitotsu! Maboroshi no Chitei Iseki Dattebayo"
+      },
+      "audio": "Legendado",
+      "published_at": "2005-08-06",
+      "status": "completed"
+    },
+    {
+      "id": "CnTnD7ojWh8",
+      "titles": {
+        "BR": "Naruto Shippuden O Filme: A Torre Perdida",
+        "US": "Naruto Shippuden the Movie: The Lost Tower",
+        "JP": "NARUTO: Shippuuden - The Lost Tower"
+      },
+      "audio": "Legendado",
+      "published_at": "2010-07-31",
+      "status": "completed"
+    },
+    {
+      "id": "C_XdErJcJ-U",
+      "titles": {
+        "BR": "Naruto Shippuden O Filme: Herdeiros da Vontade do Fogo",
+        "US": "Naruto Shippuden the Movie: The Will of Fire",
+        "JP": "NARUTO: Shippuuden - Hi no Ishi wo Tsugu Mono"
+      },
+      "audio": "Legendado",
+      "published_at": "2009-08-01",
+      "status": "completed"
+    },
+    {
+      "id": "uVJb75h_dVm",
+      "titles": {
+        "BR": "Naruto SD: Rock Lee No Seishun Full Power Ninden",
+        "US": "NARUTO Spin-Off: Rock Lee & His Ninja Pals",
+        "JP": "NARUTO SD Rock Lee no Seishun Full-Power Ninden"
+      },
+      "audio": "Legendado",
+      "published_at": "2012-04-03",
+      "status": "completed"
+    },
+    {
+      "id": "axkD90lYF_j",
+      "titles": {
+        "BR": "Naruto Shippuden O Filme: Caminho do Ninja",
+        "JP": "ROAD TO NINJA: NARUTO THE MOVIE"
+      },
+      "audio": "Legendado",
+      "published_at": "2012-07-28",
+      "status": "completed"
+    },
+    {
+      "id": "aaR8yQjuBBQ",
+      "titles": {
+        "BR": "Boruto: Naruto O Filme",
+        "JP": "BORUTO: NARUTO THE MOVIE"
+      },
+      "audio": "Dublado & Legendado",
+      "published_at": "2015-08-07",
+      "status": "completed"
+    },
+    {
+      "id": "dUHILwLb-HB",
+      "titles": {
+        "BR": "The Last Naruto: O Filme",
+        "JP": "THE LAST: NARUTO THE MOVIE"
+      },
+      "audio": "Legendado",
+      "published_at": "2014-12-06",
+      "status": "completed"
+    },
+    {
+      "id": "tdAgu9SW6Uf",
+      "titles": {
+        "BR": "Boruto: Naruto Next Generations"
+      },
+      "audio": "Dublado & Legendado",
+      "published_at": "2017-04-05",
+      "status": "completed"
+    },
+    {
+      "id": "WyBPTwAR13J",
+      "titles": {
+        "BR": "Shadow Star Narutaru",
+        "JP": "Narutaru: Mukuro Naru Hoshi Tama Taru Ko"
+      },
+      "audio": "Legendado",
+      "published_at": "2003-07-07",
+      "status": "completed"
+    },
+    {
+      "id": "vhGPK7fOFHE",
+      "titles": {
+        "BR": "Narue No Sekai",
+        "US": "The World of Narue"
+      },
+      "audio": "Legendado",
+      "published_at": "2003-04-06",
+      "status": "completed"
+    },
+    {
+      "id": "U_3UJPjk_2j",
+      "titles": {
+        "BR": "Narenare -Cheer for you!-",
+        "JP": "Na-Nare Hana-Nare"
+      },
+      "audio": "Legendado",
+      "published_at": "2024-07-07",
+      "status": "completed"
+    },
+    {
+      "id": "caWxQB0bXO0",
+      "titles": {
+        "BR": "Assault Lily: Bouquet",
+        "US": "Assault Lily BOUQUET"
+      },
+      "audio": "Legendado",
+      "published_at": "2020-10-02",
+      "status": "completed"
+    },
+    {
+      "id": "OJNeQe802ur",
+      "titles": {
+        "BR": "With You, Our Love Will Make It Through",
+        "JP": "Kimi to Koete Koi ni Naru"
+      },
+      "audio": "Legendado",
+      "published_at": "2025-10-14",
+      "status": "completed"
+    },
+    {
+      "id": "NEJsY-y8VO4",
+      "titles": {
+        "BR": "Tenshi ni Narumon!",
+        "US": "I'm Gonna Be an Angel!"
+      },
+      "audio": "Legendado",
+      "published_at": "1999-04-07",
+      "status": "completed"
+    },
+    {
+      "id": "OmA0oHUa6Hv",
+      "titles": {
+        "BR": "Dounika Naru Hibi",
+        "US": "Happy-Go-Lucky Days"
+      },
+      "audio": "Legendado",
+      "published_at": "2020-10-23",
+      "status": "completed"
+    },
+    {
+      "id": "cMYsHkkwwor",
+      "titles": {
+        "BR": "Bloom Into You",
+        "JP": "Yagate Kimi ni Naru"
+      },
+      "audio": "Legendado",
+      "published_at": "2018-10-05",
+      "status": "completed"
+    },
+    {
+      "id": "zFGzhQKn59y",
+      "titles": {
+        "BR": "Punho da Estrela do Norte",
+        "US": "Fist of the North Star",
+        "JP": "Hokuto no Ken"
+      },
+      "audio": "Legendado",
+      "published_at": "1984-10-11",
+      "status": "completed"
+    },
+    {
+      "id": "N4XX1kApiNQ",
+      "titles": {
+        "BR": "O Infiltrado Perfeito",
+        "US": "The Perfect Insider",
+        "JP": "Subete ga F ni Naru: THE PERFECT INSIDER"
+      },
+      "audio": "Legendado",
+      "published_at": "2015-10-09",
+      "status": "completed"
+    },
+    {
+      "id": "kLttLQp7XKQ",
+      "titles": {
+        "BR": "Nobunaga Concerto"
+      },
+      "audio": "Legendado",
+      "published_at": "2014-07-12",
+      "status": "completed"
+    },
+    {
+      "id": "Yz-vnYqpvoH",
+      "titles": {
+        "BR": "TsumaSho",
+        "JP": "Tsuma, Shougakusei ni Naru."
+      },
+      "audio": "Legendado",
+      "published_at": "2024-10-06",
+      "status": "completed"
+    },
+    {
+      "id": "M8cAgaG0dlH",
+      "titles": {
+        "BR": "I'll Become a Villainess Who Goes Down in History",
+        "US": "I’ll Become a Villainess Who Goes Down in History",
+        "JP": "Rekishi ni Nokoru Akujo ni Naruzo"
+      },
+      "audio": "Legendado",
+      "published_at": "2024-10-02",
+      "status": "completed"
+    },
+    {
+      "id": "1O_Niv-fHtP",
+      "titles": {
+        "BR": "100 Coisas para Fazer Antes de Virar Zumbi",
+        "US": "Zom 100: Bucket List of the Dead",
+        "JP": "Zom 100: Zombie ni Naru Made ni Shitai 100 no Koto"
+      },
+      "audio": "Dublado & Legendado",
+      "published_at": "2023-07-09",
+      "status": "completed"
+    },
+    {
+      "id": "8P3hKqx3kfw",
+      "titles": {
+        "BR": "Seikimatsu Occult Gakuin",
+        "US": "Occult Academy"
+      },
+      "audio": "Legendado",
+      "published_at": "2010-07-06",
+      "status": "completed"
+    },
+    {
+      "id": "m5qbtVUQlb4",
+      "titles": {
+        "BR": "De Caipira a Mestre Espadachim",
+        "US": "From Old Country Bumpkin to Master Swordsman",
+        "JP": "Katainaka no Ossan, Kensei ni Naru"
+      },
+      "audio": "Dublado & Legendado",
+      "published_at": "2025-04-05",
+      "status": "completed"
+    },
+    {
+      "id": "pQzJtL2ZGDF",
+      "titles": {
+        "BR": "Pegando uma Onda com Você",
+        "US": "Ride Your Wave",
+        "JP": "Kimi to, Nami ni Noretara"
+      },
+      "audio": "Legendado",
+      "published_at": "2019-06-21",
+      "status": "completed"
+    },
+    {
+      "id": "hqlvfc3Hjfk",
+      "titles": {
+        "BR": "The Rising of the Shield Hero",
+        "JP": "Tate no Yuusha no Nariagari"
+      },
+      "audio": "Dublado & Legendado",
+      "published_at": "2019-01-09",
+      "status": "airing"
+    },
+    {
+      "id": "WeLCc0oI5t8",
+      "titles": {
+        "BR": "Ore, Twin Tail Ni Narimasu.",
+        "US": "Gonna be the Twin-Tail!!",
+        "JP": "Ore, Twintail ni Narimasu."
+      },
+      "audio": "Legendado",
+      "published_at": "2014-10-09",
+      "status": "completed"
+    }
+  ],
+  "meta": {
+    "current_page": 1,
+    "last_page": 3,
+    "total": 69
+  }
+}
