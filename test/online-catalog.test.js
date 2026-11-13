@@ -62,7 +62,7 @@ test('catálogos reais são válidos, não truncam e mantêm pelo menos 20 títu
     manifest: JSON.parse(require('node:fs').readFileSync(path.join(ROOT, 'manifest.json'), 'utf8')),
     catalogs,
   });
-  assert.deepEqual(profiles.providers, {});
+  assert.deepEqual(profiles.providers, { dattebayo: { exclusiveTag: 'anime' } });
 });
 
 test('catálogo acima do mínimo é aceito sem truncamento', () => {

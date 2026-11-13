@@ -402,6 +402,26 @@
         "pt"
       ],
       "logo": "https://www.google.com/s2/favicons?domain=primeflix.sh&sz=128"
+    },
+    {
+      "id": "dattebayo",
+      "name": "Dattebayo BR",
+      "description": "Animes, tokusatsus, doramas e donghuas em MP4, dublados ou legendados conforme a seção do catálogo, com temporada e episódio mapeados a partir do TMDB.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/dattebayo.js",
+      "enabled": true,
+      "formats": [
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=dattebayo-br.com&sz=128"
     }
   ]
 }

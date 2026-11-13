@@ -1,6 +1,10 @@
 {
   "schemaVersion": 1,
-  "revision": "2026-11-12.1",
-  "curatedAt": "2026-11-12",
-  "providers": {}
+  "revision": "2026-11-13.1",
+  "curatedAt": "2026-11-13",
+  "providers": {
+    "dattebayo": {
+      "exclusiveTag": "anime"
+    }
+  }
 }

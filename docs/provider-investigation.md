@@ -186,6 +186,16 @@ Mapa de metodologias para estudar uma fonte e escolher um caminho de implementa�
 7. **Referências.** [Busca e ficha](../src/primeflix/catalog.js), [player e streams](../src/primeflix/player.js), [testes](../test/primeflix.test.js) e fixtures em [test/fixtures/primeflix](../test/fixtures/primeflix/). Blocos usados: `tmdb-info`, `title-match`, `http`, `stream-build`, `custom-formatter`, `language-discovery` e `quality-discovery`; nenhum bloco novo.
 8. **Limites.** A busca não devolve ano nem tipo e não foi observada paginação; títulos fora do recorte não são encontrados. O token `secure_link` do arquivo de filme já respondeu 403 na investigação inicial e voltou a entregar playlist HLS na mesma data, então a disponibilidade do filme não é garantida. O endpoint `/vvv` não é documentado e pode mudar; as URLs de mídia são assinadas e efêmeras e não entram em fixture, log ou documentação. O idioma não tem seletor na página: o nome do arquivo é a única evidência local.
 
+### 3.18. Assinatura pública de mídia de curta duração
+
+1. **Situação: Em uso no Dattebayo BR.** O player publica MP4 em um host Cloudflare R2 e a URL sem query responde 400. A assinatura é obtida por um serviço público já chamado pela própria página, sem conta, chave ou cookie.
+2. **Investigar.** Confirme a página `/videos/<id>`, as abas `.Aba` com `data-target` e os contêineres `.playerContainer` com `var vid`; só entra opção com aba correspondente. O serviço é `GET https://ads.animeyabu.net?token=&url=<vid>`, com perfil `page` e `Referer` da página do vídeo.
+3. **Contrato observado.** A resposta é um JSON de lista com `publicidade` em texto iniciado por `?`, uma query AWS4 pré-assinada válida por 3600 segundos. A URL assinada respondeu 206 `video/mp4` sem cabeçalhos de reprodução; o provedor devolve a URL sem `headers`.
+4. **Ação no provedor.** Resolva cada opção em isolamento, deduplique pelo `vid`, descarte só a opção que falhar com `console.warn('[Dattebayo BR] Opção <rótulo> descartada: <causa>')` e suba erro agregado quando todas falharem. Não guarde a assinatura em cache, fixture, relatório ou log: ela expira e é específica da URL.
+5. **Descartes observados.** O `contentURL` `arft.casa2.online` está quebrado (HTTPS falha, HTTP 404) e o vídeo `anitube.vip` do caminho de fallback é um clipe de propaganda. Nenhum dos dois entra como mídia; o provedor não executa scripts de anúncio.
+6. **Referências.** [Player](../src/dattebayo/player.js), [temporadas e episódios](../src/dattebayo/seasons.js), [testes](../test/dattebayo.test.js) e fixtures em [test/fixtures/dattebayo](../test/fixtures/dattebayo/).
+7. **Limites.** O serviço pode mudar, limitar por IP ou ficar indisponível; a assinatura expira em uma hora e não pode ser renovada pelo provedor. Não há sonda de mídia na primeira versão: a aba é o sinal de disponibilidade e a URL assinada comprova o contrato, não a reprodução. Sondar a mídia com `Range` mínima é **Hipótese** para outra mudança; o método não é universal para outras fontes.
+
 ## 4. Serviços intermediários e enriquecimento
 
 1. Use esta seção quando a fonte já fornecer uma página ou um hash, mas faltar conteúdo legível, o índice de um episódio ou evidência do que há na mídia. Esses serviços podem complementar métodos de catálogo sem pertencer à mesma fonte.

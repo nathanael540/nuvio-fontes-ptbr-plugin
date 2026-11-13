@@ -30,6 +30,8 @@ const DORAMA_LANGUAGES = ['ko', 'zh', 'cn', 'ja', 'th'];
  * @property {string} originalLanguage - Código ISO 639-1 do idioma original (ex.: "en", "ja").
  * @property {string[]} originCountries - Códigos ISO 3166-1 dos países de origem.
  * @property {number[]} genreIds - IDs de gênero do TMDB.
+ * @property {{ number: number, episodeCount: number, name: string, airDate: string|null }[]} seasons -
+ *   Temporadas regulares e especiais da série, na ordem do TMDB, incluindo a temporada 0; lista vazia em filme.
  */
 
 /**
@@ -119,7 +121,31 @@ function toMediaInfo(data, tmdbId, mediaType) {
     originalLanguage,
     originCountries: data.origin_country || [],
     genreIds,
+    seasons: readSeasons(data.seasons),
   };
+}
+
+/**
+ * Lê as temporadas da resposta de série, preservando a temporada 0 e a ordem do TMDB.
+ * Resposta sem a lista é série sem esse dado; filme e série sem `seasons` devolvem lista vazia.
+ * @param {*} raw - Valor de `data.seasons`.
+ * @returns {{ number: number, episodeCount: number, name: string, airDate: string|null }[]}
+ * @throws {Error} Se a lista existir com uma temporada sem número ou sem contagem de episódios.
+ */
+function readSeasons(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw.map((season) => {
+    const { season_number: number, episode_count: episodeCount, name, air_date: airDate } = season;
+    if (!Number.isInteger(number) || !Number.isInteger(episodeCount)) {
+      throw new Error('TMDB retornou temporada sem número ou contagem de episódios');
+    }
+    return {
+      number,
+      episodeCount,
+      name: typeof name === 'string' ? name : '',
+      airDate: typeof airDate === 'string' && airDate !== '' ? airDate : null,
+    };
+  });
 }
 
 /**
