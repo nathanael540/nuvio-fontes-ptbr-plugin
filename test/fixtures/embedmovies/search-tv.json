@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "type": "search",
+  "query": "100088",
+  "total_results": 1,
+  "results": [
+    {
+      "id": 18426,
+      "type": "tv",
+      "title": {
+        "pt": "The Last of Us",
+        "en": "The Last of Us"
+      },
+      "release_date": "2023-01-15",
+      "is_anime": false,
+      "is_adult": false,
+      "season_count": 2,
+      "tmdb_id": 100088,
+      "imdb_id": "tt3581920",
+      "embed": "https://myembed.biz/serie/100088/"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "status": true,
+  "data": {
+    "id": 6643,
+    "title": {
+      "pt": "Matrix",
+      "en": "The Matrix"
+    },
+    "release_date": "1999-03-31",
+    "seasons": null,
+    "season_count": null,
+    "options": [
+      {
+        "embed": "https://v1.watchplay.shop/movie/tt0133093",
+        "lang": "pt-br",
+        "label": "WatchPlay",
+        "budget": "success",
+        "id": "watchplay"
+      },
+      {
+        "embed": "https://embedplayer2.xyz/video/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "embed_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "lang": "pt-br",
+        "label": "VIP Player",
+        "budget": "success",
+        "id": "embedplayer"
+      },
+      {
+        "embed": "https://embedplayabyss.top/player.html?v=exemplo",
+        "lang": "pt-br",
+        "label": "Embed Play",
+        "budget": "success",
+        "id": "embedplay"
+      },
+      {
+        "embed": "https://www.blogger.com/video.g?v=exemplo",
+        "lang": "pt-br",
+        "label": "Blogger",
+        "budget": "success",
+        "id": "blogger"
+      },
+      {
+        "embed": "https://ok.ru/video/123",
+        "lang": "pt-br",
+        "label": "OK",
+        "budget": "success",
+        "id": "okru"
+      },
+      {
+        "embed": "https://superflixapi.fun/filme/tt0133093",
+        "lang": "pt-br",
+        "label": "Premium",
+        "budget": "danger",
+        "id": "superflixapi"
+      }
+    ]
+  }
+}

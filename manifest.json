@@ -269,6 +269,19 @@
         "pt"
       ],
       "logo": "https://www.google.com/s2/favicons?domain=primeflix.sh&sz=128"
+    },
+    {
+      "id": "embedmovies",
+      "name": "EmbedMovies",
+      "description": "Filmes e séries em HLS pelo catálogo EmbedMovies, com áudio e legendas conforme as opções do player público da fonte.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": ["movie", "tv"],
+      "filename": "providers/embedmovies.js",
+      "enabled": true,
+      "formats": ["m3u8"],
+      "contentLanguage": ["pt"],
+      "logo": "https://www.google.com/s2/favicons?domain=embedmovies.org&sz=128"
     }
   ]
 }

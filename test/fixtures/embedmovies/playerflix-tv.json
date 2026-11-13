@@ -1,0 +1,36 @@
+{
+  "status": true,
+  "data": {
+    "id": 18426,
+    "title": {
+      "pt": "The Last of Us",
+      "en": "The Last of Us"
+    },
+    "release_date": "2023-01-15",
+    "season_count": 2,
+    "options": [
+      {
+        "embed": "https://v1.watchplay.shop/tvshow/100088/1/1",
+        "lang": "pt-br",
+        "label": "WatchPlay",
+        "budget": "success",
+        "id": "watchplay"
+      },
+      {
+        "embed": "https://embedplayer2.xyz/video/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "embed_id": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "lang": "pt-br",
+        "label": "VIP Player",
+        "budget": "success",
+        "id": "embedplayer"
+      },
+      {
+        "embed": "https://superflixapi.fun/serie/100088/1/1",
+        "lang": "pt-br",
+        "label": "Premium",
+        "budget": "danger",
+        "id": "superflixapi"
+      }
+    ]
+  }
+}

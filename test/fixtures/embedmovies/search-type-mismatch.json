@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "type": "search",
+  "query": "603",
+  "total_results": 1,
+  "results": [
+    {
+      "id": 148596,
+      "type": "tv",
+      "title": {
+        "pt": "Kirstie Alley",
+        "en": "Veronica's Closet"
+      },
+      "release_date": "1997-09-25",
+      "is_anime": false,
+      "tmdb_id": 603,
+      "imdb_id": "tt0118504",
+      "embed": "https://myembed.biz/serie/603"
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "hls": true,
+  "videoImage": null,
+  "videoSource": null,
+  "securedLink": "https://cdn.example/master.m3u8?md5=fictional&expires=999",
+  "downloadLinks": [],
+  "attachmentLinks": []
+}
