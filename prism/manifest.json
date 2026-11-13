@@ -483,6 +483,26 @@
         "pt"
       ],
       "logo": "https://animefire.one/favicons/favicon-192x192.png"
+    },
+    {
+      "id": "doramogo",
+      "name": "Doramogo",
+      "description": "Filmes e doramas em HLS do catálogo Doramogo, com áudio dublado ou legendado conforme o rótulo da ficha.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/doramogo.js",
+      "enabled": true,
+      "formats": [
+        "m3u8"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.doramogo.net/assets/doramogo/images/icon-tile.png"
     }
   ]
 }

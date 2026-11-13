@@ -1,0 +1,12 @@
+{
+  "name": "Itaewon Class",
+  "original_name": "이태원 클라쓰",
+  "first_air_date": "2020-01-31",
+  "original_language": "ko",
+  "origin_country": ["KR"],
+  "genres": [{ "id": 18, "name": "Drama" }],
+  "external_ids": { "imdb_id": "tt11239552" },
+  "alternative_titles": {
+    "results": [{ "iso_3166_1": "BR", "title": "Itaewon Class" }]
+  }
+}

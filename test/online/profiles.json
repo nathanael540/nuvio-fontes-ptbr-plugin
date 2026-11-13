@@ -5,6 +5,7 @@
   "providers": {
     "animefire": {
       "exclusiveTag": "anime"
-    }
+    },
+    "doramogo": { "exclusiveTag": "dorama" }
   }
 }

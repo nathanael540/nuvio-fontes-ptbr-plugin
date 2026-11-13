@@ -45,6 +45,14 @@
     { "tmdbId": "128", "title": "Princesa Mononoke", "year": 1997, "tags": ["anime"] },
     { "tmdbId": "149", "title": "Akira", "year": 1988, "tags": ["anime"] },
     { "tmdbId": "372058", "title": "Your Name", "year": 2016, "tags": ["anime"] },
-    { "tmdbId": "635302", "title": "Demon Slayer: Mugen Train", "year": 2020, "tags": ["anime"] }
+    { "tmdbId": "635302", "title": "Demon Slayer: Mugen Train", "year": 2020, "tags": ["anime"] },
+    { "tmdbId": "1269208", "title": "Meus 84 m²", "year": 2025, "tags": ["dorama"] },
+    { "tmdbId": "1419027", "title": "Ataque 13", "year": 2025, "tags": ["dorama"] },
+    { "tmdbId": "1466115", "title": "Se Esse Amor Desaparecesse Hoje", "year": 2025, "tags": ["dorama"] },
+    { "tmdbId": "1070514", "title": "100 Coisas para Fazer Antes de Virar Zumbi", "year": 2023, "tags": ["dorama"] },
+    { "tmdbId": "1127546", "title": "Pesadelo na Montanha", "year": 2023, "tags": ["dorama"] },
+    { "tmdbId": "962489", "title": "Ditto: Conexões do Amor", "year": 2022, "tags": ["dorama"] },
+    { "tmdbId": "734519", "title": "The Fable: The Killer Who Doesn't Kill", "year": 2021, "tags": ["dorama"] },
+    { "tmdbId": "437109", "title": "A Vilã", "year": 2017, "tags": ["dorama"] }
   ]
 }

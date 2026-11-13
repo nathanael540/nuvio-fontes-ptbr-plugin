@@ -1,0 +1,15 @@
+{
+  "title": "Meus 84 m²",
+  "original_title": "Wall to Wall",
+  "release_date": "2026-03-26",
+  "original_language": "ko",
+  "origin_country": ["KR"],
+  "genres": [
+    { "id": 18, "name": "Drama" },
+    { "id": 53, "name": "Suspense" }
+  ],
+  "external_ids": { "imdb_id": "tt36622915" },
+  "alternative_titles": {
+    "titles": [{ "iso_3166_1": "BR", "title": "Meus 84 m²" }]
+  }
+}

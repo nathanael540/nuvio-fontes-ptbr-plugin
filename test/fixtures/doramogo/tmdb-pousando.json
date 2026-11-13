@@ -1,0 +1,16 @@
+{
+  "name": "Pousando no Amor",
+  "original_name": "사랑의 불시착",
+  "first_air_date": "2019-12-14",
+  "original_language": "ko",
+  "origin_country": ["KR"],
+  "genres": [
+    { "id": 18, "name": "Drama" },
+    { "id": 10749, "name": "Romance" },
+    { "id": 35, "name": "Comédia" }
+  ],
+  "external_ids": { "imdb_id": "tt10872600" },
+  "alternative_titles": {
+    "results": [{ "iso_3166_1": "BR", "title": "Pousando no Amor" }]
+  }
+}
