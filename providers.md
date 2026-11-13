@@ -22,6 +22,7 @@
 | [BRFlix](#brflix) | `brflix` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-12 |
 | [RIVO](#rivo) | `rivo` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-12 |
 | [Primeflix](#primeflix) | `primeflix` | filme, série | HLS, MKV | 🟢 Estável | 2026-11-13 |
+| [Doramogo](#doramogo) | `doramogo` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
 
 ## MegaEmbed
 
@@ -418,3 +419,24 @@ Provedor de filmes e séries em HLS ou MKV do catálogo Primeflix, com busca JSO
    10. `tv` `1622` · Supernatural (2005) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 
+## Doramogo
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e doramas em HLS do catálogo Doramogo, com busca textual confirmada pelo ID do TMDB no pôster e áudio dublado ou legendado pelo rótulo da ficha. A rodada de 2026-11-13 usou o perfil `dorama` e resolveu 5/5 filmes e 3/5 séries; os dois episódios sem resultado ficaram no acervo da fonte, sem falha de estrutura.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-13T11:16:49.404Z** · ID `2026-11-13T11-16-33-471Z-doramogo-20261113-f3b9` · **Estável** · pacote 1.0.0 · perfil `dorama` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261113` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `437109` · A Vilã (2017) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `1466115` · Se Esse Amor Desaparecesse Hoje (2025) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `734519` · The Fable: The Killer Who Doesn't Kill (2021) · **Resolvido** · 1/1 streams aproveitáveis
+   4. `movie` `1269208` · Meus 84 m² (2025) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `1070514` · 100 Coisas para Fazer Antes de Virar Zumbi (2023) · **Resolvido** · 1/1 streams aproveitáveis
+   6. `tv` `136283` · The Glory (2022) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   7. `tv` `96162` · Itaewon Class (2020) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   8. `tv` `94796` · Pousando no Amor (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   9. `tv` `93405` · Round 6 (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   10. `tv` `90447` · Hotel del Luna (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+<!-- online-verification:end -->

@@ -1,0 +1,16 @@
+{
+  "name": "Sweet Home",
+  "original_name": "스위트홈",
+  "first_air_date": "2020-12-18",
+  "original_language": "ko",
+  "origin_country": ["KR"],
+  "genres": [
+    { "id": 18, "name": "Drama" },
+    { "id": 10765, "name": "Sci-Fi & Fantasy" },
+    { "id": 9648, "name": "Mistério" }
+  ],
+  "external_ids": { "imdb_id": "tt11539596" },
+  "alternative_titles": {
+    "results": [{ "iso_3166_1": "BR", "title": "Sweet Home" }]
+  }
+}

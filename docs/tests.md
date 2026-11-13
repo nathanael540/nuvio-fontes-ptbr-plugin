@@ -27,7 +27,7 @@ Todos os testes de desenvolvimento rodam em Node, sem o app Nuvio instalado, sem
 1. Existem exatamente dois catálogos, `test/online/catalogs/movie.json` e `tv.json`, com no mínimo 20 títulos reais distintos cada e sem máximo. Não há catálogo por nicho e nenhum título é descartado por passar do mínimo.
 2. Cada título tem `tmdbId`, `title`, `year` e `tags`. Filme não aceita `season` nem `episode`; série exige temporada e episódio positivos de conteúdo já lançado. O ID é único dentro do catálogo e pode coincidir entre filme e série.
 3. A curadoria registra a referência pública de popularidade, a data e a revisão. A conferência de IDs, anos e episódios usa referências públicas e fica registrada no design da mudança que alterou o catálogo. O ranking é um recorte datado, sem atualização automática.
-4. As tags (`anime`, `dorama` e outras em kebab-case) classificam o nicho sem criar tipos de mídia. `test/online/profiles.json` só configura um nicho quando a fonte é exclusiva; sem entrada, o provedor é generalista e usa todo o catálogo do tipo.
+4. As tags (`anime`, `dorama` e outras em kebab-case) classificam o nicho sem criar tipos de mídia. `test/online/profiles.json` só configura um nicho quando a fonte é exclusiva; sem entrada, o provedor é generalista e usa todo o catálogo do tipo. Hoje o Doramogo usa a tag `dorama`, com filmes e séries elegíveis nos dois catálogos; os demais provedores são generalistas.
 5. Um perfil exclusivo precisa de pelo menos cinco candidatos elegíveis por tipo suportado. Provedor desconhecido, tag desconhecida ou amostra insuficiente impedem a preparação, sem reduzir a amostra ou trocar de nicho.
 
 ## 4. O que um teste de provedor confere

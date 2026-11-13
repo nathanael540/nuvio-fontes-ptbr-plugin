@@ -62,7 +62,9 @@ test('catálogos reais são válidos, não truncam e mantêm pelo menos 20 títu
     manifest: JSON.parse(require('node:fs').readFileSync(path.join(ROOT, 'manifest.json'), 'utf8')),
     catalogs,
   });
-  assert.deepEqual(profiles.providers, {});
+  assert.deepEqual(profiles.providers, { doramogo: { exclusiveTag: 'dorama' } });
+  assert.ok(catalogs.movie.titles.filter((title) => title.tags.includes('dorama')).length >= 5);
+  assert.ok(catalogs.tv.titles.filter((title) => title.tags.includes('dorama')).length >= 5);
 });
 
 test('catálogo acima do mínimo é aceito sem truncamento', () => {

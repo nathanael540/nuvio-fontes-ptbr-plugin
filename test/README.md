@@ -21,11 +21,11 @@ Comandos e operação da infraestrutura de testes. Os testes de desenvolvimento 
 2. Cada título identifica `tmdbId`, `title`, `year` e `tags`. Filmes não têm coordenadas de episódio; séries acrescentam `season` e `episode` positivos de um episódio já lançado. O mesmo `tmdbId` pode existir nos dois catálogos, mas não se repete dentro do mesmo tipo.
 3. A referência de popularidade (`popularitySource`), a data de curadoria (`curatedAt`), a revisão (`revision`) e a referência de conferência dos IDs (`verificationSource`) ficam versionadas no próprio catálogo. O ranking é um recorte datado, não uma promessa de atualização automática.
 4. As tags são curadas em kebab-case (`anime`, `dorama` e outras que forem necessárias). Elas não criam tipos de mídia: o escopo continua sendo `supportedTypes` do manifest.
-5. `test/online/profiles.json` mapeia um provedor ao seu nicho exclusivo. Sem entrada, o provedor é generalista e usa todos os candidatos do tipo. Hoje o arquivo tem `"providers": {}` porque nenhum provedor atual é exclusivo de anime ou dorama.
-6. Um perfil exclusivo precisa manter ao menos cinco candidatos elegíveis por tipo suportado. Exemplo de formato, validado pelo teste e sem uso atual:
+5. `test/online/profiles.json` mapeia um provedor ao seu nicho exclusivo. Sem entrada, o provedor é generalista e usa todos os candidatos do tipo. Hoje o arquivo registra `doramogo` com `exclusiveTag` `dorama`; os demais provedores são generalistas.
+6. Um perfil exclusivo precisa manter ao menos cinco candidatos elegíveis por tipo suportado. Formato usado pelo perfil atual:
 
 ```json
-{ "providers": { "provedor-exemplo": { "exclusiveTag": "anime" } } }
+{ "providers": { "doramogo": { "exclusiveTag": "dorama" } } }
 ```
 
 7. ID de provedor fora do manifest, tag desconhecida e amostra insuficiente falham na preparação. O teste `test/online-catalog.test.js` cobre esses casos e não acessa a internet.

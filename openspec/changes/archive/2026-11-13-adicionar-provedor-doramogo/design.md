@@ -42,7 +42,7 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 12
 2. Para cada consulta, ler os cartões do tipo esperado e extrair título, URL e ID do pôster com `/(?:cdn\.doramogo\.net\/imagens\/)(\d+)_/`.
 3. Confirmar o candidato quando o ID do pôster for igual a `media.tmdbId`. Não usar o ano da ficha: ele é a data de publicação no catálogo e divergiu em todos os exemplos.
 4. Se o cartão não expuser ID no pôster, consultar a ficha e repetir a leitura no pôster principal. Só aceitar se o ID for igual; usar `titleSimilarity` apenas para limitar quais fichas sem ID são consultadas.
-5. Coletar candidatos de todas as consultas e deduplicar por URL. Cada página confirmada é uma variante de áudio; a mesma obra pode ter uma página dublada e outra legendada.
+5. Parar na primeira consulta que confirmar candidatos, como na spec, e deduplicar por URL. Cada página confirmada é uma variante de áudio; a mesma busca pode trazer uma página dublada e outra legendada, como em `Uma Loja Para Assassinos`.
 6. Alternativas descartadas:
    1. `findBestMatch` sozinho: o título do cartão pode trazer `(Legendado)` ou `(Dublado)` e o ano da ficha não é o de lançamento; a confirmação por ID é mais forte.
    2. Buscar pelo ID do TMDB: a busca do site é textual e devolveu zero para IDs testados.
@@ -154,4 +154,4 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 12
 1. A busca do site passará a paginar? Hoje o recorte é 18 cartões e `?page=2` repete a primeira página; a resposta não muda o desenho atual.
 2. Haverá mais de duas variantes de áudio por título? O código devolve todas as páginas confirmadas; não há decisão pendente.
 3. O host alternativo continuará publicado com o mesmo contrato? Ele é lido da página a cada pedido; uma mudança de host é absorvida, e a remoção vira erro de estrutura.
-4. O catálogo `movie` ganhará cinco títulos com a tag `dorama` para um perfil exclusivo? Fica para uma curadoria própria, porque a alteração de catálogo invalida a evidência online dos demais provedores.
+4. O catálogo `movie` ganhará cinco títulos com a tag `dorama` para um perfil exclusivo? Fica para uma curadoria própria, porque a alteração de catálogo invalida a evidência online dos demais provedores. Resolvido na change `curadoria-dorama-catalogo-online`, que manteve a revisão pública para preservar os demais blocos.
