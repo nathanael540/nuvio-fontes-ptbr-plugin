@@ -250,19 +250,6 @@
       "logo": "https://www.google.com/s2/favicons?domain=rivo.st&sz=128"
     },
     {
-      "id": "raflix",
-      "name": "Raflix",
-      "description": "Filmes e séries em HLS do catálogo Raflix pela fonte VidRift, com áudio dublado PT-BR ou legenda em português.",
-      "version": "1.0.0",
-      "author": "nathanael540",
-      "supportedTypes": ["movie", "tv"],
-      "filename": "providers/raflix.js",
-      "enabled": true,
-      "formats": ["m3u8"],
-      "contentLanguage": ["pt"],
-      "logo": "https://raflix.web.id/icon-192.png"
-    },
-    {
       "id": "primeflix",
       "name": "Primeflix",
       "description": "Filmes e séries em HLS e MKV do catálogo Primeflix, com áudio ou legenda classificados pelo arquivo publicado.",
