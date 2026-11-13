@@ -146,7 +146,7 @@ O teste de bloco de `tmdb-info` cobre `seasons` presente, ausente e com temporad
 
 ### 9. Documentação e status
 
-`providers.md` ganha a linha e a seção do `dattebayo` com `🟠 Não verificado` até a rodada online do pacote final; depois da rodada, o status segue `docs/tests.md`, seção 7. `docs/provider-investigation.md` ganha a variação de assinatura pública de mídia, com contrato observado, limites de validade e distinção entre método em uso e hipótese. `src/_blocks/index.md` atualiza a linha de `tmdb-info` com as temporadas. `docs/arch.md` não muda.
+`providers.md` ganha a linha e a seção do `dattebayo` com `🟠 Não verificado` até a rodada online do pacote final; depois da rodada, o status segue `docs/tests.md`, seção 7. A verificação online usa o perfil `anime`, porque o catálogo de referência só oferece as tags `anime` e `dorama` e o acervo é predominantemente de anime; tokusatsu e donghua não têm tag própria. `docs/provider-investigation.md` ganha a variação de assinatura pública de mídia, com contrato observado, limites de validade e distinção entre método em uso e hipótese. `src/_blocks/index.md` atualiza a linha de `tmdb-info` com as temporadas. `docs/arch.md` não muda.
 
 ## Risks / Trade-offs
 

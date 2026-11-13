@@ -27,6 +27,7 @@
 | [Pomfy](#pomfy) | `pomfy` | filme, série | HLS | 🔵 Parcial | 2026-11-13 |
 | [AnimeFire](#animefire) | `animefire` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
 | [Doramogo](#doramogo) | `doramogo` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
+| [Dattebayo BR](#dattebayo-br) | `dattebayo` | filme, série | MP4 | 🟢 Estável | 2026-11-13 |
 
 ## MegaEmbed
 
@@ -530,4 +531,26 @@ Provedor de filmes e doramas em HLS do catálogo Doramogo, com busca textual con
    8. `tv` `94796` · Pousando no Amor (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
    9. `tv` `93405` · Round 6 (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    10. `tv` `90447` · Hotel del Luna (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+<!-- online-verification:end -->
+
+## Dattebayo BR
+
+**Status: 🟢 Estável.**
+
+Provedor de animes, tokusatsus, doramas e donghuas em MP4 do catálogo Dattebayo BR, com busca por título, confirmação de tipo e ano, mapeamento de temporada e episódio e resolução das opções SD, HD e FULLHD por assinatura pública de curta duração. A rodada de 2026-11-13 usou o perfil `anime`: Akira (4 streams), Jujutsu Kaisen (6) e One Piece (5) resolveram; os demais títulos sorteados ficaram sem resultado porque a fonte publica o título em romaji (por exemplo, Kimetsu no Yaiba, Shingeki no Kyojin e Boku no Hero Academia) e o provedor consulta os títulos do TMDB. A cobertura de tokusatsu, dorama e donghua não é medida pelo catálogo de referência, que só tem as tags `anime` e `dorama`.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-13T11:30:14.334Z** · ID `2026-11-13T11-29-02-013Z-dattebayo-dattebay-a779` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `dattebayo-anime-20261113` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `movie` `372058` · Your Name (2016) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `128` · Princesa Mononoke (1997) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `149` · Akira (1988) · **Resolvido** · 4/4 streams aproveitáveis
+   5. `movie` `129` · A Viagem de Chihiro (2001) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+   7. `tv` `37854` · One Piece (1999) · S01E01 · **Resolvido** · 5/5 streams aproveitáveis
+   8. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   10. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
 <!-- online-verification:end -->

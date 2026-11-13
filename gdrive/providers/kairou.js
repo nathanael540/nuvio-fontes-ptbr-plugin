@@ -910,8 +910,24 @@ function toMediaInfo(data, tmdbId, mediaType) {
     alternativeTitles: brazilianAlternativeTitles(alternatives, title),
     originalLanguage,
     originCountries: data.origin_country || [],
-    genreIds
+    genreIds,
+    seasons: readSeasons(data.seasons)
   };
+}
+function readSeasons(raw) {
+  if (!Array.isArray(raw)) return [];
+  return raw.map((season) => {
+    const { season_number: number, episode_count: episodeCount, name, air_date: airDate } = season;
+    if (!Number.isInteger(number) || !Number.isInteger(episodeCount)) {
+      throw new Error("TMDB retornou temporada sem n\xFAmero ou contagem de epis\xF3dios");
+    }
+    return {
+      number,
+      episodeCount,
+      name: typeof name === "string" ? name : "",
+      airDate: typeof airDate === "string" && airDate !== "" ? airDate : null
+    };
+  });
 }
 function brazilianAlternativeTitles(alternatives, title) {
   const titles = alternatives.filter((item) => item.iso_3166_1 === BRAZIL).map((item) => item.title);

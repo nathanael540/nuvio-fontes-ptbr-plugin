@@ -6,6 +6,9 @@
     "animefire": {
       "exclusiveTag": "anime"
     },
-    "doramogo": { "exclusiveTag": "dorama" }
+    "doramogo": { "exclusiveTag": "dorama" },
+    "dattebayo": {
+      "exclusiveTag": "anime"
+    }
   }
 }

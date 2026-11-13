@@ -34,6 +34,11 @@ const SERIES = {
   genres: [{ id: 18, name: 'Drama' }],
   external_ids: { imdb_id: 'tt0903747' },
   alternative_titles: { results: [] },
+  seasons: [
+    { season_number: 0, episode_count: 2, name: 'Especiais', air_date: '2009-02-17' },
+    { season_number: 1, episode_count: 7, name: 'Temporada 1', air_date: '2008-01-20' },
+    { season_number: 2, episode_count: 13, name: 'Temporada 2', air_date: '2009-03-08' },
+  ],
 };
 
 /**
@@ -75,6 +80,7 @@ test('filme: retorna dados em pt-BR com uma única requisição', async (t) => {
     originalLanguage: 'en',
     originCountries: ['US'],
     genreIds: [878],
+    seasons: [],
   });
   assert.equal(calls.urls.length, 1);
   assert.equal(
@@ -93,7 +99,33 @@ test('série: usa os campos de TV e aceita ID numérico', async (t) => {
   assert.equal(info.originalTitle, 'Breaking Bad');
   assert.equal(info.year, 2008);
   assert.deepEqual(info.alternativeTitles, []);
+  assert.deepEqual(info.seasons, [
+    { number: 0, episodeCount: 2, name: 'Especiais', airDate: '2009-02-17' },
+    { number: 1, episodeCount: 7, name: 'Temporada 1', airDate: '2008-01-20' },
+    { number: 2, episodeCount: 13, name: 'Temporada 2', airDate: '2009-03-08' },
+  ]);
   assert.match(calls.urls[0], /\/3\/tv\/1396\?/);
+});
+
+test('série sem seasons no corpo devolve lista vazia', async (t) => {
+  mockTmdb(t, { body: { ...SERIES, seasons: undefined } });
+
+  const info = await getMediaInfo({ tmdbId: 1396, mediaType: 'tv' });
+
+  assert.deepEqual(info.seasons, []);
+});
+
+test('temporada sem air_date devolve null no campo', async (t) => {
+  mockTmdb(t, {
+    body: {
+      ...SERIES,
+      seasons: [{ season_number: 1, episode_count: 7, name: 'Temporada 1', air_date: '' }],
+    },
+  });
+
+  const info = await getMediaInfo({ tmdbId: 1396, mediaType: 'tv' });
+
+  assert.deepEqual(info.seasons, [{ number: 1, episodeCount: 7, name: 'Temporada 1', airDate: null }]);
 });
 
 const KIND_CASES = [

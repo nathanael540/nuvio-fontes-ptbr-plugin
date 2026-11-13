@@ -34,6 +34,15 @@ function load(html) {
     return wrap(found);
   }
   function text(node) { return node.text ?? node.children.map(text).join(''); }
+  function serialize(node) {
+    if (node.text !== undefined) return node.text;
+    if (!node.children) return '';
+    return node.children.map((child) => {
+      if (child.text !== undefined) return child.text;
+      const attrs = Object.entries(child.attrs).map(([key, value]) => ` ${key}="${value}"`).join('');
+      return `<${child.tag}${attrs}>${serialize(child)}</${child.tag}>`;
+    }).join('');
+  }
   function wrap(nodes) {
     return {
       _nodes: nodes,
@@ -41,6 +50,7 @@ function load(html) {
       eq: (index) => wrap(index >= 0 && index < nodes.length ? [nodes[index]] : []),
       find: (selector) => select(nodes, selector),
       text: () => nodes.map(text).join(''),
+      html: () => nodes.map(serialize).join(''),
       attr: (key) => nodes[0]?.attrs[key],
     };
   }
