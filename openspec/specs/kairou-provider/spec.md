@@ -1,10 +1,9 @@
-# Spec Delta
+# kairou-provider Specification
 
 ## Purpose
-
 Localizar filmes e séries no catálogo Kairou pelo ID do TMDB e devolver os streams HLS e MP4 publicados pela API de extração, com qualidade, áudio e legendas.
 
-## ADDED Requirements
+## Requirements
 
 ### Requirement: Consulta pela API de extração
 
@@ -75,7 +74,7 @@ O provedor SHALL resolver URLs relativas contra `https://www.kairou.space` e pre
 
 ### Requirement: Contrato dos streams devolvidos
 
-O provedor SHALL montar cada stream com `buildStream` e `format`, usando `quality` pelo texto da fonte quando declarada, `language` pela classificação de áudio, `provider` pela origem e `type` quando a fonte o declarar. Campos que a fonte não fornece SHALL ser omitidos.
+O provedor SHALL montar cada stream com `buildStream` e `format`, usando `quality` pelo texto da fonte quando ele declarar uma resolução reconhecível, `language` pela classificação de áudio, `provider` pela origem e `type` quando a fonte o declarar. Campos que a fonte não fornece SHALL ser omitidos.
 
 #### Scenario: Stream dublado em 1080p
 
@@ -96,6 +95,11 @@ O provedor SHALL montar cada stream com `buildStream` e `format`, usando `qualit
 
 - **WHEN** a fonte não informa `quality` nem `is4k`
 - **THEN** o stream é preservado com "Desconhecida", sem descarte e sem requisição extra.
+
+#### Scenario: Rótulo de qualidade sem resolução
+
+- **WHEN** a fonte informa `quality` com um rótulo que não declara resolução, como `Auto`
+- **THEN** o provedor trata a qualidade como não informada, preserva o stream e usa a descoberta local ou "Desconhecida".
 
 ### Requirement: Triagem de 4K
 

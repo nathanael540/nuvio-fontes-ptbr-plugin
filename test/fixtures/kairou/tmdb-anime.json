@@ -1,0 +1,26 @@
+{
+  "id": 85937,
+  "name": "Demon Slayer",
+  "original_name": "鬼滅の刃",
+  "first_air_date": "2019-04-06",
+  "original_language": "ja",
+  "genres": [
+    {
+      "id": 16,
+      "name": "Animação"
+    },
+    {
+      "id": 10759,
+      "name": "Action & Adventure"
+    }
+  ],
+  "external_ids": {
+    "imdb_id": "tt9335498"
+  },
+  "alternative_titles": {
+    "results": []
+  },
+  "origin_country": [
+    "JP"
+  ]
+}

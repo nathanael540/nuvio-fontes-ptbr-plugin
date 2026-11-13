@@ -282,6 +282,19 @@
       "formats": ["m3u8"],
       "contentLanguage": ["pt"],
       "logo": "https://www.google.com/s2/favicons?domain=embedmovies.org&sz=128"
+    },
+    {
+      "id": "kairou",
+      "name": "Kairou",
+      "description": "Filmes, séries e animes em HLS e MP4 pela API do Kairou por TMDB, dublados ou legendados conforme o áudio e as legendas anunciados.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": ["movie", "tv"],
+      "filename": "providers/kairou.js",
+      "enabled": true,
+      "formats": ["m3u8", "mp4"],
+      "contentLanguage": ["pt"],
+      "logo": "https://www.kairou.space/assets/kairou-spiral.png"
     }
   ]
 }

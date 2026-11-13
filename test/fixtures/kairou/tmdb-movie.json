@@ -1,0 +1,22 @@
+{
+  "id": 550,
+  "title": "Clube da Luta",
+  "original_title": "Fight Club",
+  "release_date": "1999-10-15",
+  "original_language": "en",
+  "genres": [
+    {
+      "id": 18,
+      "name": "Drama"
+    }
+  ],
+  "external_ids": {
+    "imdb_id": "tt0137523"
+  },
+  "alternative_titles": {
+    "titles": []
+  },
+  "origin_country": [
+    "US"
+  ]
+}

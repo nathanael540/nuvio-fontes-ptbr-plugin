@@ -1,0 +1,26 @@
+{
+  "id": 1396,
+  "name": "Breaking Bad",
+  "original_name": "Breaking Bad",
+  "first_air_date": "2008-01-20",
+  "original_language": "en",
+  "genres": [
+    {
+      "id": 18,
+      "name": "Drama"
+    },
+    {
+      "id": 80,
+      "name": "Crime"
+    }
+  ],
+  "external_ids": {
+    "imdb_id": "tt0903747"
+  },
+  "alternative_titles": {
+    "results": []
+  },
+  "origin_country": [
+    "US"
+  ]
+}

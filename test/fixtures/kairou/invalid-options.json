@@ -1,0 +1,46 @@
+{
+  "ok": true,
+  "fast": false,
+  "count": 2,
+  "streams": [
+    {
+      "id": "bad-scheme",
+      "source": "veyra",
+      "providerName": "Veyra",
+      "url": "javascript:alert(1)",
+      "type": "mp4",
+      "quality": "1080p",
+      "rank": 1,
+      "is4k": false,
+      "isHls": false,
+      "isDub": true,
+      "isDual": false,
+      "subtitles": [],
+      "dead": false,
+      "alive": true,
+      "status": 200,
+      "server": "Veyra",
+      "isFastest": true
+    },
+    {
+      "id": "missing-url",
+      "source": "fenix",
+      "providerName": "Fenix",
+      "url": null,
+      "type": "mp4",
+      "quality": "720p",
+      "rank": 2,
+      "is4k": false,
+      "isHls": false,
+      "isDub": true,
+      "isDual": false,
+      "subtitles": [],
+      "dead": false,
+      "alive": true,
+      "status": 200,
+      "server": "Fenix",
+      "isFastest": false
+    }
+  ],
+  "subtitles": []
+}

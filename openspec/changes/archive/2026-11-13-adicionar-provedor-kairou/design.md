@@ -84,7 +84,7 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 12
    2. Exigir URL HTTP(S) depois da resolução; item sem URL válida é descartado com `console.warn('[Kairou] Opção <id> descartada: <causa>')`.
    3. Montar o stream com `buildStream`; se a montagem falhar, descartar só a opção.
    4. Se nenhuma opção produzir stream e alguma tiver falhado, lançar erro agregado com as causas; se todas forem 4K, devolver lista vazia.
-3. Qualidade: usar o texto de `quality`; sem ele, omitir e deixar `buildStream` descobrir localmente. Não usar `rank` como substituto, porque o significado não está documentado e o texto já existe.
+3. Qualidade: usar o texto de `quality` quando ele for uma resolução reconhecível; sem ele ou com rótulo que não declara resolução (ex.: `Auto`), omitir e deixar `buildStream` descobrir localmente. Não usar `rank` como substituto, porque o significado não está documentado e o texto já existe.
 4. Idioma: `isDub: true` vira `LANGUAGE.DUBBED`. Com `isDub: false`, usar `LANGUAGE.SUBTITLED` quando o stream ou a resposta oferecer legenda `pt` ou `pt-BR`; sem legenda portuguesa, usar `LANGUAGE.NON_PT_BR`. `isDual` não promove a dublado, porque a própria fonte marca a opção como não dublada.
 5. `provider` recebe `source` (ex.: `veyra`); `type` recebe `type` da fonte (`hls` ou `mp4`). Se `type` faltar, inferir de `isHls`; se ambos faltarem, omitir.
 6. Legendas: usar `stream.subtitles` quando for lista não vazia; senão `response.subtitles`. Resolver a URL contra a origem, exigir HTTP(S), mapear `lang` para um nome legível (`pt-BR` → `Português (Brasil)`, `pt` → `Português`, `en` → `English`, `es` → `Español`, e assim por diante), manter `label` como `name` e deduplicar por URL. Legenda inválida é omitida sem descartar o vídeo; sem legendas válidas, o campo não aparece.
@@ -119,6 +119,7 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 12
 7. **`alive`/`status` não confiáveis** → não são usados para descartar. Um stream marcado como 504 pelo servidor ainda pode reproduzir; um marcado como vivo pode falhar.
 8. **Animes sem o addon Pleiades** → o Kairou usa um addon externo para parte dos animes; o provedor entrega somente o que a API do Kairou devolve. A cobertura de anime pode ser menor que a do site.
 9. **Idioma sem legenda PT** → a classificação usa `Gringo` quando não há áudio dublado nem legenda portuguesa. É uma decisão conservadora, sem promover o stream a Legendado.
+10. **Rótulo de qualidade sem resolução (`Auto`)** → tratado como ausência de qualidade, preservando o stream com descoberta local ou `Desconhecida`. A rodada online de 13/11/2026 mostrou as duas opções de um filme nesse formato; antes do ajuste, ambas eram descartadas e o título ficava sem resultado.
 
 ## Migration Plan
 

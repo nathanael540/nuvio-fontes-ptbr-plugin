@@ -1,0 +1,62 @@
+{
+  "ok": true,
+  "fast": false,
+  "count": 2,
+  "streams": [
+    {
+      "id": "ep-1080-sub",
+      "source": "zeusoficial",
+      "providerName": "Zeus Oficial",
+      "url": "/api/proxy?url=https%3A%2F%2Fcdn.example%2Fbreaking-bad-s01e01-1080.mp4&referer=zeusoficial",
+      "type": "mp4",
+      "quality": "1080p",
+      "rank": 1,
+      "is4k": false,
+      "isHls": false,
+      "isDub": false,
+      "isDual": false,
+      "subtitles": [
+        {
+          "id": "ep-sub-en",
+          "lang": "en",
+          "flag": "us",
+          "label": "English · Opção 1",
+          "url": "/api/proxy?format=vtt&url=https%3A%2F%2Fsubs.example%2Fbreaking-bad-s01e01-en.vtt"
+        }
+      ],
+      "dead": false,
+      "alive": true,
+      "status": 200,
+      "server": "Zeus Oficial",
+      "isFastest": true
+    },
+    {
+      "id": "ep-720-dub",
+      "source": "popplay",
+      "providerName": "PopPlay",
+      "url": "/api/proxy?url=https%3A%2F%2Fcdn.example%2Fbreaking-bad-s01e01-720.mp4&referer=popplay",
+      "type": "mp4",
+      "quality": "720p",
+      "rank": 2,
+      "is4k": false,
+      "isHls": false,
+      "isDub": true,
+      "isDual": false,
+      "subtitles": [],
+      "dead": false,
+      "alive": true,
+      "status": 200,
+      "server": "PopPlay",
+      "isFastest": false
+    }
+  ],
+  "subtitles": [
+    {
+      "id": "ep-sub-en",
+      "lang": "en",
+      "flag": "us",
+      "label": "English · Opção 1",
+      "url": "/api/proxy?format=vtt&url=https%3A%2F%2Fsubs.example%2Fbreaking-bad-s01e01-en.vtt"
+    }
+  ]
+}

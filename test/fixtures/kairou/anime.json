@@ -1,0 +1,27 @@
+{
+  "ok": true,
+  "fast": false,
+  "count": 1,
+  "streams": [
+    {
+      "id": "anime-1080",
+      "source": "veyra",
+      "providerName": "Veyra",
+      "url": "/api/proxy?url=https%3A%2F%2Fcdn.example%2Fdemon-slayer-s01e01-1080.mp4&referer=veyra",
+      "type": "hls",
+      "quality": "1080p",
+      "rank": 1,
+      "is4k": false,
+      "isHls": true,
+      "isDub": true,
+      "isDual": false,
+      "subtitles": [],
+      "dead": false,
+      "alive": true,
+      "status": 200,
+      "server": "Veyra",
+      "isFastest": true
+    }
+  ],
+  "subtitles": []
+}

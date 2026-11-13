@@ -23,6 +23,7 @@
 | [RIVO](#rivo) | `rivo` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-12 |
 | [Primeflix](#primeflix) | `primeflix` | filme, série | HLS, MKV | 🟢 Estável | 2026-11-13 |
 | [EmbedMovies](#embedmovies) | `embedmovies` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
+| [Kairou](#kairou) | `kairou` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-13 |
 
 ## MegaEmbed
 
@@ -437,5 +438,27 @@ Provedor de filmes e séries em HLS ou MKV do catálogo Primeflix, com busca JSO
    8. `tv` `100088` · The Last of Us (2023) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
    9. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
    10. `tv` `1396` · Breaking Bad (2008) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+<!-- online-verification:end -->
+
+## Kairou
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e séries em HLS e MP4 pela API pública de extração do Kairou, consultada pelo ID do TMDB com temporada e episódio. O áudio dublado ou legendado vem das marcações da fonte, as legendas VTT usam o proxy público do próprio site e as opções 4K são descartadas por triagem porque a fonte as reserva a assinantes.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-13T10:39:11.806Z** · ID `2026-11-13T10-37-17-001Z-kairou-91518fa7-d6f6` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `91518fa7c4b0caf186d0fd50e4dfc692` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `502356` · Super Mario Bros. O Filme (2023) · **Resolvido** · 8/8 streams aproveitáveis
+   2. `movie` `324857` · Homem-Aranha: No Aranhaverso (2018) · **Resolvido** · 3/3 streams aproveitáveis
+   3. `movie` `1022789` · Divertida Mente 2 (2024) · **Resolvido** · 10/10 streams aproveitáveis
+   4. `movie` `293660` · Deadpool (2016) · **Resolvido** · 10/10 streams aproveitáveis
+   5. `movie` `1654940` · Um Ano de Vida, Compre Um Homem (2026) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `1396` · Breaking Bad (2008) · S01E01 · **Resolvido** · 7/7 streams aproveitáveis
+   7. `tv` `100088` · The Last of Us (2023) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   8. `tv` `96162` · Itaewon Class (2020) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
+   9. `tv` `60735` · The Flash (2014) · S01E01 · **Resolvido** · 7/7 streams aproveitáveis
+   10. `tv` `66732` · Stranger Things (2016) · S01E01 · **Resolvido** · 5/5 streams aproveitáveis
 <!-- online-verification:end -->
 

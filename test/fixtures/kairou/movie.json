@@ -1,0 +1,113 @@
+{
+  "ok": true,
+  "fast": false,
+  "count": 4,
+  "streams": [
+    {
+      "id": "srv-1080-dub",
+      "source": "veyra",
+      "providerName": "Veyra",
+      "url": "/api/proxy?url=https%3A%2F%2Fcdn.example%2Ffight-club-1080.mp4&referer=veyra",
+      "type": "mp4",
+      "quality": "1080p",
+      "rank": 1,
+      "is4k": false,
+      "isHls": false,
+      "isDub": true,
+      "isDual": false,
+      "subtitles": [],
+      "dead": false,
+      "alive": true,
+      "status": 200,
+      "server": "Veyra",
+      "isFastest": true
+    },
+    {
+      "id": "srv-1080-sub",
+      "source": "pstream",
+      "providerName": "Pstream",
+      "url": "https://bridge.pstream.example/e/abc123/master.m3u8",
+      "type": "hls",
+      "quality": "1080p",
+      "rank": 2,
+      "is4k": false,
+      "isHls": true,
+      "isDub": false,
+      "isDual": false,
+      "subtitles": [
+        {
+          "id": "sub-ptbr",
+          "lang": "pt-BR",
+          "flag": "br",
+          "label": "Português (Brasil) · Opção 1",
+          "url": "/api/proxy?format=vtt&url=https%3A%2F%2Fsubs.example%2Ffight-club-ptbr.vtt"
+        },
+        {
+          "id": "sub-no-url",
+          "lang": "es",
+          "flag": "es",
+          "label": "Español · Opção 2"
+        }
+      ],
+      "dead": false,
+      "alive": true,
+      "status": 200,
+      "server": "Pstream",
+      "isFastest": false
+    },
+    {
+      "id": "srv-720-dub",
+      "source": "fenix",
+      "providerName": "Fenix",
+      "url": "/api/proxy?url=https%3A%2F%2Fcdn.example%2Ffight-club-720.mp4&referer=fenix",
+      "type": "mp4",
+      "quality": "720p",
+      "rank": 3,
+      "is4k": false,
+      "isHls": false,
+      "isDub": true,
+      "isDual": false,
+      "subtitles": [],
+      "dead": false,
+      "alive": true,
+      "status": 200,
+      "server": "Fenix",
+      "isFastest": false
+    },
+    {
+      "id": "srv-unknown",
+      "source": "popplay",
+      "providerName": "PopPlay",
+      "url": "/api/proxy?url=https%3A%2F%2Fcdn.example%2Fvideo%2Ff1c2.mp4&referer=popplay",
+      "type": "mp4",
+      "quality": null,
+      "rank": 9,
+      "is4k": false,
+      "isHls": false,
+      "isDub": true,
+      "isDual": false,
+      "subtitles": [],
+      "dead": false,
+      "alive": null,
+      "status": 504,
+      "server": "PopPlay",
+      "isFastest": false
+    }
+  ],
+  "subtitles": [
+    {
+      "id": "sub-ptbr",
+      "lang": "pt-BR",
+      "flag": "br",
+      "label": "Português (Brasil) · Opção 1",
+      "url": "/api/proxy?format=vtt&url=https%3A%2F%2Fsubs.example%2Ffight-club-ptbr.vtt"
+    },
+    {
+      "id": "sub-en",
+      "lang": "en",
+      "flag": "us",
+      "label": "English · Opção 2",
+      "url": "/api/proxy?format=vtt&url=https%3A%2F%2Fsubs.example%2Ffight-club-en.vtt"
+    }
+  ]
+}
