@@ -412,6 +412,32 @@
       "formats": ["mkv", "mp4"],
       "contentLanguage": ["pt"],
       "logo": "https://1.animezey23112022.workers.dev/favicon.ico"
+    },
+    {
+      "id": "animesdigital",
+      "name": "AnimesDigital",
+      "description": "Filmes e séries de anime em HLS pelo player Anivideo, dublados ou legendados quando a página declara o áudio.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": ["movie", "tv"],
+      "filename": "providers/animesdigital.js",
+      "enabled": true,
+      "formats": ["m3u8"],
+      "contentLanguage": ["pt"],
+      "logo": "https://www.google.com/s2/favicons?domain=animesdigital.org&sz=128"
+    },
+    {
+      "id": "animesfhd",
+      "name": "AnimesFHD",
+      "description": "Séries de anime em HLS pelo catálogo AnimesFHD, com temporadas dubladas e legendadas e episódio mapeado pelas versões sazonais da fonte.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": ["tv"],
+      "filename": "providers/animesfhd.js",
+      "enabled": true,
+      "formats": ["m3u8"],
+      "contentLanguage": ["pt"],
+      "logo": "https://www.google.com/s2/favicons?domain=animesfhd.net&sz=128"
     }
   ]
 }

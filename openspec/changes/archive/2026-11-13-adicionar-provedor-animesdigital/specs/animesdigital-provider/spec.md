@@ -44,6 +44,11 @@ O provedor SHALL abrir a página de detalhe `/anime/a/<slug>` do candidato e SHA
 - **WHEN** o pedido é de filme e a página tem um único link `/video/a/<id>` e nenhum `div.item_ep`
 - **THEN** o provedor usa esse link como a mídia do filme.
 
+#### Scenario: Filme com pseudoepisódio na ficha de anime
+
+- **WHEN** o pedido é de filme e a ficha `/anime/a/<slug>` não tem o sufixo `-filme`, mas publica um único link `/video/a/<id>` e no máximo um cartão `Episódio 01`
+- **THEN** o provedor aceita a página como a mídia do filme, sem tratá-la como série.
+
 ### Requirement: Seleção de temporada e episódio
 
 Para série, o provedor SHALL escolher o episódio pelo número declarado em `div.title_anime` (`<Título> Episódio N`), dentro dos blocos `div.item_ep`, e SHALL usar o link `/video/a/<id>` do cartão escolhido. A temporada SHALL ser aceita quando o título do candidato declarar o número (`Temporada N`, `Season N` ou sufixo numérico) ou quando a temporada pedida for 1 e não houver marcador. O provedor SHALL NOT inferir temporada por número absoluto nem por posição.

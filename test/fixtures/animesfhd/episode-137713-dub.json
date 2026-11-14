@@ -1,0 +1,6 @@
+{
+  "versions": [],
+  "sources": [
+    { "label": "Player 1", "audio": "dublado", "url": "/api/v/s6?source=fictional-s03-dub&playlist=.m3u8" }
+  ]
+}
