@@ -67,6 +67,7 @@ test('catálogos reais são válidos, não truncam e mantêm pelo menos 20 títu
     doramogo: { exclusiveTag: 'dorama' },
     doramasonline: { exclusiveTag: 'dorama' },
     seudorama: { exclusiveTag: 'dorama' },
+    noveflix: { exclusiveTag: 'novela' },
     dattebayo: { exclusiveTag: 'anime' },
     anitube: { exclusiveTag: 'anime' },
     oxeanimes: { exclusiveTag: 'anime' },
@@ -82,6 +83,7 @@ test('catálogos reais são válidos, não truncam e mantêm pelo menos 20 títu
   assert.ok(catalogs.tv.titles.filter((title) => title.tags.includes('dorama')).length >= 5);
   assert.ok(catalogs.movie.titles.filter((title) => title.tags.includes('anime')).length >= 5);
   assert.ok(catalogs.tv.titles.filter((title) => title.tags.includes('anime')).length >= 5);
+  assert.ok(catalogs.tv.titles.filter((title) => title.tags.includes('novela')).length >= 5);
 });
 
 test('catálogo acima do mínimo é aceito sem truncamento', () => {
@@ -140,8 +142,8 @@ test('perfil com tag desconhecida é rejeitado', () => {
     tv: catalogOf('tv', tvTitles(20)),
   } };
   assert.throws(
-    () => catalogModule.validateProfiles(profilesOf({ dooplay: { exclusiveTag: 'novela' } }), context),
-    /tag desconhecida: "novela"/,
+    () => catalogModule.validateProfiles(profilesOf({ dooplay: { exclusiveTag: 'infantil' } }), context),
+    /tag desconhecida: "infantil"/,
   );
 });
 

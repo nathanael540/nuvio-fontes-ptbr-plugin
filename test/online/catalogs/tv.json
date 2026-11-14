@@ -40,6 +40,14 @@
     { "tmdbId": "136283", "title": "The Glory", "year": 2022, "tags": ["dorama"], "season": 1, "episode": 1 },
     { "tmdbId": "96162", "title": "Itaewon Class", "year": 2020, "tags": ["dorama"], "season": 1, "episode": 1 },
     { "tmdbId": "94796", "title": "Pousando no Amor", "year": 2019, "tags": ["dorama"], "season": 1, "episode": 1 },
-    { "tmdbId": "90447", "title": "Hotel del Luna", "year": 2019, "tags": ["dorama"], "season": 1, "episode": 1 }
+    { "tmdbId": "90447", "title": "Hotel del Luna", "year": 2019, "tags": ["dorama"], "season": 1, "episode": 1 },
+    { "tmdbId": "46161", "title": "Vale Tudo", "year": 1988, "tags": ["novela"], "season": 1, "episode": 1 },
+    { "tmdbId": "4184", "title": "A Usurpadora", "year": 1998, "tags": ["novela"], "season": 1, "episode": 1 },
+    { "tmdbId": "34957", "title": "Laços de Família", "year": 2000, "tags": ["novela"], "season": 1, "episode": 1 },
+    { "tmdbId": "14853", "title": "O Clone", "year": 2001, "tags": ["novela"], "season": 1, "episode": 1 },
+    { "tmdbId": "46101", "title": "Senhora do Destino", "year": 2004, "tags": ["novela"], "season": 1, "episode": 1 },
+    { "tmdbId": "7448", "title": "A Favorita", "year": 2008, "tags": ["novela"], "season": 1, "episode": 1 },
+    { "tmdbId": "7979", "title": "Caminho das Índias", "year": 2009, "tags": ["novela"], "season": 1, "episode": 1 },
+    { "tmdbId": "45815", "title": "Avenida Brasil", "year": 2012, "tags": ["novela"], "season": 1, "episode": 1 }
   ]
 }

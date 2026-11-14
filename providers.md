@@ -40,7 +40,7 @@
 | [Doramas Online](#doramas-online) | `doramasonline` | filme, série | HLS, MP4 | 🔵 Parcial | 2026-11-14 |
 | [AmyFlix](#amyflix) | `amyflix` | filme, série | HLS, MP4 | 🔴 Instável | 2026-11-14 |
 | [SeuDorama](#seudorama) | `seudorama` | série | MP4 | 🟢 Estável | 2026-11-14 |
-| [NoveFlix](#noveflix) | `noveflix` | série | MP4 | 🔴 Instável | 2026-11-14 |
+| [NoveFlix](#noveflix) | `noveflix` | série | MP4 | 🟢 Estável | 2026-11-14 |
 
 ## MegaEmbed
 
@@ -829,20 +829,20 @@ A rodada de 2026-11-14 resolveu 4/5 séries; Vincenzo devolveu `videoUrl` fora d
 
 ## NoveFlix
 
-**Status: 🔴 Instável.**
+**Status: 🟢 Estável.**
 
 Novelas brasileiras e internacionais do NoveFlix em MP4, com confirmação por título e ano e travessia do gate novefx até o capítulo.
 
-Limitação da rodada: o perfil generalista não contém novelas; os cinco casos terminaram em ausência reconhecida, sem falha. A rodada não mede o acervo de novelas, e o status é do recorte generalista, não uma falha da fonte. A cadeia foi observada ao vivo em `Avenida Brasil` (179 capítulos) e está registrada em `docs/provider-investigation.md` e no `design.md` da change.
+Perfil de nicho: a rodada usa a tag `novela`, com oito títulos curados do acervo — Vale Tudo (1988), A Usurpadora (1998), Laços de Família (2000), O Clone (2001), Senhora do Destino (2004), A Favorita (2008), Caminho das Índias (2009) e Avenida Brasil (2012). Os cinco casos sorteados resolveram. A curadoria, a conferência de título/ano e a exceção de revisão do catálogo estão no `design.md` da change de curadoria; a reprodução no aparelho e a correspondência capítulo/episódio fora de Avenida Brasil continuam não comprovadas.
 
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-14T06:50:45.227Z** · ID `2026-11-14T06-50-33-395Z-noveflix-473d56a1-f5b5` · **Instável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `473d56a1cf33bb21624d360e180dae92` · algoritmo `sha256-fisher-yates-v1`
-   1. `tv` `60735` · The Flash (2014) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
-   2. `tv` `71912` · The Witcher (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
-   3. `tv` `136283` · The Glory (2022) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
-   4. `tv` `2316` · The Office (2005) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
-   5. `tv` `60059` · Better Call Saul (2015) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+1. **2026-11-14T12:30:41.049Z** · ID `2026-11-14T12-30-13-442Z-noveflix-50423de6-a232` · **Estável** · pacote 1.0.0 · perfil `novela` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `50423de6daffad122234bc117f22acfd` · algoritmo `sha256-fisher-yates-v1`
+   1. `tv` `7448` · A Favorita (2008) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   2. `tv` `45815` · Avenida Brasil (2012) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   3. `tv` `7979` · Caminho das Índias (2009) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   4. `tv` `14853` · O Clone (2001) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   5. `tv` `46161` · Vale Tudo (1988) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 

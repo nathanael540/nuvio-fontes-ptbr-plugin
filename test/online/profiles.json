@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": "2026-11-14.10",
+  "revision": "2026-11-14.11",
   "curatedAt": "2026-11-14",
   "providers": {
     "animefire": {
@@ -9,6 +9,7 @@
     "doramogo": { "exclusiveTag": "dorama" },
     "doramasonline": { "exclusiveTag": "dorama" },
     "seudorama": { "exclusiveTag": "dorama" },
+    "noveflix": { "exclusiveTag": "novela" },
     "dattebayo": {
       "exclusiveTag": "anime"
     },
