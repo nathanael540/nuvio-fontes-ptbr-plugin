@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": "2026-11-14.6",
+  "revision": "2026-11-14.8",
   "curatedAt": "2026-11-14",
   "providers": {
     "animefire": {
@@ -16,6 +16,8 @@
     "anibunker": { "exclusiveTag": "anime" },
     "animezey": { "exclusiveTag": "anime" },
     "animesdigital": { "exclusiveTag": "anime" },
-    "animesfhd": { "exclusiveTag": "anime" }
+    "animesfhd": { "exclusiveTag": "anime" },
+    "animesonlineblue": { "exclusiveTag": "anime" },
+    "animeq": { "exclusiveTag": "anime" }
   }
 }

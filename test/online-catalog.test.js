@@ -73,6 +73,8 @@ test('catálogos reais são válidos, não truncam e mantêm pelo menos 20 títu
     animezey: { exclusiveTag: 'anime' },
     animesdigital: { exclusiveTag: 'anime' },
     animesfhd: { exclusiveTag: 'anime' },
+    animesonlineblue: { exclusiveTag: 'anime' },
+    animeq: { exclusiveTag: 'anime' },
   });
   assert.ok(catalogs.movie.titles.filter((title) => title.tags.includes('dorama')).length >= 5);
   assert.ok(catalogs.tv.titles.filter((title) => title.tags.includes('dorama')).length >= 5);

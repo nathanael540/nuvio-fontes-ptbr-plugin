@@ -35,6 +35,8 @@
 | [AnimeZeY](#animezey) | `animezey` | filme, série | MKV, MP4 | 🔴 Instável | 2026-11-14 |
 | [AnimesDigital](#animesdigital) | `animesdigital` | filme, série | HLS | 🟢 Estável | 2026-11-14 |
 | [AnimesFHD](#animesfhd) | `animesfhd` | série | HLS | 🟢 Estável | 2026-11-14 |
+| [Animes Online Blue](#animes-online-blue) | `animesonlineblue` | série | MP4 | 🟢 Estável | 2026-11-14 |
+| [AnimeQ](#animeq) | `animeq` | filme, série | HLS, MP4 | 🔵 Parcial | 2026-11-14 |
 
 ## MegaEmbed
 
@@ -712,5 +714,45 @@ Provedor de séries de anime em HLS pelo catálogo AnimesFHD, com temporadas dub
    3. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    4. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    5. `tv` `37854` · One Piece (1999) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+<!-- online-verification:end -->
+
+## Animes Online Blue
+
+**Status: 🟢 Estável.**
+
+Provedor de séries de anime em MP4 pelo Animes Online Blue, com busca JSON por título PT-BR e romaji, grade de temporadas e episódios por RSC do Next.js e áudios dublado e legendado resolvidos em separado até o player do Blogger.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T06:04:32.782Z** · ID `2026-11-14T06-04-13-252Z-animesonlineblue-0dbed80b-2cfd` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `0dbed80bedf90e1718d6e3cca8530463` · algoritmo `sha256-fisher-yates-v1`
+   1. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Animes Online Blue] Falha em tv 1429: Nenhuma opção de áudio produziu stream: Legendado: Player do Blogger sem streamingData
+   2. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
+   3. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Animes Online Blue] Falha em tv 65930: Nenhuma opção de áudio produziu stream: Legendado: Player do Blogger sem streamingData
+   4. `tv` `30984` · Bleach (2004) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   5. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+<!-- online-verification:end -->
+
+
+## AnimeQ
+
+**Status: 🔵 Parcial.**
+
+Provedor de filmes e séries de anime em HLS e MP4 pelo catálogo AnimeQ, com player próprio, opções DooPlay e Blogger.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T06:10:39.402Z** · ID `2026-11-14T06-10-02-111Z-animeq-5aa74f79-3011` · **Parcial** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `5aa74f79c2862d859dc255e589a757e7` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `movie` `372058` · Your Name (2016) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `149` · Akira (1988) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `128` · Princesa Mononoke (1997) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `129` · A Viagem de Chihiro (2001) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+   7. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   8. `tv` `37854` · One Piece (1999) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+   10. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
 <!-- online-verification:end -->
 

@@ -665,6 +665,46 @@
         "pt"
       ],
       "logo": "https://www.google.com/s2/favicons?domain=animesfhd.net&sz=128"
+    },
+    {
+      "id": "animesonlineblue",
+      "name": "Animes Online Blue",
+      "description": "Séries de anime em MP4 do Animes Online Blue, com busca por título PT-BR e romaji, grade de temporadas por RSC e áudios dublado e legendado conforme o episódio publica.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "tv"
+      ],
+      "filename": "providers/animesonlineblue.js",
+      "enabled": true,
+      "formats": [
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=animesonline.blue&sz=128"
+    },
+    {
+      "id": "animeq",
+      "name": "AnimeQ",
+      "description": "Filmes e séries de anime em HLS e MP4 pelo catálogo AnimeQ, com player próprio, opções DooPlay e Blogger.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/animeq.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=animeq.cloud&sz=128"
     }
   ]
 }

@@ -121,8 +121,9 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 20
 ## Validation
 
 1. Confirmado online: home 200, busca 200 JSON, RSC 200 `text/x-component` com `temporadas`, episódio 200 JSON com `playerUrl` do Blogger, HTML do Blogger 200 com `streamingData.formats` (itag 18, 360p), dois áudios em Jujutsu Kaisen S01E01.
-2. Não confirmado: reprodução do MP4 de `googlevideo.com` (HTTP 403 na triagem) e comportamento em outros títulos além de Kimetsu no Yaiba e Jujutsu Kaisen.
-3. A rodada online e o teste no aparelho são as evidências que faltam; nenhuma delas altera o contrato descrito aqui.
+2. Rodada online de 2026-11-14T06:04:32.782Z (ID `2026-11-14T06-04-13-252Z-animesonlineblue-0dbed80b-2cfd`, pacote 1.0.0, perfil `anime`, semente `0dbed80bedf90e1718d6e3cca8530463`): **Estável**, 3/5 séries resolvidas. Jujutsu Kaisen S01E01 devolveu 4 streams (720p e 360p, dublado e legendado); Bleach e Demon Slayer devolveram 1 stream cada. Attack on Titan e My Hero Academia falharam porque o player do Blogger respondeu 200 com "O vídeo está indisponível" e sem `streamingData.formats`; a fonte publica o áudio, mas a mídia não existe mais. A rodada confirma o contrato dos streams, não a reprodução.
+3. Não confirmado: reprodução do MP4 de `googlevideo.com` (HTTP 403 na triagem) e comportamento em outros títulos além dos cinco da rodada. A limitação de mídia 403 persiste como hipótese de rede/dispositivo; o provedor continua sem sonda e devolve a URL publicada.
+4. O teste no aparelho é a evidência que falta para reprodução; nenhuma das rodadas altera o contrato descrito aqui.
 
 ## Open Questions
 

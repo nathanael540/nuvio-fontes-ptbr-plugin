@@ -1,0 +1,1 @@
+0:{"temporadas":[{"numero":1,"nome":"Kimetsu no Yaiba","eps":[{"num":1,"leg":{"id":73428},"dub":null},{"num":2,"leg":{"id":73434},"dub":null}]}]}
