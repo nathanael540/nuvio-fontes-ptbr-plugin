@@ -1,0 +1,20 @@
+{
+  "title": "Jujutsu Kaisen 2 Dublado Episódio 01 online",
+  "streamUrl": "https://embed.example.test/hk1",
+  "isEmbed": true,
+  "sources": [
+    {
+      "id": 17230,
+      "label": "OxeAnimes - FHD",
+      "type": "embed",
+      "url": "https://embed.example.test/hk1"
+    },
+    {
+      "id": 17228,
+      "label": "OxeAnimes - Mobile",
+      "type": "embed",
+      "url": "https://embed.example.test/mobile"
+    }
+  ],
+  "animeTitle": "Jujutsu Kaisen 2"
+}

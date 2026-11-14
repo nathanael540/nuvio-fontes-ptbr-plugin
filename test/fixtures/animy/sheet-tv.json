@@ -1,0 +1,11 @@
+{
+  "id": 84,
+  "kind": "tv",
+  "audio": "dublado",
+  "episodes": [
+    { "id": 1956, "season": 1, "number": 1, "title": "Crueldade" },
+    { "id": 1959, "season": 1, "number": 2, "title": "Treinador Sakonji Urokodaki" },
+    { "id": 1961, "season": 1, "number": 3, "title": "Sabito e Makomo" },
+    { "id": 2045, "season": 2, "number": 1, "title": "O Pilar das Chamas" }
+  ]
+}

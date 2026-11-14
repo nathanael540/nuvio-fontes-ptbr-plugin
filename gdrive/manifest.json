@@ -544,6 +544,46 @@
         "pt"
       ],
       "logo": "https://www.google.com/s2/favicons?domain=www.anitube.zip&sz=128"
+    },
+    {
+      "id": "oxeanimes",
+      "name": "OxeAnimes",
+      "description": "Filmes e séries de anime em HLS do catálogo OxeAnimes, com páginas separadas para dublado e legendado e reprodução pelo proxy da fonte.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/oxeanimes.js",
+      "enabled": true,
+      "formats": [
+        "m3u8"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=oxeanimes.com.br&sz=128"
+    },
+    {
+      "id": "animy",
+      "name": "Animy",
+      "description": "Filmes e séries de anime em MP4 do catálogo Animy, com variantes de áudio dubladas e legendadas publicadas pela fonte.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/animy.js",
+      "enabled": true,
+      "formats": [
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=animy.net&sz=128"
     }
   ]
 }

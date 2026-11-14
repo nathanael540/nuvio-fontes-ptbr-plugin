@@ -1,0 +1,10 @@
+{
+  "items": [
+    {
+      "kind": "Anime",
+      "title": "Your name",
+      "cover": "https://images.example.test/oxeanimes/your-name.jpg",
+      "href": "/anime/your-name"
+    }
+  ]
+}

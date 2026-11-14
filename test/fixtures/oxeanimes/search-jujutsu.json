@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "kind": "Anime",
+      "title": "Jujutsu Kaisen",
+      "cover": "https://images.example.test/oxeanimes/jujutsu-kaisen.jpg",
+      "href": "/anime/jujutsu-kaisen"
+    },
+    {
+      "kind": "Anime",
+      "title": "Jujutsu Kaisen (Dublado)",
+      "cover": "https://images.example.test/oxeanimes/jujutsu-kaisen-dublado.jpg",
+      "href": "/anime/jujutsu-kaisen-dublado"
+    },
+    {
+      "kind": "Anime",
+      "title": "Jujutsu Kaisen 0: O Filme Dublado",
+      "cover": "https://images.example.test/oxeanimes/jujutsu-kaisen-0-o-filme-dublado.jpg",
+      "href": "/anime/jujutsu-kaisen-0-o-filme-dublado"
+    },
+    {
+      "kind": "Anime",
+      "title": "Jujutsu Kaisen 2",
+      "cover": "https://images.example.test/oxeanimes/jujutsu-kaisen-2.jpg",
+      "href": "/anime/jujutsu-kaisen-2"
+    },
+    {
+      "kind": "Anime",
+      "title": "Jujutsu Kaisen 2 Dublado",
+      "cover": "https://images.example.test/oxeanimes/jujutsu-kaisen-2-dublado.jpg",
+      "href": "/anime/jujutsu-kaisen-2-dublado"
+    }
+  ]
+}

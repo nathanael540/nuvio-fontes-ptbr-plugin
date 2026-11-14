@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "kind": "Anime",
+      "title": "Kimetsu no Yaiba Dublado",
+      "cover": "https://images.example.test/oxeanimes/kimetsu-no-yaiba-arco-dublado.jpg",
+      "href": "/anime/kimetsu-no-yaiba-arco-dublado"
+    },
+    {
+      "kind": "Anime",
+      "title": "Kimetsu no Yaiba (Dublado)",
+      "cover": "https://images.example.test/oxeanimes/kimetsu-no-yaiba-dublado.jpg",
+      "href": "/anime/kimetsu-no-yaiba-dublado"
+    }
+  ]
+}

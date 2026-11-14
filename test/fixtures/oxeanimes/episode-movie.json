@@ -1,0 +1,14 @@
+{
+  "title": "Your name – Episódio 01 online",
+  "streamUrl": "/api/stream?url=https%3A%2F%2Fcdn.example.test%2Foxeanimes%2Fyour-name%2Ffilme.mp4%2Findex.m3u8",
+  "isEmbed": false,
+  "sources": [
+    {
+      "id": 60001,
+      "label": "OxeAnimes - FHD",
+      "type": "hls",
+      "url": "/api/stream?url=https%3A%2F%2Fcdn.example.test%2Foxeanimes%2Fyour-name%2Ffilme.mp4%2Findex.m3u8"
+    }
+  ],
+  "animeTitle": "Your name"
+}

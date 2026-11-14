@@ -67,6 +67,8 @@ test('catálogos reais são válidos, não truncam e mantêm pelo menos 20 títu
     doramogo: { exclusiveTag: 'dorama' },
     dattebayo: { exclusiveTag: 'anime' },
     anitube: { exclusiveTag: 'anime' },
+    oxeanimes: { exclusiveTag: 'anime' },
+    animy: { exclusiveTag: 'anime' },
   });
   assert.ok(catalogs.movie.titles.filter((title) => title.tags.includes('dorama')).length >= 5);
   assert.ok(catalogs.tv.titles.filter((title) => title.tags.includes('dorama')).length >= 5);

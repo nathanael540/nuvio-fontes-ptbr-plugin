@@ -118,6 +118,7 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 20
 1. Confirmado online: busca 200 JSON, página 200 com links `/watch/`, API do episódio 200, proxy 200 `application/vnd.apple.mpegurl` com `#EXTM3U` e `1280x720` para Kimetsu legendado, 403 sem `Referer`, 403 no CDN direto, dublado de Jujutsu 200 e filme Your Name 200.
 2. Não confirmado: reprodução no aparelho e o comportamento de todos os episódios; o dublado de Kimetsu S01E01 respondeu 502 no proxy.
 3. A rodada online e o teste no aparelho são as evidências que faltam; nenhuma delas altera o contrato descrito aqui.
+4. Rodada online final de 2026-11-14 (pacote 1.0.0, perfil `anime`, semente `bb744aa22d691efe5ee65975c268a6cc`): status Estável, com filme 1/5 e série 3/5. Your Name, Jujutsu Kaisen, Demon Slayer e Attack on Titan resolveram; Princesa Mononoke, A Viagem de Chihiro e Akira ficaram sem resultado. Demon Slayer: Mugen Train, One Piece e My Hero Academia terminaram em Falha porque a API do episódio respondeu HTTP 404 "Episode not found" para o ID publicado pela própria página, então a fonte não ofereceu mídia jogável nesses casos. A rodada não observou 502 no proxy. O resultado confirma o limite de identidade apenas por título e fica registrado em `providers.md`.
 
 ## Open Questions
 

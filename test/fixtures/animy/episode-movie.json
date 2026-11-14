@@ -1,0 +1,11 @@
+{
+  "id": 900,
+  "streams": [
+    {
+      "id": 900,
+      "kind": "mp4",
+      "url": "https://cdn.example.test/animy/your-name.mp4",
+      "audio": "dublado"
+    }
+  ]
+}

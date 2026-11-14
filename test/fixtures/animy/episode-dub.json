@@ -1,0 +1,11 @@
+{
+  "id": 1956,
+  "streams": [
+    {
+      "id": 1956,
+      "kind": "mp4",
+      "url": "https://cdn.example.test/animy/dub-s01e01.mp4",
+      "audio": "dublado"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "kind": "Anime",
+      "title": "Demon Slayer - Kimetsu no Yaiba Castelo Infinito",
+      "cover": "https://images.example.test/oxeanimes/demon-slayer-kimetsu-no-yaiba-castelo-infinito.jpg",
+      "href": "/anime/demon-slayer-kimetsu-no-yaiba-castelo-infinito"
+    },
+    {
+      "kind": "Anime",
+      "title": "Demon Slayer - Kimetsu no Yaiba Castelo Infinito (Dublado)",
+      "cover": "https://images.example.test/oxeanimes/demon-slayer-kimetsu-no-yaiba-castelo-infinito-dublado.jpg",
+      "href": "/anime/demon-slayer-kimetsu-no-yaiba-castelo-infinito-dublado"
+    },
+    {
+      "kind": "Anime",
+      "title": "Kimetsu no Yaiba",
+      "cover": "https://images.example.test/oxeanimes/kimetsu-no-yaiba.jpg",
+      "href": "/anime/kimetsu-no-yaiba"
+    },
+    {
+      "kind": "Anime",
+      "title": "Kimetsu no Yaiba (Dublado)",
+      "cover": "https://images.example.test/oxeanimes/kimetsu-no-yaiba-dublado.jpg",
+      "href": "/anime/kimetsu-no-yaiba-dublado"
+    },
+    {
+      "kind": "Anime",
+      "title": "Kimetsu no Yaiba: Hashira Geiko-hen – Todos os Episódios",
+      "cover": "https://images.example.test/oxeanimes/kimetsu-no-yaiba-hashira-geiko-hen-todos-os-episodios.jpg",
+      "href": "/anime/kimetsu-no-yaiba-hashira-geiko-hen-todos-os-episodios"
+    }
+  ]
+}

@@ -29,6 +29,8 @@
 | [Doramogo](#doramogo) | `doramogo` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
 | [Dattebayo BR](#dattebayo-br) | `dattebayo` | filme, série | MP4 | 🟢 Estável | 2026-11-13 |
 | [AniTube](#anitube) | `anitube` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-13 |
+| [OxeAnimes](#oxeanimes) | `oxeanimes` | filme, série | HLS | 🟢 Estável | 2026-11-14 |
+| [Animy](#animy) | `animy` | filme, série | MP4 | 🟢 Estável | 2026-11-14 |
 
 ## MegaEmbed
 
@@ -576,5 +578,50 @@ Provedor de filmes e séries de anime em HLS e MP4 do AniTube, com busca por tí
    8. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
    9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 5/5 streams aproveitáveis
    10. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+<!-- online-verification:end -->
+
+## OxeAnimes
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e séries de anime em HLS pelo catálogo OxeAnimes, com busca JSON pelas variantes de título do TMDB e páginas separadas para dublado e legendado. O episódio é resolvido pela API da fonte e o proxy de reprodução exige `Referer`; a fonte pode responder HTTP 502 em episódios específicos e o provedor não sonda a playlist.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T04:30:46.065Z** · ID `2026-11-14T04-30-32-313Z-oxeanimes-bb744aa2-d7af` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `bb744aa22d691efe5ee65975c268a6cc` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Falha** · 0/0 streams aproveitáveis · Motivo: [OxeAnimes] Falha em movie 635302: Nenhuma opção produziu stream: legendado: HTTP 404 em [url]
+   2. `movie` `372058` · Your Name (2016) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `149` · Akira (1988) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `128` · Princesa Mononoke (1997) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `129` · A Viagem de Chihiro (2001) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   7. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [OxeAnimes] Falha em tv 65930: Nenhuma opção produziu stream: dublado: HTTP 404 em [url]; legendado: HTTP 404 em [url]
+   8. `tv` `37854` · One Piece (1999) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [OxeAnimes] Falha em tv 37854: Nenhuma opção produziu stream: dublado: HTTP 404 em [url]; legendado: HTTP 404 em [url]
+   9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   10. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+<!-- online-verification:end -->
+
+
+## Animy
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e séries de anime em MP4 pelo catálogo Animy, com busca REST e variantes de áudio dubladas e legendadas publicadas pela fonte.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T04:33:56.044Z** · ID `2026-11-14T04-33-34-585Z-animy-a5934040-a689` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `a59340407b9f5b6c7b9ea358107e23fe` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `128` · Princesa Mononoke (1997) · **Resolvido** · 2/2 streams aproveitáveis
+   2. `movie` `149` · Akira (1988) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Resolvido** · 1/1 streams aproveitáveis
+   4. `movie` `372058` · Your Name (2016) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `129` · A Viagem de Chihiro (2001) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   7. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   8. `tv` `30984` · Bleach (2004) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
+   9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   10. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 

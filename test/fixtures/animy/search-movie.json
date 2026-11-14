@@ -1,0 +1,15 @@
+{
+  "items": [
+    {
+      "id": 500,
+      "t": "Kimi no na wa (Dublado)",
+      "nativeTitle": "Kimi no na wa",
+      "y": 2024,
+      "kind": "movie",
+      "audio": "dublado",
+      "audios": ["dublado"],
+      "altTitles": [{ "title": "Your Name." }, { "title": "Kimi no Na wa." }]
+    }
+  ],
+  "total": 1
+}

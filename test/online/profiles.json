@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "revision": "2026-11-13.1",
-  "curatedAt": "2026-11-13",
+  "revision": "2026-11-14.2",
+  "curatedAt": "2026-11-14",
   "providers": {
     "animefire": {
       "exclusiveTag": "anime"
@@ -10,6 +10,8 @@
     "dattebayo": {
       "exclusiveTag": "anime"
     },
-    "anitube": { "exclusiveTag": "anime" }
+    "anitube": { "exclusiveTag": "anime" },
+    "oxeanimes": { "exclusiveTag": "anime" },
+    "animy": { "exclusiveTag": "anime" }
   }
 }
