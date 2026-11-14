@@ -27,6 +27,7 @@ const HASH_B = 'b'.repeat(32);
 const FIRE_A = `https://embedplayer2.xyz/video/${HASH_A}`;
 const FIRE_B = `https://embedplayer2.xyz/video/${HASH_B}`;
 const SECURED_A = 'https://cdn.example/master.m3u8?md5=fictionmd5&expires=999';
+const WATCHPLAY_A = 'https://v1.watchplay.shop/movie/tt9000001';
 const MASTER_VARIANTS = fixture('master-variants.m3u8');
 const MASTER_DUAL = fixture('master-dual.m3u8');
 const MASTER_SUBS = fixture('master-subs.m3u8');
@@ -34,6 +35,21 @@ const MEDIA_PLAYLIST = fixture('media-playlist.m3u8');
 
 function fixture(name) {
   return readFileSync(new URL(`../../fixtures/dooplay/${name}`, import.meta.url), 'utf8');
+}
+
+function embedmoviesFixture(name) {
+  return readFileSync(new URL(`../../fixtures/embedmovies/${name}`, import.meta.url), 'utf8');
+}
+
+function watchplayEntry(extra = {}) {
+  return {
+    url: WATCHPLAY_A,
+    referer: 'https://playerflix.ink/filme/tt9000001',
+    label: 'WatchPlay',
+    languageHint: 'pt-br',
+    meta: { title: 'Filme Fictício', year: 2026 },
+    ...extra,
+  };
 }
 
 function context(extra = {}) {
@@ -243,6 +259,108 @@ test('PlayerFlix, GStream e plenoflu entregam entradas complementares e isolam f
   const gstreamPost = calls.find((call) => call.url === 'https://embed.embedplayer.site/stream');
   assert.equal(gstreamPost.init.method, 'POST');
   assert.equal(gstreamPost.init.headers.Referer, 'https://embed.embedplayer.site/tt9000001');
+});
+
+test('WatchPlay opt-in resolve página redirecionada e playlist VOD sem RESOLUTION', async (t) => {
+  const { calls, logs } = mockFetch(t, (url) => {
+    if (url.hostname === 'v1.watchplay.shop' && url.pathname === '/movie/tt9000001') {
+      return { url: 'https://v2.watchplay.shop/movie/tt9000001', body: embedmoviesFixture('watchplay-movie.html') };
+    }
+    if (url.hostname === 'cdn.example' && url.pathname === '/watchplay/playlist.m3u8') {
+      return embedmoviesFixture('watchplay-vod.m3u8');
+    }
+    return undefined;
+  });
+
+  const entry = watchplayEntry();
+  const { resolved, failures } = await resolveEntries([entry], context({ resolveWatchplay: true }));
+
+  assert.equal(failures.length, 0);
+  assert.equal(resolved.length, 1);
+  const media = resolved[0];
+  assert.equal(media.playerPage, 'https://v2.watchplay.shop/movie/tt9000001');
+  assert.equal(media.playlistUrl, 'https://cdn.example/watchplay/playlist.m3u8?md5=fictional&expires=999');
+  assert.equal(media.adaptive, false);
+  assert.equal(media.quality, null);
+  assert.deepEqual(media.variants, []);
+  assert.equal(media.language, 'Dublado');
+  assert.deepEqual(media.meta, { title: 'Filme Fictício', year: 2026 });
+  assert.equal(media.headers.Referer, 'https://v2.watchplay.shop/movie/tt9000001');
+  assert.equal('playerHash' in media, false);
+  assert.equal(logs.warn.length + logs.error.length, 0);
+
+  const pageCall = calls.find((call) => call.url === WATCHPLAY_A);
+  assert.equal(pageCall.init.headers.Referer, 'https://playerflix.ink/');
+  const playlistCall = calls.find((call) => call.url.startsWith('https://cdn.example/watchplay/playlist.m3u8'));
+  assert.equal(playlistCall.init.headers.Referer, 'https://v2.watchplay.shop/movie/tt9000001');
+
+  resetAutoTemplate(() => 0);
+  const [stream] = buildStreams(resolved, context({ resolveWatchplay: true, providerName: 'Teste FirePlayer' }));
+  assert.equal(stream.quality, 'Desconhecida');
+  assert.equal(stream.type, 'hls');
+  assert.equal(stream.provider, 'v2.watchplay.shop');
+  assert.equal(stream.language, 'Dublado');
+  assert.equal(stream.name, 'Teste FirePlayer Desconhecida\n🗣️ Dublado\n🌐 HTTP 🔍 v2.watchplay.shop');
+
+  const triaged = await resolveEntries([entry], context());
+  assert.equal(triaged.resolved.length, 0);
+  assert.equal(triaged.failures.length, 0);
+  assert.ok(logs.log.some((line) => line.includes('WatchPlay descartada por triagem: playlist sem RESOLUTION')));
+  assert.equal(calls.length, 2);
+});
+
+test('WatchPlay com master usa variantes e falhas de página ou playlist ficam isoladas', async (t) => {
+  const master = mockFetch(t, (url) => {
+    if (url.hostname === 'v1.watchplay.shop' && url.pathname === '/movie/tt9000001') {
+      return { url: 'https://v2.watchplay.shop/movie/tt9000001', body: embedmoviesFixture('watchplay-movie.html') };
+    }
+    if (url.hostname === 'cdn.example' && url.pathname === '/watchplay/playlist.m3u8') {
+      return embedmoviesFixture('watchplay-master.m3u8');
+    }
+    return undefined;
+  });
+  const variants = await resolveEntries([watchplayEntry()], context({ resolveWatchplay: true }));
+  assert.equal(variants.failures.length, 0);
+  assert.equal(variants.resolved[0].adaptive, false);
+  assert.equal(variants.resolved[0].quality, null);
+  assert.deepEqual(variants.resolved[0].variants.map((variant) => variant.quality), [360, 720]);
+  assert.equal(master.logs.warn.length, 0);
+
+  master.restore();
+  const isolated = mockFetch(t, (url) => {
+    if (url.hostname === 'v1.watchplay.shop' && url.pathname === '/movie/sem-playlist') {
+      return '<html><body><div id="player"></div></body></html>';
+    }
+    if (url.hostname === 'v1.watchplay.shop' && url.pathname === '/movie/playlist-invalida') {
+      return { body: embedmoviesFixture('watchplay-movie.html') };
+    }
+    if (url.hostname === 'cdn.example' && url.pathname === '/watchplay/playlist.m3u8') {
+      return '<html>erro 200</html>';
+    }
+    if (url.hostname === 'embedplayer2.xyz' && url.pathname === '/player/index.php') return { body: fireVideo() };
+    if (url.hostname === 'cdn.example' && url.pathname === '/master.m3u8') return MASTER_VARIANTS;
+    return undefined;
+  });
+  const result = await resolveEntries([
+    watchplayEntry({ url: 'https://v1.watchplay.shop/movie/sem-playlist', label: 'Sem playlist' }),
+    watchplayEntry({ url: 'https://v1.watchplay.shop/movie/playlist-invalida', label: 'Playlist inválida' }),
+    { url: FIRE_A, referer: 'https://playerflix.ink/filme/100', label: 'VIP', meta: { title: 'Filme', year: 2026 } },
+  ], context({ resolveWatchplay: true }));
+  assert.equal(result.resolved.length, 1);
+  assert.equal(result.failures.length, 2);
+  assert.ok(result.failures.some((failure) => failure.includes('playlist do WatchPlay ausente')));
+  assert.ok(result.failures.some((failure) => failure.includes('Resposta do WatchPlay não é playlist HLS')));
+  assert.ok(isolated.logs.warn.some((line) => line.includes('playlist do WatchPlay ausente')));
+  assert.ok(isolated.logs.warn.some((line) => line.includes('não é playlist HLS')));
+  assert.equal(isolated.logs.error.length, 0);
+
+  isolated.restore();
+  const blocked = mockFetch(t, () => ({ status: 451, body: '' }));
+  const triage = await resolveEntries([watchplayEntry()], context({ resolveWatchplay: true }));
+  assert.equal(triage.resolved.length, 0);
+  assert.equal(triage.failures.length, 0);
+  assert.ok(blocked.logs.log.some((line) => line.includes('HTTP 451')));
+  assert.equal(blocked.logs.warn.length, 0);
 });
 
 test('episódio direto exige DIRECT_EPISODE_ID; legado por TVSHOW_ID continua disponível', async (t) => {

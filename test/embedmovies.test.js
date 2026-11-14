@@ -15,6 +15,8 @@ const SOURCE = 'https://embedmovies.org';
 const MYEMBED = 'https://myembed.biz';
 const PLAYERFLIX = 'https://playerflix.ink';
 const EMBEDPLAYER = 'https://embedplayer2.xyz';
+const WATCHPLAY_V1 = 'https://v1.watchplay.shop';
+const WATCHPLAY_V2 = 'https://v2.watchplay.shop';
 const CDN = 'https://cdn.example';
 const HASH_A = 'a'.repeat(32);
 const HASH_B = 'b'.repeat(32);
@@ -194,6 +196,14 @@ test('filme resolvido pelo catálogo com contrato completo, triagem e ordenaçã
         assert.match(String(init.body), new RegExp(`hash=${HASH_A}`));
         return { body: readJson('embedplayer-api.json') };
       }
+      if (url.origin === WATCHPLAY_V1 && url.pathname === '/movie/tt0133093') {
+        assert.equal(init.headers.Referer, `${PLAYERFLIX}/`);
+        return { url: `${WATCHPLAY_V2}/movie/tt0133093`, body: read('watchplay-movie.html') };
+      }
+      if (url.origin === CDN && url.pathname === '/watchplay/playlist.m3u8') {
+        assert.equal(init.headers.Referer, `${WATCHPLAY_V2}/movie/tt0133093`);
+        return read('watchplay-vod.m3u8');
+      }
       if (url.origin === CDN && url.pathname === '/master.m3u8') {
         assert.equal(url.searchParams.get('md5'), 'fictional');
         return read('master.m3u8');
@@ -203,9 +213,9 @@ test('filme resolvido pelo catálogo com contrato completo, triagem e ordenaçã
   ]);
 
   const { streams, calls, logs } = await play(route);
-  assert.equal(calls.length, 5);
+  assert.equal(calls.length, 7);
   assert.equal(calls[0].url, `${SOURCE}/inc/Ajax.php`);
-  assert.deepEqual(streams.map((stream) => stream.quality), ['1080p', '720p', '360p']);
+  assert.deepEqual(streams.map((stream) => stream.quality), ['1080p', '720p', '360p', 'Desconhecida']);
 
   const stream = streams[0];
   assert.equal(stream.url, `${CDN}/1080.m3u8`);
@@ -218,7 +228,15 @@ test('filme resolvido pelo catálogo com contrato completo, triagem e ordenaçã
   assert.equal(stream.name, 'EmbedMovies 1080p\n🗣️ Dublado\n🌐 HTTP 🔍 embedplayer2.xyz');
   assert.equal(stream.title, '🗣️ Dublado\n🌐 HTTP 🔍 embedplayer2.xyz');
 
-  assert.ok(logs.log.some((message) => message.includes('Opção WatchPlay descartada por triagem: playlist sem RESOLUTION')));
+  const watchplay = streams.find((item) => item.quality === 'Desconhecida');
+  assert.equal(watchplay.url, `${CDN}/watchplay/playlist.m3u8?md5=fictional&expires=999`);
+  assert.equal(watchplay.type, 'hls');
+  assert.equal(watchplay.provider, 'v2.watchplay.shop');
+  assert.equal(watchplay.language, 'Dublado');
+  assert.equal(watchplay.headers.Referer, `${WATCHPLAY_V2}/movie/tt0133093`);
+  assert.equal(watchplay.name, 'EmbedMovies Desconhecida\n🗣️ Dublado\n🌐 HTTP 🔍 v2.watchplay.shop');
+
+  assert.equal(logs.log.some((message) => message.includes('Opção WatchPlay descartada por triagem')), false);
   assert.ok(logs.log.some((message) => message.includes('Opção Embed Play descartada por triagem: host fora do conjunto: embedplayabyss.top')));
   assert.ok(logs.log.some((message) => message.includes('Opção Blogger descartada por triagem: host fora do conjunto: www.blogger.com')));
   assert.ok(logs.log.some((message) => message.includes('Opção OK descartada por triagem: host fora do conjunto: ok.ru')));
@@ -233,6 +251,59 @@ test('filme resolvido pelo catálogo com contrato completo, triagem e ordenaçã
   assert.equal(
     prism.streams[0].title,
     '🎬 Matrix (1999)\n🗣️ Dublado\n🌐 HTTP\n📡 embedplayer2.xyz\n🔍EmbedMovies',
+  );
+});
+
+test('filme cuja única opção jogável é WatchPlay devolve HLS com qualidade Desconhecida', async () => {
+  const route = chain([
+    (url, init) => {
+      if (url.origin === SOURCE && url.pathname === '/inc/Ajax.php') {
+        assert.equal(searchBody(init), 'type=search&search=603');
+        return { body: readJson('search-movie.json') };
+      }
+      if (url.origin === MYEMBED && url.pathname === '/filme/tt0133093') {
+        assert.equal(init.headers.Referer, `${SOURCE}/`);
+        return read('myembed-movie.html');
+      }
+      if (url.origin === PLAYERFLIX && url.pathname === '/inc/Ajax.php') {
+        return { body: readJson('playerflix-watchplay.json') };
+      }
+      if (url.origin === WATCHPLAY_V1 && url.pathname === '/movie/tt0133093') {
+        assert.equal(init.headers.Referer, `${PLAYERFLIX}/`);
+        return { url: `${WATCHPLAY_V2}/movie/tt0133093`, body: read('watchplay-movie.html') };
+      }
+      if (url.origin === CDN && url.pathname === '/watchplay/playlist.m3u8') {
+        assert.equal(init.headers.Referer, `${WATCHPLAY_V2}/movie/tt0133093`);
+        return read('watchplay-vod.m3u8');
+      }
+      return undefined;
+    },
+  ]);
+
+  const { streams, calls, logs } = await play(route);
+  assert.equal(calls.length, 5);
+  assert.equal(streams.length, 1);
+  const [stream] = streams;
+  assert.equal(stream.url, `${CDN}/watchplay/playlist.m3u8?md5=fictional&expires=999`);
+  assert.equal(stream.quality, 'Desconhecida');
+  assert.equal(stream.language, 'Dublado');
+  assert.equal(stream.type, 'hls');
+  assert.equal(stream.provider, 'v2.watchplay.shop');
+  assert.equal(stream.name, 'EmbedMovies Desconhecida\n🗣️ Dublado\n🌐 HTTP 🔍 v2.watchplay.shop');
+  assert.equal(logs.error.length, 0);
+  assert.equal(logs.warn.length, 0);
+  assert.ok(logs.log.some((message) => message.includes('Opção Embed Play descartada por triagem')));
+  assert.equal(logs.log.some((message) => message.includes('WatchPlay descartada por triagem')), false);
+
+  const prism = await play(route, ['603', 'movie'], codes.prism);
+  assert.equal(prism.streams.length, 1);
+  assert.equal(
+    prism.streams[0].name,
+    '❓ Desconhecida\n🎬 Matrix (1999)\n🗣️ Dublado\n🌐 HTTP\n📡 v2.watchplay.shop',
+  );
+  assert.equal(
+    prism.streams[0].title,
+    '🎬 Matrix (1999)\n🗣️ Dublado\n🌐 HTTP\n📡 v2.watchplay.shop\n🔍EmbedMovies',
   );
 });
 
@@ -259,6 +330,13 @@ test('série acrescenta temporada e episódio ao player e preserva as coordenada
         assert.equal(url.searchParams.get('data'), HASH_B);
         return { body: readJson('embedplayer-api.json') };
       }
+      if (url.origin === WATCHPLAY_V1 && url.pathname === '/tvshow/100088/1/1') {
+        assert.equal(init.headers.Referer, `${PLAYERFLIX}/`);
+        return { url: `${WATCHPLAY_V2}/tvshow/100088/1/1`, body: read('watchplay-movie.html') };
+      }
+      if (url.origin === CDN && url.pathname === '/watchplay/playlist.m3u8') {
+        return read('watchplay-vod.m3u8');
+      }
       if (url.origin === CDN && url.pathname === '/master.m3u8') {
         return read('master.m3u8');
       }
@@ -267,9 +345,12 @@ test('série acrescenta temporada e episódio ao player e preserva as coordenada
   ]);
 
   const { streams, calls, logs } = await play(route, ['100088', 'tv', 1, 1]);
-  assert.equal(calls.length, 5);
-  assert.deepEqual(streams.map((stream) => stream.quality), ['1080p', '720p', '360p']);
+  assert.equal(calls.length, 7);
+  assert.deepEqual(streams.map((stream) => stream.quality), ['1080p', '720p', '360p', 'Desconhecida']);
   assert.equal(streams[0].headers.Referer, `${EMBEDPLAYER}/video/${HASH_B}`);
+  const watchplayGdrive = streams.find((item) => item.quality === 'Desconhecida');
+  assert.equal(watchplayGdrive.provider, 'v2.watchplay.shop');
+  assert.equal(watchplayGdrive.language, 'Dublado');
   assert.equal(logs.error.length, 0);
 
   const prism = await play(route, ['100088', 'tv', 1, 1], codes.prism);
@@ -281,6 +362,9 @@ test('série acrescenta temporada e episódio ao player e preserva as coordenada
     prism.streams[0].title,
     '🎬 The Last of Us (2023) T01E01\n🗣️ Dublado\n🌐 HTTP\n📡 embedplayer2.xyz\n🔍EmbedMovies',
   );
+  const watchplay = prism.streams.find((stream) => stream.quality === 'Desconhecida');
+  assert.match(watchplay.name, /^❓ Desconhecida\n🎬 The Last of Us \(2023\) T01E01\n🗣️ Dublado\n🌐 HTTP\n📡 v2\.watchplay\.shop$/);
+  assert.match(watchplay.title, /🎬 The Last of Us \(2023\) T01E01/);
 });
 
 test('ausência reconhecida sem correspondência exata não consulta o player', async () => {
@@ -387,7 +471,6 @@ test('player inexistente, sem iframe ou sem opções falha sem stream parcial', 
 test('todas as opções apenas em triagem devolvem vazio sem console.error', async () => {
   const response = playerflixResponse({
     options: [
-      { embed: 'https://v1.watchplay.shop/movie/tt0133093', lang: 'pt-br', label: 'WatchPlay', budget: 'success' },
       { embed: 'https://embedplayabyss.top/player.html?v=exemplo', lang: 'pt-br', label: 'Embed Play', budget: 'success' },
       { embed: 'https://www.blogger.com/video.g?v=exemplo', lang: 'pt-br', label: 'Blogger', budget: 'success' },
       { embed: 'https://ok.ru/video/123', lang: 'pt-br', label: 'OK', budget: 'success' },
@@ -407,11 +490,11 @@ test('todas as opções apenas em triagem devolvem vazio sem console.error', asy
   assert.equal(result.calls.length, 3);
   assert.equal(result.logs.error.length, 0);
   assert.equal(result.logs.warn.length, 0);
-  assert.ok(result.logs.log.some((message) => message.includes('WatchPlay descartada por triagem: playlist sem RESOLUTION')));
   assert.ok(result.logs.log.some((message) => message.includes('host fora do conjunto: embedplayabyss.top')));
   assert.ok(result.logs.log.some((message) => message.includes('host fora do conjunto: www.blogger.com')));
   assert.ok(result.logs.log.some((message) => message.includes('host fora do conjunto: ok.ru')));
   assert.ok(result.logs.log.some((message) => message.includes('Premium descartada por triagem: budget danger')));
+  assert.equal(result.logs.log.some((message) => message.includes('WatchPlay')), false);
 });
 
 test('falha isolada de uma opção preserva os streams da outra', async () => {

@@ -57,7 +57,7 @@ const ORIGINAL = FOREIGN;
  * @property {string} label - Rótulo da opção resolvida.
  * @property {string} domain - Origem usada nos logs.
  * @property {string} playerPage - URL da página final do FirePlayer.
- * @property {string} playerHash - Hash usado para obter o vídeo.
+ * @property {string} [playerHash] - Hash usado para obter o vídeo; ausente no WatchPlay.
  * @property {string} playlistUrl - URL da playlist HLS final.
  * @property {boolean} adaptive - Se o master depende de faixas externas.
  * @property {number|null} quality - Maior altura quando adaptativo.
@@ -76,6 +76,7 @@ const ORIGINAL = FOREIGN;
  * @property {FireRequest} request - Pedido recebido do app.
  * @property {{tmdbId?: number|string, imdbId?: string|null}} [identity] - Identidade conhecida do pedido.
  * @property {boolean} [directEpisode] - Usa `DIRECT_EPISODE_ID` do plenoflu quando `true`; padrão `false`, que mantém o fluxo legado por `TVSHOW_ID`.
+ * @property {boolean} [resolveWatchplay] - Resolve a opção WatchPlay (`watchplay.shop`) em vez de descartá-la por triagem; padrão `false`. Opt-in do EmbedMovies.
  * @property {string} providerName - Nome do provedor exibido como `addon` do formatador; obrigatório em `buildStreams`.
  */
 
@@ -458,7 +459,11 @@ async function resolveUrl(entry, context, visited) {
   const nextVisited = new Set(visited);
   nextVisited.add(entry.url);
   const host = new URL(entry.url).hostname;
-  if (isHost(host, 'watchplay.shop')) return { triage: 'playlist sem RESOLUTION' };
+  if (isHost(host, 'watchplay.shop')) {
+    return context.resolveWatchplay === true
+      ? resolveWatchplay(entry, context)
+      : { triage: 'playlist sem RESOLUTION' };
+  }
   if (isHost(host, 'youtube.com') || host === 'youtu.be') return { triage: 'trailer' };
   if (isHost(host, 'myembed.biz')) return followMyembed(entry, context, nextVisited);
   if (isHost(host, 'playerflix.ink')) return expandPlayerflix(entry, context, nextVisited);
@@ -738,6 +743,44 @@ async function resolveFire(entry, context) {
       meta: entry.meta || null,
     }],
   };
+}
+
+async function resolveWatchplay(entry, context) {
+  const read = await readHtml(entry.url, { headers: { Referer: originReferer(entry.referer) } });
+  if (read.triage) return read;
+  const href = watchplayPlaylist(read.page.text);
+  if (!href) throw new Error('playlist do WatchPlay ausente');
+  const playlistUrl = httpUrl(href, read.page.url);
+  const playlist = await readHtml(playlistUrl, { profile: 'player', headers: { Referer: read.page.url } });
+  if (playlist.triage) return playlist;
+  if (!playlist.page.text.replace(/^\uFEFF/, '').trim().startsWith('#EXTM3U')) {
+    throw new Error('Resposta do WatchPlay não é playlist HLS');
+  }
+  const interpreted = interpretPlaylist(playlist.page.text, playlist.page.url);
+  const subtitles = await loadSubtitles(interpreted.subtitles, read.page.url, entry, context);
+  const choice = chooseLanguage(interpreted, entry.languageHint, subtitles);
+  if (choice.discard) return { triage: 'lang não PT-BR sem legenda PT' };
+  return {
+    resolved: [{
+      label: entry.label || entry.domain || context.domain,
+      domain: entry.domain || context.domain,
+      playerPage: read.page.url,
+      playlistUrl: interpreted.url,
+      adaptive: interpreted.adaptive,
+      quality: interpreted.quality,
+      variants: interpreted.variants,
+      language: choice.language,
+      foreignOnly: interpreted.foreignOnly,
+      subtitles,
+      headers: playbackHeaders(read.page.url),
+      meta: entry.meta || null,
+    }],
+  };
+}
+
+function watchplayPlaylist(html) {
+  const match = /["']([^"']*playlist\.m3u8[^"']*)["']/i.exec(html);
+  return match ? match[1].replace(/\\\//g, '/') : null;
 }
 
 async function loadSubtitles(tracks, playerPage, entry, context) {

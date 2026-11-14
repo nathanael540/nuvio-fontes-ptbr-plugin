@@ -22,7 +22,7 @@
 | [BRFlix](#brflix) | `brflix` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-12 |
 | [RIVO](#rivo) | `rivo` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-12 |
 | [Primeflix](#primeflix) | `primeflix` | filme, série | HLS, MKV | 🟢 Estável | 2026-11-13 |
-| [EmbedMovies](#embedmovies) | `embedmovies` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
+| [EmbedMovies](#embedmovies) | `embedmovies` | filme, série | HLS | 🟢 Estável | 2026-11-14 |
 | [Kairou](#kairou) | `kairou` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-13 |
 | [Pomfy](#pomfy) | `pomfy` | filme, série | HLS | 🔵 Parcial | 2026-11-13 |
 | [AnimeFire](#animefire) | `animefire` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
@@ -432,17 +432,17 @@ Provedor de filmes e séries em HLS ou MKV do catálogo Primeflix, com busca JSO
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-13T10:31:33.894Z** · ID `2026-11-13T10-31-03-646Z-embedmovies-embedmov-6b91` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `embedmovies-20261113` · algoritmo `sha256-fisher-yates-v1`
-   1. `movie` `872585` · Oppenheimer (2023) · **Resolvido** · 1/1 streams aproveitáveis
-   2. `movie` `1630420` · Crime em Cena (2026) · **Resolvido** · 1/1 streams aproveitáveis
-   3. `movie` `68718` · Django Livre (2012) · **Sem resultado** · 0/0 streams aproveitáveis
-   4. `movie` `149` · Akira (1988) · **Sem resultado** · 0/0 streams aproveitáveis
-   5. `movie` `1400940` · Cara-de-Barro (2026) · **Sem resultado** · 0/0 streams aproveitáveis
-   6. `tv` `1418` · The Big Bang Theory (2007) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
-   7. `tv` `1668` · Friends (1994) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
-   8. `tv` `100088` · The Last of Us (2023) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
-   9. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
-   10. `tv` `1396` · Breaking Bad (2008) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+1. **2026-11-14T03:45:53.493Z** · ID `2026-11-14T03-45-09-479Z-embedmovies-000a5970-75ab` · **Estável** · pacote 1.1.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `000a59704af9d86e45d714e05fe9ab3d` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `155` · Batman: O Cavaleiro das Trevas (2008) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `693134` · Duna: Parte Dois (2024) · **Resolvido** · 2/2 streams aproveitáveis
+   3. `movie` `1654940` · Um Ano de Vida, Compre Um Homem (2026) · **Resolvido** · 1/1 streams aproveitáveis
+   4. `movie` `1419027` · Ataque 13 (2025) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `569094` · Homem-Aranha: Através do Aranhaverso (2023) · **Resolvido** · 1/1 streams aproveitáveis
+   6. `tv` `119051` · Wednesday (2022) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   7. `tv` `100088` · The Last of Us (2023) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   8. `tv` `90447` · Hotel del Luna (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `94605` · Arcane (2021) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   10. `tv` `1418` · The Big Bang Theory (2007) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 
 ## Kairou
