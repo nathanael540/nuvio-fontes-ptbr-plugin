@@ -22,13 +22,25 @@
 | [BRFlix](#brflix) | `brflix` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-12 |
 | [RIVO](#rivo) | `rivo` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-12 |
 | [Primeflix](#primeflix) | `primeflix` | filme, série | HLS, MKV | 🟢 Estável | 2026-11-13 |
-| [EmbedMovies](#embedmovies) | `embedmovies` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
+| [EmbedMovies](#embedmovies) | `embedmovies` | filme, série | HLS | 🟢 Estável | 2026-11-14 |
 | [Kairou](#kairou) | `kairou` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-13 |
 | [Pomfy](#pomfy) | `pomfy` | filme, série | HLS | 🔵 Parcial | 2026-11-13 |
 | [AnimeFire](#animefire) | `animefire` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
 | [Doramogo](#doramogo) | `doramogo` | filme, série | HLS | 🟢 Estável | 2026-11-13 |
 | [Dattebayo BR](#dattebayo-br) | `dattebayo` | filme, série | MP4 | 🟢 Estável | 2026-11-13 |
 | [AniTube](#anitube) | `anitube` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-13 |
+| [OxeAnimes](#oxeanimes) | `oxeanimes` | filme, série | HLS | 🟢 Estável | 2026-11-14 |
+| [Animy](#animy) | `animy` | filme, série | MP4 | 🟢 Estável | 2026-11-14 |
+| [AniBunker](#anibunker) | `anibunker` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-14 |
+| [AnimeZeY](#animezey) | `animezey` | filme, série | MKV, MP4 | 🔴 Instável | 2026-11-14 |
+| [AnimesDigital](#animesdigital) | `animesdigital` | filme, série | HLS | 🟢 Estável | 2026-11-14 |
+| [AnimesFHD](#animesfhd) | `animesfhd` | série | HLS | 🟢 Estável | 2026-11-14 |
+| [Animes Online Blue](#animes-online-blue) | `animesonlineblue` | série | MP4 | 🟢 Estável | 2026-11-14 |
+| [AnimeQ](#animeq) | `animeq` | filme, série | HLS, MP4 | 🔵 Parcial | 2026-11-14 |
+| [Doramas Online](#doramas-online) | `doramasonline` | filme, série | HLS, MP4 | 🔵 Parcial | 2026-11-14 |
+| [AmyFlix](#amyflix) | `amyflix` | filme, série | HLS, MP4 | 🔴 Instável | 2026-11-14 |
+| [SeuDorama](#seudorama) | `seudorama` | série | MP4 | 🟢 Estável | 2026-11-14 |
+| [NoveFlix](#noveflix) | `noveflix` | série | MP4 | 🔴 Instável | 2026-11-14 |
 
 ## MegaEmbed
 
@@ -432,17 +444,17 @@ Provedor de filmes e séries em HLS ou MKV do catálogo Primeflix, com busca JSO
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-13T10:31:33.894Z** · ID `2026-11-13T10-31-03-646Z-embedmovies-embedmov-6b91` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `embedmovies-20261113` · algoritmo `sha256-fisher-yates-v1`
-   1. `movie` `872585` · Oppenheimer (2023) · **Resolvido** · 1/1 streams aproveitáveis
-   2. `movie` `1630420` · Crime em Cena (2026) · **Resolvido** · 1/1 streams aproveitáveis
-   3. `movie` `68718` · Django Livre (2012) · **Sem resultado** · 0/0 streams aproveitáveis
-   4. `movie` `149` · Akira (1988) · **Sem resultado** · 0/0 streams aproveitáveis
-   5. `movie` `1400940` · Cara-de-Barro (2026) · **Sem resultado** · 0/0 streams aproveitáveis
-   6. `tv` `1418` · The Big Bang Theory (2007) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
-   7. `tv` `1668` · Friends (1994) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
-   8. `tv` `100088` · The Last of Us (2023) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
-   9. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
-   10. `tv` `1396` · Breaking Bad (2008) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+1. **2026-11-14T03:45:53.493Z** · ID `2026-11-14T03-45-09-479Z-embedmovies-000a5970-75ab` · **Estável** · pacote 1.1.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `000a59704af9d86e45d714e05fe9ab3d` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `155` · Batman: O Cavaleiro das Trevas (2008) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `693134` · Duna: Parte Dois (2024) · **Resolvido** · 2/2 streams aproveitáveis
+   3. `movie` `1654940` · Um Ano de Vida, Compre Um Homem (2026) · **Resolvido** · 1/1 streams aproveitáveis
+   4. `movie` `1419027` · Ataque 13 (2025) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `569094` · Homem-Aranha: Através do Aranhaverso (2023) · **Resolvido** · 1/1 streams aproveitáveis
+   6. `tv` `119051` · Wednesday (2022) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   7. `tv` `100088` · The Last of Us (2023) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   8. `tv` `90447` · Hotel del Luna (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `94605` · Arcane (2021) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   10. `tv` `1418` · The Big Bang Theory (2007) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 
 ## Kairou
@@ -576,5 +588,261 @@ Provedor de filmes e séries de anime em HLS e MP4 do AniTube, com busca por tí
    8. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
    9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 5/5 streams aproveitáveis
    10. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+<!-- online-verification:end -->
+
+## OxeAnimes
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e séries de anime em HLS pelo catálogo OxeAnimes, com busca JSON pelas variantes de título do TMDB e páginas separadas para dublado e legendado. O episódio é resolvido pela API da fonte e o proxy de reprodução exige `Referer`; a fonte pode responder HTTP 502 em episódios específicos e o provedor não sonda a playlist.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T04:30:46.065Z** · ID `2026-11-14T04-30-32-313Z-oxeanimes-bb744aa2-d7af` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `bb744aa22d691efe5ee65975c268a6cc` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Falha** · 0/0 streams aproveitáveis · Motivo: [OxeAnimes] Falha em movie 635302: Nenhuma opção produziu stream: legendado: HTTP 404 em [url]
+   2. `movie` `372058` · Your Name (2016) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `149` · Akira (1988) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `128` · Princesa Mononoke (1997) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `129` · A Viagem de Chihiro (2001) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   7. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [OxeAnimes] Falha em tv 65930: Nenhuma opção produziu stream: dublado: HTTP 404 em [url]; legendado: HTTP 404 em [url]
+   8. `tv` `37854` · One Piece (1999) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [OxeAnimes] Falha em tv 37854: Nenhuma opção produziu stream: dublado: HTTP 404 em [url]; legendado: HTTP 404 em [url]
+   9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   10. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+<!-- online-verification:end -->
+
+
+## Animy
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e séries de anime em MP4 pelo catálogo Animy, com busca REST e variantes de áudio dubladas e legendadas publicadas pela fonte.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T04:33:56.044Z** · ID `2026-11-14T04-33-34-585Z-animy-a5934040-a689` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `a59340407b9f5b6c7b9ea358107e23fe` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `128` · Princesa Mononoke (1997) · **Resolvido** · 2/2 streams aproveitáveis
+   2. `movie` `149` · Akira (1988) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Resolvido** · 1/1 streams aproveitáveis
+   4. `movie` `372058` · Your Name (2016) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `129` · A Viagem de Chihiro (2001) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   7. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   8. `tv` `30984` · Bleach (2004) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
+   9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   10. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+<!-- online-verification:end -->
+
+## AniBunker
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e séries de anime em MP4 e HLS pelo catálogo AniBunker, com busca PHP pública, confirmação de título, ano, formato e temporada, seleção de áudio dublado/legendado e players públicos do Blogger, Google Drive, HD e Sendvid. Temporadas contínuas do TMDB divididas em páginas de arcos e players externos sem mídia direta ficam fora da primeira versão. A rodada de 2026-11-14 usou o perfil `anime` e resolveu 2/5 filmes e 5/5 séries: Mugen Train é publicado como `Anime` e A Viagem de Chihiro traz ano 2021 na ficha, então os dois não confirmam formato/ano do pedido; os três filmes sem stream responderam HTTP 522 durante a rodada, e o provedor não converte erro de rede em ausência.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T05:01:13.024Z** · ID `2026-11-14T04-59-47-658Z-anibunker-02948607-779c` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `029486072701db7f574e10590d674c41` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `372058` · Your Name (2016) · **Resolvido** · 7/7 streams aproveitáveis
+   2. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AniBunker] Falha em movie 635302: HTTP 522 em <url>
+   3. `movie` `128` · Princesa Mononoke (1997) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AniBunker] Falha em movie 128: HTTP 522 em <url>
+   4. `movie` `129` · A Viagem de Chihiro (2001) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AniBunker] Falha em movie 129: HTTP 522 em <url>
+   5. `movie` `149` · Akira (1988) · **Resolvido** · 4/4 streams aproveitáveis
+   6. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 9/9 streams aproveitáveis
+   7. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 10/10 streams aproveitáveis
+   8. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
+   9. `tv` `37854` · One Piece (1999) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+   10. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+<!-- online-verification:end -->
+
+
+## AnimeZeY
+
+**Status: 🔴 Instável.**
+
+Provedor de filmes e séries de anime em MKV e MP4 pelo índice público AnimeZeY, com busca por título e coordenadas no worker e download pelo host dedicado.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T05:08:01.923Z** · ID `2026-11-14T05-07-55-245Z-animezey-bea36b84-7103` · **Instável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `bea36b8495d26567779e3ce8fe1aea4f` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `129` · A Viagem de Chihiro (2001) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em movie 129: Nenhuma busca produziu resultado: A Viagem de Chihiro 2001: HTTP 429 em [url]; A Viagem de Chihiro: HTTP 429 em [url]; 千と千尋の神隠し 2001: HTTP 429 em [url]
+   2. `movie` `128` · Princesa Mononoke (1997) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em movie 128: Nenhuma busca produziu resultado: Princesa Mononoke 1997: HTTP 429 em [url]; Princesa Mononoke: HTTP 429 em [url]; もののけ姫 1997: HTTP 429 em [url]
+   3. `movie` `149` · Akira (1988) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em movie 149: Nenhuma busca produziu resultado: Akira 1988: HTTP 429 em [url]; Akira: HTTP 429 em [url]
+   4. `movie` `372058` · Your Name (2016) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em movie 372058: Nenhuma busca produziu resultado: Your Name. 2016: HTTP 429 em [url]; Your Name.: HTTP 429 em [url]; 君の名は。 2016: HTTP 429 em [url]
+   5. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em movie 635302: Nenhuma busca produziu resultado: Demon Slayer: Mugen Train - O Filme 2020: HTTP 429 em [url]; Demon Slayer: Mugen Train - O Filme: HTTP 429 em [url]; 劇場版「鬼滅の刃」無限列車編 2020: HTTP 429 em [url]
+   6. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em tv 65930: Nenhuma busca produziu resultado: My Hero Academia S01E01: HTTP 429 em [url]; My Hero Academia 01x01: HTTP 429 em [url]; My Hero Academia - 01: HTTP 429 em [url]; 僕のヒーローアカデミア S01E01: HTTP 429 em [url]
+   7. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em tv 85937: Nenhuma busca produziu resultado: Demon Slayer: Kimetsu no Yaiba S01E01: HTTP 429 em [url]; Demon Slayer: Kimetsu no Yaiba 01x01: HTTP 429 em [url]; Demon Slayer: Kimetsu no Yaiba - 01: HTTP 429 em [url]; 鬼滅の刃 S01E01: HTTP 429 em [url]
+   8. `tv` `30984` · Bleach (2004) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em tv 30984: Nenhuma busca produziu resultado: Bleach S01E01: HTTP 429 em [url]; Bleach 01x01: HTTP 429 em [url]; Bleach - 01: HTTP 429 em [url]
+   9. `tv` `37854` · One Piece (1999) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em tv 37854: Nenhuma busca produziu resultado: One Piece S01E01: HTTP 429 em [url]; One Piece 01x01: HTTP 429 em [url]; One Piece - 01: HTTP 429 em [url]; ワンピース S01E01: HTTP 429 em [url]
+   10. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em tv 95479: Nenhuma busca produziu resultado: Jujutsu Kaisen S01E01: HTTP 429 em [url]; Jujutsu Kaisen 01x01: HTTP 429 em [url]; Jujutsu Kaisen - 01: HTTP 429 em [url]; 呪術廻戦 S01E01: HTTP 429 em [url]
+<!-- online-verification:end -->
+
+## AnimesDigital
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e séries de anime em HLS pelo player Anivideo, com busca textual pelas variantes de título do TMDB, confirmação de título, ano e tipo e seleção do episódio pelo número declarado. A rodada de 2026-11-14 usou o perfil `anime` e resolveu 1/5 filmes e 3/5 séries. Filmes publicados somente na rota `/filme/`, sem link `/video/a/` na página, ficam fora do contrato atual; séries longas como Bleach e One Piece listam apenas os 50 episódios mais recentes, então episódios antigos não são encontrados. Páginas de arco sem marcador de temporada devolvem ausência em vez de mapear a temporada por posição.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T05:37:33.789Z** · ID `2026-11-14T05-37-00-666Z-animesdigital-a60db859-fe0d` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `a60db859edfbf0007b120a433ba811c3` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `128` · Princesa Mononoke (1997) · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `149` · Akira (1988) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `372058` · Your Name (2016) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `129` · A Viagem de Chihiro (2001) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `30984` · Bleach (2004) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   7. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   8. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   9. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   10. `tv` `37854` · One Piece (1999) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+<!-- online-verification:end -->
+
+
+## AnimesFHD
+
+**Status: 🟢 Estável.**
+
+Provedor de séries de anime em HLS pelo catálogo AnimesFHD, com temporadas dubladas e legendadas e episódio mapeado pelas versões sazonais da fonte.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T05:40:25.439Z** · ID `2026-11-14T05-39-56-555Z-animesfhd-2fcfe516-ba3e` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `2fcfe51679e95fc1632d045b176150a8` · algoritmo `sha256-fisher-yates-v1`
+   1. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   2. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   3. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `tv` `37854` · One Piece (1999) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+<!-- online-verification:end -->
+
+## Animes Online Blue
+
+**Status: 🟢 Estável.**
+
+Provedor de séries de anime em MP4 pelo Animes Online Blue, com busca JSON por título PT-BR e romaji, grade de temporadas e episódios por RSC do Next.js e áudios dublado e legendado resolvidos em separado até o player do Blogger.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T06:04:32.782Z** · ID `2026-11-14T06-04-13-252Z-animesonlineblue-0dbed80b-2cfd` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `0dbed80bedf90e1718d6e3cca8530463` · algoritmo `sha256-fisher-yates-v1`
+   1. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Animes Online Blue] Falha em tv 1429: Nenhuma opção de áudio produziu stream: Legendado: Player do Blogger sem streamingData
+   2. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
+   3. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Animes Online Blue] Falha em tv 65930: Nenhuma opção de áudio produziu stream: Legendado: Player do Blogger sem streamingData
+   4. `tv` `30984` · Bleach (2004) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   5. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+<!-- online-verification:end -->
+
+
+## AnimeQ
+
+**Status: 🔵 Parcial.**
+
+Provedor de filmes e séries de anime em HLS e MP4 pelo catálogo AnimeQ, com player próprio, opções DooPlay e Blogger.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T06:10:39.402Z** · ID `2026-11-14T06-10-02-111Z-animeq-5aa74f79-3011` · **Parcial** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `5aa74f79c2862d859dc255e589a757e7` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `movie` `372058` · Your Name (2016) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `149` · Akira (1988) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `128` · Princesa Mononoke (1997) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `129` · A Viagem de Chihiro (2001) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+   7. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   8. `tv` `37854` · One Piece (1999) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+   10. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+<!-- online-verification:end -->
+
+## Doramas Online
+
+**Status: 🔵 Parcial.**
+
+Provedor de filmes e séries asiáticos do Doramas Online em HLS e MP4, com busca textual confirmada por título e ano e opções DooPlay resolvidas em isolamento nos players Booonceivu e IncVideo.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T06:31:51.671Z** · ID `2026-11-14T06-31-25-271Z-doramasonline-5d2068b0-dc68` · **Parcial** · pacote 1.0.0 · perfil `dorama` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `5d2068b0c0f81b4767372a9764b62f19` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `1419027` · Ataque 13 (2025) · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `movie` `962489` · Ditto: Conexões do Amor (2022) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `734519` · The Fable: The Killer Who Doesn't Kill (2021) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `1466115` · Se Esse Amor Desaparecesse Hoje (2025) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `1127546` · Pesadelo na Montanha (2023) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `136283` · The Glory (2022) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+   7. `tv` `96162` · Itaewon Class (2020) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Doramas Online] Falha em tv 96162: Nenhuma opção de player produziu stream: LEGENDADO=Player Doramas Online respondeu text/html; charset=UTF-8 em vez de JSON
+   8. `tv` `90447` · Hotel del Luna (2019) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+   9. `tv` `94796` · Pousando no Amor (2019) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+   10. `tv` `93405` · Round 6 (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+<!-- online-verification:end -->
+
+
+## AmyFlix
+
+**Status: 🔴 Instável.**
+
+Filmes e séries GL do AmyFlix em HLS e MP4, com busca por título, opções DooPlay e players jwplayer e Rumble.
+
+Limitação da rodada: o perfil generalista usa títulos que não pertencem ao acervo GL da fonte; os dez casos terminaram em ausência reconhecida, sem falha. A rodada não mede o nicho GL nem comprova resolução de mídia; o método foi observado ao vivo e está registrado em `docs/provider-investigation.md` e no `design.md` da change.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T06:35:37.878Z** · ID `2026-11-14T06-35-21-811Z-amyflix-e6dfd50f-9392` · **Instável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `e6dfd50fe2d346d5380fe5fb62cb9086` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `293660` · Deadpool (2016) · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `movie` `437109` · A Vilã (2017) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `1184918` · Robô Selvagem (2024) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `122` · O Senhor dos Anéis: O Retorno do Rei (2003) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `734519` · The Fable: The Killer Who Doesn't Kill (2021) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `456` · Os Simpsons (1989) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   7. `tv` `87108` · Chernobyl (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   8. `tv` `117376` · Vincenzo (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `94997` · House of the Dragon (2022) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   10. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+<!-- online-verification:end -->
+
+## SeuDorama
+
+**Status: 🟢 Estável.**
+
+Provedor de séries asiáticas em MP4 do SeuDorama, consultado pelo ID do TMDB e com a mídia publicada na página Blogger do Google Video. O idioma fica `Idioma Desconhecido` enquanto a fonte não declarar áudio ou legenda, e a URL de mídia é resolvida a cada pedido, sem cache ou sonda.
+
+A rodada de 2026-11-14 resolveu 4/5 séries; Vincenzo devolveu `videoUrl` fora do host blogger.com e foi recusado como erro de estrutura, sem tentar player desconhecido.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T06:46:19.103Z** · ID `2026-11-14T06-46-12-672Z-seudorama-3c812de8-07c9` · **Estável** · pacote 1.0.0 · perfil `dorama` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `3c812de88595c88dd0d64c714c4b26dd` · algoritmo `sha256-fisher-yates-v1`
+   1. `tv` `117376` · Vincenzo (2021) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [SeuDorama] Falha em tv 117376 S1E1: API: "videoUrl" fora do host blogger.com: "<url>"
+   2. `tv` `96162` · Itaewon Class (2020) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   3. `tv` `136283` · The Glory (2022) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   4. `tv` `93405` · Round 6 (2021) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   5. `tv` `94796` · Pousando no Amor (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+<!-- online-verification:end -->
+
+
+## NoveFlix
+
+**Status: 🔴 Instável.**
+
+Novelas brasileiras e internacionais do NoveFlix em MP4, com confirmação por título e ano e travessia do gate novefx até o capítulo.
+
+Limitação da rodada: o perfil generalista não contém novelas; os cinco casos terminaram em ausência reconhecida, sem falha. A rodada não mede o acervo de novelas, e o status é do recorte generalista, não uma falha da fonte. A cadeia foi observada ao vivo em `Avenida Brasil` (179 capítulos) e está registrada em `docs/provider-investigation.md` e no `design.md` da change.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T06:50:45.227Z** · ID `2026-11-14T06-50-33-395Z-noveflix-473d56a1-f5b5` · **Instável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `473d56a1cf33bb21624d360e180dae92` · algoritmo `sha256-fisher-yates-v1`
+   1. `tv` `60735` · The Flash (2014) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `tv` `71912` · The Witcher (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `tv` `136283` · The Glory (2022) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `tv` `2316` · The Office (2005) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `tv` `60059` · Better Call Saul (2015) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
 <!-- online-verification:end -->
 

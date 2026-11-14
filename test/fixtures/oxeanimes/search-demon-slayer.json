@@ -1,0 +1,16 @@
+{
+  "items": [
+    {
+      "kind": "Anime",
+      "title": "Demon Slayer - Kimetsu no Yaiba Castelo Infinito",
+      "cover": "https://images.example.test/oxeanimes/demon-slayer-kimetsu-no-yaiba-castelo-infinito.jpg",
+      "href": "/anime/demon-slayer-kimetsu-no-yaiba-castelo-infinito"
+    },
+    {
+      "kind": "Anime",
+      "title": "Demon Slayer - Kimetsu no Yaiba Castelo Infinito (Dublado)",
+      "cover": "https://images.example.test/oxeanimes/demon-slayer-kimetsu-no-yaiba-castelo-infinito-dublado.jpg",
+      "href": "/anime/demon-slayer-kimetsu-no-yaiba-castelo-infinito-dublado"
+    }
+  ]
+}

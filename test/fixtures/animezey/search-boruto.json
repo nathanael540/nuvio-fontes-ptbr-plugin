@@ -1,0 +1,15 @@
+{
+  "nextPageToken": null,
+  "curPageIndex": 0,
+  "data": {
+    "files": [
+      {
+        "mimeType": "video/x-matroska",
+        "size": "800000000",
+        "name": "[Anitsu] Boruto - Naruto Next Generations - S01E01 [BD 1080p].mkv",
+        "id": "file-boruto-s01e01",
+        "link": "/download.aspx?file=fictional-boruto&expiry=999&mac=fictional"
+      }
+    ]
+  }
+}

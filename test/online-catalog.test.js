@@ -65,8 +65,18 @@ test('catálogos reais são válidos, não truncam e mantêm pelo menos 20 títu
   assert.deepEqual(profiles.providers, {
     animefire: { exclusiveTag: 'anime' },
     doramogo: { exclusiveTag: 'dorama' },
+    doramasonline: { exclusiveTag: 'dorama' },
+    seudorama: { exclusiveTag: 'dorama' },
     dattebayo: { exclusiveTag: 'anime' },
     anitube: { exclusiveTag: 'anime' },
+    oxeanimes: { exclusiveTag: 'anime' },
+    animy: { exclusiveTag: 'anime' },
+    anibunker: { exclusiveTag: 'anime' },
+    animezey: { exclusiveTag: 'anime' },
+    animesdigital: { exclusiveTag: 'anime' },
+    animesfhd: { exclusiveTag: 'anime' },
+    animesonlineblue: { exclusiveTag: 'anime' },
+    animeq: { exclusiveTag: 'anime' },
   });
   assert.ok(catalogs.movie.titles.filter((title) => title.tags.includes('dorama')).length >= 5);
   assert.ok(catalogs.tv.titles.filter((title) => title.tags.includes('dorama')).length >= 5);

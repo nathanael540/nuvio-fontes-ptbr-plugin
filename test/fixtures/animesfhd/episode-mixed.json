@@ -1,0 +1,7 @@
+{
+  "versions": [],
+  "sources": [
+    { "label": "Player inválido", "audio": "dublado", "url": "data:text/plain,nao-e-video" },
+    { "label": "Player 1", "audio": "dublado", "url": "/api/v/s6?source=fictional-good&playlist=.m3u8" }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "versions": [
+    { "series_id": 3176795044965301, "season": 1, "audio": "dublado", "episode_count": 26, "first_episode_id": 1938250517685094 },
+    { "series_id": 3701093336042303, "season": 1, "audio": "legendado", "episode_count": 26, "first_episode_id": 4922 },
+    { "series_id": 226614734288731, "season": 2, "audio": "dublado", "episode_count": 18, "first_episode_id": 2482437480321890 },
+    { "series_id": 1833424083742565, "season": 2, "audio": "legendado", "episode_count": 18, "first_episode_id": 4974 },
+    { "series_id": 3654769772226015, "season": 3, "audio": "dublado", "episode_count": 11, "first_episode_id": 1787540424362237 },
+    { "series_id": 3021571239141223, "season": 3, "audio": "legendado", "episode_count": 11, "first_episode_id": 5010 }
+  ],
+  "sources": []
+}

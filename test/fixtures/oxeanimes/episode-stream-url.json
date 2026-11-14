@@ -1,0 +1,20 @@
+{
+  "title": "Kimetsu no Yaiba – Episódio 01 online",
+  "streamUrl": "/api/stream?url=https%3A%2F%2Fcdn.example.test%2Foxeanimes%2Fkimetsu-no-yaiba%2F01.mp4%2Findex.m3u8",
+  "isEmbed": false,
+  "sources": [
+    {
+      "id": 53787,
+      "label": "OxeAnimes - FHD",
+      "type": "hls",
+      "url": "/api/stream?url=https%3A%2F%2Fcdn.example.test%2Foxeanimes%2Fkimetsu-no-yaiba%2F01.mp4%2Findex.m3u8"
+    },
+    {
+      "id": 45810,
+      "label": "OxeAnimes - Player 1",
+      "type": "embed",
+      "url": "https://embed.example.test/video"
+    }
+  ],
+  "animeTitle": "Kimetsu no Yaiba"
+}

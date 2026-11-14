@@ -1,0 +1,25 @@
+{
+  "results": [
+    {
+      "slug": "kimetsu-no-yaiba-movie-1-mugenjou-hen-akaza-sairai",
+      "title": "Kimetsu no Yaiba Movie 1: Mugenjou-hen – Akaza Sairai",
+      "tipo": "Legendado",
+      "audios": [
+        "dub",
+        "leg"
+      ],
+      "year": "2025",
+      "episodeCount": 7
+    },
+    {
+      "slug": "berserk-2016",
+      "title": "Berserk 2016",
+      "tipo": "Legendado",
+      "audios": [
+        "leg"
+      ],
+      "year": "2016",
+      "episodeCount": 25
+    }
+  ]
+}

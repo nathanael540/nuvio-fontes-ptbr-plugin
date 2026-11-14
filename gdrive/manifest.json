@@ -407,7 +407,7 @@
       "id": "embedmovies",
       "name": "EmbedMovies",
       "description": "Filmes e séries em HLS pelo catálogo EmbedMovies, com áudio e legendas conforme as opções do player público da fonte.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "author": "nathanael540",
       "supportedTypes": [
         "movie",
@@ -544,6 +544,247 @@
         "pt"
       ],
       "logo": "https://www.google.com/s2/favicons?domain=www.anitube.zip&sz=128"
+    },
+    {
+      "id": "oxeanimes",
+      "name": "OxeAnimes",
+      "description": "Filmes e séries de anime em HLS do catálogo OxeAnimes, com páginas separadas para dublado e legendado e reprodução pelo proxy da fonte.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/oxeanimes.js",
+      "enabled": true,
+      "formats": [
+        "m3u8"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=oxeanimes.com.br&sz=128"
+    },
+    {
+      "id": "animy",
+      "name": "Animy",
+      "description": "Filmes e séries de anime em MP4 do catálogo Animy, com variantes de áudio dubladas e legendadas publicadas pela fonte.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/animy.js",
+      "enabled": true,
+      "formats": [
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=animy.net&sz=128"
+    },
+    {
+      "id": "anibunker",
+      "name": "AniBunker",
+      "description": "Animes dublados e legendados em MP4 e HLS pelo catálogo AniBunker, com busca textual, confirmação de temporada e players públicos.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/anibunker.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=anibunker.com&sz=128"
+    },
+    {
+      "id": "animezey",
+      "name": "AnimeZeY",
+      "description": "Filmes e séries de anime em MKV e MP4 pelo índice público AnimeZeY, com busca nos workers e download pelo host dedicado.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/animezey.js",
+      "enabled": true,
+      "formats": [
+        "mkv",
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://1.animezey23112022.workers.dev/favicon.ico"
+    },
+    {
+      "id": "animesdigital",
+      "name": "AnimesDigital",
+      "description": "Filmes e séries de anime em HLS pelo player Anivideo, dublados ou legendados quando a página declara o áudio.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/animesdigital.js",
+      "enabled": true,
+      "formats": [
+        "m3u8"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=animesdigital.org&sz=128"
+    },
+    {
+      "id": "animesfhd",
+      "name": "AnimesFHD",
+      "description": "Séries de anime em HLS pelo catálogo AnimesFHD, com temporadas dubladas e legendadas e episódio mapeado pelas versões sazonais da fonte.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "tv"
+      ],
+      "filename": "providers/animesfhd.js",
+      "enabled": true,
+      "formats": [
+        "m3u8"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=animesfhd.net&sz=128"
+    },
+    {
+      "id": "animesonlineblue",
+      "name": "Animes Online Blue",
+      "description": "Séries de anime em MP4 do Animes Online Blue, com busca por título PT-BR e romaji, grade de temporadas por RSC e áudios dublado e legendado conforme o episódio publica.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "tv"
+      ],
+      "filename": "providers/animesonlineblue.js",
+      "enabled": true,
+      "formats": [
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=animesonline.blue&sz=128"
+    },
+    {
+      "id": "animeq",
+      "name": "AnimeQ",
+      "description": "Filmes e séries de anime em HLS e MP4 pelo catálogo AnimeQ, com player próprio, opções DooPlay e Blogger.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/animeq.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=animeq.cloud&sz=128"
+    },
+    {
+      "id": "doramasonline",
+      "name": "Doramas Online",
+      "description": "Filmes e séries asiáticos do Doramas Online em HLS e MP4, com opções DooPlay dubladas ou legendadas e legendas publicadas pelo player.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/doramasonline.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=doramasonline.net&sz=128"
+    },
+    {
+      "id": "amyflix",
+      "name": "AmyFlix",
+      "description": "Filmes e séries GL do AmyFlix em HLS e MP4, com busca por título, opções DooPlay e players jwplayer e Rumble.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/amyflix.js",
+      "enabled": true,
+      "formats": [
+        "m3u8",
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=amyflix.net&sz=128"
+    },
+    {
+      "id": "seudorama",
+      "name": "SeuDorama",
+      "description": "Séries asiáticas em MP4 do SeuDorama por ID do TMDB, com a mídia publicada na página Blogger; o idioma fica desconhecido enquanto a fonte não o declarar.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "tv"
+      ],
+      "filename": "providers/seudorama.js",
+      "enabled": true,
+      "formats": [
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=meusdoramas.club&sz=128"
+    },
+    {
+      "id": "noveflix",
+      "name": "NoveFlix",
+      "description": "Novelas brasileiras e internacionais do NoveFlix em MP4, com confirmação por título e ano e travessia do gate novefx até o capítulo.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "tv"
+      ],
+      "filename": "providers/noveflix.js",
+      "enabled": true,
+      "formats": [
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=noveflix.lol&sz=128"
     }
   ]
 }

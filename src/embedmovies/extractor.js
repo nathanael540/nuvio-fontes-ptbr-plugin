@@ -38,6 +38,7 @@ export async function extractStreams(request, providerName) {
     request,
     identity: { tmdbId: String(request.tmdbId).trim(), imdbId: imdbIdOf(item) },
     providerName,
+    resolveWatchplay: true,
   });
   if (!streams.length && failures.length) {
     throw new Error(`Nenhuma opção entregou streams: ${failures.join('; ')}`);

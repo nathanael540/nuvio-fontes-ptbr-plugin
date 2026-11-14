@@ -1213,7 +1213,9 @@ function resolveUrl(entry, context, visited) {
     const nextVisited = new Set(visited);
     nextVisited.add(entry.url);
     const host = new URL(entry.url).hostname;
-    if (isHost(host, "watchplay.shop")) return { triage: "playlist sem RESOLUTION" };
+    if (isHost(host, "watchplay.shop")) {
+      return context.resolveWatchplay === true ? resolveWatchplay(entry, context) : { triage: "playlist sem RESOLUTION" };
+    }
     if (isHost(host, "youtube.com") || host === "youtu.be") return { triage: "trailer" };
     if (isHost(host, "myembed.biz")) return followMyembed(entry, context, nextVisited);
     if (isHost(host, "playerflix.ink")) return expandPlayerflix(entry, context, nextVisited);
@@ -1513,6 +1515,44 @@ function resolveFire(entry, context) {
       }]
     };
   });
+}
+function resolveWatchplay(entry, context) {
+  return __async(this, null, function* () {
+    const read = yield readHtml(entry.url, { headers: { Referer: originReferer(entry.referer) } });
+    if (read.triage) return read;
+    const href = watchplayPlaylist(read.page.text);
+    if (!href) throw new Error("playlist do WatchPlay ausente");
+    const playlistUrl = httpUrl(href, read.page.url);
+    const playlist = yield readHtml(playlistUrl, { profile: "player", headers: { Referer: read.page.url } });
+    if (playlist.triage) return playlist;
+    if (!playlist.page.text.replace(/^\uFEFF/, "").trim().startsWith("#EXTM3U")) {
+      throw new Error("Resposta do WatchPlay n\xE3o \xE9 playlist HLS");
+    }
+    const interpreted = interpretPlaylist(playlist.page.text, playlist.page.url);
+    const subtitles = yield loadSubtitles(interpreted.subtitles, read.page.url, entry, context);
+    const choice = chooseLanguage(interpreted, entry.languageHint, subtitles);
+    if (choice.discard) return { triage: "lang n\xE3o PT-BR sem legenda PT" };
+    return {
+      resolved: [{
+        label: entry.label || entry.domain || context.domain,
+        domain: entry.domain || context.domain,
+        playerPage: read.page.url,
+        playlistUrl: interpreted.url,
+        adaptive: interpreted.adaptive,
+        quality: interpreted.quality,
+        variants: interpreted.variants,
+        language: choice.language,
+        foreignOnly: interpreted.foreignOnly,
+        subtitles,
+        headers: playbackHeaders(read.page.url),
+        meta: entry.meta || null
+      }]
+    };
+  });
+}
+function watchplayPlaylist(html) {
+  const match = /["']([^"']*playlist\.m3u8[^"']*)["']/i.exec(html);
+  return match ? match[1].replace(/\\\//g, "/") : null;
 }
 function loadSubtitles(tracks, playerPage, entry, context) {
   return __async(this, null, function* () {

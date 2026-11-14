@@ -1,0 +1,20 @@
+{
+  "status": "success",
+  "titulo": "2WVa05XALkNu6KiEBJ4QV-Crash-Landing-on-You",
+  "capa": "https://image.tmdb.org/t/p/original/AcBp0G11IXllL4VbKJvIp0ViD3r.jpg",
+  "midias": [
+    {
+      "qualidade": "SD",
+      "url": "https://data-limit-c.solo-latino.com/30a45c99a31971efbfe287c6371c0102/4484e051574d4cbb8d24c641f52ce8b6-3ff9a54a87174ad1871b26c46ad8a9ec-sd.m3u8"
+    },
+    {
+      "qualidade": "LD",
+      "url": "https://data-limit-c.solo-latino.com/30a45c99a31971efbfe287c6371c0102/4484e051574d4cbb8d24c641f52ce8b6-7175b3668d8ee4f9cde895808145d8ab-ld.m3u8"
+    },
+    {
+      "qualidade": "FD",
+      "url": "https://data-limit-c.solo-latino.com/30a45c99a31971efbfe287c6371c0102/4484e051574d4cbb8d24c641f52ce8b6-524f5e363b3a2c053e6bd536134bff66-fd.m3u8"
+    }
+  ],
+  "legendas": []
+}

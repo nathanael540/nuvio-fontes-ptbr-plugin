@@ -1353,12 +1353,97 @@ function readAudio2(value) {
   return null;
 }
 
+// src/_blocks/blogger-video/index.mjs
+var HTTP_PROTOCOLS2 = ["http:", "https:"];
+function extractBloggerFormats(html) {
+  const data = readStreamingData(decodeHtmlEntities(html));
+  if (!data || !Array.isArray(data.formats)) throw new Error("Player do Blogger sem streamingData.formats");
+  const formats = [];
+  for (const item of data.formats) {
+    if (!item || typeof item !== "object") continue;
+    const url = typeof item.url === "string" ? item.url.trim() : "";
+    if (!isHttpUrl(url)) continue;
+    const qualityLabel = typeof item.qualityLabel === "string" ? item.qualityLabel.trim() : "";
+    formats.push({ url, qualityLabel: qualityLabel === "" ? null : qualityLabel });
+  }
+  if (formats.length === 0) throw new Error("Player do Blogger sem MP4 progressivo");
+  return formats;
+}
+function readStreamingData(text) {
+  const marker = '"{\\"streamingData\\"';
+  const start = text.indexOf(marker);
+  if (start !== -1) {
+    const end2 = findStringEnd(text, start);
+    try {
+      const parsed = JSON.parse(JSON.parse(text.slice(start, end2 + 1)));
+      return parsed.streamingData;
+    } catch (error) {
+      throw new Error(`Player do Blogger com streamingData inv\xE1lido: ${error.message}`, { cause: error });
+    }
+  }
+  const index = text.indexOf('"streamingData"');
+  if (index === -1) throw new Error("Player do Blogger sem streamingData");
+  const open = text.lastIndexOf("{", index);
+  const end = findObjectEnd(text, open);
+  try {
+    const parsed = JSON.parse(text.slice(open, end + 1));
+    return parsed.streamingData;
+  } catch (error) {
+    throw new Error(`Player do Blogger com streamingData inv\xE1lido: ${error.message}`, { cause: error });
+  }
+}
+function findStringEnd(text, start) {
+  for (let index = start + 1; index < text.length; index += 1) {
+    if (text[index] === "\\") {
+      index += 1;
+      continue;
+    }
+    if (text[index] === '"') return index;
+  }
+  throw new Error("String de streamingData sem fechamento");
+}
+function findObjectEnd(text, start) {
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  for (let index = start; index < text.length; index += 1) {
+    const char = text[index];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (char === "\\") escaped = true;
+      else if (char === '"') inString = false;
+      continue;
+    }
+    if (char === '"') {
+      inString = true;
+      continue;
+    }
+    if (char === "{") depth += 1;
+    if (char === "}") {
+      depth -= 1;
+      if (depth === 0) return index;
+    }
+  }
+  throw new Error("Objeto de streamingData sem fechamento");
+}
+function decodeHtmlEntities(text) {
+  return text.replace(/&quot;/g, '"').replace(/&#0*39;/g, "'").replace(/&#x0*27;/gi, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+}
+function isHttpUrl(value) {
+  if (typeof value !== "string" || value.trim() === "") return false;
+  try {
+    return HTTP_PROTOCOLS2.includes(new URL(value.trim()).protocol);
+  } catch (e) {
+    return false;
+  }
+}
+
 // src/anitube/players.js
 var FHD_HOST = "api.anivideo.net";
 var FHD_PATH = "videohls.php";
 var ANITUBE_HOSTS = /* @__PURE__ */ new Set(["anitube.zip", "www.anitube.zip"]);
 var BLOGGER_HOSTS = /* @__PURE__ */ new Set(["blogger.com", "www.blogger.com"]);
-var HTTP_PROTOCOLS2 = ["http:", "https:"];
+var HTTP_PROTOCOLS3 = ["http:", "https:"];
 function collectPlayers(html, pageUrl) {
   const $ = loadHtml(html);
   const iframes = $("iframe");
@@ -1441,7 +1526,7 @@ function readFhdUrl(url) {
   if (typeof mediaUrl !== "string" || mediaUrl.trim() === "") {
     throw new Error("Player FHD sem par\xE2metro d");
   }
-  if (!isHttpUrl(mediaUrl)) throw new Error("Player FHD com par\xE2metro d fora de http(s)");
+  if (!isHttpUrl2(mediaUrl)) throw new Error("Player FHD com par\xE2metro d fora de http(s)");
   return mediaUrl;
 }
 function readFhdSource(html) {
@@ -1463,87 +1548,13 @@ function readBloggerIframe(html, pageUrl) {
   }
   throw new Error("P\xE1gina do Player 1 sem iframe do Blogger");
 }
-function extractBloggerFormats(html) {
-  const data = readStreamingData(decodeHtmlEntities(html));
-  if (!data || !Array.isArray(data.formats)) throw new Error("Player do Blogger sem streamingData.formats");
-  const formats = [];
-  for (const item of data.formats) {
-    if (!item || typeof item !== "object") continue;
-    const url = typeof item.url === "string" ? item.url.trim() : "";
-    if (!isHttpUrl(url)) continue;
-    const qualityLabel = typeof item.qualityLabel === "string" ? item.qualityLabel.trim() : "";
-    formats.push({ url, qualityLabel: qualityLabel === "" ? null : qualityLabel });
-  }
-  if (formats.length === 0) throw new Error("Player do Blogger sem MP4 progressivo");
-  return formats;
-}
-function readStreamingData(text) {
-  const marker = '"{\\"streamingData\\"';
-  const start = text.indexOf(marker);
-  if (start !== -1) {
-    const end2 = findStringEnd(text, start);
-    try {
-      const parsed = JSON.parse(JSON.parse(text.slice(start, end2 + 1)));
-      return parsed.streamingData;
-    } catch (error) {
-      throw new Error(`Player do Blogger com streamingData inv\xE1lido: ${error.message}`, { cause: error });
-    }
-  }
-  const index = text.indexOf('"streamingData"');
-  if (index === -1) throw new Error("Player do Blogger sem streamingData");
-  const open = text.lastIndexOf("{", index);
-  const end = findObjectEnd(text, open);
-  try {
-    const parsed = JSON.parse(text.slice(open, end + 1));
-    return parsed.streamingData;
-  } catch (error) {
-    throw new Error(`Player do Blogger com streamingData inv\xE1lido: ${error.message}`, { cause: error });
-  }
-}
-function findStringEnd(text, start) {
-  for (let index = start + 1; index < text.length; index += 1) {
-    if (text[index] === "\\") {
-      index += 1;
-      continue;
-    }
-    if (text[index] === '"') return index;
-  }
-  throw new Error("String de streamingData sem fechamento");
-}
-function findObjectEnd(text, start) {
-  let depth = 0;
-  let inString = false;
-  let escaped = false;
-  for (let index = start; index < text.length; index += 1) {
-    const char = text[index];
-    if (inString) {
-      if (escaped) escaped = false;
-      else if (char === "\\") escaped = true;
-      else if (char === '"') inString = false;
-      continue;
-    }
-    if (char === '"') {
-      inString = true;
-      continue;
-    }
-    if (char === "{") depth += 1;
-    if (char === "}") {
-      depth -= 1;
-      if (depth === 0) return index;
-    }
-  }
-  throw new Error("Objeto de streamingData sem fechamento");
-}
-function decodeHtmlEntities(text) {
-  return text.replace(/&quot;/g, '"').replace(/&#0*39;/g, "'").replace(/&#x0*27;/gi, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
-}
 function sanitizeMessage(message) {
   return String(message).replace(/https?:\/\/\S+/gi, "[url]").replace(/\b[a-f0-9]{32,}\b/gi, "[hash]");
 }
-function isHttpUrl(value) {
+function isHttpUrl2(value) {
   if (typeof value !== "string" || value.trim() === "") return false;
   try {
-    return HTTP_PROTOCOLS2.includes(new URL(value.trim()).protocol);
+    return HTTP_PROTOCOLS3.includes(new URL(value.trim()).protocol);
   } catch (e) {
     return false;
   }

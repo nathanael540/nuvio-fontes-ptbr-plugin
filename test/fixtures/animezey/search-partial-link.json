@@ -1,0 +1,22 @@
+{
+  "nextPageToken": null,
+  "curPageIndex": 0,
+  "data": {
+    "files": [
+      {
+        "mimeType": "video/x-matroska",
+        "size": "1200000000",
+        "name": "[Anitsu] Jujutsu Kaisen - S02E01 [BD 1080p x265 FLAC] [DUAL][7AC0D93D].mkv",
+        "id": "file-jjk-without-link",
+        "link": null
+      },
+      {
+        "mimeType": "video/x-matroska",
+        "size": "1100000000",
+        "name": "[Anitsu] Jujutsu Kaisen - S02E01 [BD 1080p x265 FLAC] [DUAL][ALT].mkv",
+        "id": "file-jjk-with-link",
+        "link": "/download.aspx?file=fictional-jjk-alt&expiry=999&mac=fictional"
+      }
+    ]
+  }
+}

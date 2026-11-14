@@ -1,0 +1,17 @@
+<html><body><script>
+    function encodeBase64(text) {
+        return btoa(unescape(encodeURIComponent(text)));
+    }
+
+    function loadChapters() {
+        let totalChapters = 179;
+        let legendados = [];
+
+        for (let i = 1; i <= totalChapters; i++) {
+            let chapterStr = ("00" + i).slice(-3);
+            let originalUrl = `https://nflixpainel.cc/video/AVBR-${chapterStr}`;
+            let encodedUrl = encodeBase64(originalUrl);
+            let finalUrl = `https://redirectnflix.com/?${encodedUrl}`;
+        }
+    }
+</script></body></html>

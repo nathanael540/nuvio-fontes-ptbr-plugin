@@ -1,0 +1,25 @@
+{
+  "items": [
+    {
+      "id": 84,
+      "t": "Demon Slayer: Kimetsu no Yaiba (Dublado)",
+      "nativeTitle": "Kimetsu no Yaiba (Dublado)",
+      "y": 2024,
+      "kind": "tv",
+      "audio": "dublado",
+      "audios": ["dublado"],
+      "altTitles": [{ "title": "Kimetsu no Yaiba" }, { "title": "Demon Slayer" }]
+    },
+    {
+      "id": 12,
+      "t": "Demon Slayer: Kimetsu no Yaiba",
+      "nativeTitle": "Kimetsu no Yaiba",
+      "y": 2019,
+      "kind": "tv",
+      "audio": "legendado",
+      "audios": ["legendado"],
+      "altTitles": [{ "title": "Kimetsu no Yaiba" }, { "title": "Demon Slayer" }]
+    }
+  ],
+  "total": 2
+}

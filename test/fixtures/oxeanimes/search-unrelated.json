@@ -1,0 +1,10 @@
+{
+  "items": [
+    {
+      "kind": "Anime",
+      "title": "Boruto: Naruto Next Generations",
+      "cover": "https://images.example.test/oxeanimes/boruto-naruto-next-generations.jpg",
+      "href": "/anime/boruto-naruto-next-generations"
+    }
+  ]
+}

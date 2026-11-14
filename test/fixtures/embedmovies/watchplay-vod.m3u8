@@ -1,0 +1,9 @@
+#EXTM3U
+#EXT-X-VERSION:3
+#EXT-X-TARGETDURATION:5
+#EXT-X-PLAYLIST-TYPE:VOD
+#EXTINF:5.000,
+https://cdn.example/watchplay/segments/0001.js
+#EXTINF:5.000,
+https://cdn.example/watchplay/segments/0002.js
+#EXT-X-ENDLIST

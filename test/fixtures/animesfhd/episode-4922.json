@@ -1,0 +1,6 @@
+{
+  "versions": [],
+  "sources": [
+    { "label": "Player 1", "audio": "legendado", "url": "/api/v/s6?source=fictional-leg&playlist=.m3u8" }
+  ]
+}

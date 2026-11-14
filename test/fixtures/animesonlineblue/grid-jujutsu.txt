@@ -1,0 +1,1 @@
+0:{"temporadas":[{"numero":1,"nome":"Jujutsu Kaisen","eps":[{"num":1,"leg":{"id":156586},"dub":{"id":158759}},{"num":2,"leg":{"id":156580},"dub":{"id":158753}}]},{"numero":2,"nome":"Jujutsu Kaisen 2","eps":[{"num":1,"leg":{"id":158828},"dub":{"id":158900}},{"num":2,"leg":{"id":158834},"dub":{"id":158906}}]}]}
