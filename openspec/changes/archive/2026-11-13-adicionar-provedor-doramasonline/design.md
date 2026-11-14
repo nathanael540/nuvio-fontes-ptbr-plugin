@@ -143,7 +143,7 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 20
 1. Confirmado online: home 200, busca de série 200 com ano, ficha de 16 episódios, episódio com duas opções, JSON Booonceivu 200 com três HLS e legendas PT, playlist `#EXTM3U` e legenda `WEBVTT`, filme `Parasita` com IncVideo 302 → MP4 206 `video/mp4` e `ftyp`, busca vazia e ficha de `The Glory` divergente por ano.
 2. Confirmado que o MP4 do IncVideo responde 206 sem `Referer`/cookie de reprodução e que a playlist Booonceivu responde 200 sem cabeçalhos.
 3. Não confirmado: reprodução no aparelho, todos os episódios do acervo, o player `png.strp2p.com` (404 na amostra) e a resolução real por trás dos rótulos SD/LD/FD.
-4. A rodada online e o teste no aparelho são as evidências que faltam; nenhuma delas altera o contrato descrito aqui.
+4. A rodada online de 2026-11-14 (pacote 1.0.0, perfil `dorama`) resolveu 3/5 séries e 0/5 filmes; os cinco filmes sorteados ficaram sem resultado no acervo. O player `/do/v4/` persistiu respondendo HTML com avisos PHP no S01E01 de Itaewon Class, então a opção foi descartada e o caso saiu como falha. O teste no aparelho continua pendente.
 
 ## Open Questions
 

@@ -464,6 +464,32 @@
       "formats": ["m3u8", "mp4"],
       "contentLanguage": ["pt"],
       "logo": "https://www.google.com/s2/favicons?domain=animeq.cloud&sz=128"
+    },
+    {
+      "id": "doramasonline",
+      "name": "Doramas Online",
+      "description": "Filmes e séries asiáticos do Doramas Online em HLS e MP4, com opções DooPlay dubladas ou legendadas e legendas publicadas pelo player.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": ["movie", "tv"],
+      "filename": "providers/doramasonline.js",
+      "enabled": true,
+      "formats": ["m3u8", "mp4"],
+      "contentLanguage": ["pt"],
+      "logo": "https://www.google.com/s2/favicons?domain=doramasonline.net&sz=128"
+    },
+    {
+      "id": "amyflix",
+      "name": "AmyFlix",
+      "description": "Filmes e séries GL do AmyFlix em HLS e MP4, com busca por título, opções DooPlay e players jwplayer e Rumble.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": ["movie", "tv"],
+      "filename": "providers/amyflix.js",
+      "enabled": true,
+      "formats": ["m3u8", "mp4"],
+      "contentLanguage": ["pt"],
+      "logo": "https://www.google.com/s2/favicons?domain=amyflix.net&sz=128"
     }
   ]
 }

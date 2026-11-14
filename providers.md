@@ -37,6 +37,8 @@
 | [AnimesFHD](#animesfhd) | `animesfhd` | série | HLS | 🟢 Estável | 2026-11-14 |
 | [Animes Online Blue](#animes-online-blue) | `animesonlineblue` | série | MP4 | 🟢 Estável | 2026-11-14 |
 | [AnimeQ](#animeq) | `animeq` | filme, série | HLS, MP4 | 🔵 Parcial | 2026-11-14 |
+| [Doramas Online](#doramas-online) | `doramasonline` | filme, série | HLS, MP4 | 🔵 Parcial | 2026-11-14 |
+| [AmyFlix](#amyflix) | `amyflix` | filme, série | HLS, MP4 | 🔴 Instável | 2026-11-14 |
 
 ## MegaEmbed
 
@@ -754,5 +756,52 @@ Provedor de filmes e séries de anime em HLS e MP4 pelo catálogo AnimeQ, com pl
    8. `tv` `37854` · One Piece (1999) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
    9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
    10. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+<!-- online-verification:end -->
+
+## Doramas Online
+
+**Status: 🔵 Parcial.**
+
+Provedor de filmes e séries asiáticos do Doramas Online em HLS e MP4, com busca textual confirmada por título e ano e opções DooPlay resolvidas em isolamento nos players Booonceivu e IncVideo.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T06:31:51.671Z** · ID `2026-11-14T06-31-25-271Z-doramasonline-5d2068b0-dc68` · **Parcial** · pacote 1.0.0 · perfil `dorama` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `5d2068b0c0f81b4767372a9764b62f19` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `1419027` · Ataque 13 (2025) · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `movie` `962489` · Ditto: Conexões do Amor (2022) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `734519` · The Fable: The Killer Who Doesn't Kill (2021) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `1466115` · Se Esse Amor Desaparecesse Hoje (2025) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `1127546` · Pesadelo na Montanha (2023) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `136283` · The Glory (2022) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+   7. `tv` `96162` · Itaewon Class (2020) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Doramas Online] Falha em tv 96162: Nenhuma opção de player produziu stream: LEGENDADO=Player Doramas Online respondeu text/html; charset=UTF-8 em vez de JSON
+   8. `tv` `90447` · Hotel del Luna (2019) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+   9. `tv` `94796` · Pousando no Amor (2019) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+   10. `tv` `93405` · Round 6 (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+<!-- online-verification:end -->
+
+
+## AmyFlix
+
+**Status: 🔴 Instável.**
+
+Filmes e séries GL do AmyFlix em HLS e MP4, com busca por título, opções DooPlay e players jwplayer e Rumble.
+
+Limitação da rodada: o perfil generalista usa títulos que não pertencem ao acervo GL da fonte; os dez casos terminaram em ausência reconhecida, sem falha. A rodada não mede o nicho GL nem comprova resolução de mídia; o método foi observado ao vivo e está registrado em `docs/provider-investigation.md` e no `design.md` da change.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T06:35:37.878Z** · ID `2026-11-14T06-35-21-811Z-amyflix-e6dfd50f-9392` · **Instável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `e6dfd50fe2d346d5380fe5fb62cb9086` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `293660` · Deadpool (2016) · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `movie` `437109` · A Vilã (2017) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `1184918` · Robô Selvagem (2024) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `122` · O Senhor dos Anéis: O Retorno do Rei (2003) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `734519` · The Fable: The Killer Who Doesn't Kill (2021) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `456` · Os Simpsons (1989) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   7. `tv` `87108` · Chernobyl (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   8. `tv` `117376` · Vincenzo (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `94997` · House of the Dragon (2022) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   10. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
 <!-- online-verification:end -->
 

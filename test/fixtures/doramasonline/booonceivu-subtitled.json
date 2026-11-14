@@ -1,0 +1,81 @@
+{
+  "status": "success",
+  "titulo": "rJgMT4NH6WkNT8qqcISvs-Crash-Landing-on-You",
+  "capa": "https://image.tmdb.org/t/p/original/AcBp0G11IXllL4VbKJvIp0ViD3r.jpg",
+  "midias": [
+    {
+      "qualidade": "SD",
+      "url": "https://akm-cdn-play-web.onfilom.com/f76d6bded75a4cc69a8d6e43338f556c/be0b128df6489fb1e56fa4571450852a-sd.mp4.m3u8"
+    },
+    {
+      "qualidade": "LD",
+      "url": "https://akm-cdn-play-web.onfilom.com/f76d6bded75a4cc69a8d6e43338f556c/1fec27e0dda2dcb2254fd75d353fef2b-ld.mp4.m3u8"
+    },
+    {
+      "qualidade": "FD",
+      "url": "https://akm-cdn-play-web.onfilom.com/f76d6bded75a4cc69a8d6e43338f556c/7b75c81760b8d67face25e19e0f2a39f-fd.mp4.m3u8"
+    }
+  ],
+  "legendas": [
+    {
+      "label": "عربي",
+      "url": "https://sk-boyceta.booonceivu.shop/legenda.vtt?url=fixture-1"
+    },
+    {
+      "label": "English",
+      "url": "https://sk-boyceta.booonceivu.shop/legenda.vtt?url=fixture-2"
+    },
+    {
+      "label": "Español",
+      "url": "https://sk-boyceta.booonceivu.shop/legenda.vtt?url=fixture-3"
+    },
+    {
+      "label": "فارسی",
+      "url": "https://sk-boyceta.booonceivu.shop/legenda.vtt?url=fixture-4"
+    },
+    {
+      "label": "Filipino",
+      "url": "https://sk-boyceta.booonceivu.shop/legenda.vtt?url=fixture-5"
+    },
+    {
+      "label": "Français",
+      "url": "https://sk-boyceta.booonceivu.shop/legenda.vtt?url=fixture-6"
+    },
+    {
+      "label": "Bahasa Indonesia",
+      "url": "https://sk-boyceta.booonceivu.shop/legenda.vtt?url=fixture-7"
+    },
+    {
+      "label": "Bahasa Melayu",
+      "url": "https://sk-boyceta.booonceivu.shop/legenda.vtt?url=fixture-8"
+    },
+    {
+      "label": "Português",
+      "url": "https://sk-boyceta.booonceivu.shop/legenda.vtt?url=fixture-9"
+    },
+    {
+      "label": "По-русски",
+      "url": "https://sk-boyceta.booonceivu.shop/legenda.vtt?url=fixture-10"
+    },
+    {
+      "label": "ภาษาไทย",
+      "url": "https://sk-boyceta.booonceivu.shop/legenda.vtt?url=fixture-11"
+    },
+    {
+      "label": "Türk",
+      "url": "https://sk-boyceta.booonceivu.shop/legenda.vtt?url=fixture-12"
+    },
+    {
+      "label": "Tiếng Việt",
+      "url": "https://sk-boyceta.booonceivu.shop/legenda.vtt?url=fixture-13"
+    },
+    {
+      "label": "简体中文",
+      "url": "https://sk-boyceta.booonceivu.shop/legenda.vtt?url=fixture-14"
+    },
+    {
+      "label": "繁体中文",
+      "url": "https://sk-boyceta.booonceivu.shop/legenda.vtt?url=fixture-15"
+    }
+  ]
+}

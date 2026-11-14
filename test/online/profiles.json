@@ -1,12 +1,13 @@
 {
   "schemaVersion": 1,
-  "revision": "2026-11-14.8",
+  "revision": "2026-11-14.9",
   "curatedAt": "2026-11-14",
   "providers": {
     "animefire": {
       "exclusiveTag": "anime"
     },
     "doramogo": { "exclusiveTag": "dorama" },
+    "doramasonline": { "exclusiveTag": "dorama" },
     "dattebayo": {
       "exclusiveTag": "anime"
     },
