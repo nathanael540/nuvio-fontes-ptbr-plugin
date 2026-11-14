@@ -490,6 +490,32 @@
       "formats": ["m3u8", "mp4"],
       "contentLanguage": ["pt"],
       "logo": "https://www.google.com/s2/favicons?domain=amyflix.net&sz=128"
+    },
+    {
+      "id": "seudorama",
+      "name": "SeuDorama",
+      "description": "Séries asiáticas em MP4 do SeuDorama por ID do TMDB, com a mídia publicada na página Blogger; o idioma fica desconhecido enquanto a fonte não o declarar.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": ["tv"],
+      "filename": "providers/seudorama.js",
+      "enabled": true,
+      "formats": ["mp4"],
+      "contentLanguage": ["pt"],
+      "logo": "https://www.google.com/s2/favicons?domain=meusdoramas.club&sz=128"
+    },
+    {
+      "id": "noveflix",
+      "name": "NoveFlix",
+      "description": "Novelas brasileiras e internacionais do NoveFlix em MP4, com confirmação por título e ano e travessia do gate novefx até o capítulo.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": ["tv"],
+      "filename": "providers/noveflix.js",
+      "enabled": true,
+      "formats": ["mp4"],
+      "contentLanguage": ["pt"],
+      "logo": "https://www.google.com/s2/favicons?domain=noveflix.lol&sz=128"
     }
   ]
 }

@@ -66,6 +66,7 @@ test('catálogos reais são válidos, não truncam e mantêm pelo menos 20 títu
     animefire: { exclusiveTag: 'anime' },
     doramogo: { exclusiveTag: 'dorama' },
     doramasonline: { exclusiveTag: 'dorama' },
+    seudorama: { exclusiveTag: 'dorama' },
     dattebayo: { exclusiveTag: 'anime' },
     anitube: { exclusiveTag: 'anime' },
     oxeanimes: { exclusiveTag: 'anime' },

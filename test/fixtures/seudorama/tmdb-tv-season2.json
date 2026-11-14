@@ -1,0 +1,26 @@
+{
+  "id": 110316,
+  "name": "Alice in Borderland",
+  "original_name": "今際の国のアリス",
+  "first_air_date": "2020-12-10",
+  "original_language": "ja",
+  "genres": [
+    {
+      "id": 18,
+      "name": "Drama"
+    },
+    {
+      "id": 10759,
+      "name": "Action & Adventure"
+    }
+  ],
+  "external_ids": {
+    "imdb_id": "tt10795658"
+  },
+  "alternative_titles": {
+    "results": []
+  },
+  "origin_country": [
+    "JP"
+  ]
+}

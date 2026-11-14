@@ -39,6 +39,8 @@
 | [AnimeQ](#animeq) | `animeq` | filme, série | HLS, MP4 | 🔵 Parcial | 2026-11-14 |
 | [Doramas Online](#doramas-online) | `doramasonline` | filme, série | HLS, MP4 | 🔵 Parcial | 2026-11-14 |
 | [AmyFlix](#amyflix) | `amyflix` | filme, série | HLS, MP4 | 🔴 Instável | 2026-11-14 |
+| [SeuDorama](#seudorama) | `seudorama` | série | MP4 | 🟢 Estável | 2026-11-14 |
+| [NoveFlix](#noveflix) | `noveflix` | série | MP4 | 🔴 Instável | 2026-11-14 |
 
 ## MegaEmbed
 
@@ -803,5 +805,44 @@ Limitação da rodada: o perfil generalista usa títulos que não pertencem ao a
    8. `tv` `117376` · Vincenzo (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    9. `tv` `94997` · House of the Dragon (2022) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    10. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+<!-- online-verification:end -->
+
+## SeuDorama
+
+**Status: 🟢 Estável.**
+
+Provedor de séries asiáticas em MP4 do SeuDorama, consultado pelo ID do TMDB e com a mídia publicada na página Blogger do Google Video. O idioma fica `Idioma Desconhecido` enquanto a fonte não declarar áudio ou legenda, e a URL de mídia é resolvida a cada pedido, sem cache ou sonda.
+
+A rodada de 2026-11-14 resolveu 4/5 séries; Vincenzo devolveu `videoUrl` fora do host blogger.com e foi recusado como erro de estrutura, sem tentar player desconhecido.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T06:46:19.103Z** · ID `2026-11-14T06-46-12-672Z-seudorama-3c812de8-07c9` · **Estável** · pacote 1.0.0 · perfil `dorama` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `3c812de88595c88dd0d64c714c4b26dd` · algoritmo `sha256-fisher-yates-v1`
+   1. `tv` `117376` · Vincenzo (2021) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [SeuDorama] Falha em tv 117376 S1E1: API: "videoUrl" fora do host blogger.com: "<url>"
+   2. `tv` `96162` · Itaewon Class (2020) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   3. `tv` `136283` · The Glory (2022) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   4. `tv` `93405` · Round 6 (2021) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   5. `tv` `94796` · Pousando no Amor (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+<!-- online-verification:end -->
+
+
+## NoveFlix
+
+**Status: 🔴 Instável.**
+
+Novelas brasileiras e internacionais do NoveFlix em MP4, com confirmação por título e ano e travessia do gate novefx até o capítulo.
+
+Limitação da rodada: o perfil generalista não contém novelas; os cinco casos terminaram em ausência reconhecida, sem falha. A rodada não mede o acervo de novelas, e o status é do recorte generalista, não uma falha da fonte. A cadeia foi observada ao vivo em `Avenida Brasil` (179 capítulos) e está registrada em `docs/provider-investigation.md` e no `design.md` da change.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T06:50:45.227Z** · ID `2026-11-14T06-50-33-395Z-noveflix-473d56a1-f5b5` · **Instável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `473d56a1cf33bb21624d360e180dae92` · algoritmo `sha256-fisher-yates-v1`
+   1. `tv` `60735` · The Flash (2014) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `tv` `71912` · The Witcher (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `tv` `136283` · The Glory (2022) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `tv` `2316` · The Office (2005) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `tv` `60059` · Better Call Saul (2015) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
 <!-- online-verification:end -->
 

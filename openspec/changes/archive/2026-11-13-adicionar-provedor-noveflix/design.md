@@ -134,6 +134,17 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 20
 3. Não confirmado: reprodução no aparelho, todos os capítulos, a resolução real do MP4 e a correspondência 1:1 em novelas além de `Avenida Brasil`.
 4. A rodada online e o teste no aparelho são as evidências que faltam; nenhuma delas altera o contrato descrito aqui.
 
+## Validação da implementação
+
+1. Reobservação em 14/11/2026: a busca de `Avenida Brasil` devolveu o cartão `/assistir/avenida-brasil/`; a ficha publicou `h1`, `span.date` 2012 e `data-post` 7059; o AJAX devolveu `novefx.biz/nov%2Favenidabrasil.php`; o embed publicou `totalChapters = 179`, `originalUrl` com `AVBR-${chapterStr}` e `finalUrl` com `redirectnflix.com/?${encodedUrl}`. O gate respondeu 301 para `esportesdavez.com` e publicou `#player-iframe[data-src]`; a `safelink` respondeu 302 para `nflixpainel.cc/video/AVBR-001`; a página de vídeo publicou `MP4_URL` de `stream.php`.
+2. O parser lê o template completo de `originalUrl` (host, `/video/` e prefixo), não apenas o prefixo, e lê a base de `finalUrl` da página. O capítulo é montado com três dígitos e `btoa`, sem `unescape`: o template e o número são ASCII e o resultado é idêntico ao do player.
+3. A `safelink` é pedida com `fetch` direto e `redirect: 'manual'`, porque o bloco `http` exige 2xx e não aceita 3xx. O `Location` é resolvido contra a URL da `safelink`; 200 direto usa `response.url`.
+4. A página de vídeo é pedida com `Referer` da `safelink`, e a URL de `stream.php` é resolvida contra a URL final da página. O MP4 não é baixado nem sondado.
+5. `test/noveflix.test.js` cobre 19 casos: carregamento sem rede, entrada inválida e filme recusado, S01E01 e S01E179, original contra remake de 1988/2025, capítulo 180, temporada 2, gate sem iframe, safelink 200/302 sem `Location`/404, `stream.php` relativo, página sem mídia, busca vazia/malformada/503, ficha sem `data-post`, AJAX vazio e JSON inválido. Nenhum token real de `stream.php` entrou nas fixtures.
+6. O perfil online permanece generalista (sem tag `novela`); a rodada pode não conter novelas. O resultado real e a limitação ficam em `providers.md`.
+7. Rodada online de 14/11/2026: perfil generalista, `tv 0/5`, todos os cinco casos em ausência reconhecida (0/0 streams, sem falha). A amostra foi The Flash, The Witcher e outras séries gerais, sem novelas. O harness marca `Instável` porque nenhum caso resolveu, mas o recorte não mede o acervo de novelas; nenhuma evidência de resolução do nicho foi inventada.
+8. A observação ao vivo confirmou a cadeia completa antes da rodada: busca, ficha de `Avenida Brasil` com `span.date` 2012, AJAX, embed com `totalChapters = 179`, gate 301 para `esportesdavez.com`, `safelink` 302 para `nflixpainel.cc/video/AVBR-001` e `MP4_URL` de `stream.php`. A reprodução no aparelho continua não comprovada.
+
 ## Open Questions
 
 1. Todas as novelas têm `totalChapters` igual ao número de episódios do TMDB? `Avenida Brasil` tem 179 nos dois lados; a amostra não cobre as demais.

@@ -109,6 +109,14 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 20
 3. Não confirmado: reprodução no aparelho, todos os episódios, o `itag` 37 e o idioma real do áudio/legenda.
 4. A rodada online e o teste no aparelho são as evidências que faltam; nenhuma delas altera o contrato descrito aqui.
 
+## Resultado da implementação
+
+1. Testes offline aprovados: `node --test test/seudorama.test.js` (14 casos), além de manifest, catálogo de provedores, catálogos online e build; `npx eslint src/seudorama test/seudorama.test.js` sem avisos. O build gerou os três pacotes (`providers/`, `gdrive/providers/` e `prism/providers/`).
+2. Rodada online de 2026-11-14T06:46:19.103Z, perfil `dorama`, pacote 1.0.0: **Estável**, `tv 4/5`. Vincenzo falhou porque a API devolveu `videoUrl` fora do host `blogger.com`; o provedor recusou como erro de estrutura, conforme a spec, sem tentar player desconhecido. Itaewon Class, The Glory, Round 6 e Pousando no Amor resolveram dois streams cada (360p e 720p).
+3. O idioma permanece `Idioma Desconhecido` em todos os streams: a API e a página do Blogger não publicam áudio nem legenda. A limitação de `D3` continua aberta.
+4. Nenhuma URL assinada do Google Video entrou em log, mensagem, fixture ou relatório; o relatório sanitizado substitui o endereço por `<url>`.
+
+
 ## Open Questions
 
 1. O áudio é original com legenda PT embutida em todos os títulos? A API não publica e o site está inacessível.
