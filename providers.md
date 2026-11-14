@@ -31,6 +31,8 @@
 | [AniTube](#anitube) | `anitube` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-13 |
 | [OxeAnimes](#oxeanimes) | `oxeanimes` | filme, série | HLS | 🟢 Estável | 2026-11-14 |
 | [Animy](#animy) | `animy` | filme, série | MP4 | 🟢 Estável | 2026-11-14 |
+| [AniBunker](#anibunker) | `anibunker` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-14 |
+| [AnimeZeY](#animezey) | `animezey` | filme, série | MKV, MP4 | 🔴 Instável | 2026-11-14 |
 
 ## MegaEmbed
 
@@ -623,5 +625,50 @@ Provedor de filmes e séries de anime em MP4 pelo catálogo Animy, com busca RES
    8. `tv` `30984` · Bleach (2004) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
    9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
    10. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+<!-- online-verification:end -->
+
+## AniBunker
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e séries de anime em MP4 e HLS pelo catálogo AniBunker, com busca PHP pública, confirmação de título, ano, formato e temporada, seleção de áudio dublado/legendado e players públicos do Blogger, Google Drive, HD e Sendvid. Temporadas contínuas do TMDB divididas em páginas de arcos e players externos sem mídia direta ficam fora da primeira versão. A rodada de 2026-11-14 usou o perfil `anime` e resolveu 2/5 filmes e 5/5 séries: Mugen Train é publicado como `Anime` e A Viagem de Chihiro traz ano 2021 na ficha, então os dois não confirmam formato/ano do pedido; os três filmes sem stream responderam HTTP 522 durante a rodada, e o provedor não converte erro de rede em ausência.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T05:01:13.024Z** · ID `2026-11-14T04-59-47-658Z-anibunker-02948607-779c` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `029486072701db7f574e10590d674c41` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `372058` · Your Name (2016) · **Resolvido** · 7/7 streams aproveitáveis
+   2. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AniBunker] Falha em movie 635302: HTTP 522 em <url>
+   3. `movie` `128` · Princesa Mononoke (1997) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AniBunker] Falha em movie 128: HTTP 522 em <url>
+   4. `movie` `129` · A Viagem de Chihiro (2001) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AniBunker] Falha em movie 129: HTTP 522 em <url>
+   5. `movie` `149` · Akira (1988) · **Resolvido** · 4/4 streams aproveitáveis
+   6. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 9/9 streams aproveitáveis
+   7. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 10/10 streams aproveitáveis
+   8. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
+   9. `tv` `37854` · One Piece (1999) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+   10. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+<!-- online-verification:end -->
+
+
+## AnimeZeY
+
+**Status: 🔴 Instável.**
+
+Provedor de filmes e séries de anime em MKV e MP4 pelo índice público AnimeZeY, com busca por título e coordenadas no worker e download pelo host dedicado.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-14T05:08:01.923Z** · ID `2026-11-14T05-07-55-245Z-animezey-bea36b84-7103` · **Instável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `bea36b8495d26567779e3ce8fe1aea4f` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `129` · A Viagem de Chihiro (2001) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em movie 129: Nenhuma busca produziu resultado: A Viagem de Chihiro 2001: HTTP 429 em [url]; A Viagem de Chihiro: HTTP 429 em [url]; 千と千尋の神隠し 2001: HTTP 429 em [url]
+   2. `movie` `128` · Princesa Mononoke (1997) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em movie 128: Nenhuma busca produziu resultado: Princesa Mononoke 1997: HTTP 429 em [url]; Princesa Mononoke: HTTP 429 em [url]; もののけ姫 1997: HTTP 429 em [url]
+   3. `movie` `149` · Akira (1988) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em movie 149: Nenhuma busca produziu resultado: Akira 1988: HTTP 429 em [url]; Akira: HTTP 429 em [url]
+   4. `movie` `372058` · Your Name (2016) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em movie 372058: Nenhuma busca produziu resultado: Your Name. 2016: HTTP 429 em [url]; Your Name.: HTTP 429 em [url]; 君の名は。 2016: HTTP 429 em [url]
+   5. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em movie 635302: Nenhuma busca produziu resultado: Demon Slayer: Mugen Train - O Filme 2020: HTTP 429 em [url]; Demon Slayer: Mugen Train - O Filme: HTTP 429 em [url]; 劇場版「鬼滅の刃」無限列車編 2020: HTTP 429 em [url]
+   6. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em tv 65930: Nenhuma busca produziu resultado: My Hero Academia S01E01: HTTP 429 em [url]; My Hero Academia 01x01: HTTP 429 em [url]; My Hero Academia - 01: HTTP 429 em [url]; 僕のヒーローアカデミア S01E01: HTTP 429 em [url]
+   7. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em tv 85937: Nenhuma busca produziu resultado: Demon Slayer: Kimetsu no Yaiba S01E01: HTTP 429 em [url]; Demon Slayer: Kimetsu no Yaiba 01x01: HTTP 429 em [url]; Demon Slayer: Kimetsu no Yaiba - 01: HTTP 429 em [url]; 鬼滅の刃 S01E01: HTTP 429 em [url]
+   8. `tv` `30984` · Bleach (2004) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em tv 30984: Nenhuma busca produziu resultado: Bleach S01E01: HTTP 429 em [url]; Bleach 01x01: HTTP 429 em [url]; Bleach - 01: HTTP 429 em [url]
+   9. `tv` `37854` · One Piece (1999) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em tv 37854: Nenhuma busca produziu resultado: One Piece S01E01: HTTP 429 em [url]; One Piece 01x01: HTTP 429 em [url]; One Piece - 01: HTTP 429 em [url]; ワンピース S01E01: HTTP 429 em [url]
+   10. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [AnimeZeY] Falha em tv 95479: Nenhuma busca produziu resultado: Jujutsu Kaisen S01E01: HTTP 429 em [url]; Jujutsu Kaisen 01x01: HTTP 429 em [url]; Jujutsu Kaisen - 01: HTTP 429 em [url]; 呪術廻戦 S01E01: HTTP 429 em [url]
 <!-- online-verification:end -->
 

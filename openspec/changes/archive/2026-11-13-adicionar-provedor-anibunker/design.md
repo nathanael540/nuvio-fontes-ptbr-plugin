@@ -8,7 +8,7 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 13
 2. A busca é `POST https://anibunker.com/php/search.php` com formulário `query=<termo>` e cabeçalhos de AJAX. Respondeu HTTP 200 com `Content-Type: text/html` e corpo JSON, por exemplo `[{"name":"Jujutsu Kaisen","url":"jujutsu-kaisen"}, ...]`. Não houve CSRF, cookie ou token.
 3. A página `/anime/<slug>` respondeu HTTP 200 e publicou `h1`, `Ano`, `Formato` (`Anime` ou `Filme`) e `Adicionados: N legendado e M dublado`. A página de Jujutsu Kaisen listou 24 episódios em links `-episodio-<n>-legendado`; a lista dublada exige o formulário `POST /anime/<slug>#episodes` com `type=0`, mas a URL `-episodio-<n>-dublado` respondeu HTTP 200 diretamente.
 4. A página do episódio respondeu HTTP 200 e publicou `data-video-id` e botões `data-player-id`: `token` (YTube), `url_drive` (Gdrive), `url_hd`/`url_hd_2`/`url_hd_3`, `sendvid` e, em alguns episódios, `url_mega`.
-5. `POST https://anibunker.com/php/loader.php` com `player_id` e `video_id` respondeu HTTP 200 `application/json` com `{success:true,url}`. `url_mega` foi descartado por impossibilidade de reprodução direta.
+5. `POST https://anibunker.com/php/loader.php` com `player_id` e `video_id` respondeu HTTP 200 `application/json` com `{success:true,url}`. O `Origin` do catálogo é obrigatório: sem ele, a resposta é HTTP 403 com `{"success":false,"message":"Access denied."}`, mesmo com `Referer` e cookie. `url_mega` foi descartado por impossibilidade de reprodução direta.
 6. O player `token` abre `https://www.blogger.com/video.g?token=AD6v5d<token>`, que respondeu HTTP 200 `text/html` com `WIZ_global_data` e `streamingData.formats` (itags 18 e 22, MP4 progressivo). Não foi necessário `batchexecute`. A URL `googlevideo.com/videoplayback` respondeu HTTP 206 `video/mp4` com assinatura `ftyp` quando enviado `Referer: https://www.blogger.com/`; sem esse cabeçalho respondeu HTTP 403.
 7. O player `url_drive` entregou um identificador; `https://drive.usercontent.google.com/download?id=<id>&export=download&confirm=t` respondeu HTTP 206 `video/mp4` com `ftyp`, sem cabeçalhos especiais.
 8. `url_hd` entregou MP4 em CDN (`rumble.cloud`) que respondeu HTTP 206 `video/mp4`; `url_hd_2` entregou HLS (`index.m3u8`) que respondeu HTTP 200 `application/vnd.apple.mpegurl` com `#EXTM3U`. Ambos responderam sem `Referer`.
@@ -57,11 +57,11 @@ Ver `proposal.md` para a motivação. As observações abaixo foram feitas em 13
 
 ### D3. Resolução dos players
 
-1. Cada `data-player-id` é uma opção independente. A busca do `video_id` e a chamada do carregador são compartilhadas; a falha de um player não interrompe os demais.
+1. Cada `data-player-id` é uma opção independente. A busca do `video_id` e a chamada do carregador são compartilhadas; a falha de um player não interrompe os demais. O carregador recebe `Origin: https://anibunker.com`; sem esse cabeçalho responde HTTP 403 e nenhuma opção resolve.
 2. `token`: exigir `success:true`, montar `https://www.blogger.com/video.g?token=AD6v5d<token>` e ler os MP4 progressivos de `streamingData.formats`. Extrair URLs `googlevideo.com/videoplayback`, desescapar `\u003d`, `\u0026`, `\&quot;` e `\"`, agrupar por `itag` e mapear 18→360p, 22→720p, 37→1080p e 59→480p; itag desconhecido fica sem qualidade. Não usar `adaptiveFormats` para não devolver vídeo sem áudio.
 3. `url_drive`: montar `https://drive.usercontent.google.com/download?id=<id>&export=download&confirm=t`, tipo MP4, qualidade desconhecida.
 4. `url_hd*`: aceitar a URL absoluta do carregador; `.m3u8` no caminho define HLS, o restante define MP4. A qualidade vem do rótulo `HD` (720p), `FHD` (1080p) ou `SD` (480p); `HD+`, `HD 2` e `HD 3` contam como HD.
-5. `sendvid`: buscar o embed e extrair o primeiro `<source src="..." type="video/mp4">`; tipo MP4 e qualidade desconhecida. Sem `<source>`, a opção falha.
+5. `sendvid`: o carregador pode devolver o MP4 direto (com assinatura) ou o embed; no embed, extrair o primeiro `<source src="..." type="video/mp4">` (ou `og:video` quando o `<source>` não existe). Tipo MP4 e qualidade desconhecida. Sem mídia, a opção falha. O mesmo embed pode aparecer em `url_hd_3`; nesse caso, seguir o embed em vez de tratar a URL como MP4.
 6. `url_mega`: descartar por triagem, sem aviso de falha.
 7. Player desconhecido: aceitar somente URL absoluta HTTP(S) de mídia direta; embed sem `<source>`/`og:video` falha com aviso.
 8. Alternativas descartadas:
