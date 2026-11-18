@@ -1,0 +1,13 @@
+{
+  "data": {
+    "animeCatalogDetail": {
+      "anime": { "name": "Demon Slayer", "year": 2019 },
+      "seasons": [
+        { "upstreamTid": 12, "name": "Temporada 2 | Legendado", "audioType": "LEG" }
+      ],
+      "episodes": [
+        { "episodeNumber": 1, "upstreamTempId": 12, "videoUrl": "https://cdn.example/missing-season/1.mp4", "videoUrlFhd": "", "videoUrlSd": "", "videoType": "server_url", "audioType": "LEG" }
+      ]
+    }
+  }
+}

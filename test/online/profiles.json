@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "revision": "2026-11-14.12",
+  "revision": "2026-11-14.13",
   "curatedAt": "2026-11-14",
   "providers": {
     "animefire": {
@@ -22,6 +22,7 @@
     "animesfhd": { "exclusiveTag": "anime" },
     "animesonlineblue": { "exclusiveTag": "anime" },
     "animeq": { "exclusiveTag": "anime" },
-    "animesonlinecc": { "exclusiveTag": "anime" }
+    "animesonlinecc": { "exclusiveTag": "anime" },
+    "otakulogia": { "exclusiveTag": "anime" }
   }
 }

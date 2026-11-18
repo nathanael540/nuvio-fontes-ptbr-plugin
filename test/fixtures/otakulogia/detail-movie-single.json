@@ -1,0 +1,13 @@
+{
+  "data": {
+    "animeCatalogDetail": {
+      "anime": { "name": "Akira", "year": 1988 },
+      "seasons": [
+        { "upstreamTid": 31, "name": "Temporada 01 | Legendado", "audioType": "LEG" }
+      ],
+      "episodes": [
+        { "episodeNumber": 1, "upstreamTempId": 31, "videoUrl": "https://cdn.example/akira/akira-dublado.mp4", "videoUrlFhd": "", "videoUrlSd": "", "videoType": "server_url", "audioType": null }
+      ]
+    }
+  }
+}

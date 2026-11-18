@@ -1,0 +1,18 @@
+{
+  "data": {
+    "searchAnimes": {
+      "total": 1,
+      "items": [
+        {
+          "id": "anime-401",
+          "upstreamCid": 401,
+          "name": "Akira",
+          "slug": "akira",
+          "nameEn": "Akira",
+          "year": 1988,
+          "audioMix": "DUB,LEG"
+        }
+      ]
+    }
+  }
+}

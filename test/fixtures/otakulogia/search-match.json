@@ -1,0 +1,27 @@
+{
+  "data": {
+    "searchAnimes": {
+      "total": 2,
+      "items": [
+        {
+          "id": "anime-201",
+          "upstreamCid": 201,
+          "name": "Demon Slayer",
+          "slug": "demon-slayer",
+          "nameEn": "Demon Slayer: Kimetsu no Yaiba",
+          "year": 2019,
+          "audioMix": "DUB,LEG"
+        },
+        {
+          "id": "anime-202",
+          "upstreamCid": 202,
+          "name": "Berserk",
+          "slug": "berserk",
+          "nameEn": "Berserk",
+          "year": 1997,
+          "audioMix": "LEG"
+        }
+      ]
+    }
+  }
+}

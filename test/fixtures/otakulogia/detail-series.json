@@ -1,0 +1,18 @@
+{
+  "data": {
+    "animeCatalogDetail": {
+      "anime": { "name": "Demon Slayer", "year": 2019 },
+      "seasons": [
+        { "upstreamTid": 11, "name": "Temporada 1 | Dublado", "audioType": "DUB" },
+        { "upstreamTid": 12, "name": "Temporada 2 | Legendado", "audioType": "LEG" }
+      ],
+      "episodes": [
+        { "episodeNumber": 3, "upstreamTempId": 11, "videoUrl": "https://cdn.example/demon-slayer/s1/1.mp4", "videoUrlFhd": "", "videoUrlSd": "", "videoType": "server_url", "audioType": "DUB" },
+        { "episodeNumber": 3, "upstreamTempId": 11, "videoUrl": "https://cdn.example/demon-slayer/s1/2.mp4", "videoUrlFhd": "", "videoUrlSd": "", "videoType": "server_url", "audioType": "DUB" },
+        { "episodeNumber": 3, "upstreamTempId": 11, "videoUrl": "https://cdn.example/demon-slayer/s1/3.mp4", "videoUrlFhd": "", "videoUrlSd": "", "videoType": "server_url", "audioType": "DUB" },
+        { "episodeNumber": 2, "upstreamTempId": 12, "videoUrl": "https://cdn.example/demon-slayer/s2/1.mp4", "videoUrlFhd": "", "videoUrlSd": "", "videoType": "server_url", "audioType": null },
+        { "episodeNumber": 2, "upstreamTempId": 12, "videoUrl": "https://cdn.example/demon-slayer/s2/2.mp4", "videoUrlFhd": "", "videoUrlSd": "", "videoType": "server_url", "audioType": null }
+      ]
+    }
+  }
+}

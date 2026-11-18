@@ -44,6 +44,7 @@
 | [MagnetBR](#magnetbr) | `magnetbr` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-18 |
 | [OverFlix](#overflix) | `overflix` | filme, série | MP4 | 🟢 Estável | 2026-11-18 |
 | [AnimesOnlineCC](#animesonlinecc) | `animesonlinecc` | série | MP4, HLS | 🟢 Estável | 2026-11-18 |
+| [Otakulogia](#otakulogia) | `otakulogia` | filme, série | MP4 | 🟢 Estável | 2026-11-18 |
 
 ## MegaEmbed
 
@@ -908,5 +909,27 @@ Séries de anime em MP4 e HLS do AnimesOnlineCC, com busca `GET /?s=<termo>`, co
    3. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
    4. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
    5. `tv` `30984` · Bleach (2004) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
+<!-- online-verification:end -->
+
+## Otakulogia
+
+**Status: 🟢 Estável.**
+
+Filmes e séries de anime em MP4 do catálogo Otakulogia pelo GraphQL público, com busca em paralelo pelos títulos do TMDB, confirmação por título e ano, temporada pelo nome `Temporada N` e episódio pela numeração da URL. Filmes aceitam a temporada `Filme` ou a única temporada de episódio único; a qualidade e o idioma vêm de `videoUrlFhd`/`videoUrlSd` e do `audioType` declarados.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-18T22:10:20.997Z** · ID `2026-11-18T22-09-57-861Z-otakulogia-dde6149d-41c9` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `dde6149dd2bb17a9a68748e404cfb0e8` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `128` · Princesa Mononoke (1997) · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `149` · Akira (1988) · **Resolvido** · 1/1 streams aproveitáveis
+   4. `movie` `372058` · Your Name (2016) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `129` · A Viagem de Chihiro (2001) · **Resolvido** · 2/2 streams aproveitáveis
+   6. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   7. `tv` `37854` · One Piece (1999) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   8. `tv` `30984` · Bleach (2004) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   10. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
 <!-- online-verification:end -->
 

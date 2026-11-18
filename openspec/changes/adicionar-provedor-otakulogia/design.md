@@ -194,12 +194,18 @@
 
 ## Open Questions
 
-1. O `Referer` é necessário para reproduzir o MP4? A sonda de 2026-11-16 confirmou 206 com `User-Agent` em Naruto, One Piece e outros títulos, e um título (`AKIRA`) expirou sem o cabeçalho; a implementação confirma com duas requisições mínimas e registra o resultado sem URL.
+1. Resolvida em 2026-11-18: a verificação mínima com `Range: bytes=0-63` no MP4 de Akira respondeu HTTP 206 e `video/mp4` com e sem `Referer`, então a reprodução continua somente com `User-Agent`. A URL não foi registrada.
 2. Resolvida em 2026-11-16: `episodeNumber` não é por episódio; ele repete o total de episódios da temporada. A seleção passou a usar a numeração da URL. A fixture cobre o valor repetido e a lista fora de ordem.
 3. `videoUrlFhd`/`videoUrlSd` chegam a ser preenchidos? A amostra não os viu; a suíte cobre o caso e a rodada online pode revelar o contrário.
 4. O detalhe de filme publica `Filme` com `upstreamTid` e episódio correspondente em todos os títulos? `AKIRA` foi visto em temporada de episódio único; a linha `Filme` ainda não foi observada. A fixture e a rodada online respondem.
 5. Há rate limit por IP? Não foi observado cabeçalho de cota; a implementação começa sem retentativa e sem paralelismo além do descrito.
 6. O endpoint devolve `searchAnimes: null` em busca sem resultado ou sempre `items: []`? As duas formas são aceitas como ausência; a implementação registra a observada.
+
+## Implementation Notes
+
+1. A seção do método GraphQL entrou em `docs/provider-investigation.md` como 3.38, porque a 3.37 já pertence ao AnimesOnlineCC, arquivado em 2026-11-18, depois da proposta desta mudança.
+2. `docs/tests.md` enumerava como exclusivos apenas Doramogo, Doramas Online, SeuDorama e NoveFlix, omitindo os provedores de anime já configurados em `test/online/profiles.json`; a enumeração foi substituída pela regra genérica, sem mudar o comportamento.
+3. A rodada online de 2026-11-18T22:10:20.997Z, com o perfil `anime`, resolveu 2/5 filmes (Akira e A Viagem de Chihiro) e 2/5 séries (Jujutsu Kaisen e Demon Slayer), sem falha nem caso inconclusivo. O status ficou `🟢 Estável` em `providers.md`.
 
 ## Validation
 

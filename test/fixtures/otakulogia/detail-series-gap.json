@@ -1,0 +1,15 @@
+{
+  "data": {
+    "animeCatalogDetail": {
+      "anime": { "name": "Demon Slayer", "year": 2019 },
+      "seasons": [
+        { "upstreamTid": 11, "name": "Temporada 1 | Dublado", "audioType": "DUB" }
+      ],
+      "episodes": [
+        { "episodeNumber": 3, "upstreamTempId": 11, "videoUrl": "https://cdn.example/gap/1.mp4", "videoUrlFhd": "", "videoUrlSd": "", "videoType": "server_url", "audioType": "DUB" },
+        { "episodeNumber": 3, "upstreamTempId": 11, "videoUrl": "https://cdn.example/gap/2.mp4", "videoUrlFhd": "", "videoUrlSd": "", "videoType": "server_url", "audioType": "DUB" },
+        { "episodeNumber": 3, "upstreamTempId": 11, "videoUrl": "https://cdn.example/gap/4.mp4", "videoUrlFhd": "", "videoUrlSd": "", "videoType": "server_url", "audioType": "DUB" }
+      ]
+    }
+  }
+}

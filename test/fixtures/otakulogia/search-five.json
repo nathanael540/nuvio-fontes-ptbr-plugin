@@ -1,0 +1,14 @@
+{
+  "data": {
+    "searchAnimes": {
+      "total": 5,
+      "items": [
+        { "id": "anime-201", "upstreamCid": 201, "name": "Demon Slayer", "slug": "demon-slayer-1", "nameEn": "Demon Slayer: Kimetsu no Yaiba", "year": 2019, "audioMix": "DUB" },
+        { "id": "anime-202", "upstreamCid": 202, "name": "Demon Slayer", "slug": "demon-slayer-2", "nameEn": "Demon Slayer: Kimetsu no Yaiba", "year": 2019, "audioMix": "LEG" },
+        { "id": "anime-203", "upstreamCid": 203, "name": "Demon Slayer", "slug": "demon-slayer-3", "nameEn": "Demon Slayer: Kimetsu no Yaiba", "year": 2019, "audioMix": "DUB" },
+        { "id": "anime-204", "upstreamCid": 204, "name": "Demon Slayer", "slug": "demon-slayer-4", "nameEn": "Demon Slayer: Kimetsu no Yaiba", "year": 2019, "audioMix": "LEG" },
+        { "id": "anime-205", "upstreamCid": 205, "name": "Demon Slayer", "slug": "demon-slayer-5", "nameEn": "Demon Slayer: Kimetsu no Yaiba", "year": 2019, "audioMix": "DUB" }
+      ]
+    }
+  }
+}

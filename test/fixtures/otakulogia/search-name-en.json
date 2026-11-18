@@ -1,0 +1,18 @@
+{
+  "data": {
+    "searchAnimes": {
+      "total": 1,
+      "items": [
+        {
+          "id": "anime-301",
+          "upstreamCid": 301,
+          "name": "Kimetsu no Yaiba: Hashira Geiko-hen",
+          "slug": "kimetsu-no-yaiba-hashira-geiko-hen",
+          "nameEn": "Kimetsu no Yaiba",
+          "year": 2019,
+          "audioMix": "DUB,LEG"
+        }
+      ]
+    }
+  }
+}

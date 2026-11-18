@@ -1,0 +1,5 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head><title>Otakulogia</title></head>
+  <body><div id="app">O catálogo não é entregue no HTML inicial.</div></body>
+</html>

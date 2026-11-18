@@ -1,0 +1,17 @@
+{
+  "data": {
+    "animeCatalogDetail": {
+      "anime": { "name": "Akira", "year": 1988 },
+      "seasons": [
+        { "upstreamTid": 21, "name": "Filme | Dublado", "audioType": "DUB" },
+        { "upstreamTid": 22, "name": "Filme | Legendado", "audioType": "LEG" },
+        { "upstreamTid": 23, "name": "Filme | Dublado", "audioType": "DUB" }
+      ],
+      "episodes": [
+        { "episodeNumber": 1, "upstreamTempId": 21, "videoUrl": "", "videoUrlFhd": "https://cdn.example/movie/akira-fhd.mp4", "videoUrlSd": "https://cdn.example/movie/akira-sd-unused.mp4", "videoType": "server_url", "audioType": "DUB" },
+        { "episodeNumber": 1, "upstreamTempId": 22, "videoUrl": "", "videoUrlFhd": "", "videoUrlSd": "https://cdn.example/movie/akira-sd.mp4", "videoType": "server_url", "audioType": "LEG" },
+        { "episodeNumber": 1, "upstreamTempId": 23, "videoUrl": "", "videoUrlFhd": "https://cdn.example/movie/akira-fhd.mp4", "videoUrlSd": "https://cdn.example/movie/akira-sd-unused.mp4", "videoType": "server_url", "audioType": "DUB" }
+      ]
+    }
+  }
+}

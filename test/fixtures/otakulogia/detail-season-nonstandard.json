@@ -1,0 +1,15 @@
+{
+  "data": {
+    "animeCatalogDetail": {
+      "anime": { "name": "Demon Slayer", "year": 2019 },
+      "seasons": [
+        { "upstreamTid": 9, "name": "Season 2", "audioType": "DUB" },
+        { "upstreamTid": 10, "name": "Arco 2", "audioType": "LEG" }
+      ],
+      "episodes": [
+        { "episodeNumber": 1, "upstreamTempId": 9, "videoUrl": "https://cdn.example/nonstandard/9-1.mp4", "videoUrlFhd": "", "videoUrlSd": "", "videoType": "server_url", "audioType": "DUB" },
+        { "episodeNumber": 1, "upstreamTempId": 10, "videoUrl": "https://cdn.example/nonstandard/10-1.mp4", "videoUrlFhd": "", "videoUrlSd": "", "videoType": "server_url", "audioType": "LEG" }
+      ]
+    }
+  }
+}
