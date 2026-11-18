@@ -1,0 +1,13 @@
+{
+  "players": [
+    { "label": "Byse", "name": "Byse", "url": "https://bysebuho.com/e/" },
+    { "label": "DoodStream", "name": "DoodStream", "url": "https://playmogo.com/e/" },
+    { "label": "MixDrop", "name": "MixDrop", "url": "https://mxdrop.click/e/" },
+    { "label": "Streamtape", "name": "Streamtape", "url": "https://streamtape.com/e/" }
+  ],
+  "servers_dub": "mixdrop=md_dub_001&amp;streamtape=st_dub_002&amp;byse=byse_dub_003",
+  "servers_leg": "mixdrop=md_leg_004&doodstream=dood_leg_005",
+  "current_audio": "Dublado",
+  "is_episode": 0,
+  "navigation": {}
+}

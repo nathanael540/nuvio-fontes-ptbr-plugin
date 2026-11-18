@@ -42,6 +42,7 @@
 | [SeuDorama](#seudorama) | `seudorama` | série | MP4 | 🟢 Estável | 2026-11-14 |
 | [NoveFlix](#noveflix) | `noveflix` | série | MP4 | 🟢 Estável | 2026-11-14 |
 | [MagnetBR](#magnetbr) | `magnetbr` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-18 |
+| [OverFlix](#overflix) | `overflix` | filme, série | MP4 | 🟢 Estável | 2026-11-18 |
 
 ## MegaEmbed
 
@@ -851,7 +852,7 @@ Perfil de nicho: a rodada usa a tag `novela`, com oito títulos curados do acerv
 
 **Status: 🟢 Estável.**
 
-Provedor de filmes e séries em magnet e pacotes de temporada (`torrent://`) pelo indexador JSON do catálogo agregado MagnetBR, com busca por IMDb e títulos do TMDB, triagem por IMDb, categoria, título, ano e coordenadas de temporada/episódio, classificação conservadora de idioma por `audio_tags` e `legend` e resolução de pacote pelo cache público de torrents. A rodada de 2026-11-18 resolveu 2/5 filmes e 4/5 séries sem falhas estruturais; os títulos sem resultado refletem ausência na primeira página do índice ou indexação em segundo plano (`queued`), e animes sem marcador `SxxExx` fora da janela de ano da temporada permanecem fora da cobertura.
+Provedor de filmes e séries em magnet e pacotes de temporada pelo índice do arquivo no torrent, pelo indexador JSON do catálogo agregado MagnetBR, com busca por IMDb e títulos do TMDB, triagem por IMDb, categoria, título, ano e coordenadas de temporada/episódio, classificação conservadora de idioma por `audio_tags` e `legend` e resolução de pacote pelo cache público de torrents. A rodada de 2026-11-18 resolveu 2/5 filmes e 4/5 séries sem falhas estruturais; os títulos sem resultado refletem ausência na primeira página do índice ou indexação em segundo plano (`queued`), e animes sem marcador `SxxExx` fora da janela de ano da temporada permanecem fora da cobertura.
 
 <!-- online-verification:start -->
 ### Verificações online
@@ -867,5 +868,27 @@ Provedor de filmes e séries em magnet e pacotes de temporada (`torrent://`) pel
    8. `tv` `1399` · A Guerra dos Tronos (2011) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    9. `tv` `76479` · The Boys (2019) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
    10. `tv` `94997` · House of the Dragon (2022) · S01E01 · **Resolvido** · 11/11 streams aproveitáveis
+<!-- online-verification:end -->
+
+## OverFlix
+
+**Status: 🟢 Estável.**
+
+Filmes e séries em MP4 dublados e legendados do catálogo OverFlix (VideoBox), com descoberta do domínio vigente a cada chamada, confirmação por `data-tmdb-id` e isolamento por servidor. As opções vêm de MixDrop, Streamtape, DoodStream e Byse; o Byse e hosts sem resolvedor são triagem. A rodada de 2026-11-18 resolveu 4/5 filmes e 3/5 séries; o MixDrop entregou dublado e legendado nos títulos resolvidos, enquanto Streamtape respondeu 404 e DoodStream 403 nas opções da amostra. Os títulos sem resultado refletem ausência na busca da fonte, e o Byse segue sem resolvedor.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-18T21:24:51.393Z** · ID `2026-11-18T21-24-00-592Z-overflix-a10ae1ba-f7de` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `a10ae1ba9a54763dcf7fbaf7003319b9` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `129` · A Viagem de Chihiro (2001) · **Resolvido** · 2/2 streams aproveitáveis
+   2. `movie` `128` · Princesa Mononoke (1997) · **Resolvido** · 2/2 streams aproveitáveis
+   3. `movie` `558449` · Gladiador II (2024) · **Resolvido** · 2/2 streams aproveitáveis
+   4. `movie` `1630420` · Crime em Cena (2026) · **Resolvido** · 2/2 streams aproveitáveis
+   5. `movie` `437109` · A Vilã (2017) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `7448` · A Favorita (2008) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   7. `tv` `60625` · Rick and Morty (2013) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   8. `tv` `4184` · A Usurpadora (1998) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `71912` · The Witcher (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   10. `tv` `1668` · Friends (1994) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 

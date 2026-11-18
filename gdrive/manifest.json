@@ -805,6 +805,26 @@
         "pt"
       ],
       "logo": "https://www.google.com/s2/favicons?domain=magnetbr.flixbr.online&sz=128"
+    },
+    {
+      "id": "overflix",
+      "name": "OverFlix",
+      "description": "Filmes e séries em MP4 do catálogo OverFlix (VideoBox), dublados e legendados conforme os servidores anunciados, com descoberta automática do domínio vigente.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/overflix.js",
+      "enabled": true,
+      "formats": [
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=overflix.win&sz=128"
     }
   ]
 }
