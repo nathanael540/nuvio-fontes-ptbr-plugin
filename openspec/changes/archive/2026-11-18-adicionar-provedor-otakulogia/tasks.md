@@ -74,6 +74,6 @@
 
 ## 10. Workflow follow-up
 
-- [ ] 10.1 Arquivar a mudança somente com os testes previstos passando e a rodada online registrada, ou declarar explicitamente no `design.md` o que ficou fora e o motivo de não arquivar.
+- [x] 10.1 Arquivar a mudança somente com os testes previstos passando e a rodada online registrada, ou declarar explicitamente no `design.md` o que ficou fora e o motivo de não arquivar.
 - [x] 10.2 Preparar o commit `feat(otakulogia): adiciona provedor Otakulogia`, com o corpo `OpenSpec: adicionar-provedor-otakulogia`, incluindo `src/otakulogia/`, `providers/`, `gdrive/providers/`, `prism/providers/`, `manifest.json`, `providers.md`, `docs/provider-investigation.md`, `test/otakulogia.test.js`, `test/fixtures/otakulogia/` e `test/online/profiles.json`.
 - [x] 10.3 Conferir que o commit não inclui arquivos gerados fora da mudança, `test/artifacts/`, chaves, tokens ou URLs de mídia.
