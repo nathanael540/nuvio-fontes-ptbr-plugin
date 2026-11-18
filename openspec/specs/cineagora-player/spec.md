@@ -8,7 +8,7 @@ Resolver os espelhos de áudio do CineAgora no player BrStream e devolver stream
 
 ### Requirement: Descoberta dos espelhos de áudio
 
-O provedor SHALL ler os botões `.mirrors .button` com `data-link`, manter somente links de `watch.brstream.cc` e associar o texto do botão à opção. Trailer do YouTube e hosts desconhecidos SHALL ser descartados por triagem.
+O provedor SHALL ler os elementos com `data-link` de cada catálogo — CineAgora `.mirrors .button`, CineGratis `.player__mirrors .mirror`, VisionCine `.mirrors a.nav-link` —, manter somente links de `watch.brstream.cc` e associar o texto do elemento à opção. Elemento sem `data-link`, trailer e host desconhecido SHALL ser descartados por triagem.
 
 #### Scenario: Filme com dublado e legendado
 
@@ -29,6 +29,26 @@ O provedor SHALL ler os botões `.mirrors .button` com `data-link`, manter somen
 
 - **WHEN** o botão BrStream não traz `Dublado` nem `Legendado`
 - **THEN** o provedor preserva a opção e usa o nome da release como dica de idioma.
+
+#### Scenario: Espelho do CineGratis
+
+- **WHEN** a página do CineGratis publica um `.player__mirrors .mirror` com `data-link` para o BrStream
+- **THEN** o provedor lê a opção e associa o texto `DUBLADO` ou `LEGENDADO` ao idioma.
+
+#### Scenario: Espelho do VisionCine
+
+- **WHEN** a página do VisionCine publica um `.mirrors a.nav-link` com `data-link` para o BrStream
+- **THEN** o provedor lê a opção e associa o texto do link ao idioma.
+
+#### Scenario: Elemento sem `data-link`
+
+- **WHEN** a área de espelhos tem um elemento sem `data-link`, como o botão de trailer
+- **THEN** o provedor o ignora sem lançar erro e continua com os demais.
+
+#### Scenario: Nenhum espelho BrStream
+
+- **WHEN** a página não publica nenhum elemento com `data-link` para `watch.brstream.cc`
+- **THEN** o provedor reconhece ausência daquele catálogo e não produz streams.
 
 ### Requirement: Resolução de filme no BrStream
 
