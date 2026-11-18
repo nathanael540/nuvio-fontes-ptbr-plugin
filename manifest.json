@@ -516,6 +516,19 @@
       "formats": ["mp4"],
       "contentLanguage": ["pt"],
       "logo": "https://www.google.com/s2/favicons?domain=noveflix.lol&sz=128"
+    },
+    {
+      "id": "magnetbr",
+      "name": "MagnetBR",
+      "description": "Filmes, séries e animes do catálogo agregado MagnetBR em magnet e torrent://, por IMDb ou título, dublados ou legendados conforme a fonte; episódio em pacote de temporada aponta para o arquivo do episódio.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": ["movie", "tv"],
+      "filename": "providers/magnetbr.js",
+      "enabled": true,
+      "formats": ["magnet"],
+      "contentLanguage": ["pt"],
+      "logo": "https://www.google.com/s2/favicons?domain=magnetbr.flixbr.online&sz=128"
     }
   ]
 }

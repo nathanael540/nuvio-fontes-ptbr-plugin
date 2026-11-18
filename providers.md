@@ -41,6 +41,7 @@
 | [AmyFlix](#amyflix) | `amyflix` | filme, série | HLS, MP4 | 🔴 Instável | 2026-11-14 |
 | [SeuDorama](#seudorama) | `seudorama` | série | MP4 | 🟢 Estável | 2026-11-14 |
 | [NoveFlix](#noveflix) | `noveflix` | série | MP4 | 🟢 Estável | 2026-11-14 |
+| [MagnetBR](#magnetbr) | `magnetbr` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-18 |
 
 ## MegaEmbed
 
@@ -844,5 +845,27 @@ Perfil de nicho: a rodada usa a tag `novela`, com oito títulos curados do acerv
    3. `tv` `7979` · Caminho das Índias (2009) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
    4. `tv` `14853` · O Clone (2001) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
    5. `tv` `46161` · Vale Tudo (1988) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+<!-- online-verification:end -->
+
+## MagnetBR
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e séries em magnet e pacotes de temporada (`torrent://`) pelo indexador JSON do catálogo agregado MagnetBR, com busca por IMDb e títulos do TMDB, triagem por IMDb, categoria, título, ano e coordenadas de temporada/episódio, classificação conservadora de idioma por `audio_tags` e `legend` e resolução de pacote pelo cache público de torrents. A rodada de 2026-11-18 resolveu 2/5 filmes e 4/5 séries sem falhas estruturais; os títulos sem resultado refletem ausência na primeira página do índice ou indexação em segundo plano (`queued`), e animes sem marcador `SxxExx` fora da janela de ano da temporada permanecem fora da cobertura.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-18T21:16:01.278Z** · ID `2026-11-18T21-14-29-484Z-magnetbr-197a8f15-1ef6` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `197a8f15f7c4d4ea76298ebe9491c734` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `299536` · Vingadores: Guerra Infinita (2018) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `293660` · Deadpool (2016) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `1654940` · Um Ano de Vida, Compre Um Homem (2026) · **Resolvido** · 2/2 streams aproveitáveis
+   4. `movie` `284054` · Pantera Negra (2018) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `129` · A Viagem de Chihiro (2001) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `1668` · Friends (1994) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   7. `tv` `71912` · The Witcher (2019) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+   8. `tv` `1399` · A Guerra dos Tronos (2011) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `76479` · The Boys (2019) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
+   10. `tv` `94997` · House of the Dragon (2022) · S01E01 · **Resolvido** · 11/11 streams aproveitáveis
 <!-- online-verification:end -->
 

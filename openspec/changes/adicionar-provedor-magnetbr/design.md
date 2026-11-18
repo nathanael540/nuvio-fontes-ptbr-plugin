@@ -164,8 +164,8 @@ Ver `proposal.md` para a motivação. Este documento registra as observações d
 
 ## Validation
 
-1. `npm run lint` deve passar sem desativar regras; `src/magnetbr/` não pode usar APIs do Node, `axios`, `setTimeout` ou `TextDecoder`.
-2. `node --test test/magnetbr.test.js` deve cobrir, sem internet:
+1. `npm run lint` passou com 0 erros e 0 avisos sem desativar regras; `src/magnetbr/` não usa APIs do Node, `axios`, `setTimeout` ou `TextDecoder`.
+2. `node --test test/magnetbr.test.js` passou com 8/8 testes offline cobrindo:
    1. busca por IMDb e fallback por título;
    2. erro HTTP/JSON sem fallback;
    3. filme com magnet hexadecimal e base32;
@@ -180,7 +180,8 @@ Ver `proposal.md` para a motivação. Este documento registra as observações d
    12. deduplicação, ordenação e variantes gdrive/prism;
    13. entrada inválida e chave do TMDB ausente sem requisição;
    14. logs sem chave do TMDB e sem magnet completo.
-3. `node build.js magnetbr` deve gerar o arquivo base e as variantes `gdrive/` e `prism/`, e os `<formato>/manifest.json` devem listar a entrada.
-4. `npm test` deve passar com as suítes de manifest, catálogo de provedores, blocos e provedores existentes.
-5. `npm run test:online -- --provider magnetbr --record` deve rodar sobre o pacote final, com `TMDB_API_KEY` só no ambiente e sem gravar mídia; o resultado e a data vão para `providers.md`.
-6. O reconhecimento de 2026-11-16 registrado no Contexto comprova o contrato de busca, os campos e os pacotes no nível da API. Ele não comprova reprodução, não mede a cobertura do catálogo e não substitui a rodada online.
+3. `node build.js magnetbr` gerou `providers/magnetbr.js` (sem `async`/`await`) e as variantes `gdrive/providers/magnetbr.js` e `prism/providers/magnetbr.js`, atualizando `gdrive/manifest.json` e `prism/manifest.json`.
+4. `npm test` passou integralmente com 1569/1569 testes (0 falhas), incluindo as suítes de manifest, catálogo de provedores, blocos e provedores existentes.
+5. `npm run test:online -- --provider magnetbr --record` rodou em 2026-11-18T21:16:01.278Z (ID `2026-11-18T21-14-29-484Z-magnetbr-197a8f15-1ef6`, semente `197a8f15f7c4d4ea76298ebe9491c734`, perfil `generalista`, pacote `1.0.0`) e registrou status `🟢 Estável` em `providers.md`, com `movie` 2/5 resolvidos (3 sem resultado, 0 falhas, 0 inconclusivos) e `tv` 4/5 resolvidos (1 sem resultado, 0 falhas, 0 inconclusivos).
+6. Exclusões e limites preservados: animes episódicos sem marcador `SxxExx` fora da janela de ano da temporada, paginação além da primeira página (`count <= 100`), espera por indexação em segundo plano (`queued: true`) e comprovação de reprodução P2P no aparelho permanecem fora do escopo desta mudança.
+
