@@ -18,7 +18,7 @@
 | [TheRARBG](#therarbg) | `therarbg` | filme, série | magnet, torrent:// | 🔴 Instável | 2026-11-12 |
 | [VaqueiroFilmes](#vaqueirofilmes) | `vaqueirofilmes` | filme | HLS | 🟢 Estável | 2026-11-12 |
 | [TopFilmes](#topfilmes) | `topfilmes` | filme | MP4 | 🟢 Estável | 2026-11-12 |
-| [CineAgora](#cineagora) | `cineagora` | filme, série | HLS | 🟢 Estável | 2026-11-12 |
+| [CineAgora](#cineagora) | `cineagora` | filme, série | HLS | 🔵 Parcial | 2026-11-18 |
 | [BRFlix](#brflix) | `brflix` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-12 |
 | [RIVO](#rivo) | `rivo` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-12 |
 | [Primeflix](#primeflix) | `primeflix` | filme, série | HLS, MKV | 🟢 Estável | 2026-11-13 |
@@ -45,6 +45,7 @@
 | [OverFlix](#overflix) | `overflix` | filme, série | MP4 | 🟢 Estável | 2026-11-18 |
 | [AnimesOnlineCC](#animesonlinecc) | `animesonlinecc` | série | MP4, HLS | 🟢 Estável | 2026-11-18 |
 | [Otakulogia](#otakulogia) | `otakulogia` | filme, série | MP4 | 🟢 Estável | 2026-11-18 |
+| [VenoPlay](#venoplay) | `venoplay` | filme, série | HLS | 🟢 Estável | 2026-11-18 |
 
 ## MegaEmbed
 
@@ -357,24 +358,24 @@ Provedor de filmes em MP4 pelo catálogo TopFilmes, com áudio dublado ou legend
 
 ## CineAgora
 
-**Status: 🟢 Estável.**
+**Status: 🔵 Parcial.**
 
-Provedor de filmes e séries em HLS pelo catálogo CineAgora, com espelhos Dublado e Legendado do player BrStream. A busca é DLE por IMDb ou título, a identidade é confirmada na ficha e a playlist master é montada a partir do objeto `video`; séries selecionam o episódio por temporada e número.
+Provedor de filmes e séries em HLS pelos catálogos CineAgora, CineGratis e VisionCine, com espelhos Dublado e Legendado do player BrStream. A busca é DLE por IMDb ou título, a identidade é confirmada na ficha e a playlist master é montada a partir do objeto `video`; séries selecionam o episódio por temporada e número.
 
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-12T23:34:00.759Z** · ID `2026-11-12T23-33-32-756Z-cineagora-a552c01b-165a` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `a552c01b244c095a15fcba580f93accb` · algoritmo `sha256-fisher-yates-v1`
-   1. `movie` `1184918` · Robô Selvagem (2024) · **Resolvido** · 1/1 streams aproveitáveis
-   2. `movie` `558449` · Gladiador II (2024) · **Sem resultado** · 0/0 streams aproveitáveis
-   3. `movie` `68718` · Django Livre (2012) · **Sem resultado** · 0/0 streams aproveitáveis
-   4. `movie` `128` · Princesa Mononoke (1997) · **Sem resultado** · 0/0 streams aproveitáveis
-   5. `movie` `284054` · Pantera Negra (2018) · **Sem resultado** · 0/0 streams aproveitáveis
-   6. `tv` `1396` · Breaking Bad (2008) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
-   7. `tv` `60574` · Peaky Blinders (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
-   8. `tv` `37854` · One Piece (1999) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
-   9. `tv` `1668` · Friends (1994) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
-   10. `tv` `87108` · Chernobyl (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+1. **2026-11-18T23:21:14.680Z** · ID `2026-11-18T23-19-38-995Z-cineagora-56903d1e-0aec` · **Parcial** · pacote 1.1.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `56903d1efe8144d98b8761e1b82a294f` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `13` · Forrest Gump: O Contador de Histórias (1994) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `122` · O Senhor dos Anéis: O Retorno do Rei (2003) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `1466115` · Se Esse Amor Desaparecesse Hoje (2025) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `149` · Akira (1988) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `872585` · Oppenheimer (2023) · **Resolvido** · 1/1 streams aproveitáveis
+   6. `tv` `7448` · A Favorita (2008) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   7. `tv` `71912` · The Witcher (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   8. `tv` `1668` · Friends (1994) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `117376` · Vincenzo (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   10. `tv` `2316` · The Office (2005) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
 <!-- online-verification:end -->
 
 ## BRFlix
@@ -931,5 +932,27 @@ Filmes e séries de anime em MP4 do catálogo Otakulogia pelo GraphQL público, 
    8. `tv` `30984` · Bleach (2004) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
    10. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+<!-- online-verification:end -->
+
+## VenoPlay
+
+**Status: 🟢 Estável.**
+
+Filmes e séries em HLS pela VenoPlay, com busca por título, confirmação de tipo e ano no JSON-LD ou no `h1`/`datePublished` e player `mgeb` dublado; o catálogo aceita HLS de `mgeb.space`/`mgeb.lat` e descarta hosts sem prova.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-18T22:59:25.529Z** · ID `2026-11-18T22-58-08-920Z-venoplay-9b5a6219-208f` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `9b5a6219139094cc1e69e67e08f22a1e` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `24428` · Os Vingadores (2012) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `680` · Pulp Fiction: Tempo de Violência (1994) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `569094` · Homem-Aranha: Através do Aranhaverso (2023) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `361743` · Top Gun: Maverick (2022) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `1466115` · Se Esse Amor Desaparecesse Hoje (2025) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `1668` · Friends (1994) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   7. `tv` `117376` · Vincenzo (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   8. `tv` `1416` · Grey's Anatomy (2005) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   9. `tv` `90447` · Hotel del Luna (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   10. `tv` `1396` · Breaking Bad (2008) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 

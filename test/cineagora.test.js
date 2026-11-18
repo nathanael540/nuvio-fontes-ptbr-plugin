@@ -19,11 +19,19 @@ const searchImdbTv = read('search-imdb-tv.html');
 const searchImdbRentFree = read('search-imdb-rent-free.html');
 const searchTitle = read('search-title.html');
 const searchEmpty = read('search-empty.html');
+const searchNoMarker = read('search-no-marker.html');
 const movieDuna = read('movie-duna.html');
 const movieDuna1984 = read('movie-duna-1984.html');
 const movieDuna2021 = read('movie-duna-2021.html');
 const movieTwoMirrors = read('movie-two-mirrors.html');
 const movieTrailerOnly = read('movie-trailer-only.html');
+const searchCineGratis = read('search-cinegratis.html');
+const searchCineGratisMixed = read('search-cinegratis-mixed.html');
+const searchCineGratisInvalid = read('search-cinegratis-invalid.html');
+const pageCineGratis = read('page-cinegratis.html');
+const searchVisionCine = read('search-visioncine.html');
+const pageVisionCine = read('page-visioncine.html');
+const pageVisionCineNoYear = read('page-visioncine-no-year.html');
 const seriesPage = read('series-page.html');
 const watchMovie = read('watch-movie.html');
 const watchEpisode = read('watch-episode.html');
@@ -132,6 +140,40 @@ function fullRoute(overrides = {}) {
       if (url.pathname === '/filmes-hd-online/3794-rent-free.html') return { body: movieTwoMirrors };
       if (url.pathname === '/series-online-hd-gratis/2797-the-pitt.html') return { body: seriesPage };
       throw new Error(`Rota CineAgora inesperada: ${url.pathname}`);
+    }
+    if (url.hostname === 'cinegratis.tv' || url.hostname === 'cinegratis.co') {
+      if (url.pathname === '/index.php') {
+        if (overrides.cinegratisSearch) {
+          return typeof overrides.cinegratisSearch === 'function'
+            ? overrides.cinegratisSearch(url.searchParams.get('story'), url)
+            : { body: overrides.cinegratisSearch };
+        }
+        return { body: searchEmpty };
+      }
+      if (overrides.cinegratisPage) {
+        return typeof overrides.cinegratisPage === 'function'
+          ? overrides.cinegratisPage(url)
+          : { body: overrides.cinegratisPage };
+      }
+      if (url.pathname.includes('693134-duna-parte-dois')) return { body: pageCineGratis };
+      throw new Error(`Rota CineGratis inesperada: ${url.pathname}`);
+    }
+    if (url.hostname === 'visioncine.lol') {
+      if (url.pathname === '/index.php') {
+        if (overrides.visioncineSearch) {
+          return typeof overrides.visioncineSearch === 'function'
+            ? overrides.visioncineSearch(url.searchParams.get('story'), url)
+            : { body: overrides.visioncineSearch };
+        }
+        return { body: searchEmpty };
+      }
+      if (overrides.visioncinePage) {
+        return typeof overrides.visioncinePage === 'function'
+          ? overrides.visioncinePage(url)
+          : { body: overrides.visioncinePage };
+      }
+      if (url.pathname.includes('693134-duna-parte-dois')) return { body: pageVisionCine };
+      throw new Error(`Rota VisionCine inesperada: ${url.pathname}`);
     }
     if (url.hostname === 'watch.brstream.cc') {
       if (url.pathname === '/fetch_series_data.php') {
@@ -401,7 +443,7 @@ test('2.1 HTTP fora de 2xx na busca é erro registrado e devolve lista vazia', a
   const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
 
   assert.deepEqual(Array.from(streams), []);
-  assert.match(runtime.errors[0], /\[CineAgora\] Falha em movie 693134: HTTP 500/);
+  assert.match(runtime.errors[0], /\[CineAgora\] Falha em movie 693134: Nenhum catálogo produziu stream: CineAgora: HTTP 500/);
 });
 
 test('2.1 busca sem cartões nem mensagem de ausência é erro de estrutura', async () => {
@@ -542,7 +584,7 @@ test('3.3 todos os espelhos falham e o erro agregado sobe', async () => {
 
   assert.deepEqual(Array.from(streams), []);
   assert.equal(runtime.warnings.length, 2);
-  assert.match(runtime.errors[0], /\[CineAgora\] Falha em movie 1665710: Nenhuma opção produziu stream: Opção Dublado: HTTP 500 .*Opção Legendado: HTTP 500/);
+  assert.match(runtime.errors[0], /\[CineAgora\] Falha em movie 1665710: Nenhum catálogo produziu stream: CineAgora: Nenhuma opção produziu stream: Opção Dublado: HTTP 500 .*Opção Legendado: HTTP 500/);
 });
 
 test('5.1 rótulo desconhecido usa DUAL da release como dublado sem região comprovada', async () => {
@@ -594,14 +636,177 @@ test('5.2 erro inesperado é registrado com [CineAgora] e devolve lista vazia', 
   const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
 
   assert.deepEqual(Array.from(streams), []);
-  assert.match(runtime.errors[0], /\[CineAgora\] Falha em movie 693134: falha simulada/);
+  assert.match(runtime.errors[0], /\[CineAgora\] Falha em movie 693134: Nenhum catálogo produziu stream: CineAgora: falha simulada/);
+});
+
+test('6.2 e 6.3 unem o mesmo arquivo dos três catálogos e mantêm o rótulo do primeiro', async () => {
+  const runtime = makeRuntime(fullRoute({
+    cinegratisSearch: searchCineGratis,
+    visioncineSearch: searchVisionCine,
+    cinegratisPage: pageCineGratis.replace('DUBLADO', 'LEGENDADO'),
+  }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.equal(streams.length, 1);
+  assert.equal(streams[0].language, 'Dublado');
+  assert.equal(streams[0].url, 'https://watch.brstream.cc/m3u8/42/0123456789abcdef0123456789abcdef/master.txt?s=1&id=9001&cache=1');
+  assert.equal(watchCalls(runtime.calls).length, 3);
+  assert.deepEqual(runtime.errors, []);
+  assert.deepEqual(runtime.warnings, []);
+});
+
+test('6.2 arquivos diferentes em catálogos diferentes permanecem', async () => {
+  const differentWatch = replaceAll(watchMovie, [
+    ['"id":"9001"', '"id":"9003"'],
+    ['"uid":"42"', '"uid":"44"'],
+    ['"md5":"0123456789abcdef0123456789abcdef"', '"md5":"11111111111111111111111111111111"'],
+  ]);
+  const runtime = makeRuntime(fullRoute({
+    cinegratisSearch: searchCineGratis,
+    cinegratisPage: pageCineGratis.replace('MOVDUB1', 'MOVLEG2'),
+    watch: (url) => (url.searchParams.get('v') === 'MOVLEG2' ? { body: differentWatch } : { body: watchMovie }),
+  }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.equal(streams.length, 2);
+  assert.deepEqual(Array.from(streams, (stream) => stream.url), [
+    'https://watch.brstream.cc/m3u8/42/0123456789abcdef0123456789abcdef/master.txt?s=1&id=9001&cache=1',
+    'https://watch.brstream.cc/m3u8/44/11111111111111111111111111111111/master.txt?s=1&id=9003&cache=1',
+  ]);
+});
+
+test('6.4 um catálogo fora do ar não interrompe os demais', async () => {
+  const runtime = makeRuntime(fullRoute({
+    cinegratisSearch: () => ({ status: 503, body: 'indisponível' }),
+  }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.equal(streams.length, 1);
+  assert.match(runtime.warnings[0], /\[CineAgora\] Catálogo CineGratis descartado: HTTP 503/);
+  assert.deepEqual(runtime.errors, []);
+});
+
+test('5.4 e 7.2 VisionCine envia Referer na busca e na página', async () => {
+  const runtime = makeRuntime(fullRoute({
+    search: searchEmpty,
+    cinegratisSearch: searchEmpty,
+    visioncineSearch: searchVisionCine,
+    visioncinePage: pageVisionCine,
+  }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.equal(streams.length, 1);
+  const visionSearch = runtime.calls.find((call) => new URL(call.url).hostname === 'visioncine.lol' && new URL(call.url).pathname === '/index.php');
+  const visionPage = runtime.calls.find((call) => new URL(call.url).hostname === 'visioncine.lol' && new URL(call.url).pathname !== '/index.php');
+  assert.ok(visionSearch);
+  assert.ok(visionPage);
+  assert.equal(visionSearch.init.headers.Referer, 'https://visioncine.lol/');
+  assert.equal(visionPage.init.headers.Referer, 'https://visioncine.lol/');
+});
+
+test('5.5 ambiguidade por catálogo é ausência daquele catálogo', async () => {
+  const ambiguous = searchCineGratis.replace('</ul>', `
+    <li class="film">
+      <a class="tt" href="https://cinegratis.tv/filmes-hd-gratis/693134-duna-parte-dois-2.html">
+        <h2 class="film-tt"><span class="kt">Duna: Parte Dois</span></h2>
+        <span class="film-yil">2024</span>
+      </a>
+    </li>
+  </ul>`);
+  const runtime = makeRuntime(fullRoute({
+    search: searchEmpty,
+    cinegratisSearch: ambiguous,
+    visioncineSearch: searchEmpty,
+  }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.deepEqual(Array.from(streams), []);
+  assert.deepEqual(runtime.errors, []);
+});
+
+test('5.4 CineGratis confirma por IMDb quando a página não publica IMDb', async () => {
+  const withoutImdb = pageCineGratis.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, '');
+  const runtime = makeRuntime(fullRoute({
+    search: searchEmpty,
+    cinegratisSearch: searchCineGratis,
+    cinegratisPage: withoutImdb,
+    visioncineSearch: searchEmpty,
+  }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.equal(streams.length, 1);
+  assert.equal(streams[0].url, 'https://watch.brstream.cc/m3u8/42/0123456789abcdef0123456789abcdef/master.txt?s=1&id=9001&cache=1');
+  assert.deepEqual(runtime.errors, []);
+});
+
+test('2.1 busca sem cartões em página válida é ausência sem erro', async () => {
+  const runtime = makeRuntime(fullRoute({
+    search: searchNoMarker,
+    cinegratisSearch: searchEmpty,
+    visioncineSearch: searchEmpty,
+  }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.deepEqual(Array.from(streams), []);
+  assert.deepEqual(runtime.errors, []);
+});
+
+test('5.4 VisionCine usa o ano do resultado quando o título não traz ano', async () => {
+  const runtime = makeRuntime(fullRoute({
+    search: searchEmpty,
+    cinegratisSearch: searchEmpty,
+    visioncineSearch: searchVisionCine,
+    visioncinePage: pageVisionCineNoYear,
+  }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.equal(streams.length, 1);
+  assert.deepEqual(runtime.errors, []);
+});
+
+test('5.4 VisionCine descarta candidato de ano divergente sem título com ano', async () => {
+  const searchWrongYear = searchVisionCine.replace('<div class="poster-year">2024</div>', '<div class="poster-year">2025</div>');
+  const runtime = makeRuntime(fullRoute({
+    search: searchEmpty,
+    cinegratisSearch: searchEmpty,
+    visioncineSearch: searchWrongYear,
+    visioncinePage: pageVisionCineNoYear,
+  }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.deepEqual(Array.from(streams), []);
+  assert.deepEqual(runtime.errors, []);
+});
+
+test('5.3 resultado sem ano no CineGratis é descartado sem derrubar o catálogo', async () => {
+  const runtime = makeRuntime(fullRoute({
+    search: searchEmpty,
+    cinegratisSearch: searchCineGratisMixed,
+    visioncineSearch: searchEmpty,
+  }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.equal(streams.length, 1);
+  assert.deepEqual(runtime.errors, []);
+});
+
+test('5.3 CineGratis sem nenhum resultado com título e ano é erro de estrutura', async () => {
+  const runtime = makeRuntime(fullRoute({
+    search: searchEmpty,
+    cinegratisSearch: searchCineGratisInvalid,
+    visioncineSearch: searchEmpty,
+  }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.deepEqual(Array.from(streams), []);
+  assert.match(runtime.errors[0], /\[CineAgora\].*sem título ou ano/);
 });
 
 test('1.2 manifest anuncia filme e série em HLS e as fixtures estão sanitizadas', () => {
   const entry = manifest.scrapers.find((scraper) => scraper.id === 'cineagora');
   assert.ok(entry);
   assert.equal(entry.name, 'CineAgora');
-  assert.equal(entry.version, '1.0.0');
+  assert.equal(entry.version, '1.1.0');
   assert.deepEqual(entry.supportedTypes, ['movie', 'tv']);
   assert.deepEqual(entry.formats, ['m3u8']);
   assert.deepEqual(entry.contentLanguage, ['pt']);

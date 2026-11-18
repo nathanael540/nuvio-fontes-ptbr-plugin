@@ -4,7 +4,7 @@
 
 ### Requirement: Busca pelo IMDb e fallback por título
 
-O provedor SHALL consultar a busca de cada catálogo configurado — CineAgora, CineGratis e VisionCine — com o IMDb informado pelo TMDB. Sem candidato confirmado, SHALL consultar o título PT-BR e, se diferente, o título original. Cada consulta SHALL usar no máximo a primeira página de resultados.
+O provedor SHALL consultar a busca de cada catálogo configurado — CineAgora, CineGratis e VisionCine — com o IMDb informado pelo TMDB. Sem candidato confirmado, SHALL consultar o título PT-BR e, se diferente, o título original. Cada consulta SHALL usar no máximo a primeira página de resultados. A busca e as páginas do VisionCine SHALL ser consultadas com `Referer` da própria base, porque respondem 403 sem ele.
 
 #### Scenario: IMDb encontra o título
 
@@ -25,6 +25,11 @@ O provedor SHALL consultar a busca de cada catálogo configurado — CineAgora, 
 
 - **WHEN** o provedor inicia a busca de um pedido
 - **THEN** ele consulta a busca própria de CineAgora, CineGratis e VisionCine, cada uma na primeira página.
+
+#### Scenario: VisionCine com `Referer`
+
+- **WHEN** o provedor consulta a busca ou a página do VisionCine
+- **THEN** a requisição leva `Referer` da base do VisionCine e o site responde 200.
 
 #### Scenario: Um catálogo sem o título
 
@@ -96,13 +101,13 @@ Busca vazia, nenhum candidato confirmado e candidato de outro tipo SHALL ser aus
 
 #### Scenario: Falha de rede ou HTTP
 
-- **WHEN** a busca responde fora de 2xx ou a conexão falha
-- **THEN** o erro sobe até `getStreams`, que registra com `[CineAgora]` e devolve lista vazia.
+- **WHEN** a busca de um catálogo responde fora de 2xx ou a conexão falha
+- **THEN** o erro é isolado daquele catálogo e os demais continuam; se nenhum produzir stream, o erro agregado sobe até `getStreams`, que registra com `[CineAgora]` e devolve lista vazia.
 
 #### Scenario: Página de candidato ilegível
 
 - **WHEN** a página do candidato não traz título ou ano no formato esperado
-- **THEN** o provedor lança erro de estrutura em vez de tratar como ausência.
+- **THEN** o provedor lança erro de estrutura daquele catálogo, isolado dos demais, em vez de tratar como ausência.
 
 #### Scenario: Um catálogo falha e outro confirma
 
@@ -144,3 +149,22 @@ O provedor SHALL resolver o player de cada catálogo confirmado e unir os stream
 
 - **WHEN** um catálogo confirma o título, mas não produz nenhum stream, e outro produz
 - **THEN** a ausência daquele catálogo não elimina os streams dos demais.
+
+### Requirement: Triagem de resultados e busca vazia
+
+Busca sem cartões em página com o formulário do catálogo SHALL ser ausência, mesmo sem a mensagem DLE. Resultado sem título ou ano SHALL ser descartado; se nenhum resultado do termo tiver título e ano, o catálogo SHALL falhar.
+
+#### Scenario: Busca não latina sem marcador
+
+- **WHEN** a busca responde uma página de busca válida sem cartões e sem a mensagem de ausência
+- **THEN** o termo é tratado como ausência e os demais termos continuam.
+
+#### Scenario: Resultado sem ano no meio da lista
+
+- **WHEN** um resultado do CineGratis não tem título ou ano e outros resultados do mesmo termo têm
+- **THEN** o resultado incompleto é descartado e os demais seguem para confirmação.
+
+#### Scenario: Todos os resultados sem título ou ano
+
+- **WHEN** todos os resultados do CineGratis no termo estão sem título ou ano
+- **THEN** o catálogo falha como erro de estrutura, em vez de tratar como ausência.

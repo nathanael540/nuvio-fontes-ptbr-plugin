@@ -34,14 +34,15 @@ const VIDEO_SLUG = /^[A-Za-z0-9]+$/;
  * demais. Sem nenhum stream, o erro agregado sobe quando alguma opção falhou; ausência em todas
  * devolve `{ status: 'absent' }`.
  *
- * @param {{ url: string, html: string }} content - Página confirmada do catálogo.
+ * @param {{ url: string, html: string, catalog: { mirrorSelector: string } }} content - Página confirmada do catálogo.
  * @param {{ mediaType: 'movie'|'tv', season: number|null, episode: number|null }} request - Pedido validado.
  * @param {import('../_blocks/tmdb-info/index.mjs').MediaInfo} media - Dados do TMDB.
+ * @param {Set<string>} [seen] - Chaves `uid|md5|id` já vistas na união dos catálogos.
  * @returns {Promise<{ status: 'ok', streams: object[] }|{ status: 'absent' }>} Resultado das opções.
  * @throws {Error} Se todas as opções falharem ou se nenhuma produzir stream com falha registrada.
  */
-export async function resolvePlayer(content, request, media) {
-  const options = readMirrors(content.html, content.url);
+export async function resolvePlayer(content, request, media, seen = new Set()) {
+  const options = readMirrors(content.html, content.url, content.catalog.mirrorSelector);
   if (options.length === 0) return { status: 'absent' };
   const streams = [];
   const failures = [];
@@ -49,6 +50,9 @@ export async function resolvePlayer(content, request, media) {
     try {
       const resolved = await resolveOption(option, request);
       if (resolved === null) continue;
+      const key = optionKey(resolved.video);
+      if (seen.has(key)) continue;
+      seen.add(key);
       streams.push(buildOptionStream(resolved, media, request));
     } catch (error) {
       const detail = `Opção ${option.label} descartada: ${error.message}`;
@@ -62,21 +66,29 @@ export async function resolvePlayer(content, request, media) {
 }
 
 /**
- * Lê os botões de espelho e mantém só os links do BrStream.
+ * Lê os elementos de espelho e mantém só os links do BrStream.
+ *
+ * Elementos sem `data-link`, trailer e hosts desconhecidos são triagem, não erro.
+ *
  * @param {string} html - HTML da página de filme ou série.
  * @param {string} pageUrl - URL da página, usada para resolver links relativos.
+ * @param {string} selector - Seletor de espelhos do catálogo.
  * @returns {MirrorOption[]} Opções BrStream na ordem da página.
- * @throws {Error} Se um botão de espelho não tiver `data-link` válido.
  */
-function readMirrors(html, pageUrl) {
+function readMirrors(html, pageUrl, selector) {
   const $ = getCheerio().load(html);
-  const buttons = $('.mirrors .button');
+  const buttons = $(selector);
   const options = [];
   for (let index = 0; index < buttons.length; index += 1) {
     const button = buttons.eq(index);
     const link = button.attr('data-link');
-    if (!link) throw new Error(`Botão ${index + 1} de espelho sem data-link`);
-    const url = new URL(link, pageUrl);
+    if (!link) continue;
+    let url;
+    try {
+      url = new URL(link, pageUrl);
+    } catch {
+      continue;
+    }
     if (url.hostname !== PLAYER_HOST) continue;
     const text = button.text().replace(/\s+/g, ' ').trim();
     options.push({ label: text === '' ? `#${index + 1}` : text, url: url.href });
@@ -88,7 +100,7 @@ function readMirrors(html, pageUrl) {
  * Resolve uma opção conforme o tipo pedido.
  * @param {MirrorOption} option - Espelho BrStream.
  * @param {{ mediaType: 'movie'|'tv', season: number|null, episode: number|null }} request - Pedido validado.
- * @returns {Promise<{ video: { url: string, quality: * }, filename: string|null, label: string }|null>}
+ * @returns {Promise<{ video: { url: string, quality: *, uid: string, md5: string, id: string }, filename: string|null, label: string }|null>}
  *   Opção resolvida ou null quando a mídia/episódio é ausência.
  * @throws {Error} Se a página ou o player não tiverem a estrutura esperada.
  */
@@ -100,7 +112,7 @@ async function resolveOption(option, request) {
 /**
  * Resolve um espelho de filme em `watch.brstream.cc/watch`.
  * @param {MirrorOption} option - Espelho BrStream.
- * @returns {Promise<{ video: { url: string, quality: * }, filename: string|null, label: string }>} Opção resolvida.
+ * @returns {Promise<{ video: { url: string, quality: *, uid: string, md5: string, id: string }, filename: string|null, label: string }>} Opção resolvida.
  * @throws {Error} Se o caminho não for de filme ou o player não publicar um `video` válido.
  */
 async function resolveMovieOption(option) {
@@ -117,7 +129,7 @@ async function resolveMovieOption(option) {
  * Resolve um espelho de série: página `tv/<slug>`, episódio por coordenadas e página `watch`.
  * @param {MirrorOption} option - Espelho BrStream.
  * @param {{ season: number, episode: number }} request - Pedido de série validado.
- * @returns {Promise<{ video: { url: string, quality: * }, filename: string|null, label: string }|null>}
+ * @returns {Promise<{ video: { url: string, quality: *, uid: string, md5: string, id: string }, filename: string|null, label: string }|null>}
  *   Opção resolvida ou null quando a temporada/episódio não existe.
  * @throws {Error} Se a página, a resposta da série ou o player não tiverem a estrutura esperada.
  */
@@ -173,7 +185,7 @@ function findEpisode(data, request) {
  *
  * @param {string} html - HTML da página do player.
  * @param {string} url - URL do player, usada nas mensagens de erro.
- * @returns {{ url: string, quality: *, title: * }} Playlist master e dados declarados.
+ * @returns {{ url: string, quality: *, title: *, uid: string, md5: string, id: string }} Playlist master e dados declarados.
  * @throws {Error} Se o objeto `video` estiver ausente ou fora do contrato.
  */
 function readVideo(html, url) {
@@ -195,7 +207,16 @@ function readVideo(html, url) {
     throw new Error(`md5 inválido em ${url}: ${video.md5}`);
   }
   const master = `${PLAYER_ORIGIN}/m3u8/${uid}/${video.md5}/master.txt?s=1&id=${id}&cache=${video.status}`;
-  return { url: master, quality: video.quality, title: video.title };
+  return { url: master, quality: video.quality, title: video.title, uid, md5: video.md5, id };
+}
+
+/**
+ * Chave de deduplicação do arquivo BrStream.
+ * @param {{ uid: string, md5: string, id: string }} video - Objeto `video` validado.
+ * @returns {string} Chave `uid|md5|id`.
+ */
+function optionKey(video) {
+  return `${video.uid}|${video.md5}|${video.id}`;
 }
 
 /**

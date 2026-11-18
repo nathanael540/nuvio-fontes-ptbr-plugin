@@ -42,7 +42,7 @@ Alternativas:
 2. **Dois provedores novos e o CineAgora intacto.** Descartada pelo mesmo motivo; a diferença de marcação é resolvida por configuração de catálogo, não por provedor.
 3. **Um provedor com três catálogos.** Escolhida.
 
-O manifest ganha apenas a entrada do VenoPlay; a entrada do CineAgora muda de versão e descrição. Os nomes CineGratis e VisionCine aparecem na descrição, nos testes e em `providers.md`, não como `scrapers`.
+O manifest ganha apenas a entrada do VenoPlay; a entrada do CineAgora sobe de `1.0.0` para `1.1.0` e muda a descrição. Os nomes CineGratis e VisionCine aparecem na descrição, nos testes e em `providers.md`, não como `scrapers`.
 
 ### D2. A VenoPlay usa o fluxo oficial de busca e `get_players`
 
@@ -58,22 +58,22 @@ O `mediaId` interno é extraído da página; o `get_players` recebe `season_numb
 
 ### D3. Configuração por catálogo no CineAgora
 
-`src/cineagora/catalogs.js` passa a declarar os três catálogos com: `id`, `name`, `baseUrl`, `hosts` aceitos, `sections` de filme e série, `searchUrl`, `parseResults`, `readIdentity` e `mirrorSelector`. O `catalog.js` mantém uma única orquestração e chama o adaptador de cada catálogo. A configuração é estática e local; não há descoberta de domínio nem cache.
+`src/cineagora/catalogs.js` passa a declarar os três catálogos com: `id`, `name`, `baseUrl`, `hosts` aceitos, `sections` de filme e série, `searchUrl`, `pageHeaders` (incluindo o `Referer` exigido pelo VisionCine), `parseResults`, `readIdentity` e `mirrorSelector`. O `catalog.js` mantém uma única orquestração e chama o adaptador de cada catálogo. A configuração é estática e local; não há descoberta de domínio nem cache. O `ContentPage` confirmado carrega o catálogo de origem, e o `index.js` o repassa ao `resolvePlayer` para que o seletor de espelhos e a ordem de deduplicação sejam os daquele catálogo.
 
 A busca dos três catálogos roda em paralelo, com cada promessa convertida em `{ ok, value }` ou `{ ok: false, error }` antes de `Promise.all`, porque `Promise.allSettled` não foi confirmado no runtime. Dentro de um catálogo, as consultas continuam sequenciais e param no primeiro candidato confirmado. Os players são resolvidos em ordem de catálogo (CineAgora, CineGratis, VisionCine) para que o primeiro rótulo prevaleça na deduplicação.
 
 ### D4. Identidade por catálogo
 
 1. **CineAgora.** Mantém os seletores atuais: `h1.title`, `span.date a` e `div.imdb a`; a regra de IMDb, título e ano continua.
-2. **CineGratis.** O resultado `li.film a.tt` traz o título PT-BR, `h2.film-tt .kt` o original e `span.film-yil` o ano; a página confirma `h1 > a`, `h2` e, quando o JSON-LD publicar, o IMDb em `sameAs`. A busca por IMDb com um único resultado do tipo também confirma, porque o índice do site casa o ID.
-3. **VisionCine.** O cartão `div.poster-container` traz o título no `img[alt]`/`title` e o ano em `.poster-year`; a página confirma o `h1` com o título PT-BR e o `<small>` com o original, e o ano no `<title>`. A página não publica IMDb; a busca por IMDb com um único resultado do tipo é a confirmação de identidade, sempre acompanhada de título e ano compatíveis.
+2. **CineGratis.** O catálogo é consultado em `cinegratis.co`; o domínio `cinegratis.tv` pode responder com gateway anti-bot. O resultado `li.film a.tt` traz o título PT-BR, `h2.film-tt .film-title`/`.kt` o título e o original, e `span.film-yil` o ano; a página confirma `h1 > a`, `h2` e, quando o JSON-LD publicar, o IMDb em `sameAs`. A busca por IMDb com um único resultado do tipo também confirma, porque o índice do site casa o ID. Resultado sem título ou ano é descartado; se nenhum resultado do termo tiver título e ano, o catálogo falha como erro de estrutura. Busca sem cartões em página com o formulário do catálogo é ausência, mesmo quando a mensagem DLE não aparece; página sem os marcadores de busca é erro.
+3. **VisionCine.** O cartão `div.poster-container` traz o título no `img[alt]`/`title` e o ano em `.poster-year`; a página confirma o `h1` com o título PT-BR e o `<small>` com o original, e o ano no `<title>`. A página não publica IMDb; a busca por IMDb com um único resultado do tipo é a confirmação de identidade, sempre acompanhada de título e ano compatíveis. A busca e as páginas do VisionCine SHALL ser consultadas com `Referer` da própria base; sem ele, o site responde 403.
 4. **Ambiguidade.** É por catálogo e termo. O mesmo título confirmado em vários catálogos é o caso esperado e segue para o player em todos.
 
 A busca por IMDb é a primeira em todos; sem candidato, o título PT-BR e o original. Cada catálogo abre no máximo três candidatos por termo. Página sem título ou ano no formato esperado é erro de estrutura daquele catálogo, não ausência.
 
 ### D5. União e deduplicação
 
-O `index.js` recebe os catálogos confirmados e resolve o player em ordem. O `resolvePlayer` passa a receber um `Set` compartilhado de chaves; cada opção resolvida calcula `uid|md5|id` e só entra se a chave for nova. O primeiro catálogo na ordem fornece o rótulo e os detalhes da release; os demais são ignorados quando o arquivo é o mesmo.
+O `index.js` recebe os catálogos confirmados e resolve o player em ordem. O `ContentPage` leva o catálogo de origem; o `resolvePlayer` usa o `mirrorSelector` desse catálogo e recebe um `Set` compartilhado de chaves. Cada opção resolvida calcula `uid|md5|id` e só entra se a chave for nova. O primeiro catálogo na ordem fornece o rótulo e os detalhes da release; os demais são ignorados quando o arquivo é o mesmo.
 
 Se o player não tiver `uid`, `md5` ou `id` válidos, a opção já falha pelo contrato atual e não entra na união. Não há deduplicação por título; arquivos distintos continuam distintos.
 
@@ -89,9 +89,9 @@ O comportamento de lançar erro em botão sem `data-link` é substituído por tr
 2. **TMDB.** `getMediaInfo` fornece título PT-BR, original e ano; é a única chave externa.
 3. **Semente.** `fetchPage('https://www2.venoplay.com')`, usar o host final em busca, página e API; sem redirecionamento, usar o host da semente; em falha, `https://w2.venoplay.site`. Sem cache.
 4. **Busca.** `GET /busca?q=<termo>` com título PT-BR e original; ler os `div.poster-card`, deduplicar cartões repetidos por URL, confirmar título exato e tipo `Filme`/`Série`.
-5. **Página.** Abrir o cartão, ler o JSON-LD (`@type` `Movie`/`TVSeries` e `datePublished`), confirmar o ano, extrair o `mediaId` de `const mediaId = <n>` ou da chamada `get_players?id=<n>`.
+5. **Página.** Abrir o cartão, ler o JSON-LD (`@type` `Movie`/`TVSeries` e `datePublished`), confirmar o ano, extrair o `mediaId` de `const mediaId = <n>` ou da chamada `get_players?id=<n>`. A rodada online de 2026-11-18 encontrou JSON-LD vazio em várias páginas; nesse caso, o título sai do `h1`, o ano do `datePublished` embutido no HTML e o tipo do cartão. Página sem JSON-LD utilizável, sem título/ano visível ou sem `mediaId` é erro de estrutura.
 6. **Players.** `GET /api/get_players?id=<id>&season_number=<s>&episode_number=<e>&site_id=4` com `Referer` da página, `X-Requested-With` e `Accept: application/json`; validar `players` como lista.
-7. **mgeb.** Para cada item `Dublado` com host `mgeb.space`/`mgeb.lat`, abrir o embed, ler `var sources`, manter HLS `.m3u8` HTTPS de `mgeb.space`, rejeitar `workers.dev`, `username`, `token`, `password`, `fontedecanais`, `novix.x10.mx` e `infrastructuredesign.space`; em falha do host, tentar o outro host `mgeb` uma vez.
+7. **mgeb.** Para cada item `Dublado` com host `mgeb.space`/`mgeb.lat`, abrir o embed, ler `var sources`, manter HLS `.m3u8` HTTPS de `mgeb.space` ou `mgeb.lat`, rejeitar `workers.dev`, URL com userinfo ou com parâmetro `username`, `token` ou `password`, e os hosts `fontedecanais`, `novix.x10.mx` e `infrastructuredesign.space`; em falha do host, tentar o outro host `mgeb` uma vez.
 8. **Legendado.** `nhdapi.com` é triagem sem requisição; o host recusou conexão na observação.
 9. **Streams.** `buildStream` com `FORMATTER.AUTO`, `addon` `VenoPlay`, `provider` `MGEB`, `type` `hls`, título/ano, temporada/episódio, idioma do rótulo e `quality` `Desconhecida`; sem sonda, sem `name`/`title`.
 
@@ -108,10 +108,10 @@ As mudanças são específicas de catálogo e de fonte: a variação DLE multi-s
 
 ### D10. Testes e evidência
 
-1. **Fixtures.** `test/fixtures/venoplay/` com busca, busca vazia, página de filme, página de série, `get_players` de filme/série, `players` vazio, `mgeb` com HLS válido, com credencial, com worker, sem `sources` e com host alternativo. `test/fixtures/cineagora/` ganha busca/página/espelho de CineGratis e VisionCine e os casos de deduplicação. Nenhuma fixture contém URL de mídia real, token, cookie ou hash de arquivo.
+1. **Fixtures.** `test/fixtures/venoplay/` com busca, busca vazia, página de filme, página de série, página com JSON-LD vazio e fallback por `h1`/`datePublished`, `get_players` de filme/série, `players` vazio, `mgeb` com HLS válido em `mgeb.space` e em `mgeb.lat`, com credencial na URL e em parâmetro, com worker, com `novix.x10.mx`, com `infrastructuredesign.space`, com `fontedecanais`, sem `sources` e com host alternativo. `test/fixtures/cineagora/` ganha busca/página/espelho de CineGratis e VisionCine, busca sem marcador em página válida, resultado do CineGratis sem ano no meio da lista, página do VisionCine sem ano no título e os casos de deduplicação. Nenhuma fixture contém URL de mídia real, token, cookie ou hash de arquivo.
 2. **Offline.** Testes do pacote gerado com `fetch` simulado; filme, série, ausência, ambiguidade, falha de catálogo, dedupe e rótulos.
 3. **Online.** `npm run test:online -- --provider venoplay --record` e `--provider cineagora --record`, com a chave só no ambiente. A versão nova do CineAgora invalida a evidência antiga; a linha volta a `🟠 Não verificado` até a rodada e só então recebe o status.
-4. **Documentação.** `providers.md` registra as duas linhas/seções; `docs/provider-investigation.md` §3.14 ganha a variação de catálogos DLE com o mesmo player BrStream e uma seção nova (3.38) descreve a busca + `get_players` + `mgeb`.
+4. **Documentação.** `providers.md` registra as duas linhas/seções; `docs/provider-investigation.md` §3.14 ganha a variação de catálogos DLE com o mesmo player BrStream e uma seção nova (3.39) descreve a busca + `get_players` + `mgeb`.
 
 ## Risks / Trade-offs
 
@@ -125,6 +125,8 @@ As mudanças são específicas de catálogo e de fonte: a variação DLE multi-s
 8. **A versão nova do CineAgora invalida a rodada antiga.** → A linha e a seção voltam a `🟠 Não verificado`; a rodada online do pacote final define o status. Não reaproveitar a evidência anterior.
 9. **A VenoPlay exige `TMDB_API_KEY`.** → Sem a chave, a chamada é inconclusiva por configuração; o README já documenta o requisito. Não há chave no repositório.
 10. **Três catálogos aumentam a latência.** → Busca concorrente entre catálogos, consultas sequenciais dentro de cada um e parada no primeiro confirmado; o app gerencia o tempo e o provedor não impõe timeout próprio.
+11. **CineGratis pode responder com gateway anti-bot.** → A checagem de 2026-11-18 recebeu um redirecionamento para `dumuz-lqa.com` no domínio `cinegratis.tv`; o mesmo catálogo em `cinegratis.co` respondeu sem o gateway e usa a mesma marcação. O provedor usa o `.co` e mantém o `.tv` entre os hosts aceitos; se o `.co` também bloquear, a falha fica isolada e a rodada online registra a cobertura real.
+12. **O `mgeb` do filme pode não publicar HLS em host comprovado.** → No filme observado, as fontes eram MP4/HLS de hosts rejeitados; a opção resulta em ausência, sem stream inventado. A série publicou HLS em `mgeb.space`, que continua aceito.
 
 ## Migration Plan
 
@@ -136,3 +138,14 @@ As mudanças são específicas de catálogo e de fonte: a variação DLE multi-s
 6. Arquivar a mudança após a revisão e a evidência online, ou declarar explicitamente o que ficou fora.
 
 Rollback: reverter os arquivos do provedor, as entradas do manifest e as seções de `providers.md`; não há estado persistido, migração de dados ou cache a limpar.
+
+## Validation
+
+1. `openspec validate adicionar-venoplay-e-catalogos-cineagora --strict` passa; os requisitos ficam em até 500 caracteres.
+2. `npm run lint` passa e `npm test` executou 1718 testes, todos aprovados, em 18/11/2026.
+3. `node build.js venoplay cineagora` gerou os três pacotes de cada provedor e os `<formato>/manifest.json`; `node --test test/build.test.js` passou.
+4. `node --test test/venoplay.test.js` passou com 30 testes e `node --test test/cineagora.test.js` com 44 testes, sem internet.
+5. Rodada online da VenoPlay em 18/11/2026: pacote 1.0.0, perfil `generalista`, movie 1/5 e tv 3/5, sem inconclusivo; status `🟢 Estável` em `providers.md`.
+6. Rodada online do CineAgora em 18/11/2026: pacote 1.1.0, perfil `generalista`, movie 3/5 e tv 0/5, sem falhas nem inconclusivos; os títulos de TV da amostra final não estão no acervo dos três catálogos. Em uma rodada anterior da mesma change, com o CineGratis funcional, a TV resolveu 1/5. Status `🔵 Parcial` em `providers.md`.
+7. Fora do escopo e sem evidência: `Legendado` da VenoPlay (`nhdapi.com` recusou conexão), hosts não comprovados do `mgeb`, reprodução no aparelho e cobertura além da amostra. O CineGratis não é contornado. A amostra online usa S01E01; títulos fora do acervo ou só com temporadas posteriores ficam sem resultado.
+8. A seção 3.39 de `docs/provider-investigation.md` foi criada e a 3.14 atualizada para os três catálogos; `providers.md` registra as duas rodadas e o status real.

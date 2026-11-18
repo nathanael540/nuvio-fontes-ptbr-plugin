@@ -1,24 +1,15 @@
 /**
- * Catálogo DLE do CineAgora: busca por IMDb ou título e confirmação de identidade na página.
+ * Busca e confirmação de identidade nos catálogos da rede BrStream.
  *
- * A busca usa `index.php?do=search&subaction=search&story=<consulta>` e lê os cartões `a.item`
- * da primeira página. O candidato só é aceito quando o caminho pertence à seção do tipo pedido,
- * o título da página bate com o TMDB, o ano confere e o IMDb confere quando conhecido.
+ * Cada catálogo roda isolado: a busca consulta IMDb, título PT-BR e título original, abre no
+ * máximo três candidatos por termo e confirma a identidade na página. A falha de um catálogo é
+ * devolvida separada para o `index.js` decidir entre aviso e erro agregado.
  */
 
-import { fetchPage, fetchText } from '../_blocks/http/index.mjs';
-import { titleSimilarity } from '../_blocks/title-match/index.mjs';
+import { fetchPage } from '../_blocks/http/index.mjs';
+import { bestTitleScore, CATALOGS } from './catalogs.js';
 
-const SOURCE_URL = 'https://cineagora.club';
-const SOURCE_HOSTS = new Set(['cineagora.club', 'www.cineagora.club']);
-const SEARCH_URL = `${SOURCE_URL}/index.php?do=search&subaction=search&story=`;
-const SECTIONS = Object.freeze({
-  movie: '/filmes-hd-online/',
-  tv: '/series-online-hd-gratis/',
-});
-const MIN_TITLE_SCORE = 0.85;
 const MAX_CANDIDATES = 3;
-const NO_RESULTS = /site search yielded no results/i;
 
 /**
  * @typedef {object} ContentRequest
@@ -32,37 +23,82 @@ const NO_RESULTS = /site search yielded no results/i;
  * @typedef {object} ContentPage
  * @property {string} url - URL final da página confirmada.
  * @property {string} html - HTML da página confirmada.
+ * @property {object} catalog - Catálogo de origem, com o seletor de espelhos.
  * @property {string} title - Título lido na página.
- * @property {number} year - Ano lido na página.
- * @property {string|null} imdbId - IMDb lido na página, quando houver.
+ * @property {number} year - Ano confirmado.
+ * @property {string|null} imdbId - IMDb publicado, quando houver.
  */
 
 /**
- * Localiza a página do título no catálogo.
+ * @typedef {object} CatalogFailure
+ * @property {object} catalog - Catálogo que falhou.
+ * @property {Error} error - Causa da falha.
+ */
+
+/**
+ * Localiza os títulos em todos os catálogos configurados.
  *
- * Consulta o IMDb, depois o título PT-BR e o título original, parando no primeiro candidato
- * confirmado. Mais de um candidato confirmado na mesma consulta é ausência por ambiguidade.
+ * As buscas rodam em paralelo, com cada promessa convertida em resultado ou falha antes de
+ * `Promise.all`. O retorno preserva a ordem de `CATALOGS`, que é a ordem da deduplicação.
  *
  * @param {ContentRequest} request - Pedido validado recebido pelo provedor.
  * @param {import('../_blocks/tmdb-info/index.mjs').MediaInfo} media - Dados do TMDB.
- * @returns {Promise<ContentPage|null>} Página confirmada ou null quando o título não está no catálogo.
- * @throws {Error} Em falha de rede, HTTP fora de 2xx ou página de resultado/candidato ilegível.
+ * @returns {Promise<{ confirmed: { catalog: object, content: ContentPage }[], failures: CatalogFailure[] }>}
+ *   Catálogos confirmados e falhas isoladas.
+ * @example
+ * const found = await findContent(request, media);
+ * // { confirmed: [{ catalog, content }], failures: [] }
  */
 export async function findContent(request, media) {
+  const settled = await Promise.all(CATALOGS.map((catalog) => searchCatalog(catalog, request, media).then(
+    (value) => ({ ok: true, catalog, value }),
+    (error) => ({ ok: false, catalog, error }),
+  )));
+  const confirmed = [];
+  const failures = [];
+  for (const entry of settled) {
+    if (!entry.ok) {
+      failures.push({ catalog: entry.catalog, error: entry.error });
+      continue;
+    }
+    if (entry.value !== null) confirmed.push({ catalog: entry.catalog, content: entry.value });
+  }
+  return { confirmed, failures };
+}
+
+/**
+ * Busca e confirma um título em um catálogo.
+ *
+ * @param {object} catalog - Configuração do catálogo.
+ * @param {ContentRequest} request - Pedido validado.
+ * @param {import('../_blocks/tmdb-info/index.mjs').MediaInfo} media - Dados do TMDB.
+ * @returns {Promise<ContentPage|null>} Página confirmada ou null em ausência/ambiguidade.
+ * @throws {Error} Em falha de rede, HTTP ou estrutura daquele catálogo.
+ */
+async function searchCatalog(catalog, request, media) {
   const queries = uniqueQueries([media.imdbId, media.title, media.originalTitle]);
   for (const query of queries) {
-    const searchHtml = await fetchText(`${SEARCH_URL}${encodeURIComponent(query)}`);
-    const candidates = parseSearchResults(searchHtml, request.mediaType);
-    const ranked = rankCandidates(candidates, media).slice(0, MAX_CANDIDATES);
+    const search = await fetchPage(`${catalog.searchUrl}${encodeURIComponent(query)}`, {
+      headers: catalog.pageHeaders,
+    });
+    const $ = getCheerio().load(search.text);
+    const results = catalog.parseResults($, search.url, catalog)
+      .filter((result) => belongsToSection(result.url, request.mediaType, catalog));
+    const candidates = uniqueByUrl(results)
+      .map((result, index) => ({ result, index, score: bestTitleScore(result.titles, media) }))
+      .sort((a, b) => b.score - a.score || a.index - b.index)
+      .slice(0, MAX_CANDIDATES);
     const confirmed = [];
-    for (const candidate of ranked) {
-      const page = await fetchPage(candidate.url);
-      if (!belongsToSection(page.url, request.mediaType)) continue;
-      const identity = readIdentity(page.text, page.url);
-      if (!matchesIdentity(identity, media)) continue;
+    for (const entry of candidates) {
+      const page = await fetchPage(entry.result.url, { headers: catalog.pageHeaders });
+      if (!belongsToSection(page.url, request.mediaType, catalog)) continue;
+      const page$ = getCheerio().load(page.text);
+      const identity = catalog.readIdentity(page$, page.text, page.url, entry.result);
+      if (!catalog.matchesIdentity(identity, media)) continue;
       confirmed.push({
         url: page.url,
         html: page.text,
+        catalog,
         title: identity.title,
         year: identity.year,
         imdbId: identity.imdbId,
@@ -75,7 +111,22 @@ export async function findContent(request, media) {
 }
 
 /**
- * Remove consultas vazias e repetidas, preservando a ordem IMDb, título PT-BR e título original.
+ * Verifica se a URL pertence ao host e à seção do tipo pedido.
+ *
+ * @param {string} url - URL da página.
+ * @param {'movie'|'tv'} mediaType - Tipo de mídia pedido.
+ * @param {object} catalog - Configuração do catálogo.
+ * @returns {boolean} True quando o caminho está na seção correta.
+ */
+function belongsToSection(url, mediaType, catalog) {
+  const parsed = new URL(url);
+  return catalog.hosts.includes(parsed.hostname)
+    && parsed.pathname.startsWith(catalog.sections[mediaType]);
+}
+
+/**
+ * Remove consultas vazias e repetidas, preservando a ordem IMDb, título PT-BR e original.
+ *
  * @param {(string|null|undefined)[]} values - Valores candidatos.
  * @returns {string[]} Consultas únicas e não vazias.
  */
@@ -95,120 +146,20 @@ function uniqueQueries(values) {
 }
 
 /**
- * Lê os cartões `a.item` da busca, filtrando o host e a seção do tipo pedido.
+ * Remove resultados repetidos pela URL, mantendo a primeira ocorrência.
  *
- * Lista vazia só é ausência quando a página traz a mensagem explícita de busca sem resultados;
- * caso contrário, o layout mudou e o erro sobe.
- *
- * @param {string} html - HTML da busca.
- * @param {'movie'|'tv'} mediaType - Tipo de mídia pedido.
- * @returns {{ title: string, url: string }[]} Resultados na ordem da página.
- * @throws {Error} Se um cartão não tiver href/título ou se nem cartões nem mensagem de ausência existirem.
+ * @param {{ url: string }[]} results - Resultados na ordem da página.
+ * @returns {{ url: string }[]} Resultados únicos.
  */
-function parseSearchResults(html, mediaType) {
-  const $ = getCheerio().load(html);
-  const items = $('a.item');
-  if (items.length === 0) {
-    if (NO_RESULTS.test(html)) return [];
-    throw new Error('Busca sem cartões nem mensagem explícita de ausência');
+function uniqueByUrl(results) {
+  const seen = new Set();
+  const unique = [];
+  for (const result of results) {
+    if (seen.has(result.url)) continue;
+    seen.add(result.url);
+    unique.push(result);
   }
-  const results = [];
-  for (let index = 0; index < items.length; index += 1) {
-    const item = items.eq(index);
-    const href = item.attr('href');
-    const title = item.attr('data-title');
-    if (!href || typeof title !== 'string' || title.trim() === '') {
-      throw new Error(`Resultado ${index + 1} da busca sem href ou data-title`);
-    }
-    const url = new URL(href, SOURCE_URL);
-    if (!SOURCE_HOSTS.has(url.hostname)) continue;
-    if (!url.pathname.startsWith(SECTIONS[mediaType])) continue;
-    results.push({ title: title.trim(), url: url.href });
-  }
-  return results;
-}
-
-/**
- * Ordena candidatos por semelhança com os títulos do TMDB antes de abrir no máximo três páginas.
- *
- * A nota do cartão de busca é só uma pré-seleção: o título em português do cartão pode não bater
- * com o título original usado na consulta, e a confirmação real acontece em `h1.title` com
- * `matchesIdentity`. Por isso nenhum candidato é descartado só pela nota do cartão.
- *
- * @param {{ title: string, url: string }[]} candidates - Resultados da busca.
- * @param {import('../_blocks/tmdb-info/index.mjs').MediaInfo} media - Dados do TMDB.
- * @returns {{ title: string, url: string }[]} Candidatos do mais parecido ao menos parecido.
- */
-function rankCandidates(candidates, media) {
-  const titles = mediaTitles(media);
-  return candidates
-    .map((candidate, index) => ({ candidate, index, score: bestScore(candidate.title, titles) }))
-    .sort((a, b) => b.score - a.score || a.index - b.index)
-    .map((entry) => entry.candidate);
-}
-
-/**
- * Lê título, ano e IMDb da página do candidato.
- * @param {string} html - HTML da página.
- * @param {string} url - URL da página, usada nas mensagens de erro.
- * @returns {{ title: string, year: number, imdbId: string|null }} Identidade lida.
- * @throws {Error} Se a página não trouxer `h1.title` ou o ano em `span.date a`.
- */
-function readIdentity(html, url) {
-  const $ = getCheerio().load(html);
-  const title = $('h1.title').eq(0).text().trim();
-  if (title === '') throw new Error(`Página ${url} sem h1.title`);
-  const yearText = $('span.date a').eq(0).text().trim();
-  if (!/^\d{4}$/.test(yearText)) throw new Error(`Página ${url} sem ano em span.date`);
-  const imdbHref = $('div.imdb a').eq(0).attr('href') || '';
-  const imdb = /tt\d{5,}/.exec(imdbHref);
-  return { title, year: Number(yearText), imdbId: imdb ? imdb[0] : null };
-}
-
-/**
- * Confere a identidade lida na página com o título do TMDB.
- *
- * Ano e IMDb são comparados só quando o TMDB os conhece. Quando o TMDB conhece o IMDb, a página
- * precisa publicá-lo igual; ausência de IMDb na página descarta o candidato.
- *
- * @param {{ title: string, year: number, imdbId: string|null }} identity - Identidade da página.
- * @param {import('../_blocks/tmdb-info/index.mjs').MediaInfo} media - Dados do TMDB.
- * @returns {boolean} True quando o candidato pode ser aceito.
- */
-function matchesIdentity(identity, media) {
-  if (media.year !== null && identity.year !== media.year) return false;
-  if (media.imdbId !== null && identity.imdbId !== media.imdbId) return false;
-  return bestScore(identity.title, mediaTitles(media)) >= MIN_TITLE_SCORE;
-}
-
-/**
- * Verifica se a URL pertence à seção do tipo pedido.
- * @param {string} url - URL da página.
- * @param {'movie'|'tv'} mediaType - Tipo de mídia pedido.
- * @returns {boolean} True quando o caminho está na seção correta.
- */
-function belongsToSection(url, mediaType) {
-  const parsed = new URL(url);
-  return SOURCE_HOSTS.has(parsed.hostname) && parsed.pathname.startsWith(SECTIONS[mediaType]);
-}
-
-/**
- * Títulos do TMDB usados na comparação.
- * @param {import('../_blocks/tmdb-info/index.mjs').MediaInfo} media - Dados do TMDB.
- * @returns {string[]} Título PT-BR, original e alternativos.
- */
-function mediaTitles(media) {
-  return [media.title, media.originalTitle, ...media.alternativeTitles];
-}
-
-/**
- * Maior semelhança entre um título e os títulos do TMDB.
- * @param {string} title - Título a comparar.
- * @param {string[]} titles - Títulos de referência.
- * @returns {number} Similaridade entre 0 e 1.
- */
-function bestScore(title, titles) {
-  return Math.max(...titles.map((reference) => titleSimilarity(title, reference)));
+  return unique;
 }
 
 /**

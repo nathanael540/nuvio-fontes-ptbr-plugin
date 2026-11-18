@@ -51,11 +51,33 @@ async function getStreams(tmdbId, mediaType, season, episode) {
   try {
     const request = validateInput(tmdbId, mediaType, season, episode);
     const media = await getMediaInfo({ tmdbId: request.tmdbId, mediaType: request.mediaType });
-    const content = await findContent(request, media);
-    if (content === null) return [];
-    const result = await resolvePlayer(content, request, media);
-    if (result.status === 'absent') return [];
-    return sortByQuality(result.streams);
+    const found = await findContent(request, media);
+    if (found.confirmed.length === 0 && found.failures.length === 0) return [];
+    const streams = [];
+    const failures = [];
+    const seen = new Set();
+    for (const entry of found.confirmed) {
+      try {
+        const result = await resolvePlayer(entry.content, request, media, seen);
+        if (result.status === 'ok') streams.push(...result.streams);
+      } catch (error) {
+        failures.push({ catalog: entry.catalog, error });
+      }
+    }
+    failures.push(...found.failures);
+    if (streams.length > 0) {
+      for (const failure of failures) {
+        console.warn(`[${PROVIDER_NAME}] Catálogo ${failure.catalog.name} descartado: ${failure.error.message}`);
+      }
+      return sortByQuality(streams);
+    }
+    if (failures.length > 0) {
+      const causes = failures
+        .map((failure) => `${failure.catalog.name}: ${failure.error.message}`)
+        .join('; ');
+      throw new Error(`Nenhum catálogo produziu stream: ${causes}`);
+    }
+    return [];
   } catch (error) {
     console.error(`[${PROVIDER_NAME}] Falha em ${mediaType} ${tmdbId}: ${error.message}`);
     return [];

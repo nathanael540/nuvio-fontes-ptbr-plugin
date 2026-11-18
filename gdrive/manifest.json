@@ -323,8 +323,8 @@
     {
       "id": "cineagora",
       "name": "CineAgora",
-      "description": "Filmes e séries em HLS do catálogo CineAgora, dublados ou legendados conforme os espelhos do player BrStream.",
-      "version": "1.0.0",
+      "description": "Filmes e séries em HLS dos catálogos CineAgora, CineGratis e VisionCine, dublados ou legendados conforme os espelhos do player BrStream.",
+      "version": "1.1.0",
       "author": "nathanael540",
       "supportedTypes": [
         "movie",
@@ -865,6 +865,26 @@
         "pt"
       ],
       "logo": "https://www.google.com/s2/favicons?domain=otakulogia.com&sz=128"
+    },
+    {
+      "id": "venoplay",
+      "name": "VenoPlay",
+      "description": "Filmes e séries em HLS da VenoPlay, com busca por título, confirmação de tipo e ano e player MGEB dublado.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/venoplay.js",
+      "enabled": true,
+      "formats": [
+        "m3u8"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=venoplay.com&sz=128"
     }
   ]
 }

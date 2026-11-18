@@ -48,12 +48,23 @@ function load(html) {
       _nodes: nodes,
       length: nodes.length,
       eq: (index) => wrap(index >= 0 && index < nodes.length ? [nodes[index]] : []),
+      first: () => wrap(nodes.slice(0, 1)),
       find: (selector) => select(nodes, selector),
+      closest: (selector) => {
+        let node = nodes[0];
+        while (node) {
+          if (matches(node, selector)) return wrap([node]);
+          node = node.parent;
+        }
+        return wrap([]);
+      },
       text: () => nodes.map(text).join(''),
       html: () => nodes.map(serialize).join(''),
       attr: (key) => nodes[0]?.attrs[key],
     };
   }
-  return (selector) => typeof selector === 'string' ? select([root], selector) : selector?._nodes ? selector : wrap([]);
+  const api = (selector) => (typeof selector === 'string' ? select([root], selector) : selector?._nodes ? selector : wrap([]));
+  api.html = () => html;
+  return api;
 }
 module.exports = { load };

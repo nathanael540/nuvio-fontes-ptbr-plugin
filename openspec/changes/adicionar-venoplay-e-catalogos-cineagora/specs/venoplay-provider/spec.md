@@ -23,7 +23,7 @@ O provedor SHALL aceitar `movie` e `tv` com `tmdbId` numérico; em série, tempo
 #### Scenario: Entrada inválida
 
 - **WHEN** o `tmdbId` não é numérico, o tipo não é `movie` nem `tv`, ou a série não traz temporada e episódio válidos
-- **THEN** o provedor devolve lista vazia e não faz requisição externa.
+- **THEN** o erro sobe até `getStreams`, que registra `[VenoPlay] ...` e devolve lista vazia, sem requisição externa.
 
 #### Scenario: Semente com redirecionamento
 
@@ -37,7 +37,7 @@ O provedor SHALL aceitar `movie` e `tv` com `tmdbId` numérico; em série, tempo
 
 ### Requirement: Busca e confirmação do título
 
-O provedor SHALL buscar em `/busca?q=<termo>` com o título PT-BR e o original do TMDB, ler os cartões de resultado e confirmar o título exato, o tipo (`Filme`/`Série`) e o ano publicado na página. O prefixo `filme-`/`serie-` da URL SHALL NOT decidir o tipo. Mais de um candidato confirmado SHALL ser ausência por ambiguidade.
+O provedor SHALL buscar em `/busca?q=<termo>` com o título PT-BR e o original do TMDB, ler os cartões e confirmar o título exato, o tipo (`Filme`/`Série`) e o ano publicado na página. O prefixo `filme-`/`serie-` da URL SHALL NOT decidir o tipo. Com JSON-LD vazio, o título SHALL vir do `h1`, o ano do `datePublished` embutido e o tipo do cartão. Página sem dado utilizável SHALL ser erro de estrutura. Mais de um candidato confirmado SHALL ser ausência por ambiguidade.
 
 #### Scenario: Título exato encontrado
 
@@ -58,6 +58,16 @@ O provedor SHALL buscar em `/busca?q=<termo>` com o título PT-BR e o original d
 
 - **WHEN** a página do candidato publica ano diferente do TMDB
 - **THEN** o candidato é descartado.
+
+#### Scenario: Página fora do formato
+
+- **WHEN** a página do candidato não traz JSON-LD utilizável, título/ano visível ou `mediaId`
+- **THEN** o provedor lança erro de estrutura, em vez de tratar como ausência.
+
+#### Scenario: JSON-LD vazio com fallback
+
+- **WHEN** a página do candidato tem JSON-LD vazio, mas publica `h1`, `datePublished` e `mediaId`
+- **THEN** o provedor usa o `h1` e o `datePublished` e segue com o tipo do cartão.
 
 #### Scenario: Ambiguidade
 
@@ -95,7 +105,7 @@ O provedor SHALL extrair o `mediaId` da página do título e consultar `GET /api
 
 ### Requirement: Resolução do player `mgeb`
 
-Cada item de `players` SHALL ser uma opção independente. O provedor SHALL abrir a URL do player `mgeb.space`/`mgeb.lat`, ler `var sources` e manter somente HLS `.m3u8` HTTPS de host comprovado, sem `workers.dev` e sem `username`, `token` ou `password`. O host `nhdapi.com` SHALL ser triagem. Falha de uma opção SHALL preservar as demais.
+Cada item de `players` SHALL ser uma opção independente. O provedor SHALL abrir a URL do player `mgeb.space`/`mgeb.lat`, ler `var sources` e manter somente HLS `.m3u8` HTTPS de `mgeb.space` ou `mgeb.lat`, sem `workers.dev`, sem userinfo e sem parâmetro `username`, `token` ou `password`; `novix.x10.mx`, `infrastructuredesign.space` e `fontedecanais` SHALL ser triagem. O host `nhdapi.com` SHALL ser triagem sem requisição. Falha de uma opção SHALL preservar as demais.
 
 #### Scenario: Opção dublada no `mgeb`
 
@@ -104,7 +114,7 @@ Cada item de `players` SHALL ser uma opção independente. O provedor SHALL abri
 
 #### Scenario: Fonte HLS aceita
 
-- **WHEN** `sources` traz uma URL `.m3u8` HTTPS de host comprovado
+- **WHEN** `sources` traz uma URL `.m3u8` HTTPS de `mgeb.space` ou `mgeb.lat`
 - **THEN** o provedor monta um stream HLS com essa URL.
 
 #### Scenario: Fonte com credencial

@@ -1039,33 +1039,368 @@ function bigrams(text) {
   return result;
 }
 
-// src/cineagora/catalog.js
-var SOURCE_URL = "https://cineagora.club";
-var SOURCE_HOSTS = /* @__PURE__ */ new Set(["cineagora.club", "www.cineagora.club"]);
-var SEARCH_URL = `${SOURCE_URL}/index.php?do=search&subaction=search&story=`;
-var SECTIONS = Object.freeze({
-  movie: "/filmes-hd-online/",
-  tv: "/series-online-hd-gratis/"
-});
+// src/cineagora/catalogs.js
 var MIN_TITLE_SCORE = 0.85;
-var MAX_CANDIDATES = 3;
 var NO_RESULTS = /site search yielded no results/i;
+var CATALOGS = Object.freeze([
+  {
+    id: "cineagora",
+    name: "CineAgora",
+    baseUrl: "https://cineagora.club",
+    hosts: ["cineagora.club", "www.cineagora.club"],
+    sections: { movie: "/filmes-hd-online/", tv: "/series-online-hd-gratis/" },
+    searchUrl: "https://cineagora.club/index.php?do=search&subaction=search&story=",
+    pageHeaders: {},
+    mirrorSelector: ".mirrors .button",
+    /**
+     * Lê os cartões `a.item` da busca do CineAgora.
+     * @param {object} $ - Instância do cheerio.
+     * @param {string} pageUrl - URL da busca.
+     * @param {object} catalog - Configuração do catálogo.
+     * @returns {CatalogResult[]} Resultados na ordem da página.
+     * @throws {Error} Se um cartão estiver fora do formato ou a busca não tiver cartões nem ausência.
+     */
+    parseResults($, pageUrl, catalog) {
+      const items = $("a.item");
+      if (items.length === 0) {
+        if (NO_RESULTS.test($.html()) || isSearchPage($)) return [];
+        throw new Error("Busca sem cart\xF5es nem mensagem expl\xEDcita de aus\xEAncia");
+      }
+      const results = [];
+      for (let index = 0; index < items.length; index += 1) {
+        const item = items.eq(index);
+        const href = item.attr("href");
+        const title = item.attr("data-title");
+        if (!href || typeof title !== "string" || title.trim() === "") {
+          throw new Error(`Resultado ${index + 1} da busca sem href ou data-title`);
+        }
+        results.push({
+          title: title.trim(),
+          titles: [title.trim()],
+          year: null,
+          url: new URL(href, catalog.baseUrl).href
+        });
+      }
+      return results;
+    },
+    /**
+     * Lê título, ano e IMDb da página do CineAgora.
+     * @param {object} $ - Instância do cheerio.
+     * @param {string} html - HTML da página.
+     * @param {string} url - URL da página.
+     * @returns {CatalogIdentity} Identidade lida.
+     * @throws {Error} Se faltar `h1.title` ou o ano em `span.date a`.
+     */
+    readIdentity($, html, url) {
+      const title = $("h1.title").eq(0).text().trim();
+      if (title === "") throw new Error(`P\xE1gina ${url} sem h1.title`);
+      const yearText = $("span.date a").eq(0).text().trim();
+      if (!/^\d{4}$/.test(yearText)) throw new Error(`P\xE1gina ${url} sem ano em span.date`);
+      const imdbHref = $("div.imdb a").eq(0).attr("href") || "";
+      const imdb = /tt\d{5,}/.exec(imdbHref);
+      return {
+        title,
+        originalTitle: null,
+        year: Number(yearText),
+        imdbId: imdb ? imdb[0] : null
+      };
+    },
+    /**
+     * Confere a identidade do CineAgora com o TMDB.
+     * @param {CatalogIdentity} identity - Identidade lida.
+     * @param {import('../_blocks/tmdb-info/index.mjs').MediaInfo} media - Dados do TMDB.
+     * @returns {boolean} True quando o candidato pode ser aceito.
+     */
+    matchesIdentity(identity, media) {
+      if (!titleMatches([identity.title], media)) return false;
+      if (media.year !== null && identity.year !== media.year) return false;
+      if (media.imdbId !== null && identity.imdbId !== media.imdbId) return false;
+      return true;
+    }
+  },
+  {
+    id: "cinegratis",
+    name: "CineGratis",
+    baseUrl: "https://cinegratis.co",
+    hosts: ["cinegratis.co", "www.cinegratis.co", "cinegratis.tv", "www.cinegratis.tv"],
+    sections: { movie: "/filmes-hd-gratis/", tv: "/series-hd-online/" },
+    searchUrl: "https://cinegratis.co/index.php?do=search&subaction=search&story=",
+    pageHeaders: {},
+    mirrorSelector: ".player__mirrors .mirror",
+    /**
+     * Lê os resultados `li.film a.tt` da busca do CineGratis.
+     * @param {object} $ - Instância do cheerio.
+     * @param {string} pageUrl - URL da busca.
+     * @param {object} catalog - Configuração do catálogo.
+     * @returns {CatalogResult[]} Resultados na ordem da página.
+     * @throws {Error} Se um resultado estiver fora do formato ou a busca não tiver resultados nem ausência.
+     */
+    parseResults($, pageUrl, catalog) {
+      const links = $("li.film a.tt");
+      if (links.length === 0) {
+        if (NO_RESULTS.test($.html()) || isSearchPage($)) return [];
+        throw new Error("Busca sem resultados nem mensagem expl\xEDcita de aus\xEAncia");
+      }
+      const results = [];
+      let invalid = 0;
+      for (let index = 0; index < links.length; index += 1) {
+        const link = links.eq(index);
+        const item = link.closest("li.film");
+        const href = link.attr("href");
+        const titles = [];
+        const primary = link.text().trim();
+        if (primary !== "") titles.push(primary);
+        for (const selector of ["h2.film-tt .film-title", "h2.film-tt .kt"]) {
+          const titleNodes = item.find(selector);
+          for (let titleIndex = 0; titleIndex < titleNodes.length; titleIndex += 1) {
+            const value = titleNodes.eq(titleIndex).text().trim();
+            if (value !== "" && !titles.includes(value)) titles.push(value);
+          }
+        }
+        const yearText = item.find("span.film-yil").first().text().trim();
+        if (!href || titles.length === 0 || !/^\d{4}$/.test(yearText)) {
+          invalid += 1;
+          continue;
+        }
+        results.push({
+          title: titles[0],
+          titles,
+          year: Number(yearText),
+          url: new URL(href, catalog.baseUrl).href
+        });
+      }
+      if (results.length === 0) {
+        throw new Error(`Busca com ${invalid} resultado(s) sem t\xEDtulo ou ano`);
+      }
+      return results;
+    },
+    /**
+     * Lê título, título original e IMDb da página do CineGratis.
+     * @param {object} $ - Instância do cheerio.
+     * @param {string} html - HTML da página.
+     * @param {string} url - URL da página.
+     * @param {CatalogResult} candidate - Resultado que abriu a página.
+     * @returns {CatalogIdentity} Identidade lida.
+     * @throws {Error} Se faltar `h1 > a` ou `h2`.
+     */
+    readIdentity($, html, url, candidate) {
+      const heading = $("h1").first();
+      const title = heading.find("a").first().text().trim();
+      if (title === "") throw new Error(`P\xE1gina ${url} sem h1 > a`);
+      const original = $("h2").first().text().trim();
+      if (original === "") throw new Error(`P\xE1gina ${url} sem h2`);
+      return {
+        title,
+        originalTitle: original,
+        year: candidate.year,
+        imdbId: findImdbId($)
+      };
+    },
+    /**
+     * Confere a identidade do CineGratis com o TMDB.
+     * @param {CatalogIdentity} identity - Identidade lida.
+     * @param {import('../_blocks/tmdb-info/index.mjs').MediaInfo} media - Dados do TMDB.
+     * @returns {boolean} True quando o candidato pode ser aceito.
+     */
+    matchesIdentity(identity, media) {
+      if (!titleMatches([identity.title, identity.originalTitle], media)) return false;
+      if (media.year !== null && identity.year !== media.year) return false;
+      if (media.imdbId !== null && identity.imdbId !== null && identity.imdbId !== media.imdbId) return false;
+      return true;
+    }
+  },
+  {
+    id: "visioncine",
+    name: "VisionCine",
+    baseUrl: "https://visioncine.lol",
+    hosts: ["visioncine.lol", "www.visioncine.lol"],
+    sections: { movie: "/ver-filmes-hd-online-gratis/", tv: "/series-online/" },
+    searchUrl: "https://visioncine.lol/index.php?do=search&subaction=search&story=",
+    pageHeaders: { Referer: "https://visioncine.lol/" },
+    mirrorSelector: ".mirrors a.nav-link",
+    /**
+     * Lê os cartões `div.poster-container` da busca do VisionCine.
+     * @param {object} $ - Instância do cheerio.
+     * @param {string} pageUrl - URL da busca.
+     * @param {object} catalog - Configuração do catálogo.
+     * @returns {CatalogResult[]} Resultados na ordem da página.
+     * @throws {Error} Se um cartão estiver fora do formato ou a busca não tiver cartões nem ausência.
+     */
+    parseResults($, pageUrl, catalog) {
+      const containers = $("div.poster-container");
+      if (containers.length === 0) {
+        if (NO_RESULTS.test($.html()) || isSearchPage($)) return [];
+        throw new Error("Busca sem cart\xF5es nem mensagem expl\xEDcita de aus\xEAncia");
+      }
+      const results = [];
+      for (let index = 0; index < containers.length; index += 1) {
+        const item = containers.eq(index);
+        const link = item.find("a[href]").first();
+        const href = link.attr("href");
+        const title = item.find("h2.title").first().text().trim() || cleanAlt(item.find("img").first().attr("alt") || link.attr("title") || "");
+        if (!href || title === "") {
+          throw new Error(`Cart\xE3o ${index + 1} da busca sem href ou t\xEDtulo`);
+        }
+        const yearText = item.find(".poster-year").first().text().trim();
+        results.push({
+          title,
+          titles: [title],
+          year: /^\d{4}$/.test(yearText) ? Number(yearText) : null,
+          url: new URL(href, catalog.baseUrl).href
+        });
+      }
+      return results;
+    },
+    /**
+     * Lê título, título original e ano da página do VisionCine.
+     * @param {object} $ - Instância do cheerio.
+     * @param {string} html - HTML da página.
+     * @param {string} url - URL da página.
+     * @param {CatalogResult} candidate - Resultado que abriu a página.
+     * @returns {CatalogIdentity} Identidade lida.
+     * @throws {Error} Se faltar título, `<small>` original ou ano.
+     */
+    readIdentity($, html, url, candidate) {
+      const titleText = $("title").first().text().trim();
+      const match = /^(.*?)\s*\((\d{4})\)/.exec(titleText);
+      const title = match !== null ? match[1].trim() : candidate.title.trim();
+      const year = match !== null ? Number(match[2]) : candidate.year;
+      const original = $("h1").first().find("small").first().text().trim();
+      if (title === "" || original === "") throw new Error(`P\xE1gina ${url} sem t\xEDtulo ou original`);
+      if (year === null || !Number.isInteger(year)) throw new Error(`P\xE1gina ${url} sem ano`);
+      return {
+        title,
+        originalTitle: original,
+        year,
+        imdbId: null
+      };
+    },
+    /**
+     * Confere a identidade do VisionCine com o TMDB.
+     * @param {CatalogIdentity} identity - Identidade lida.
+     * @param {import('../_blocks/tmdb-info/index.mjs').MediaInfo} media - Dados do TMDB.
+     * @returns {boolean} True quando o candidato pode ser aceito.
+     */
+    matchesIdentity(identity, media) {
+      if (!titleMatches([identity.title, identity.originalTitle], media)) return false;
+      if (media.year !== null && identity.year !== media.year) return false;
+      return true;
+    }
+  }
+]);
+function isSearchPage($) {
+  return $('input[name="story"]').length > 0 || $("#searchinput").length > 0;
+}
+function mediaTitles(media) {
+  return [media.title, media.originalTitle, ...media.alternativeTitles];
+}
+function bestTitleScore(titles, media) {
+  const references = mediaTitles(media);
+  let best = 0;
+  for (const title of titles) {
+    for (const reference of references) {
+      const score = titleSimilarity(title, reference);
+      if (score > best) best = score;
+    }
+  }
+  return best;
+}
+function titleMatches(titles, media) {
+  return bestTitleScore(titles.filter((title) => typeof title === "string" && title.trim() !== ""), media) >= MIN_TITLE_SCORE;
+}
+function findImdbId($) {
+  const scripts = $('script[type="application/ld+json"]');
+  for (let index = 0; index < scripts.length; index += 1) {
+    if (scripts.eq(index).attr("type") !== "application/ld+json") continue;
+    let value;
+    try {
+      value = JSON.parse(scripts.eq(index).text());
+    } catch (e) {
+      continue;
+    }
+    const found = findSameAs(value);
+    if (found !== null) return found;
+  }
+  const href = $('a[href*="imdb.com/title/tt"]').first().attr("href") || "";
+  const match = /tt\d{5,}/.exec(href);
+  return match ? match[0] : null;
+}
+function findSameAs(value) {
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      const found = findSameAs(item);
+      if (found !== null) return found;
+    }
+    return null;
+  }
+  if (value === null || typeof value !== "object") return null;
+  if (value.sameAs !== void 0) {
+    const found = readImdbValue(value.sameAs);
+    if (found !== null) return found;
+  }
+  for (const key of Object.keys(value)) {
+    const found = findSameAs(value[key]);
+    if (found !== null) return found;
+  }
+  return null;
+}
+function readImdbValue(value) {
+  if (Array.isArray(value)) {
+    for (const item of value) {
+      const found = readImdbValue(item);
+      if (found !== null) return found;
+    }
+    return null;
+  }
+  if (typeof value !== "string") return null;
+  const match = /tt\d{5,}/.exec(value);
+  return match ? match[0] : null;
+}
+function cleanAlt(value) {
+  return value.replace(/^Assistir\s+/i, "").replace(/\s+em\s+HD$/i, "").trim();
+}
+
+// src/cineagora/catalog.js
+var MAX_CANDIDATES = 3;
 function findContent(request2, media) {
+  return __async(this, null, function* () {
+    const settled = yield Promise.all(CATALOGS.map((catalog) => searchCatalog(catalog, request2, media).then(
+      (value) => ({ ok: true, catalog, value }),
+      (error) => ({ ok: false, catalog, error })
+    )));
+    const confirmed = [];
+    const failures = [];
+    for (const entry of settled) {
+      if (!entry.ok) {
+        failures.push({ catalog: entry.catalog, error: entry.error });
+        continue;
+      }
+      if (entry.value !== null) confirmed.push({ catalog: entry.catalog, content: entry.value });
+    }
+    return { confirmed, failures };
+  });
+}
+function searchCatalog(catalog, request2, media) {
   return __async(this, null, function* () {
     const queries = uniqueQueries([media.imdbId, media.title, media.originalTitle]);
     for (const query of queries) {
-      const searchHtml = yield fetchText(`${SEARCH_URL}${encodeURIComponent(query)}`);
-      const candidates = parseSearchResults(searchHtml, request2.mediaType);
-      const ranked = rankCandidates(candidates, media).slice(0, MAX_CANDIDATES);
+      const search = yield fetchPage(`${catalog.searchUrl}${encodeURIComponent(query)}`, {
+        headers: catalog.pageHeaders
+      });
+      const $ = getCheerio().load(search.text);
+      const results = catalog.parseResults($, search.url, catalog).filter((result) => belongsToSection(result.url, request2.mediaType, catalog));
+      const candidates = uniqueByUrl(results).map((result, index) => ({ result, index, score: bestTitleScore(result.titles, media) })).sort((a, b) => b.score - a.score || a.index - b.index).slice(0, MAX_CANDIDATES);
       const confirmed = [];
-      for (const candidate of ranked) {
-        const page = yield fetchPage(candidate.url);
-        if (!belongsToSection(page.url, request2.mediaType)) continue;
-        const identity = readIdentity(page.text, page.url);
-        if (!matchesIdentity(identity, media)) continue;
+      for (const entry of candidates) {
+        const page = yield fetchPage(entry.result.url, { headers: catalog.pageHeaders });
+        if (!belongsToSection(page.url, request2.mediaType, catalog)) continue;
+        const page$ = getCheerio().load(page.text);
+        const identity = catalog.readIdentity(page$, page.text, page.url, entry.result);
+        if (!catalog.matchesIdentity(identity, media)) continue;
         confirmed.push({
           url: page.url,
           html: page.text,
+          catalog,
           title: identity.title,
           year: identity.year,
           imdbId: identity.imdbId
@@ -1076,6 +1411,10 @@ function findContent(request2, media) {
     }
     return null;
   });
+}
+function belongsToSection(url, mediaType, catalog) {
+  const parsed = new URL(url);
+  return catalog.hosts.includes(parsed.hostname) && parsed.pathname.startsWith(catalog.sections[mediaType]);
 }
 function uniqueQueries(values) {
   const queries = [];
@@ -1091,56 +1430,15 @@ function uniqueQueries(values) {
   }
   return queries;
 }
-function parseSearchResults(html, mediaType) {
-  const $ = getCheerio().load(html);
-  const items = $("a.item");
-  if (items.length === 0) {
-    if (NO_RESULTS.test(html)) return [];
-    throw new Error("Busca sem cart\xF5es nem mensagem expl\xEDcita de aus\xEAncia");
+function uniqueByUrl(results) {
+  const seen = /* @__PURE__ */ new Set();
+  const unique = [];
+  for (const result of results) {
+    if (seen.has(result.url)) continue;
+    seen.add(result.url);
+    unique.push(result);
   }
-  const results = [];
-  for (let index = 0; index < items.length; index += 1) {
-    const item = items.eq(index);
-    const href = item.attr("href");
-    const title = item.attr("data-title");
-    if (!href || typeof title !== "string" || title.trim() === "") {
-      throw new Error(`Resultado ${index + 1} da busca sem href ou data-title`);
-    }
-    const url = new URL(href, SOURCE_URL);
-    if (!SOURCE_HOSTS.has(url.hostname)) continue;
-    if (!url.pathname.startsWith(SECTIONS[mediaType])) continue;
-    results.push({ title: title.trim(), url: url.href });
-  }
-  return results;
-}
-function rankCandidates(candidates, media) {
-  const titles = mediaTitles(media);
-  return candidates.map((candidate, index) => ({ candidate, index, score: bestScore(candidate.title, titles) })).sort((a, b) => b.score - a.score || a.index - b.index).map((entry) => entry.candidate);
-}
-function readIdentity(html, url) {
-  const $ = getCheerio().load(html);
-  const title = $("h1.title").eq(0).text().trim();
-  if (title === "") throw new Error(`P\xE1gina ${url} sem h1.title`);
-  const yearText = $("span.date a").eq(0).text().trim();
-  if (!/^\d{4}$/.test(yearText)) throw new Error(`P\xE1gina ${url} sem ano em span.date`);
-  const imdbHref = $("div.imdb a").eq(0).attr("href") || "";
-  const imdb = /tt\d{5,}/.exec(imdbHref);
-  return { title, year: Number(yearText), imdbId: imdb ? imdb[0] : null };
-}
-function matchesIdentity(identity, media) {
-  if (media.year !== null && identity.year !== media.year) return false;
-  if (media.imdbId !== null && identity.imdbId !== media.imdbId) return false;
-  return bestScore(identity.title, mediaTitles(media)) >= MIN_TITLE_SCORE;
-}
-function belongsToSection(url, mediaType) {
-  const parsed = new URL(url);
-  return SOURCE_HOSTS.has(parsed.hostname) && parsed.pathname.startsWith(SECTIONS[mediaType]);
-}
-function mediaTitles(media) {
-  return [media.title, media.originalTitle, ...media.alternativeTitles];
-}
-function bestScore(title, titles) {
-  return Math.max(...titles.map((reference) => titleSimilarity(title, reference)));
+  return unique;
 }
 function getCheerio() {
   return require("cheerio-without-node-native");
@@ -1286,9 +1584,9 @@ var NUMERIC = /^\d+$/;
 var MD5 = /^[0-9a-f]{32}$/i;
 var SLUG = /^[A-Za-z0-9-]+$/;
 var VIDEO_SLUG = /^[A-Za-z0-9]+$/;
-function resolvePlayer(content, request2, media) {
-  return __async(this, null, function* () {
-    const options = readMirrors(content.html, content.url);
+function resolvePlayer(_0, _1, _2) {
+  return __async(this, arguments, function* (content, request2, media, seen = /* @__PURE__ */ new Set()) {
+    const options = readMirrors(content.html, content.url, content.catalog.mirrorSelector);
     if (options.length === 0) return { status: "absent" };
     const streams = [];
     const failures = [];
@@ -1296,6 +1594,9 @@ function resolvePlayer(content, request2, media) {
       try {
         const resolved = yield resolveOption(option, request2);
         if (resolved === null) continue;
+        const key = optionKey(resolved.video);
+        if (seen.has(key)) continue;
+        seen.add(key);
         streams.push(buildOptionStream(resolved, media, request2));
       } catch (error) {
         const detail = `Op\xE7\xE3o ${option.label} descartada: ${error.message}`;
@@ -1308,15 +1609,20 @@ function resolvePlayer(content, request2, media) {
     return { status: "absent" };
   });
 }
-function readMirrors(html, pageUrl) {
+function readMirrors(html, pageUrl, selector) {
   const $ = getCheerio2().load(html);
-  const buttons = $(".mirrors .button");
+  const buttons = $(selector);
   const options = [];
   for (let index = 0; index < buttons.length; index += 1) {
     const button = buttons.eq(index);
     const link = button.attr("data-link");
-    if (!link) throw new Error(`Bot\xE3o ${index + 1} de espelho sem data-link`);
-    const url = new URL(link, pageUrl);
+    if (!link) continue;
+    let url;
+    try {
+      url = new URL(link, pageUrl);
+    } catch (e) {
+      continue;
+    }
     if (url.hostname !== PLAYER_HOST) continue;
     const text = button.text().replace(/\s+/g, " ").trim();
     options.push({ label: text === "" ? `#${index + 1}` : text, url: url.href });
@@ -1397,7 +1703,10 @@ function readVideo(html, url) {
     throw new Error(`md5 inv\xE1lido em ${url}: ${video.md5}`);
   }
   const master = `${PLAYER_ORIGIN}/m3u8/${uid}/${video.md5}/master.txt?s=1&id=${id}&cache=${video.status}`;
-  return { url: master, quality: video.quality, title: video.title };
+  return { url: master, quality: video.quality, title: video.title, uid, md5: video.md5, id };
+}
+function optionKey(video) {
+  return `${video.uid}|${video.md5}|${video.id}`;
 }
 function readNumeric(value, field, url) {
   const text = String(value);
@@ -1447,11 +1756,31 @@ function getStreams(tmdbId, mediaType, season, episode) {
     try {
       const request2 = validateInput(tmdbId, mediaType, season, episode);
       const media = yield getMediaInfo({ tmdbId: request2.tmdbId, mediaType: request2.mediaType });
-      const content = yield findContent(request2, media);
-      if (content === null) return [];
-      const result = yield resolvePlayer(content, request2, media);
-      if (result.status === "absent") return [];
-      return sortByQuality(result.streams);
+      const found = yield findContent(request2, media);
+      if (found.confirmed.length === 0 && found.failures.length === 0) return [];
+      const streams = [];
+      const failures = [];
+      const seen = /* @__PURE__ */ new Set();
+      for (const entry of found.confirmed) {
+        try {
+          const result = yield resolvePlayer(entry.content, request2, media, seen);
+          if (result.status === "ok") streams.push(...result.streams);
+        } catch (error) {
+          failures.push({ catalog: entry.catalog, error });
+        }
+      }
+      failures.push(...found.failures);
+      if (streams.length > 0) {
+        for (const failure of failures) {
+          console.warn(`[${PROVIDER_NAME}] Cat\xE1logo ${failure.catalog.name} descartado: ${failure.error.message}`);
+        }
+        return sortByQuality(streams);
+      }
+      if (failures.length > 0) {
+        const causes = failures.map((failure) => `${failure.catalog.name}: ${failure.error.message}`).join("; ");
+        throw new Error(`Nenhum cat\xE1logo produziu stream: ${causes}`);
+      }
+      return [];
     } catch (error) {
       console.error(`[${PROVIDER_NAME}] Falha em ${mediaType} ${tmdbId}: ${error.message}`);
       return [];
