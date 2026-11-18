@@ -825,6 +825,26 @@
         "pt"
       ],
       "logo": "https://www.google.com/s2/favicons?domain=overflix.win&sz=128"
+    },
+    {
+      "id": "animesonlinecc",
+      "name": "AnimesOnlineCC",
+      "description": "Séries de anime em MP4 e HLS do AnimesOnlineCC, com opções dublada e legendada publicadas na página do episódio.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "tv"
+      ],
+      "filename": "providers/animesonlinecc.js",
+      "enabled": true,
+      "formats": [
+        "mp4",
+        "m3u8"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=animesonlinecc.to&sz=128"
     }
   ]
 }

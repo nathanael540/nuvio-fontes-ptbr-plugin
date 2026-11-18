@@ -144,6 +144,7 @@ Ver `proposal.md` para a motivação. A evidência principal do método é o có
 4. `docs/provider-investigation.md`: nova seção `Página de episódio com embeds em <div id="option-X" src>`, com busca `/?s=`, confirmação `h1`/`span.date`, temporada `se-t`, opções e hosts, referenciando `src/animesonlinecc/` e `test/animesonlinecc.test.js`, e registrando os limites (WAF, busca com resultado alheio, temporadas agrupadas, forma do embed, hosts não observados).
 5. Fixtures em `test/fixtures/animesonlinecc/`: busca com resultado, busca vazia, ficha do anime, ficha com duas temporadas, episódio com duas opções, episódio sem opções, ficha sem opções, host desconhecido e respostas de host. Tokens do Blogger viram `token=EXAMPLE`; URLs de mídia viram `cdn.example`; nada de cookie, token real ou mídia.
 6. Nenhum bloco novo e nenhuma mudança em `docs/arch.md`; `README.md` só muda se a lista de provedores for mantida lá, o que será conferido na implementação. `script-extract` não é usado na primeira versão porque o `src` está em atributo HTML; a leitura por script fica como hipótese se a fonte mudar.
+7. Revisão de 2026-11-18: `README.md` não mantém lista nominal de provedores (aponta para `providers.md`) e `docs/arch.md` descreve só convenções globais, que não mudaram. Nenhum dos dois foi alterado.
 
 ## Risks / Trade-offs
 

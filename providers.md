@@ -43,6 +43,7 @@
 | [NoveFlix](#noveflix) | `noveflix` | série | MP4 | 🟢 Estável | 2026-11-14 |
 | [MagnetBR](#magnetbr) | `magnetbr` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-18 |
 | [OverFlix](#overflix) | `overflix` | filme, série | MP4 | 🟢 Estável | 2026-11-18 |
+| [AnimesOnlineCC](#animesonlinecc) | `animesonlinecc` | série | MP4, HLS | 🟢 Estável | 2026-11-18 |
 
 ## MegaEmbed
 
@@ -890,5 +891,22 @@ Filmes e séries em MP4 dublados e legendados do catálogo OverFlix (VideoBox), 
    8. `tv` `4184` · A Usurpadora (1998) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    9. `tv` `71912` · The Witcher (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
    10. `tv` `1668` · Friends (1994) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+<!-- online-verification:end -->
+
+## AnimesOnlineCC
+
+**Status: 🟢 Estável.**
+
+Séries de anime em MP4 e HLS do AnimesOnlineCC, com busca `GET /?s=<termo>`, confirmação de identidade pelo `h1` limpo e pelo ano de `span.date`, temporada por `span.se-t` e episódio pelo `href` publicado. As opções dublada e legendada ficam em `div[id^="option-"]` na página do episódio, com fallback único para a ficha; o Blogger é resolvido pelo bloco `blogger-video` e MixDrop, Streamtape, DoodStream e Byse têm adaptadores locais. A rodada de 2026-11-18 resolveu 5/5 séries da amostra de anime, com streams do Blogger.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-18T21:45:04.087Z** · ID `2026-11-18T21-44-36-046Z-animesonlinecc-4c66b423-0d1e` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `4c66b423197c64a89a67ea09ae3a900a` · algoritmo `sha256-fisher-yates-v1`
+   1. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   2. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+   3. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   4. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   5. `tv` `30984` · Bleach (2004) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
 <!-- online-verification:end -->
 
