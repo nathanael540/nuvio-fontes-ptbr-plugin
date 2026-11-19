@@ -96,14 +96,15 @@ Informações que a fonte não fornece simplesmente não aparecem.
 ## Documentação
 
 1. [providers.md](providers.md) — tabela dos provedores, status visual, data da última verificação e resumo da última rodada.
-2. [docs/arch.md](docs/arch.md) — arquitetura, restrições do runtime e contrato do provedor.
-3. [src/\_blocks/index.md](src/_blocks/index.md) — catálogo de blocos reutilizáveis para montar provedores.
-4. [test/README.md](test/README.md) — comandos e operação da infraestrutura de testes.
-5. [docs/tests.md](docs/tests.md) — tipos de teste, regras e limites.
-6. [AGENTS.md](AGENTS.md) — regras para agentes e contribuidores.
-7. [openspec/](openspec/) — especificações e mudanças (OpenSpec).
-8. [docs/provider-investigation.md](docs/provider-investigation.md) — guia de investigação de novos provedores, com métodos usados, referências de código e limites.
-9. [Documentação oficial de provedores do Nuvio](https://github.com/yoruix/nuvio-providers/blob/template/DOCUMENTATION.md).
+2. [rejected-providers.md](rejected-providers.md) — histórico de fontes investigadas ou removidas e rejeitadas para publicação, com data, categoria e motivo.
+3. [docs/arch.md](docs/arch.md) — arquitetura, restrições do runtime e contrato do provedor.
+4. [src/\_blocks/index.md](src/_blocks/index.md) — catálogo de blocos reutilizáveis para montar provedores.
+5. [test/README.md](test/README.md) — comandos e operação da infraestrutura de testes.
+6. [docs/tests.md](docs/tests.md) — tipos de teste, regras e limites.
+7. [AGENTS.md](AGENTS.md) — regras para agentes e contribuidores.
+8. [openspec/](openspec/) — especificações e mudanças (OpenSpec).
+9. [docs/provider-investigation.md](docs/provider-investigation.md) — guia de investigação de novos provedores, com métodos usados, referências de código e limites.
+10. [Documentação oficial de provedores do Nuvio](https://github.com/yoruix/nuvio-providers/blob/template/DOCUMENTATION.md).
 
 ## Contribuindo
 

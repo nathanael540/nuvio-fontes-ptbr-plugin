@@ -67,4 +67,16 @@ Guia para agentes de IA e contribuidores deste repositório.
 5. `docs/tests.md` descreve os tipos de teste; `test/README.md` traz os comandos.
 6. Decisões de um único provedor ou mudança, questões em aberto e validação da mudança ficam no `design.md` da change; registros operacionais das rodadas online ficam em `providers.md`; o comportamento esperado fica na spec da capacidade.
 7. Use listas numeradas; não use fluxogramas nem diagramas.
-8. Antes de investigar ou implementar um novo provedor, consulte [docs/provider-investigation.md](docs/provider-investigation.md). Quando a mudança introduzir um método novo ou uma variação relevante reutilizável, atualize o guia na mesma mudança, com referências de código e testes e os limites observados. Distinga método em uso, bloco disponível e hipótese; evidência online e status continuam em `providers.md`.
+8. Antes de investigar ou implementar um novo provedor, consulte [docs/provider-investigation.md](docs/provider-investigation.md) e [rejected-providers.md](rejected-providers.md). Quando a mudança introduzir um método novo ou uma variação relevante reutilizável, atualize o guia na mesma mudança, com referências de código e testes e os limites observados. Distinga método em uso, bloco disponível e hipótese; evidência online e status continuam em `providers.md`.
+9. Toda fonte investigada e rejeitada para publicação, ou provedor publicado removido em definitivo do repositório, deve ser registrada em [rejected-providers.md](rejected-providers.md) ao encerrar a investigação ou na mesma mudança da remoção. Provedores apenas desabilitados (`enabled: false`) permanecem em `providers.md` com `⚫ Desativado`.
+
+### Provedores rejeitados (`rejected-providers.md`)
+
+1. Consulte `rejected-providers.md` antes de iniciar a investigação de uma nova fonte para confirmar se ela já foi descartada e qual critério justifica reavaliação.
+2. Mantenha no topo uma tabela resumo com exatamente as colunas `Provedor`, `ID`, `Categoria`, `Motivo resumido` e `Data`, com `ID` único em kebab-case e `Data` no formato `AAAA-MM-DD`.
+3. Use na coluna e no campo `Categoria` exatamente um dos cinco valores fechados: `Bloqueio anti-bot`, `Autenticação ou chave`, `Execução incompatível`, `Sem mídia utilizável` ou `Escopo ou duplicidade`.
+4. Crie uma seção `## <Provedor>` para cada linha da tabela (em correspondência 1-para-1), usando lista numerada com os seis campos obrigatórios na seguinte ordem: `Data da rejeição`, `Categoria`, `Domínios investigados`, `Motivo`, `Evidência e referência` e `Critério de reavaliação`.
+5. Nenhum `ID` listado em `rejected-providers.md` pode constar em `manifest.json`. Se um provedor rejeitado voltar a ser implementado e publicado, remova sua entrada de `rejected-providers.md` na mesma mudança que o inclui no `manifest.json`.
+6. Players, hosts ou opções descartadas isoladamente dentro de um provedor ativo continuam documentados apenas em `docs/provider-investigation.md` e no `design.md` da change, sem entrar em `rejected-providers.md`.
+7. Nunca registre segredos, tokens, cookies de sessão, credenciais na URL, links `magnet:?`, URLs assinadas de mídia ou hashes SHA-256 em `rejected-providers.md`.
+

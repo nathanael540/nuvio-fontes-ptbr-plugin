@@ -17,10 +17,11 @@ Todos os testes de desenvolvimento rodam em Node, sem o app Nuvio instalado, sem
 2. **Provedores** (`test/<id>.test.js`): empacotam o provedor com `buildProvider` em diretório temporário, nos formatos publicados, e executam o pacote gerado com `fetch` simulado a partir de `test/fixtures/<fonte>/`. O teste exercita o mesmo arquivo publicado, não só o código-fonte. Os casos do provedor (filme, episódio avulso, episódio em pacote e ausência, quando aplicáveis) ficam aqui.
 3. **Manifest** (`test/manifest.test.js`): campos obrigatórios e convenções de `docs/arch.md` (seção Manifest) e sincronia dos `<formato>/manifest.json` com o `manifest.json`.
 4. **Catálogo de provedores** (`test/providers-catalog.test.js`): `providers.md` lista exatamente os provedores do manifest, com o mesmo nome e status visual válido, `Desativado` somente para `enabled: false`, uma seção `## <nome>` com `**Status: <status>.**` e consistência entre tabela, seção e a última rodada online.
-5. **Build** (`test/build.test.js`): o template empacota em CommonJS sem `async`/`await`; provedor ou formato inexistente falha de forma explícita; os formatos vêm do bloco `custom-formatter`; os manifests de formato são gerados corretamente.
-6. **Servidor** (`test/server.test.js`): rotas permitidas, CORS e 404 fora das rotas do servidor local.
-7. **Catálogos online** (`test/online-catalog.test.js`): valida os catálogos e os perfis de nicho da verificação online sem acessar a internet. Confere mínimo de 20 títulos, ausência de truncamento, unicidade, coordenadas de episódio, tags, IDs de provedores e amostra elegível por perfil.
-8. **Infraestrutura online** (`test/online-*.test.js`): cobre amostragem, classificação, carregador do pacote, `fetch`, worker, relatório, registro em Markdown e argumentos do runner. Nenhuma suíte usa rede; a execução real só ocorre no comando `test:online`.
+5. **Provedores rejeitados** (`test/rejected-providers.test.js`): valida estrutura da tabela, datas `AAAA-MM-DD`, categorias fechadas, correspondência 1-para-1 com as seções e os seis campos obrigatórios em `rejected-providers.md`, além de impedir conflito com `manifest.json` e conteúdo não sanitizado.
+6. **Build** (`test/build.test.js`): o template empacota em CommonJS sem `async`/`await`; provedor ou formato inexistente falha de forma explícita; os formatos vêm do bloco `custom-formatter`; os manifests de formato são gerados corretamente.
+7. **Servidor** (`test/server.test.js`): rotas permitidas, CORS e 404 fora das rotas do servidor local.
+8. **Catálogos online** (`test/online-catalog.test.js`): valida os catálogos e os perfis de nicho da verificação online sem acessar a internet. Confere mínimo de 20 títulos, ausência de truncamento, unicidade, coordenadas de episódio, tags, IDs de provedores e amostra elegível por perfil.
+9. **Infraestrutura online** (`test/online-*.test.js`): cobre amostragem, classificação, carregador do pacote, `fetch`, worker, relatório, registro em Markdown e argumentos do runner. Nenhuma suíte usa rede; a execução real só ocorre no comando `test:online`.
 
 ## 3. Catálogos de referência
 
