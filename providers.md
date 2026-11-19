@@ -48,6 +48,7 @@
 | [VenoPlay](#venoplay) | `venoplay` | filme, série | HLS | 🟢 Estável | 2026-11-18 |
 | [Baixa Cine](#baixa-cine) | `baixacine` | filme, série | magnet | 🟠 Não verificado | — |
 | [Tokyvideo](#tokyvideo) | `tokyvideo` | filme, série | MP4 | 🟠 Não verificado | — |
+| [Baixe Torrents](#baixetorrents) | `baixetorrent-org` | filme, série | magnet | 🟢 Estável | 2026-11-19 |
 
 ## MegaEmbed
 
@@ -972,4 +973,25 @@ na fonte.
 **Status: 🟠 Não verificado.**
 
 Provedor do portal Tokyvideo (tokyvideo.com/br): filmes e séries pela busca do título no portal e fichas, com o stream MP4 direto publicado na página do vídeo; a assinatura do CDN é obtida da própria ficha. Título e ano confirmados contra o título do TMDB; idioma de áudio não publicado pelo site, streams com `Idioma Desconhecido`.
+
+
+## Baixe Torrents
+
+**Status: 🟢 Estável.**
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-19T19:39:47.051Z** · ID `2026-11-19T19-39-26-893Z-baixetorrent-org-4c1fabc8-834b` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `4c1fabc818c8e2c5cede3efb2728e462` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `128` · Princesa Mononoke (1997) · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `movie` `569094` · Homem-Aranha: Através do Aranhaverso (2023) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `324857` · Homem-Aranha: No Aranhaverso (2018) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `76341` · Mad Max: Estrada da Fúria (2015) · **Resolvido** · 5/5 streams aproveitáveis
+   5. `movie` `962489` · Ditto: Conexões do Amor (2022) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `119051` · Wednesday (2022) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   7. `tv` `60625` · Rick and Morty (2013) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   8. `tv` `76479` · The Boys (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `84958` · Loki (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   10. `tv` `1418` · The Big Bang Theory (2007) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+<!-- online-verification:end -->
 
