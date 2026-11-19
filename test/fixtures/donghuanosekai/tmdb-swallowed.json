@@ -1,0 +1,14 @@
+{
+  "name": "Swallowed Star [Tun Shi Xing Kong]",
+  "original_name": "吞噬星空",
+  "first_air_date": "2020-11-29",
+  "external_ids": { "imdb_id": "tt13544926" },
+  "alternative_titles": { "results": [] },
+  "genres": [{ "id": 16, "name": "Animação" }],
+  "original_language": "zh",
+  "origin_country": ["CN"],
+  "seasons": [
+    { "season_number": 0, "episode_count": 0, "air_date": null, "name": "Especiais" },
+    { "season_number": 1, "episode_count": 260, "air_date": "2020-11-29", "name": "Temporada 1" }
+  ]
+}

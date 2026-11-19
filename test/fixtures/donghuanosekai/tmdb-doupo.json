@@ -1,0 +1,18 @@
+{
+  "name": "Doupo Cangqiong",
+  "original_name": "斗破苍穹",
+  "first_air_date": "2017-01-07",
+  "external_ids": { "imdb_id": null },
+  "alternative_titles": { "results": [] },
+  "genres": [{ "id": 16, "name": "Animação" }],
+  "original_language": "zh",
+  "origin_country": ["CN"],
+  "seasons": [
+    { "season_number": 0, "episode_count": 24, "air_date": "2017-09-30", "name": "Especiais" },
+    { "season_number": 1, "episode_count": 12, "air_date": "2017-01-07", "name": "Temporada 1" },
+    { "season_number": 2, "episode_count": 12, "air_date": "2018-03-03", "name": "Temporada 2" },
+    { "season_number": 3, "episode_count": 12, "air_date": "2019-07-21", "name": "Temporada 3" },
+    { "season_number": 4, "episode_count": 24, "air_date": "2021-03-28", "name": "Temporada 4" },
+    { "season_number": 5, "episode_count": 219, "air_date": "2022-07-31", "name": "Temporada 5" }
+  ]
+}

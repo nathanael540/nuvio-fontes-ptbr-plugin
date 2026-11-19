@@ -52,6 +52,7 @@
 | [AnimesHD](#animeshd) | `animeshd` | série | MP4 | 🟢 Estável | 2026-11-19 |
 | [AniZero](#anizero) | `anizero` | série | HLS | 🟢 Estável | 2026-11-19 |
 | [Super Animes](#super-animes) | `superanimes` | filme, série | MP4 | 🟢 Estável | 2026-11-19 |
+| [Donghua No Sekai](#donghua-no-sekai) | `donghuanosekai` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-19 |
 
 ## MegaEmbed
 
@@ -1052,5 +1053,27 @@ Provedor de filmes e séries de anime em MP4 pelo catálogo Super Animes (Animes
    8. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
    9. `tv` `30984` · Bleach (2004) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
    10. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+<!-- online-verification:end -->
+
+## Donghua No Sekai
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e séries de donghua em HLS e MP4 do catálogo Donghua No Sekai, legendados em português, com confirmação de título e ano, temporada pelo marcador da ficha e players DNSK e Blogger. A rodada de 2026-11-19 com o perfil `donghua` resolveu 5/5 filmes e 5/5 séries; as fichas de coleção, de temporada única e de temporada específica entregaram HLS nativo, e o Blogger ficou disponível como família de player sem sonda de mídia.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-19T19:07:39.740Z** · ID `2026-11-19T19-07-00-295Z-donghuanosekai-c2601ae9-b309` · **Estável** · pacote 1.0.0 · perfil `donghua` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `c2601ae9c0f4561007a608489e95b014` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `635389` · Jiang Ziya (2020) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `1398725` · Swallowed Star The Movie: Xueluo Continent (2024) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `573699` · A Lenda da Serpente (2019) · **Resolvido** · 2/2 streams aproveitáveis
+   4. `movie` `933379` · A Song of Sword as Pillow: Practice Travel (2022) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `613200` · The King's Avatar: Pela Glória (2019) · **Resolvido** · 1/1 streams aproveitáveis
+   6. `tv` `79481` · Doupo Cangqiong (2017) · S02E01 · **Resolvido** · 1/1 streams aproveitáveis
+   7. `tv` `76572` · Douluo Dalu (Soul Land) (2018) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   8. `tv` `223911` · Renegade Immortal (2023) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   9. `tv` `101172` · Swallowed Star [Tun Shi Xing Kong] (2020) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   10. `tv` `124003` · Perfect World [Wanmei Shijie] (2021) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 

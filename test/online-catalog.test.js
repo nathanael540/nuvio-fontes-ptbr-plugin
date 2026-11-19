@@ -83,12 +83,15 @@ test('catálogos reais são válidos, não truncam e mantêm pelo menos 20 títu
     otakulogia: { exclusiveTag: 'anime' },
     anizero: { exclusiveTag: 'anime' },
     superanimes: { exclusiveTag: 'anime' },
+    donghuanosekai: { exclusiveTag: 'donghua' },
   });
   assert.ok(catalogs.movie.titles.filter((title) => title.tags.includes('dorama')).length >= 5);
   assert.ok(catalogs.tv.titles.filter((title) => title.tags.includes('dorama')).length >= 5);
   assert.ok(catalogs.movie.titles.filter((title) => title.tags.includes('anime')).length >= 5);
   assert.ok(catalogs.tv.titles.filter((title) => title.tags.includes('anime')).length >= 5);
   assert.ok(catalogs.tv.titles.filter((title) => title.tags.includes('novela')).length >= 5);
+  assert.ok(catalogs.movie.titles.filter((title) => title.tags.includes('donghua')).length >= 5);
+  assert.ok(catalogs.tv.titles.filter((title) => title.tags.includes('donghua')).length >= 5);
 });
 
 test('catálogo acima do mínimo é aceito sem truncamento', () => {

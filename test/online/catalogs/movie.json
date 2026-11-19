@@ -53,6 +53,11 @@
     { "tmdbId": "1127546", "title": "Pesadelo na Montanha", "year": 2023, "tags": ["dorama"] },
     { "tmdbId": "962489", "title": "Ditto: Conexões do Amor", "year": 2022, "tags": ["dorama"] },
     { "tmdbId": "734519", "title": "The Fable: The Killer Who Doesn't Kill", "year": 2021, "tags": ["dorama"] },
-    { "tmdbId": "437109", "title": "A Vilã", "year": 2017, "tags": ["dorama"] }
+    { "tmdbId": "437109", "title": "A Vilã", "year": 2017, "tags": ["dorama"] },
+    { "tmdbId": "573699", "title": "A Lenda da Serpente", "year": 2019, "tags": ["donghua"] },
+    { "tmdbId": "613200", "title": "The King's Avatar: Pela Glória", "year": 2019, "tags": ["donghua"] },
+    { "tmdbId": "933379", "title": "A Song of Sword as Pillow: Practice Travel", "year": 2022, "tags": ["donghua"] },
+    { "tmdbId": "635389", "title": "Jiang Ziya", "year": 2020, "tags": ["donghua"] },
+    { "tmdbId": "1398725", "title": "Swallowed Star The Movie: Xueluo Continent", "year": 2024, "tags": ["donghua"] }
   ]
 }

@@ -659,6 +659,19 @@
       "formats": ["mp4"],
       "contentLanguage": ["pt"],
       "logo": "https://www.google.com/s2/favicons?domain=animestvs.org&sz=128"
+    },
+    {
+      "id": "donghuanosekai",
+      "name": "Donghua No Sekai",
+      "description": "Filmes e séries de donghua em HLS e MP4 do catálogo Donghua No Sekai, legendados em português, com temporada e episódio confirmados na ficha.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": ["movie", "tv"],
+      "filename": "providers/donghuanosekai.js",
+      "enabled": true,
+      "formats": ["m3u8", "mp4"],
+      "contentLanguage": ["pt"],
+      "logo": "https://www.google.com/s2/favicons?domain=donghuanosekai.com&sz=128"
     }
   ]
 }

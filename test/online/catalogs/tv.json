@@ -48,6 +48,11 @@
     { "tmdbId": "46101", "title": "Senhora do Destino", "year": 2004, "tags": ["novela"], "season": 1, "episode": 1 },
     { "tmdbId": "7448", "title": "A Favorita", "year": 2008, "tags": ["novela"], "season": 1, "episode": 1 },
     { "tmdbId": "7979", "title": "Caminho das Índias", "year": 2009, "tags": ["novela"], "season": 1, "episode": 1 },
-    { "tmdbId": "45815", "title": "Avenida Brasil", "year": 2012, "tags": ["novela"], "season": 1, "episode": 1 }
+    { "tmdbId": "45815", "title": "Avenida Brasil", "year": 2012, "tags": ["novela"], "season": 1, "episode": 1 },
+    { "tmdbId": "101172", "title": "Swallowed Star [Tun Shi Xing Kong]", "year": 2020, "tags": ["donghua"], "season": 1, "episode": 1 },
+    { "tmdbId": "76572", "title": "Douluo Dalu (Soul Land)", "year": 2018, "tags": ["donghua"], "season": 1, "episode": 1 },
+    { "tmdbId": "124003", "title": "Perfect World [Wanmei Shijie]", "year": 2021, "tags": ["donghua"], "season": 1, "episode": 1 },
+    { "tmdbId": "223911", "title": "Renegade Immortal", "year": 2023, "tags": ["donghua"], "season": 1, "episode": 1 },
+    { "tmdbId": "79481", "title": "Doupo Cangqiong", "year": 2017, "tags": ["donghua"], "season": 2, "episode": 1 }
   ]
 }
