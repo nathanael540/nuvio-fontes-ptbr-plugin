@@ -4,7 +4,7 @@
 
 Localizar filmes e séries no site Tokyvideo (perfil `/br`) pela busca e fichas do site, confirmar a identidade da ficha pelo título do TMDB e devolver o stream MP4 direto publicado no `<source>` da página do vídeo.
 
-## Requirements
+## ADDED Requirements
 
 ### Requirement: Entrada e validação
 
@@ -25,24 +25,28 @@ O provedor SHALL aceitar `movie` e `tv` com `tmdbId` numérico positivo; em `tv`
 - **WHEN** o `tmdbId` não é numérico ou é zero, o tipo não é `movie` nem `tv`, ou a série não traz temporada e episódio válidos
 - **THEN** o provedor devolve lista vazia, registra o erro de entrada e não faz requisição externa.
 
-### Requirement: Busca e ranking dos candidatos
+### Requirement: Busca de candidatos na listagem
 
-O provedor SHALL buscar em `GET https://www.tokyvideo.com/br/procurar?q=<título>` com o título PT-BR do TMDB, perfil `page`. Os candidatos SHALL ser os links das fichas (`/br/video/<slug>`), deduplicados por URL. Os títulos SHALL vir dos ânclas de texto do cartão: âncoras cujo texto é somente um duração (`\d{1,3}:\d{2}(:\d{2})?`) SHALL ser ignoradas. O ranking SHALL usar `titleSimilarity` de `title-match` contra `title`, `originalTitle` e alternativos do TMDB, com regra de contenção (título do TMDB contido em `normalizeText` do título do cartão, comparando sem espaços, valendo `0,55 + razão do comprimento`); o mínimo de semelhança SHALL ser `0,6`.
-
-#### Scenario: Busca com resultados
-
-- **WHEN** a busca retorna cartões com títulos que confirmam o título do TMDB
-- **THEN** o provedor abre as fichas em ordem de semelhança e parce com o primeiro stream válido; no máximo 3 candidatos SHALL ser abertos por execução.
-
-#### Scenario: Busca sem resultados confirmados
-
-- **WHEN** nenhum cartão passa no mínimo de semelhança
-- **THEN** o provedor devolve lista vazia sem erro fatal.
+O provedor SHALL buscar em `GET https://www.tokyvideo.com/br/procurar?q=<título>` com o título PT-BR do TMDB (perfil `page`) e extrair links únicos de `/br/video/<slug>`, ignorando âncoras cujo texto seja apenas uma duração (`\d{1,3}:\d{2}(:\d{2})?`).
 
 #### Scenario: Busca fora de 2xx
 
 - **WHEN** a busca responde fora do intervalo 2xx
 - **THEN** o erro SHALL subir até `getStreams`.
+
+### Requirement: Ranking e limite de candidatos
+
+O ranking SHALL pontuar cada cartão com `titleSimilarity` (e regra de contenção em `normalizeText` sem espaços valendo `0,55 + razão do comprimento`) contra `title`, `originalTitle` e alternativos do TMDB, exigindo mínimo `0,6` e abrindo no máximo 3 fichas em ordem decrescente.
+
+#### Scenario: Busca com resultados
+
+- **WHEN** a busca retorna cartões com títulos que confirmam o título do TMDB
+- **THEN** o provedor abre as fichas em ordem de semelhança e para no primeiro stream válido, limitando-se a 3 candidatos.
+
+#### Scenario: Busca sem resultados confirmados
+
+- **WHEN** nenhum cartão passa no mínimo de semelhança
+- **THEN** o provedor devolve lista vazia sem erro fatal.
 
 ### Requirement: Ficha do vídeo
 
@@ -55,7 +59,7 @@ O provedor SHALL abrir a URL do candidato com `fetchText` (perfil `page`) e ler 
 
 #### Scenario: Ficha sem fonte
 
-- **WHEN** a ficha não traz fonte MP4 reconhecida (videos bloqueados geograficamente respondem ficha sem `<source>`)
+- **WHEN** a ficha não traz fonte MP4 reconhecida (vídeos bloqueados geograficamente respondem ficha sem `<source>`)
 - **THEN** o candidato SHALL ser descartado por ausência e o próximo candidato SHALL ser aberto; sem candidato com stream, devolve lista vazia sem erro fatal.
 
 #### Scenario: Ficha sem título publicado
@@ -77,9 +81,9 @@ O provedor SHALL confirmar o título da ficha pelo `name` do `VideoObject`, com 
 - **WHEN** o título da ficha não confirma nenhum título do TMDB
 - **THEN** o provedor registra aviso e descarta o candidato, sem montar stream.
 
-### Requirement: Contrato do stream
+### Requirement: Contrato e formatação do stream
 
-Todo stream SHALL ser montado com `buildStream` e o campo `format` (`FORMATTER.AUTO`, `addon` `Tokyvideo`), com título e ano do TMDB quando disponíveis, temporada e episódio do pedido em série e duração da ficha (ISO 8601 do JSON-LD, com fallback ao `data-video-duration`) quando disponível. O `type` SHALL ser `mp4`; `provider` SHALL ser o host do CDN; `headers` SHALL ser `playbackHeaders` da URL da ficha; a qualidade SHALL ser o `videoQuality` do `VideoObject` quando presente (via `normalizeQuality` do bloco quality-discovery); `language` SHALL ser omitido — o site não publica evidência de áudio — e o app SHALL obter `Idioma Desconhecido`. O `name` e o `title` SHALL ser gerados pelo formatador; `name` e `title` informados pelo provedor SHALL ser rejeitados.
+Todo stream SHALL ser montado com `buildStream` e `format` (`FORMATTER.AUTO`, `addon` `Tokyvideo`), levando título e ano do TMDB, temporada e episódio em série e duração da ficha (ISO 8601 do JSON-LD ou `data-video-duration`) quando disponíveis. `name` e `title` SHALL ser gerados apenas pelo formatador.
 
 #### Scenario: Stream de filme
 
@@ -91,15 +95,19 @@ Todo stream SHALL ser montado com `buildStream` e o campo `format` (`FORMATTER.A
 - **WHEN** um episódio avulso é resolvido
 - **THEN** o `format` leva temporada e episódio do pedido e título do TMDB.
 
-#### Scenario: Qualidade descoberta
-
-- **WHEN** a ficha traz `videoQuality` `HD`
-- **THEN** o stream sai com qualidade `720p` (mapeamento do bloco quality-discovery); sem `videoQuality`, sai `Desconhecida`.
-
 #### Scenario: Campos opcionais
 
 - **WHEN** a fonte não fornece tamanho, legendas ou outra informação opcional
 - **THEN** o campo não é inventado no stream.
+
+### Requirement: Metadados técnicos e cabeçalhos do stream
+
+O stream SHALL usar `type` `mp4`, `provider` com o host do CDN, `headers` com `playbackHeaders` da URL da ficha e `quality` normalizada de `videoQuality` do `VideoObject` via `normalizeQuality`. `language` SHALL ser omitido por falta de evidência de áudio, resultando em `Idioma Desconhecido`.
+
+#### Scenario: Qualidade descoberta
+
+- **WHEN** a ficha traz `videoQuality` `HD`
+- **THEN** o stream sai com qualidade `720p` (mapeamento do bloco quality-discovery); sem `videoQuality`, sai `Desconhecida`.
 
 ### Requirement: Ausência, falhas e log sanitizado
 

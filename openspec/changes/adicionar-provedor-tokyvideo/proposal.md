@@ -13,7 +13,7 @@ O site Tokyvideo (https://www.tokyvideo.com/br) funciona como portal de vídeo e
 5. Ficha do vídeo sem `<source>` SHALL ser ausência (videos bloqueados geograficamente retornam ficha sem stream, como observado para "Game On! (2006)"); falhas técnicas (busca fora de 2xx, HTTP do CDN, contrato) sobem para `getStreams`, que registra `console.error('[Tokyvideo] ...')` e devolve lista vazia.
 6. Cobrir com testes Node e fixtures reais sanitizadas: filme, episódio avulso, ausência, triagem, falha fatal e logs sem assinatura do `secure` do CDN.
 7. Registrar a linha e a seção do Tokyvideo em `providers.md` com status inicial `🟠 Não verificado`.
-8. Atualizar `docs/provider-investigation.md` com o método observado (§3.20: busca/ficha do site, MP4 assinado no `<source>` da ficha, `secure` exigido).
+8. Atualizar `docs/provider-investigation.md` com o método observado (§3.40: busca/ficha do site, MP4 assinado no `<source>` da ficha, `secure` exigido).
 9. Fora do escopo: legendas externas (a fonte não as publica nas fichas observadas), magnet/torrent, sondagem de mídia e cache.
 
 ## Capabilities
@@ -30,6 +30,6 @@ Nenhuma.
 
 1. Código: `src/tokyvideo/` (novo), `providers/tokyvideo.js`, `gdrive/providers/tokyvideo.js`, `prism/providers/tokyvideo.js` (gerados pelo build).
 2. Configuração: `manifest.json` e os `<formato>/manifest.json` (gerados).
-3. Documentação: `providers.md` (linha + seção `## Tokyvideo`), `docs/provider-investigation.md` (§3.20).
+3. Documentação: `providers.md` (linha + seção `## Tokyvideo`), `docs/provider-investigation.md` (§3.40).
 4. Specs: nova capability `openspec/specs/tokyvideo-provider/spec.md`.
 5. Sem migração de dados, sem dependência nova e sem alteração nos demais provedores.
