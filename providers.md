@@ -51,6 +51,7 @@
 | [Baixe Torrents](#baixetorrents) | `baixetorrent-org` | filme, série | magnet | 🟢 Estável | 2026-11-19 |
 | [AnimesHD](#animeshd) | `animeshd` | série | MP4 | 🟢 Estável | 2026-11-19 |
 | [AniZero](#anizero) | `anizero` | série | HLS | 🟢 Estável | 2026-11-19 |
+| [Super Animes](#super-animes) | `superanimes` | filme, série | MP4 | 🟢 Estável | 2026-11-19 |
 
 ## MegaEmbed
 
@@ -1029,5 +1030,27 @@ Séries de anime em HLS do catálogo AniZero, com busca JSON pelo título do TMD
    3. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
    4. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
    5. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+<!-- online-verification:end -->
+
+## Super Animes
+
+**Status: 🟢 Estável.**
+
+Provedor de filmes e séries de anime em MP4 pelo catálogo Super Animes (AnimesTVS), com busca sobre o catálogo público, confirmação por título, ano e temporada e áudio dublado ou legendado publicado pela fonte.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-19T18:49:51.743Z** · ID `2026-11-19T18-49-37-263Z-superanimes-17144b3e-5c6e` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `17144b3e1bd946344071a32ba2acae91` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `149` · Akira (1988) · **Resolvido** · 2/2 streams aproveitáveis
+   2. `movie` `372058` · Your Name (2016) · **Resolvido** · 2/2 streams aproveitáveis
+   3. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Resolvido** · 2/2 streams aproveitáveis
+   4. `movie` `129` · A Viagem de Chihiro (2001) · **Resolvido** · 2/2 streams aproveitáveis
+   5. `movie` `128` · Princesa Mononoke (1997) · **Resolvido** · 2/2 streams aproveitáveis
+   6. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   7. `tv` `37854` · One Piece (1999) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   8. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   9. `tv` `30984` · Bleach (2004) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   10. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
 <!-- online-verification:end -->
 

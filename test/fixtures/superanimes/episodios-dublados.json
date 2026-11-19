@@ -1,0 +1,232 @@
+[
+  {
+    "id": 44004,
+    "anime": "Akira (Dublado)",
+    "episodio": "Filme",
+    "link_video": "https://cdn.example/dublados/hd2/44004.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T06:42:29.000Z",
+    "visualizacoes": 135,
+    "image": "https://cdn.example/thumbs/44004.jpg"
+  },
+  {
+    "id": 61387,
+    "anime": "Sen to Chihiro no Kamikakushi (Dublado)",
+    "episodio": "Filme",
+    "link_video": "https://cdn.example/dublados/fullhd/61387.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T12:51:16.000Z",
+    "visualizacoes": 80,
+    "image": "https://cdn.example/thumbs/61387.jpg"
+  },
+  {
+    "id": 61387,
+    "anime": "Sen to Chihiro no Kamikakushi (Dublado)",
+    "episodio": "Filme",
+    "link_video": "https://cdn.example/dublados/fullhd/61387.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T12:51:16.000Z",
+    "visualizacoes": 80,
+    "image": "https://cdn.example/thumbs/61387.jpg"
+  },
+  {
+    "id": 61387,
+    "anime": "Sen to Chihiro no Kamikakushi (Dublado)",
+    "episodio": "Filme",
+    "link_video": "https://cdn.example/dublados/fullhd/61387.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T12:51:16.000Z",
+    "visualizacoes": 80,
+    "image": "https://cdn.example/thumbs/61387.jpg"
+  },
+  {
+    "id": 53675,
+    "anime": "Kimetsu no Yaiba (Dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/fullhd/53675.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T10:21:11.000Z",
+    "visualizacoes": 2634,
+    "image": "https://cdn.example/thumbs/53675.jpg"
+  },
+  {
+    "id": 53676,
+    "anime": "Kimetsu no Yaiba (Dublado)",
+    "episodio": "Episódio 002",
+    "link_video": "https://cdn.example/dublados/hd3/53676.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T10:21:15.000Z",
+    "visualizacoes": 1773,
+    "image": "https://cdn.example/thumbs/53676.jpg"
+  },
+  {
+    "id": 53733,
+    "anime": "Kimetsu no Yaiba: Mugen Ressha-hen (TV) (Dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/hd3/53733.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T10:23:29.000Z",
+    "visualizacoes": 696,
+    "image": "https://cdn.example/thumbs/53733.jpg"
+  },
+  {
+    "id": 53701,
+    "anime": "Kimetsu no Yaiba 2: Yuukaku-hen (Dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/fullhd/53701.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T10:22:58.000Z",
+    "visualizacoes": 1778,
+    "image": "https://cdn.example/thumbs/53701.jpg"
+  },
+  {
+    "id": 53712,
+    "anime": "Kimetsu no Yaiba 3: Katanakaji no Sato-hen (Dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/fullhd/53712.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T10:23:05.000Z",
+    "visualizacoes": 1515,
+    "image": "https://cdn.example/thumbs/53712.jpg"
+  },
+  {
+    "id": 53725,
+    "anime": "Kimetsu no Yaiba: Hashira Geiko-hen (Dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/fullhd/53725.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T10:23:23.000Z",
+    "visualizacoes": 1593,
+    "image": "https://cdn.example/thumbs/53725.jpg"
+  },
+  {
+    "id": 53724,
+    "anime": "Kimetsu no Yaiba Movie: Mugen Ressha-hen (Dublado)",
+    "episodio": "Filme",
+    "link_video": "https://cdn.example/dublados/iphoneb/53724.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T10:23:20.000Z",
+    "visualizacoes": 2530,
+    "image": "https://cdn.example/thumbs/53724.jpg"
+  },
+  {
+    "id": 61860,
+    "anime": "Shingeki no Kyojin (Dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/hd3/61860.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T12:57:21.000Z",
+    "visualizacoes": 9161,
+    "image": "https://cdn.example/thumbs/61860.jpg"
+  },
+  {
+    "id": 61891,
+    "anime": "Shingeki no Kyojin Season 2 (Dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/fullhd/61891.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T12:59:32.000Z",
+    "visualizacoes": 2544,
+    "image": "https://cdn.example/thumbs/61891.jpg"
+  },
+  {
+    "id": 61904,
+    "anime": "Shingeki no Kyojin Season 3 (Dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/fullhd/61904.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T13:00:33.000Z",
+    "visualizacoes": 2065,
+    "image": "https://cdn.example/thumbs/61904.jpg"
+  },
+  {
+    "id": 61916,
+    "anime": "Shingeki no Kyojin Season 3 Part 2 (Dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/fullhd/61916.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T13:01:26.000Z",
+    "visualizacoes": 894,
+    "image": "https://cdn.example/thumbs/61916.jpg"
+  },
+  {
+    "id": 61931,
+    "anime": "Shingeki no Kyojin: The Final Season (Dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/fullhd/61931.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T13:02:35.000Z",
+    "visualizacoes": 1187,
+    "image": "https://cdn.example/thumbs/61931.jpg"
+  },
+  {
+    "id": 61949,
+    "anime": "Shingeki no Kyojin: The Final Season Part 2 (Dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/fullhd/61949.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T13:03:46.000Z",
+    "visualizacoes": 1030,
+    "image": "https://cdn.example/thumbs/61949.jpg"
+  },
+  {
+    "id": 46580,
+    "anime": "Boku no Hero Academia (Dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/fullhd/46580.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T07:41:55.000Z",
+    "visualizacoes": 1607,
+    "image": "https://cdn.example/thumbs/46580.jpg"
+  },
+  {
+    "id": 46594,
+    "anime": "Boku no Hero Academia 2 (Dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/fullhd/46594.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T07:42:55.000Z",
+    "visualizacoes": 664,
+    "image": "https://cdn.example/thumbs/46594.jpg"
+  },
+  {
+    "id": 56250,
+    "anime": "Naruto (Dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/hd2/56250.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T11:11:44.000Z",
+    "visualizacoes": 7568,
+    "image": "https://cdn.example/thumbs/56250.jpg"
+  },
+  {
+    "id": 56302,
+    "anime": "Naruto (Dublado)",
+    "episodio": "Episódio 053",
+    "link_video": "https://cdn.example/dublados/fullhd/56302.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T11:12:24.000Z",
+    "visualizacoes": 768,
+    "image": "https://cdn.example/thumbs/56302.jpg"
+  },
+  {
+    "id": 45977,
+    "anime": "Bleach (Dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/fullhd/45977.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-06-25T07:30:18.000Z",
+    "visualizacoes": 10339,
+    "image": "https://cdn.example/thumbs/45977.jpg"
+  },
+  {
+    "id": 900043,
+    "anime": "Koori no Jouheki 2nd Season (dublado)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/dublados/fullhd/900043.mp4",
+    "tipo": "Dublado",
+    "created_at": "2026-11-01T00:00:00.000Z",
+    "visualizacoes": 1,
+    "image": "https://cdn.example/thumbs/900043.jpg"
+  }
+]

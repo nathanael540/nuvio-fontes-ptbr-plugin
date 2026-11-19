@@ -1,0 +1,212 @@
+[
+  {
+    "id": 803279,
+    "anime": "Akira",
+    "episodio": "Filme",
+    "link_video": "https://cdn.example/legendados/hd3/803279.mp4",
+    "tipo": "Legendado",
+    "created_at": "2000-01-01T00:00:00.000Z",
+    "visualizacoes": 13,
+    "image": "https://cdn.example/thumbs/803279.jpg"
+  },
+  {
+    "id": 740501,
+    "anime": "Sen to Chihiro no Kamikakushi",
+    "episodio": "Filme",
+    "link_video": "https://cdn.example/legendados/like/740501.mp4",
+    "tipo": "Legendado",
+    "created_at": "2026-06-23T04:53:01.000Z",
+    "visualizacoes": 4,
+    "image": "https://cdn.example/thumbs/740501.jpg"
+  },
+  {
+    "id": 803930,
+    "anime": "Kimetsu no Yaiba",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/legendados/hd3/803930.mp4",
+    "tipo": "Legendado",
+    "created_at": "2000-01-01T00:00:00.000Z",
+    "visualizacoes": 111,
+    "image": "https://cdn.example/thumbs/803930.jpg"
+  },
+  {
+    "id": 803931,
+    "anime": "Kimetsu no Yaiba",
+    "episodio": "Episódio 002",
+    "link_video": "https://cdn.example/legendados/like/803931.mp4",
+    "tipo": "Legendado",
+    "created_at": "2000-01-01T00:00:00.000Z",
+    "visualizacoes": 44,
+    "image": "https://cdn.example/thumbs/803931.jpg"
+  },
+  {
+    "id": 803985,
+    "anime": "Kimetsu no Yaiba: Mugen Ressha-hen (TV)",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/legendados/fullhd/803985.mp4",
+    "tipo": "Legendado",
+    "created_at": "2000-01-01T00:00:00.000Z",
+    "visualizacoes": 17,
+    "image": "https://cdn.example/thumbs/803985.jpg"
+  },
+  {
+    "id": 803955,
+    "anime": "Kimetsu no Yaiba 2: Yuukaku-hen",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/legendados/hd2/803955.mp4",
+    "tipo": "Legendado",
+    "created_at": "2000-01-01T00:00:00.000Z",
+    "visualizacoes": 60,
+    "image": "https://cdn.example/thumbs/803955.jpg"
+  },
+  {
+    "id": 803966,
+    "anime": "Kimetsu no Yaiba 3: Katanakaji no Sato-hen",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/legendados/hd3/803966.mp4",
+    "tipo": "Legendado",
+    "created_at": "2000-01-01T00:00:00.000Z",
+    "visualizacoes": 59,
+    "image": "https://cdn.example/thumbs/803966.jpg"
+  },
+  {
+    "id": 803977,
+    "anime": "Kimetsu no Yaiba: Hashira Geiko-hen",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/legendados/hd3/803977.mp4",
+    "tipo": "Legendado",
+    "created_at": "2000-01-01T00:00:00.000Z",
+    "visualizacoes": 59,
+    "image": "https://cdn.example/thumbs/803977.jpg"
+  },
+  {
+    "id": 737133,
+    "anime": "Kimetsu no Yaiba Movie: Mugen Ressha-hen",
+    "episodio": "Filme",
+    "link_video": "https://cdn.example/legendados/fullhd/737133.mp4",
+    "tipo": "Legendado",
+    "created_at": "2026-06-23T05:36:52.000Z",
+    "visualizacoes": 118,
+    "image": "https://cdn.example/thumbs/737133.jpg"
+  },
+  {
+    "id": 743681,
+    "anime": "Shingeki no Kyojin",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/legendados/fullhd/743681.mp4",
+    "tipo": "Legendado",
+    "created_at": "2026-06-23T04:05:45.000Z",
+    "visualizacoes": 996,
+    "image": "https://cdn.example/thumbs/743681.jpg"
+  },
+  {
+    "id": 743590,
+    "anime": "Shingeki no Kyojin Season 2",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/legendados/hd2/743590.mp4",
+    "tipo": "Legendado",
+    "created_at": "2026-06-23T04:08:10.000Z",
+    "visualizacoes": 306,
+    "image": "https://cdn.example/thumbs/743590.jpg"
+  },
+  {
+    "id": 743547,
+    "anime": "Shingeki no Kyojin Season 3",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/legendados/hd3/743547.mp4",
+    "tipo": "Legendado",
+    "created_at": "2026-06-23T04:09:07.000Z",
+    "visualizacoes": 246,
+    "image": "https://cdn.example/thumbs/743547.jpg"
+  },
+  {
+    "id": 743520,
+    "anime": "Shingeki no Kyojin Season 3 Part 2",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/legendados/hd2/743520.mp4",
+    "tipo": "Legendado",
+    "created_at": "2026-06-23T04:10:04.000Z",
+    "visualizacoes": 275,
+    "image": "https://cdn.example/thumbs/743520.jpg"
+  },
+  {
+    "id": 743480,
+    "anime": "Shingeki no Kyojin: The Final Season",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/legendados/hd3/743480.mp4",
+    "tipo": "Legendado",
+    "created_at": "2026-06-23T04:11:18.000Z",
+    "visualizacoes": 238,
+    "image": "https://cdn.example/thumbs/743480.jpg"
+  },
+  {
+    "id": 744356,
+    "anime": "Shingeki no Kyojin: The Final Season Part 2",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/legendados/hd2/744356.mp4",
+    "tipo": "Legendado",
+    "created_at": "2026-06-23T03:55:33.000Z",
+    "visualizacoes": 177,
+    "image": "https://cdn.example/thumbs/744356.jpg"
+  },
+  {
+    "id": 790963,
+    "anime": "Boku no Hero Academia",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/legendados/hd3/790963.mp4",
+    "tipo": "Legendado",
+    "created_at": "2026-06-22T09:47:42.000Z",
+    "visualizacoes": 345,
+    "image": "https://cdn.example/thumbs/790963.jpg"
+  },
+  {
+    "id": 790949,
+    "anime": "Boku no Hero Academia 2",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/legendados/hd2/790949.mp4",
+    "tipo": "Legendado",
+    "created_at": "2026-06-22T09:48:37.000Z",
+    "visualizacoes": 44,
+    "image": "https://cdn.example/thumbs/790949.jpg"
+  },
+  {
+    "id": 714530,
+    "anime": "Naruto",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/legendados/hd3/714530.mp4",
+    "tipo": "Legendado",
+    "created_at": "2026-06-25T12:31:25.000Z",
+    "visualizacoes": 812,
+    "image": "https://cdn.example/thumbs/714530.jpg"
+  },
+  {
+    "id": 714482,
+    "anime": "Naruto",
+    "episodio": "Episódio 053",
+    "link_video": "https://cdn.example/legendados/fullhd/714482.mp4",
+    "tipo": "Legendado",
+    "created_at": "2026-06-25T12:38:03.000Z",
+    "visualizacoes": 22,
+    "image": "https://cdn.example/thumbs/714482.jpg"
+  },
+  {
+    "id": 791852,
+    "anime": "Bleach",
+    "episodio": "Episódio 002",
+    "link_video": "https://cdn.example/legendados/hd3/791852.mp4",
+    "tipo": "Legendado",
+    "created_at": "2026-06-22T09:18:41.000Z",
+    "visualizacoes": 559,
+    "image": "https://cdn.example/thumbs/791852.jpg"
+  },
+  {
+    "id": 803124,
+    "anime": "Koori no Jouheki 2nd Season",
+    "episodio": "Episódio 001",
+    "link_video": "https://cdn.example/legendados/hd2/803124.mp4",
+    "tipo": "Legendado",
+    "created_at": "2026-10-01T22:26:18.000Z",
+    "visualizacoes": 406,
+    "image": "https://cdn.example/thumbs/803124.jpg"
+  }
+]
