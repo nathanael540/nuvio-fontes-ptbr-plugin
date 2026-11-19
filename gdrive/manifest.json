@@ -1045,6 +1045,26 @@
         "pt"
       ],
       "logo": "https://www.google.com/s2/favicons?domain=topanimes.net&sz=128"
+    },
+    {
+      "id": "seekee",
+      "name": "Seekee",
+      "description": "Filmes, séries, animes e doramas em HLS do índice Seekee, com busca assinada, troca de temporada, opções dublada e legendada e legendas externas, via rede de espelhos.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/seekee.js",
+      "enabled": true,
+      "formats": [
+        "m3u8"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=es.cuevana4br.com&sz=128"
     }
   ]
 }

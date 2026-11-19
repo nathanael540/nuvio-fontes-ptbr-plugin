@@ -1,0 +1,198 @@
+{
+  "extMap": null,
+  "code": "00000",
+  "msg": "Success",
+  "data": [
+    {
+      "resourceSiteId": 4,
+      "resourceId": 29455,
+      "resourceSiteName": "onfilom",
+      "resourceUrl": "https://h5.onfilom.com/pt/detail/movie/z7B5nbeAAIild16fgVSOw-Zootopia",
+      "resourceTitle": "[Português Dublado]Zootopia: Essa Cidade é o Bicho",
+      "labelList": [
+        {
+          "labelCode": "pt_dub",
+          "labelType": "dub",
+          "languageCode": "pt",
+          "labelName": "Português Dublado",
+          "countryFlagCode": "🇧🇷"
+        }
+      ],
+      "type": "Filme",
+      "typeCode": "movie",
+      "startYear": null,
+      "endYear": 2016
+    },
+    {
+      "resourceSiteId": 4,
+      "resourceId": 1569591,
+      "resourceSiteName": "onfilom",
+      "resourceUrl": "https://h5.onfilom.com/pt/detail/movie/XYEh06kGsi9dxFTzojx5c-Zootopia-2",
+      "resourceTitle": "[Português Dublado]Zootopia 2",
+      "labelList": [
+        {
+          "labelCode": "pt_dub",
+          "labelType": "dub",
+          "languageCode": "pt",
+          "labelName": "Português Dublado",
+          "countryFlagCode": "🇧🇷"
+        }
+      ],
+      "type": "Filme",
+      "typeCode": "movie",
+      "startYear": null,
+      "endYear": 2025
+    },
+    {
+      "resourceSiteId": 4,
+      "resourceId": 5019,
+      "resourceSiteName": "onfilom",
+      "resourceUrl": "https://h5.onfilom.com/pt/detail/movie/MtfaTXRzhbUawiykJJOd1-Zootopia",
+      "resourceTitle": "[Português Legendas]Zootopia",
+      "labelList": [
+        {
+          "labelCode": "en_capt",
+          "labelType": "capt",
+          "languageCode": "en",
+          "labelName": "English Sub",
+          "countryFlagCode": "🇺🇸"
+        },
+        {
+          "labelCode": "ar_capt",
+          "labelType": "capt",
+          "languageCode": "ar",
+          "labelName": "الترجمة العربية",
+          "countryFlagCode": "🇦🇪"
+        },
+        {
+          "labelCode": "pt_capt",
+          "labelType": "capt",
+          "languageCode": "pt",
+          "labelName": "Português Legendas",
+          "countryFlagCode": "🇧🇷"
+        },
+        {
+          "labelCode": "es_capt",
+          "labelType": "capt",
+          "languageCode": "es",
+          "labelName": "Sub Español",
+          "countryFlagCode": "🇲🇽"
+        },
+        {
+          "labelCode": "tr_capt",
+          "labelType": "capt",
+          "languageCode": "tr",
+          "labelName": "Türkçe Altyazı",
+          "countryFlagCode": "🇹🇷"
+        },
+        {
+          "labelCode": "en_lang",
+          "labelType": "lang",
+          "languageCode": "en",
+          "labelName": "English",
+          "countryFlagCode": "🇺🇸"
+        }
+      ],
+      "type": "Filme",
+      "typeCode": "movie",
+      "startYear": null,
+      "endYear": 2016
+    },
+    {
+      "resourceSiteId": 4,
+      "resourceId": 1569589,
+      "resourceSiteName": "onfilom",
+      "resourceUrl": "https://h5.onfilom.com/pt/detail/movie/1zl7g8TmpAnKOFfF7Ygsm-Imagining-Zootopia",
+      "resourceTitle": "[Português Legendas]Imagining Zootopia",
+      "labelList": [
+        {
+          "labelCode": "en_capt",
+          "labelType": "capt",
+          "languageCode": "en",
+          "labelName": "English Sub",
+          "countryFlagCode": "🇺🇸"
+        },
+        {
+          "labelCode": "pt_capt",
+          "labelType": "capt",
+          "languageCode": "pt",
+          "labelName": "Português Legendas",
+          "countryFlagCode": "🇧🇷"
+        },
+        {
+          "labelCode": "es_capt",
+          "labelType": "capt",
+          "languageCode": "es",
+          "labelName": "Sub Español",
+          "countryFlagCode": "🇲🇽"
+        },
+        {
+          "labelCode": "en_lang",
+          "labelType": "lang",
+          "languageCode": "en",
+          "labelName": "English",
+          "countryFlagCode": "🇺🇸"
+        }
+      ],
+      "type": "Filme",
+      "typeCode": "movie",
+      "startYear": null,
+      "endYear": 2016
+    },
+    {
+      "resourceSiteId": 4,
+      "resourceId": 1256066,
+      "resourceSiteName": "onfilom",
+      "resourceUrl": "https://h5.onfilom.com/pt/detail/movie/EHhZNJJL3NZ0VwGiSQgOH-Zootopia-2",
+      "resourceTitle": "[Português Legendas]Zootopia 2",
+      "labelList": [
+        {
+          "labelCode": "en_capt",
+          "labelType": "capt",
+          "languageCode": "en",
+          "labelName": "English Sub",
+          "countryFlagCode": "🇺🇸"
+        },
+        {
+          "labelCode": "ar_capt",
+          "labelType": "capt",
+          "languageCode": "ar",
+          "labelName": "الترجمة العربية",
+          "countryFlagCode": "🇦🇪"
+        },
+        {
+          "labelCode": "pt_capt",
+          "labelType": "capt",
+          "languageCode": "pt",
+          "labelName": "Português Legendas",
+          "countryFlagCode": "🇧🇷"
+        },
+        {
+          "labelCode": "es_capt",
+          "labelType": "capt",
+          "languageCode": "es",
+          "labelName": "Sub Español",
+          "countryFlagCode": "🇲🇽"
+        },
+        {
+          "labelCode": "tr_capt",
+          "labelType": "capt",
+          "languageCode": "tr",
+          "labelName": "Türkçe Altyazı",
+          "countryFlagCode": "🇹🇷"
+        },
+        {
+          "labelCode": "en_lang",
+          "labelType": "lang",
+          "languageCode": "en",
+          "labelName": "English",
+          "countryFlagCode": "🇺🇸"
+        }
+      ],
+      "type": "Filme",
+      "typeCode": "movie",
+      "startYear": null,
+      "endYear": 2025
+    }
+  ]
+}

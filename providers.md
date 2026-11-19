@@ -54,6 +54,7 @@
 | [Super Animes](#super-animes) | `superanimes` | filme, série | MP4 | 🟢 Estável | 2026-11-19 |
 | [Donghua No Sekai](#donghua-no-sekai) | `donghuanosekai` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-19 |
 | [TopAnimes](#topanimes) | `topanimes` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-19 |
+| [Seekee](#seekee) | `seekee` | filme, série | HLS | 🟢 Estável | 2026-11-19 |
 
 ## MegaEmbed
 
@@ -1130,5 +1131,27 @@ Filmes e séries de anime em HLS e MP4 do TopAnimes, com busca HTML por título/
    8. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
    9. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    10. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+<!-- online-verification:end -->
+
+## Seekee
+
+**Status: 🟢 Estável.**
+
+Filmes, séries, animes e doramas em HLS do índice Seekee: busca na API pública `h5-api.otv.cc` com assinatura calculada no aparelho, confirmação de tipo, título e ano contra o TMDB e leitura da página `/pt/detail/` na rede de sete espelhos (o domínio `h5.onfilom.com` devolvido pela busca responde 403). Troca de temporada pela lista `seasons`, opção dublada e opção em áudio original (`Legendado` com legenda em português, `Gringo` sem ela), legendas `.srt` externas e descarte do episódio inexistente que a fonte troca pelo episódio 1.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-19T22:35:53.085Z** · ID `2026-11-19T22-35-31-894Z-seekee-3d113994-ae29` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `3d113994c8170fe7af9c3d7ac225b2db` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `603` · Matrix (1999) · **Resolvido** · 3/3 streams aproveitáveis
+   2. `movie` `24428` · Os Vingadores (2012) · **Resolvido** · 6/6 streams aproveitáveis
+   3. `movie` `150540` · Divertida Mente (2015) · **Resolvido** · 5/5 streams aproveitáveis
+   4. `movie` `129` · A Viagem de Chihiro (2001) · **Resolvido** · 6/6 streams aproveitáveis
+   5. `movie` `1398725` · Swallowed Star The Movie: Xueluo Continent (2024) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `1622` · Supernatural (2005) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
+   7. `tv` `82856` · The Mandalorian (2019) · S01E01 · **Resolvido** · 5/5 streams aproveitáveis
+   8. `tv` `87108` · Chernobyl (2019) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+   9. `tv` `76479` · The Boys (2019) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+   10. `tv` `96162` · Itaewon Class (2020) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
 <!-- online-verification:end -->
 

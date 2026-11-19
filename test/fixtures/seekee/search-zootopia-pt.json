@@ -1,0 +1,134 @@
+{
+  "extMap": null,
+  "code": "00000",
+  "msg": "Success",
+  "data": [
+    {
+      "resourceSiteId": 4,
+      "resourceId": 29455,
+      "resourceSiteName": "onfilom",
+      "resourceUrl": "https://h5.onfilom.com/pt/detail/movie/z7B5nbeAAIild16fgVSOw-Zootopia",
+      "resourceTitle": "[Português Dublado]Zootopia: Essa Cidade é o Bicho",
+      "labelList": [
+        {
+          "labelCode": "pt_dub",
+          "labelType": "dub",
+          "languageCode": "pt",
+          "labelName": "Português Dublado",
+          "countryFlagCode": "🇧🇷"
+        }
+      ],
+      "type": "Filme",
+      "typeCode": "movie",
+      "startYear": null,
+      "endYear": 2016
+    },
+    {
+      "resourceSiteId": 4,
+      "resourceId": 5019,
+      "resourceSiteName": "onfilom",
+      "resourceUrl": "https://h5.onfilom.com/pt/detail/movie/MtfaTXRzhbUawiykJJOd1-Zootopia",
+      "resourceTitle": "[Português Legendas]Zootopia",
+      "labelList": [
+        {
+          "labelCode": "en_capt",
+          "labelType": "capt",
+          "languageCode": "en",
+          "labelName": "English Sub",
+          "countryFlagCode": "🇺🇸"
+        },
+        {
+          "labelCode": "ar_capt",
+          "labelType": "capt",
+          "languageCode": "ar",
+          "labelName": "الترجمة العربية",
+          "countryFlagCode": "🇦🇪"
+        },
+        {
+          "labelCode": "pt_capt",
+          "labelType": "capt",
+          "languageCode": "pt",
+          "labelName": "Português Legendas",
+          "countryFlagCode": "🇧🇷"
+        },
+        {
+          "labelCode": "es_capt",
+          "labelType": "capt",
+          "languageCode": "es",
+          "labelName": "Sub Español",
+          "countryFlagCode": "🇲🇽"
+        },
+        {
+          "labelCode": "tr_capt",
+          "labelType": "capt",
+          "languageCode": "tr",
+          "labelName": "Türkçe Altyazı",
+          "countryFlagCode": "🇹🇷"
+        },
+        {
+          "labelCode": "en_lang",
+          "labelType": "lang",
+          "languageCode": "en",
+          "labelName": "English",
+          "countryFlagCode": "🇺🇸"
+        }
+      ],
+      "type": "Filme",
+      "typeCode": "movie",
+      "startYear": null,
+      "endYear": 2016
+    },
+    {
+      "resourceSiteId": 4,
+      "resourceId": 1554313,
+      "resourceSiteName": "onfilom",
+      "resourceUrl": "https://h5.onfilom.com/pt/detail/drama/uvwQKlUUCXslMApgIb0fz-Zootopia-Landscape-Day-and-Night",
+      "resourceTitle": "Zootopia Landscape Day and Night",
+      "labelList": [],
+      "type": "Séries",
+      "typeCode": "drama",
+      "startYear": null,
+      "endYear": 2016
+    },
+    {
+      "resourceSiteId": 4,
+      "resourceId": 2043349,
+      "resourceSiteName": "onfilom",
+      "resourceUrl": "https://h5.onfilom.com/pt/detail/drama/7ISQeKYPT4slg5LMF108H-What-Is-Your-StorySeason 8",
+      "resourceTitle": "[Áudio Português-BR]Que História é Essa, Porchat? Temporada 8",
+      "labelList": [
+        {
+          "labelCode": "pt_lang",
+          "labelType": "lang",
+          "languageCode": "pt",
+          "labelName": "Português Brasil",
+          "countryFlagCode": "🇧🇷"
+        }
+      ],
+      "type": "Séries",
+      "typeCode": "drama",
+      "startYear": null,
+      "endYear": 2026
+    },
+    {
+      "resourceSiteId": 4,
+      "resourceId": 2043343,
+      "resourceSiteName": "onfilom",
+      "resourceUrl": "https://h5.onfilom.com/pt/detail/drama/GjkEVdyx9Jkd9XjKkLICT-What-Is-Your-StorySeason 6",
+      "resourceTitle": "[Áudio Português-BR]Que História é Essa, Porchat? Temporada 6",
+      "labelList": [
+        {
+          "labelCode": "pt_lang",
+          "labelType": "lang",
+          "languageCode": "pt",
+          "labelName": "Português Brasil",
+          "countryFlagCode": "🇧🇷"
+        }
+      ],
+      "type": "Séries",
+      "typeCode": "drama",
+      "startYear": null,
+      "endYear": 2024
+    }
+  ]
+}

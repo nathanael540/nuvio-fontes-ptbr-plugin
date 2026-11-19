@@ -1,0 +1,107 @@
+{
+  "extMap": null,
+  "code": "00000",
+  "msg": "Success",
+  "data": [
+    {
+      "resourceSiteId": 4,
+      "resourceId": 1440050,
+      "resourceSiteName": "onfilom",
+      "resourceUrl": "https://h5.onfilom.com/pt/detail/movie/16lkKdZZGkiHKhTTzWGmY-Breaking",
+      "resourceTitle": "[Português Dublado]Breaking",
+      "labelList": [
+        {
+          "labelCode": "pt_dub",
+          "labelType": "dub",
+          "languageCode": "pt",
+          "labelName": "Português Dublado",
+          "countryFlagCode": "🇧🇷"
+        }
+      ],
+      "type": "Filme",
+      "typeCode": "movie",
+      "startYear": null,
+      "endYear": 2022
+    },
+    {
+      "resourceSiteId": 4,
+      "resourceId": 1272133,
+      "resourceSiteName": "onfilom",
+      "resourceUrl": "https://h5.onfilom.com/pt/detail/drama/hQfMsSkCwfXy1XA0poRsb-Breaking-Bad-Season-1",
+      "resourceTitle": "[Português Dublado]Breaking Bad Temporada 1",
+      "labelList": [
+        {
+          "labelCode": "pt_dub",
+          "labelType": "dub",
+          "languageCode": "pt",
+          "labelName": "Português Dublado",
+          "countryFlagCode": "🇧🇷"
+        }
+      ],
+      "type": "Séries",
+      "typeCode": "drama",
+      "startYear": null,
+      "endYear": 2008
+    },
+    {
+      "resourceSiteId": 4,
+      "resourceId": 1272136,
+      "resourceSiteName": "onfilom",
+      "resourceUrl": "https://h5.onfilom.com/pt/detail/drama/APtfm1JyU9K82CYDZzwds-Breaking-Bad-Season-2",
+      "resourceTitle": "[Português Dublado]Breaking Bad Temporada 2",
+      "labelList": [
+        {
+          "labelCode": "pt_dub",
+          "labelType": "dub",
+          "languageCode": "pt",
+          "labelName": "Português Dublado",
+          "countryFlagCode": "🇧🇷"
+        }
+      ],
+      "type": "Séries",
+      "typeCode": "drama",
+      "startYear": null,
+      "endYear": 2009
+    },
+    {
+      "resourceSiteId": 4,
+      "resourceId": 1272135,
+      "resourceSiteName": "onfilom",
+      "resourceUrl": "https://h5.onfilom.com/pt/detail/drama/kQbktsWaJAOh6lvUnmXnU-Breaking-Bad-Season-3",
+      "resourceTitle": "[Português Dublado]Breaking Bad Temporada 3",
+      "labelList": [
+        {
+          "labelCode": "pt_dub",
+          "labelType": "dub",
+          "languageCode": "pt",
+          "labelName": "Português Dublado",
+          "countryFlagCode": "🇧🇷"
+        }
+      ],
+      "type": "Séries",
+      "typeCode": "drama",
+      "startYear": null,
+      "endYear": 2010
+    },
+    {
+      "resourceSiteId": 4,
+      "resourceId": 1272139,
+      "resourceSiteName": "onfilom",
+      "resourceUrl": "https://h5.onfilom.com/pt/detail/drama/PHBlab8270HRlR27rLjvy-Breaking-Bad-Season-5",
+      "resourceTitle": "[Português Dublado]Breaking Bad Temporada 5",
+      "labelList": [
+        {
+          "labelCode": "pt_dub",
+          "labelType": "dub",
+          "languageCode": "pt",
+          "labelName": "Português Dublado",
+          "countryFlagCode": "🇧🇷"
+        }
+      ],
+      "type": "Séries",
+      "typeCode": "drama",
+      "startYear": null,
+      "endYear": 2012
+    }
+  ]
+}
