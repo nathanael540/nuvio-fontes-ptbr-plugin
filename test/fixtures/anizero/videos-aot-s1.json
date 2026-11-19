@@ -1,0 +1,27 @@
+{
+  "episodios": {
+    "1": {
+      "epi_thumb": "https://anizero.org/wp-content/uploads/animes/fa0c88acf08a3a18e7201c15e3d77384.webp",
+      "epi_num": "1",
+      "epi_title": "Episódio 1",
+      "epi_id": 101838,
+      "epi_url": "https://anizero.org/video/101838/"
+    },
+    "2": {
+      "epi_thumb": "https://anizero.org/wp-content/uploads/animes/fa0c88acf08a3a18e7201c15e3d77384.webp",
+      "epi_num": "2",
+      "epi_title": "Episódio 2",
+      "epi_id": 101837,
+      "epi_url": "https://anizero.org/video/101837/"
+    },
+    "3": {
+      "epi_thumb": "https://anizero.org/wp-content/uploads/animes/fa0c88acf08a3a18e7201c15e3d77384.webp",
+      "epi_num": "3",
+      "epi_title": "Episódio 3",
+      "epi_id": 101836,
+      "epi_url": "https://anizero.org/video/101836/"
+    }
+  },
+  "ovas": [],
+  "filmes": []
+}

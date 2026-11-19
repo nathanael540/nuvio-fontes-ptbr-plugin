@@ -50,6 +50,7 @@
 | [Tokyvideo](#tokyvideo) | `tokyvideo` | filme, série | MP4 | 🟠 Não verificado | — |
 | [Baixe Torrents](#baixetorrents) | `baixetorrent-org` | filme, série | magnet | 🟢 Estável | 2026-11-19 |
 | [AnimesHD](#animeshd) | `animeshd` | série | MP4 | 🟢 Estável | 2026-11-19 |
+| [AniZero](#anizero) | `anizero` | série | HLS | 🟢 Estável | 2026-11-19 |
 
 ## MegaEmbed
 
@@ -1011,5 +1012,22 @@ Séries de anime em MP4 do catálogo AnimesHD, com busca HTML por título PT-BR 
    3. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
    4. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
    5. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+<!-- online-verification:end -->
+
+## AniZero
+
+**Status: 🟢 Estável.**
+
+Séries de anime em HLS do catálogo AniZero, com busca JSON pelo título do TMDB, confirmação de título e ano, temporada pela cadeia de páginas sazonais, episódio pelo `epi_num` e decode local das opções `Dublado`/`Legendado` do player. O HLS é servido pelo host do embed com caminho relativo e exige `Referer` na reprodução.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-19T18:50:08.246Z** · ID `2026-11-19T18-49-38-344Z-anizero-b06f27a2-1d7f` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `b06f27a2cfd5bab579ea77f2d488c1fb` · algoritmo `sha256-fisher-yates-v1`
+   1. `tv` `37854` · One Piece (1999) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   2. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   3. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   4. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   5. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
 <!-- online-verification:end -->
 

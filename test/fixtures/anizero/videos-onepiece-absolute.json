@@ -1,0 +1,20 @@
+{
+  "episodios": {
+    "1": {
+      "epi_thumb": "https://anizero.org/wp-content/uploads/2023/03/yBYDzzmNoT5uXkXo3NGatLIANYK-10.jpg",
+      "epi_num": "1",
+      "epi_title": "Episódio 1",
+      "epi_id": 1,
+      "epi_url": "https://anizero.org/video/1/"
+    },
+    "2": {
+      "epi_thumb": "https://anizero.org/wp-content/uploads/2023/03/yBYDzzmNoT5uXkXo3NGATLIANYK-10.jpg",
+      "epi_num": "2",
+      "epi_title": "Episódio 2",
+      "epi_id": 2,
+      "epi_url": "https://anizero.org/video/2/"
+    }
+  },
+  "ovas": [],
+  "filmes": []
+}
