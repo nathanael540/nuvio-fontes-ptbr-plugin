@@ -55,9 +55,9 @@ Mapa de metodologias para estudar uma fonte e escolher um caminho de implementa�
 
 1. **Situação: Em uso.** Resultados e links estão no HTML; não há API utilizável ou ela não contém os dados necessários.
 2. **Investigar.** Inspecione formulário, URL de busca e elementos repetidos dos resultados. Preserve a relação entre título, ano e link; visite o detalhe para confirmar identidade e extrair opções.
-3. **Exemplos.** DooPlay consulta `/?s=<consulta>` e lê `.search-page article`, `.title a` e `.year`; episódios são selecionados pelas coordenadas da listagem, não pela posição visual. Baixa Rápido mantém leitores próprios para famílias de páginas distintas, compartilhando confirmação e transporte.
+3. **Exemplos.** DooPlay consulta `/?s=<consulta>` e lê `.search-page article`, `.title a` e `.year`; episódios são selecionados pelas coordenadas da listagem, não pela posição visual. Baixa Rápido mantém leitores próprios para famílias de páginas distintas, compartilhando confirmação e transporte. Baixa Cine lê o `action` do formulário (`index.php?busca=<termo>`) porque `/?s=` devolve a home sem filtrar, e confirma o cartão com variantes do título sem separadores e sem sufixos de edição ou temporada ([extrator](../src/baixacine/extractor.js), [testes](../test/baixacine.test.js)).
 4. **Referências.** [Busca DooPlay](../src/dooplay/sources.js), [utilitários Baixa Rápido](../src/baixarapido/common.js) e [leitor GratisTorrent](../src/baixarapido/gratistorrent.js). Testes: [DooPlay](../test/dooplay.test.js) e [Baixa Rápido](../test/baixarapido.test.js). Blocos: `title-match`, `slugify` e `script-extract`.
-5. **Limites.** Use apenas a API básica do cheerio aceita no NuvioTV e percorra coleções com `eq(i)`. Seletor ausente pode indicar layout alterado ou bloqueio; só reconheça ausência com evidência da estrutura válida da fonte.
+5. **Limites.** Use apenas a API básica do cheerio aceita no NuvioTV e percorra coleções com `eq(i)`. Seletor ausente pode indicar layout alterado ou bloqueio; só reconheça ausência com evidência da estrutura válida da fonte. No Baixa Cine, a paginação em `/pesquisa/<termo>/pagina/<n>/` não é seguida: só a primeira página (30 cartões) é lida.
 
 ### 3.5. APIs particulares, AJAX e parâmetros de player
 

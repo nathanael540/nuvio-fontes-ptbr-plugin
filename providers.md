@@ -46,7 +46,7 @@
 | [AnimesOnlineCC](#animesonlinecc) | `animesonlinecc` | série | MP4, HLS | 🟢 Estável | 2026-11-18 |
 | [Otakulogia](#otakulogia) | `otakulogia` | filme, série | MP4 | 🟢 Estável | 2026-11-18 |
 | [VenoPlay](#venoplay) | `venoplay` | filme, série | HLS | 🟢 Estável | 2026-11-18 |
-| [Baixa Cine](#baixa-cine) | `baixacine` | filme, série | magnet | 🟠 Não verificado | — |
+| [Baixa Cine](#baixa-cine) | `baixacine` | filme, série | magnet | 🟢 Estável | 2026-11-19 |
 | [Tokyvideo](#tokyvideo) | `tokyvideo` | filme, série | MP4 | 🟢 Estável | 2026-11-19 |
 | [Baixe Torrents](#baixetorrents) | `baixetorrent-org` | filme, série | magnet | 🟢 Estável | 2026-11-19 |
 | [AnimesHD](#animeshd) | `animeshd` | série | MP4 | 🟢 Estável | 2026-11-19 |
@@ -966,12 +966,29 @@ Filmes e séries em HLS pela VenoPlay, com busca por título, confirmação de t
 
 ## Baixa Cine
 
-**Status: 🟠 Não verificado.**
+**Status: 🟢 Estável.**
 
-Provedor do catálogo Baixa Cine: busca por título na página de busca do site, confirmação da
-identidade por título/ano contra o `MediaInfo` do TMDB e extração do magnet do post confirmado —
-hash base32 convertido para hexadecimal de 40 caracteres, qualidade e idioma descobertos localmente
-na fonte.
+Provedor do catálogo Baixa Cine: busca pelo formulário do site (`index.php?busca=<termo>`; a rota
+`/?s=` devolve a home), confirmação da identidade por título/ano contra o `MediaInfo` do TMDB com
+variantes para sufixos de edição/temporada e filtro de tipo, e extração dos magnets do post
+confirmado — hash base32 convertido para hexadecimal de 40 caracteres, qualidade, idioma e tamanho
+descobertos localmente na fonte.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-19T20:47:07.968Z** · ID `2026-11-19T20-46-59-879Z-baixacine-40ce3b80-eaa0` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `40ce3b8043c213bca3ae6b0cd5cff87c` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `569094` · Homem-Aranha: Através do Aranhaverso (2023) · **Resolvido** · 4/4 streams aproveitáveis
+   2. `movie` `13` · Forrest Gump: O Contador de Histórias (1994) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `299536` · Vingadores: Guerra Infinita (2018) · **Resolvido** · 4/4 streams aproveitáveis
+   4. `movie` `1398725` · Swallowed Star The Movie: Xueluo Continent (2024) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `118340` · Guardiões da Galáxia (2014) · **Resolvido** · 4/4 streams aproveitáveis
+   6. `tv` `46161` · Vale Tudo (1988) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   7. `tv` `60574` · Peaky Blinders (2013) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
+   8. `tv` `14853` · O Clone (2001) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `1416` · Grey's Anatomy (2005) · S01E01 · **Resolvido** · 54/54 streams aproveitáveis
+   10. `tv` `60625` · Rick and Morty (2013) · S01E01 · **Resolvido** · 10/10 streams aproveitáveis
+<!-- online-verification:end -->
 
 ## Tokyvideo
 

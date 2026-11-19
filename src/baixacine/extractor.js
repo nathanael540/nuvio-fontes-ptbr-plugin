@@ -1,9 +1,10 @@
 /**
- * Baixa Cine: busca HTML no catálogo público do site e magnet do post confirmado.
+ * Baixa Cine: busca HTML no formulário público do site e magnet do post confirmado.
  *
- * O site publica cartões de filmes e séries consultáveis por busca (`https://baixacine.com/?s=`);
- * cada post no detalhe publica magnets. A confirmação da identidade entre resultado e
- * `MediaInfo` (título e ano) vem de `findBestMatch` do bloco `title-match`.
+ * O site consulta o catálogo pelo formulário `index.php?busca=` (a rota `/?s=` é ignorada e
+ * devolve a home); cada post no detalhe publica magnets. A confirmação da identidade entre
+ * resultado e `MediaInfo` usa título, ano e tipo, com variantes de título para sufixos de
+ * edição e temporada, via `findBestMatch` do bloco `title-match`.
  */
 
 import { fetchText } from '../_blocks/http/index.mjs';
@@ -16,6 +17,12 @@ import { FORMATTER } from '../_blocks/custom-formatter/index.mjs';
 
 const ORIGIN = 'https://baixacine.com';
 const PROVIDER_NAME = 'Baixa Cine';
+// Separa títulos compostos do cartão ("The Avengers - Os Vingadores - 4K").
+const TITLE_SEPARATOR = /\s+[-–—/|]\s+/;
+// Sufixos de edição ou temporada no fim do título do cartão.
+const TITLE_SUFFIX = /\s*(?:[-–—|/]\s*)?(?:\(?\s*(?:4k|60\s*fps|imax(?:\s+open\s+matte)?|blu-?ray|web-?dl|webrip|dublado|legendado|legendada|nacional|completo|completa|hd|sd)\s*\)?|\d+ª?\s*(?:at[ée]\s*ª?\s*\d+\s*)?temporada(?:\s+completa)?|todas\s+as\s+temporadas)\s*$/i;
+// Tamanho textual de um único arquivo, como o site publica.
+const SIZE_VALUE = /^\d+(?:[.,]\d+)?\s*(?:GB|MB|KB)$/i;
 
 /**
  * @typedef {import('../_blocks/tmdb-info/index.mjs').MediaInfo} MediaInfo
@@ -33,39 +40,45 @@ export async function collectStreams(media) {
   const match = await findContent(media);
   if (!match) return [];
   const detailHtml = await fetchText(match.url, { profile: 'page' });
-  const magnets = readMagnets(detailHtml);
+  const $ = loadHtml(detailHtml);
+  const magnets = readMagnets($);
   if (!magnets.length) throw new Error(`Detalhe do post ${match.url} sem magnet válido`);
-  const language = languageFromTexts([magnets[0].dn, 'Idioma / áudio Português']);
-  const size = readSize(detailHtml);
+  const audio = readInfo($, 'Idioma / áudio');
+  const quality = readInfo($, 'Qualidade');
+  const size = readSize($, magnets.length);
   const streams = [];
   for (const magnet of magnets) {
     const format = formatDetails(media);
     if (magnet.dn) format.filename = magnet.dn;
+    const language = languageFromTexts([magnet.dn, audio]);
     const fields = {
       url: magnet.href,
-      quality: discoverQuality([magnet.dn, detailHtml]),
-      language,
+      quality: discoverQuality([magnet.dn, magnets.length === 1 ? quality : null]),
       provider: PROVIDER_NAME,
       type: 'magnet',
       format,
     };
-    if (size !== null) fields.size = size;
+    if (language) fields.language = language;
+    if (size) fields.size = size;
     streams.push(buildStream(fields));
   }
   return streams;
 }
 
 /**
- * Busca o post confirmado pelo `MediaInfo`: por título do TMDB (PT-BR e alternativos) na página
- * de busca, escolhendo o cartão com maior semelhança de título/ano.
+ * Busca o post confirmado pelo `MediaInfo`: por título do TMDB (PT-BR e alternativos) no
+ * formulário de busca do site, escolhendo o cartão com maior semelhança de título/ano. Em pedido
+ * de série, o ano do cartão é ignorado (o site publica o ano da temporada, não o da série).
  * @param {MediaInfo} media - Dados do TMDB.
  * @returns {Promise<{ url: string }|null>} Post confirmado ou null em ausência.
  * @throws {Error} Em falha de rede ou parsing.
  */
 async function findContent(media) {
+  const matchMedia = media.mediaType === 'tv' ? { ...media, year: null } : media;
   for (const term of searchTerms(media)) {
     const html = await fetchText(searchUrl(term), { profile: 'page' });
-    const match = findBestMatch(parseSearchResults(html), media);
+    const results = filterByType(parseSearchResults(html), media.mediaType);
+    const match = findBestMatch(expandCandidates(results), matchMedia);
     if (match) return { url: match.candidate.url };
   }
   return null;
@@ -87,12 +100,12 @@ function searchTerms(media) {
 }
 
 /**
- * URL da página de busca do catálogo.
+ * URL do formulário de busca do catálogo (a rota `/?s=` é ignorada pelo site).
  * @param {string} term - Termo de busca não vazio.
  * @returns {string} URL absoluta da busca.
  */
 function searchUrl(term) {
-  return `${ORIGIN}/?s=${encodeURIComponent(term)}`;
+  return `${ORIGIN}/index.php?busca=${encodeURIComponent(term)}`;
 }
 
 /**
@@ -136,6 +149,68 @@ function parseSearchResults(html) {
 }
 
 /**
+ * Mantém só os cartões do tipo pedido: filme descarta cartões de temporada; série exige o termo
+ * "Temporada" no título, porque o site publica séries como pacotes de temporada.
+ * @param {{ title: string, year: number|null, url: string }[]} results - Cartões da busca.
+ * @param {'movie'|'tv'} mediaType - Tipo pedido pelo app.
+ * @returns {{ title: string, year: number|null, url: string }[]} Cartões do tipo pedido.
+ */
+function filterByType(results, mediaType) {
+  return results.filter((result) => {
+    const season = /\btemporadas?\b/i.test(result.title);
+    return mediaType === 'tv' ? season : !season;
+  });
+}
+
+/**
+ * Expande cada cartão nas variantes de título usadas na confirmação. Cada variante preserva ano e
+ * URL do cartão original.
+ * @param {{ title: string, year: number|null, url: string }[]} results - Cartões do tipo pedido.
+ * @returns {{ title: string, year: number|null, url: string }[]} Cartões com variantes de título.
+ */
+function expandCandidates(results) {
+  const candidates = [];
+  for (const result of results) {
+    for (const title of titleVariants(result.title)) candidates.push({ ...result, title });
+  }
+  return candidates;
+}
+
+/**
+ * Variantes de um título de cartão: o título completo, o título sem sufixos e os trechos separados
+ * por " - ", " / ", " | " ou travessão.
+ * @param {string} title - Título do cartão.
+ * @returns {string[]} Variantes não vazias, sem repetição.
+ */
+function titleVariants(title) {
+  const variants = new Set([title.trim(), baseTitle(title)]);
+  for (const part of title.split(TITLE_SEPARATOR)) {
+    const value = part.trim();
+    if (value === '') continue;
+    variants.add(value);
+    variants.add(baseTitle(value));
+  }
+  variants.delete('');
+  return [...variants];
+}
+
+/**
+ * Remove do fim do título sufixos de edição ("4K", "IMAX", "Legendado") e de temporada
+ * ("5ª Temporada", "Todas as Temporadas"), preservando o núcleo do título.
+ * @param {string} title - Título do cartão.
+ * @returns {string} Título sem os sufixos reconhecidos.
+ */
+function baseTitle(title) {
+  let value = title.trim();
+  let next = value.replace(TITLE_SUFFIX, '').trim();
+  while (next !== value && next !== '') {
+    value = next;
+    next = value.replace(TITLE_SUFFIX, '').trim();
+  }
+  return value;
+}
+
+/**
  * Lê o ano de 4 dígitos de um texto de cartão.
  * @param {string} text - Texto do ano.
  * @returns {number|null} Ano ou null quando ausente.
@@ -148,11 +223,11 @@ function readYear(text) {
 /**
  * Extrai os magnets válidos do HTML do post: hash hexadecimal de 40 caracteres em `xt`
  * (base32 convertido), deduplicado por hash. magnets inválidos são descartados isoladamente.
- * @param {string} html - HTML do detalhe do post.
+ * @param {*} $ - Documento do cheerio com o detalhe do post.
  * @returns {Magnet[]} Magnets válidos; lista vazia quando o post não traz magnet.
  */
-function readMagnets(html) {
-  const anchors = loadHtml(html)('a');
+function readMagnets($) {
+  const anchors = $('a');
   const magnets = [];
   const seen = new Set();
   for (let index = 0; index < anchors.length; index += 1) {
@@ -173,13 +248,34 @@ function readMagnets(html) {
 }
 
 /**
- * Lê o tamanho textual do arquivo do post a partir de "Tamanho do arquivo".
- * @param {string} html - HTML do detalhe do post.
- * @returns {string|null} Tamanho com unidade (ex.: "2.48 GB") ou null quando ausente.
+ * Lê o valor de uma linha `tech-info` do detalhe pelo rótulo exato.
+ * @param {*} $ - Documento do cheerio com o detalhe do post.
+ * @param {string} label - Rótulo da linha (ex.: "Idioma / áudio").
+ * @returns {string|null} Texto do valor ou null quando a linha não existe.
  */
-function readSize(html) {
-  const match = /Tamanho do arquivo[\s\S]{0,400}?(\d+(?:[.,]\d+)?\s*(?:GB|MB|KB)\b)/i.exec(html);
-  return match ? match[1] : null;
+function readInfo($, label) {
+  const rows = $('.tech-info-row');
+  for (let index = 0; index < rows.length; index += 1) {
+    const row = rows.eq(index);
+    if (textOf(row.find('.tech-info-label')) === label) {
+      return textOf(row.find('.tech-info-value'));
+    }
+  }
+  return null;
+}
+
+/**
+ * Lê o tamanho textual de um post com um único magnet. Em posts com vários magnets o site lista
+ * tamanhos combinados ("1.28 GB / 2.35 GB / 2.46 GB") sem relação verificável com cada arquivo;
+ * nesse caso o campo fica ausente em vez de receber um valor possivelmente errado.
+ * @param {*} $ - Documento do cheerio com o detalhe do post.
+ * @param {number} magnetCount - Quantidade de magnets válidos do post.
+ * @returns {string|null} Tamanho com unidade (ex.: "2.48 GB") ou null quando ausente ou ambíguo.
+ */
+function readSize($, magnetCount) {
+  if (magnetCount !== 1) return null;
+  const value = readInfo($, 'Tamanho do arquivo');
+  return value !== null && SIZE_VALUE.test(value) ? value : null;
 }
 
 /**

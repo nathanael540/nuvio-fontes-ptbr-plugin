@@ -1139,28 +1139,34 @@ function decodeParam(value) {
 // src/baixacine/extractor.js
 var ORIGIN = "https://baixacine.com";
 var PROVIDER_NAME = "Baixa Cine";
+var TITLE_SEPARATOR = /\s+[-–—/|]\s+/;
+var TITLE_SUFFIX = /\s*(?:[-–—|/]\s*)?(?:\(?\s*(?:4k|60\s*fps|imax(?:\s+open\s+matte)?|blu-?ray|web-?dl|webrip|dublado|legendado|legendada|nacional|completo|completa|hd|sd)\s*\)?|\d+ª?\s*(?:at[ée]\s*ª?\s*\d+\s*)?temporada(?:\s+completa)?|todas\s+as\s+temporadas)\s*$/i;
+var SIZE_VALUE = /^\d+(?:[.,]\d+)?\s*(?:GB|MB|KB)$/i;
 function collectStreams(media) {
   return __async(this, null, function* () {
     const match = yield findContent(media);
     if (!match) return [];
     const detailHtml = yield fetchText(match.url, { profile: "page" });
-    const magnets = readMagnets(detailHtml);
+    const $ = loadHtml(detailHtml);
+    const magnets = readMagnets($);
     if (!magnets.length) throw new Error(`Detalhe do post ${match.url} sem magnet v\xE1lido`);
-    const language = languageFromTexts([magnets[0].dn, "Idioma / \xE1udio Portugu\xEAs"]);
-    const size = readSize(detailHtml);
+    const audio = readInfo($, "Idioma / \xE1udio");
+    const quality = readInfo($, "Qualidade");
+    const size = readSize($, magnets.length);
     const streams = [];
     for (const magnet of magnets) {
       const format = formatDetails(media);
       if (magnet.dn) format.filename = magnet.dn;
+      const language = languageFromTexts([magnet.dn, audio]);
       const fields = {
         url: magnet.href,
-        quality: discoverQuality([magnet.dn, detailHtml]),
-        language,
+        quality: discoverQuality([magnet.dn, magnets.length === 1 ? quality : null]),
         provider: PROVIDER_NAME,
         type: "magnet",
         format
       };
-      if (size !== null) fields.size = size;
+      if (language) fields.language = language;
+      if (size) fields.size = size;
       streams.push(buildStream(fields));
     }
     return streams;
@@ -1168,9 +1174,11 @@ function collectStreams(media) {
 }
 function findContent(media) {
   return __async(this, null, function* () {
+    const matchMedia = media.mediaType === "tv" ? __spreadProps(__spreadValues({}, media), { year: null }) : media;
     for (const term of searchTerms(media)) {
       const html = yield fetchText(searchUrl(term), { profile: "page" });
-      const match = findBestMatch(parseSearchResults(html), media);
+      const results = filterByType(parseSearchResults(html), media.mediaType);
+      const match = findBestMatch(expandCandidates(results), matchMedia);
       if (match) return { url: match.candidate.url };
     }
     return null;
@@ -1185,7 +1193,7 @@ function searchTerms(media) {
   return terms;
 }
 function searchUrl(term) {
-  return `${ORIGIN}/?s=${encodeURIComponent(term)}`;
+  return `${ORIGIN}/index.php?busca=${encodeURIComponent(term)}`;
 }
 function loadHtml(html) {
   const { load } = require("cheerio-without-node-native");
@@ -1207,12 +1215,45 @@ function parseSearchResults(html) {
   }
   return results;
 }
+function filterByType(results, mediaType) {
+  return results.filter((result) => {
+    const season = /\btemporadas?\b/i.test(result.title);
+    return mediaType === "tv" ? season : !season;
+  });
+}
+function expandCandidates(results) {
+  const candidates = [];
+  for (const result of results) {
+    for (const title of titleVariants(result.title)) candidates.push(__spreadProps(__spreadValues({}, result), { title }));
+  }
+  return candidates;
+}
+function titleVariants(title) {
+  const variants = /* @__PURE__ */ new Set([title.trim(), baseTitle(title)]);
+  for (const part2 of title.split(TITLE_SEPARATOR)) {
+    const value = part2.trim();
+    if (value === "") continue;
+    variants.add(value);
+    variants.add(baseTitle(value));
+  }
+  variants.delete("");
+  return [...variants];
+}
+function baseTitle(title) {
+  let value = title.trim();
+  let next = value.replace(TITLE_SUFFIX, "").trim();
+  while (next !== value && next !== "") {
+    value = next;
+    next = value.replace(TITLE_SUFFIX, "").trim();
+  }
+  return value;
+}
 function readYear2(text) {
   const match = /(\d{4})/.exec(text);
   return match ? Number(match[1]) : null;
 }
-function readMagnets(html) {
-  const anchors = loadHtml(html)("a");
+function readMagnets($) {
+  const anchors = $("a");
   const magnets = [];
   const seen = /* @__PURE__ */ new Set();
   for (let index = 0; index < anchors.length; index += 1) {
@@ -1231,9 +1272,20 @@ function readMagnets(html) {
   }
   return magnets;
 }
-function readSize(html) {
-  const match = /Tamanho do arquivo[\s\S]{0,400}?(\d+(?:[.,]\d+)?\s*(?:GB|MB|KB)\b)/i.exec(html);
-  return match ? match[1] : null;
+function readInfo($, label) {
+  const rows = $(".tech-info-row");
+  for (let index = 0; index < rows.length; index += 1) {
+    const row = rows.eq(index);
+    if (textOf(row.find(".tech-info-label")) === label) {
+      return textOf(row.find(".tech-info-value"));
+    }
+  }
+  return null;
+}
+function readSize($, magnetCount) {
+  if (magnetCount !== 1) return null;
+  const value = readInfo($, "Tamanho do arquivo");
+  return value !== null && SIZE_VALUE.test(value) ? value : null;
 }
 function formatDetails(media) {
   const format = { template: FORMATTER.AUTO, addon: PROVIDER_NAME, title: media.title };
