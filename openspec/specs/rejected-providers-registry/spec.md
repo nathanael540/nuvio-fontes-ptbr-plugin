@@ -1,7 +1,7 @@
 # rejected-providers-registry Specification
 
 ## Purpose
-TBD - created by archiving change padronizar-provedores-rejeitados. Update Purpose after archive.
+Registra fontes investigadas e rejeitadas para publicação, com estrutura padronizada de data, categoria, motivo, evidência e critério de reavaliação.
 
 ## Requirements
 
