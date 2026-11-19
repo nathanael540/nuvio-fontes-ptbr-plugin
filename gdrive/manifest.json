@@ -885,6 +885,66 @@
         "pt"
       ],
       "logo": "https://www.google.com/s2/favicons?domain=venoplay.com&sz=128"
+    },
+    {
+      "id": "tokyvideo",
+      "name": "Tokyvideo",
+      "description": "Filmes e séries do portal Tokyvideo (tokyvideo.com/br) pela busca e fichas do site, com o stream MP4 direto publicado na página do vídeo.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/tokyvideo.js",
+      "enabled": true,
+      "formats": [
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=tokyvideo.com&sz=128"
+    },
+    {
+      "id": "baixetorrent-org",
+      "name": "Baixe Torrents",
+      "description": "Filmes e séries em magnet do catálogo público baixetorrent.org, sem conta e sem chave externa: busca por título e magnets publicados no HTML dos posts.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/baixetorrent-org.js",
+      "enabled": true,
+      "formats": [
+        "magnet"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.baixetorrent.org/favicon.ico"
+    },
+    {
+      "id": "baixacine",
+      "name": "Baixa Cine",
+      "description": "Filmes e séries em magnet do catálogo Baixa Cine, dublados ou legendados conforme o rótulo publicado no post.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/baixacine.js",
+      "enabled": true,
+      "formats": [
+        "magnet"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=baixacine.com&sz=128"
     }
   ]
 }

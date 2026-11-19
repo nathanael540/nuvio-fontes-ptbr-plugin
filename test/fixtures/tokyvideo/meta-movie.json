@@ -1,0 +1,11 @@
+{
+  "id": 12345,
+  "title": "GTA TRAILER",
+  "original_title": "GTA TRAILER",
+  "release_date": "2026-01-05",
+  "genres": [{ "id": 80, "name": "Crime" }],
+  "original_language": "pt",
+  "origin_country": [],
+  "external_ids": { "imdb_id": null },
+  "alternative_titles": { "titles": [] }
+}

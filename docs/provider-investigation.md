@@ -4,12 +4,13 @@ Mapa de metodologias para estudar uma fonte e escolher um caminho de implementa�
 
 ## 1. Como usar este mapa
 
-1. Leia [arquitetura e contrato](arch.md), [regras de testes](tests.md), [catálogo de blocos](../src/_blocks/index.md) e [status dos provedores](../providers.md). Este guia não substitui essas referências.
-2. Combine os métodos conforme a cadeia da fonte: busca JSON, detalhe HTML, botão AJAX, player intermediário e mídia final podem exigir abordagens diferentes.
-3. **Em uso** significa implementação em provedor atual. Os testes citados demonstram o comportamento implementado; evidência online do pacote correspondente fica exclusivamente em `providers.md`.
-4. **Bloco disponível** significa implementação e teste isolado sem consumidor atual. **Hipótese** significa caminho ainda sem implementação local. Não apresente uma hipótese como método comprovado.
-5. Os caminhos HTTP abaixo pertencem às fontes citadas. Trocar o domínio não basta: confirme método, parâmetros, esquema, identidade e mídia na nova fonte. Não use o histórico anterior ao reset como requisito ou evidência de teste.
-6. Antes de implementar comportamento novo, abra a proposta OpenSpec. Registre no `design.md` as descobertas específicas, alternativas, impedimentos e validação; mantenha aqui apenas o método reaproveitável.
+1. Leia [arquitetura e contrato](arch.md), [regras de testes](tests.md), [catálogo de blocos](../src/_blocks/index.md), [status dos provedores](../providers.md) e [provedores rejeitados](../rejected-providers.md). Este guia não substitui essas referências.
+2. Antes de começar uma nova fonte, confira em [provedores rejeitados](../rejected-providers.md) se ela já foi avaliada e descartada e se o critério de reavaliação foi atingido.
+3. Combine os métodos conforme a cadeia da fonte: busca JSON, detalhe HTML, botão AJAX, player intermediário e mídia final podem exigir abordagens diferentes.
+4. **Em uso** significa implementação em provedor atual. Os testes citados demonstram o comportamento implementado; evidência online do pacote correspondente fica exclusivamente em `providers.md`.
+5. **Bloco disponível** significa implementação e teste isolado sem consumidor atual. **Hipótese** significa caminho ainda sem implementação local. Não apresente uma hipótese como método comprovado.
+6. Os caminhos HTTP abaixo pertencem às fontes citadas. Trocar o domínio não basta: confirme método, parâmetros, esquema, identidade e mídia na nova fonte. Não use o histórico anterior ao reset como requisito ou evidência de teste.
+7. Antes de implementar comportamento novo, abra a proposta OpenSpec. Registre no `design.md` as descobertas específicas, alternativas, impedimentos e validação; mantenha aqui apenas o método reaproveitável.
 
 ## 2. Roteiro de investigação
 
@@ -422,6 +423,15 @@ Mapa de metodologias para estudar uma fonte e escolher um caminho de implementa�
 8. **Referências.** [Semente, busca e API](../src/venoplay/site.js), [player e streams](../src/venoplay/player.js), [entrada](../src/venoplay/index.js) e [testes](../test/venoplay.test.js); fixtures em [test/fixtures/venoplay](../test/fixtures/venoplay/). Blocos usados: `tmdb-info`, `http`, `script-extract`, `stream-build`, `custom-formatter`, `language-discovery` e `quality-discovery`; nenhum bloco novo. Referência externa: `github.com/Ivadzf/ivadz-nuvio-repo`, `providers/venoplay.js` (GPL-3.0).
 9. **Limites.** A semente pode redirecionar ou falhar; o host reserva cobre a falha, sem cache. A busca é textual e o player do filme observado não publicou HLS em `mgeb.space`/`mgeb.lat`; a série publicou. O `nhdapi.com` recusou conexão, então o `Legendado` fica em triagem. A reutilização deste método em outra fonte é **Hipótese** até nova evidência; a URL devolvida comprova o contrato, não a reprodução no aparelho.
 
+### 3.40. Site de vídeo com MP4 assinado no `<source>` da ficha
+
+1. **Situação: Em uso no Tokyvideo.** O portal publica busca, fichas de vídeo com `<video>` e um `<source type="video/mp4">` contendo o MP4 direto assinado pelo parâmetro `secure` (observado em 2026-11-19; não há player intermediário). A assinatura é obrigatória no CDN: a URL sem `secure` respondeu HTTP 403 no teste HEAD.
+2. **Investigar.** Confirme `GET https://www.tokyvideo.com/br/procurar?q=<termo>` e os cartões (`a` com `href` em `/br/video/<slug>`). O título legível é o texto da âncora do `h3`; âncoras cujo texto é somente duração (ex.: `24:49`) são ignoradas. Identifique a ficha pela JSON-LD `VideoObject` (`name`, `duration`, `videoQuality`) e pela tag `<source type="video/mp4">` na página.
+3. **Contrato observado.** Ficha sem `<source>` é vídeo não disponível para o app (observado no "Game On! (2006)" — ficha com mensagem de país não disponível, sem stream). Os vídeos do site podem ter título no portal em português e título da ficha em outro idioma (espanhol no exemplo acima); a identidade é textual, sem leitura de metadado de idioma de áudio (`inLanguage` reflete a UI do portal). JSON-LD: `duration` em ISO 8601 (`PnDTnHnMnS`), `videoQuality` "HD".
+4. **Ação no provedor.** Busca → ranking por `titleSimilarity`/contenção contra o título do TMDB, máximo de 3 candidatos → ficha da candidata → confirmação de título pela contenção do título do TMDB em `normalizeText` sem espaços (ou `titleSimilarity` ≥ 0,5) → stream com `buildStream`, `type: 'mp4'`, qualidade do `videoQuality`, `provider` = host do CDN e `headers` = `playbackHeaders` da ficha.
+5. **Referências.** [Extrator](../src/tokyvideo/extractor.js), [entrada](../src/tokyvideo/index.js) e [testes](../test/tokyvideo.test.js); fixtures em [test/fixtures/tokyvideo](../test/fixtures/tokyvideo/). Blocos usados: `http`, `tmdb-info`, `title-match`, `stream-build`, `custom-formatter`; bloco `quality-discovery` para `HD` → `720p`; bloco `language-discovery` não se aplica (sem evidência de áudio).
+6. **Limites.** A assinatura do `secure` expira: a ficha publica a URL assinada atual e o provedor obtém a assinatura a cada execução, sem cache, fixture ou log. O site não publica temporada/episódio nas fichas (episódios são vídeos individuais com o episódio no título), então o pedido de série acompanha o título da ficha e o par no `format`. A URL assinada não entra em fixture, log ou documentação; a rodada online é a única evidência de reprodução no app.
+
 ## 4. Serviços intermediários e enriquecimento
 
 1. Use esta seção quando a fonte já fornecer uma página ou um hash, mas faltar conteúdo legível, o índice de um episódio ou evidência do que há na mídia. Esses serviços podem complementar métodos de catálogo sem pertencer à mesma fonte.
@@ -467,6 +477,7 @@ Mapa de metodologias para estudar uma fonte e escolher um caminho de implementa�
 6. **Fixtures e testes.** Guarde respostas reais sanitizadas em `test/fixtures/<fonte>/`. Cubra filme, episódio, pacote e ausência quando aplicáveis, além de respostas inválidas, identidade conflitante e falha isolada. Testes Node e de blocos continuam sem internet.
 7. **Validação.** Após alterar código, manifest, build ou testes, execute `npm run lint`, `npm test` e `node build.js <id>`. Depois do build, execute `npm run test:online -- --provider <id>` com rede real e chave TMDB somente do ambiente quando necessária. Registre rodada e status em `providers.md`; aprovação offline não autoriza publicação.
 8. **Conclusão.** Sincronize documentação e artefatos; arquive a mudança somente com testes previstos passando ou exclusões declaradas. A rodada Node online verifica resolução e contrato, não reprodução no QuickJS ou download P2P.
+9. **Rejeição ou remoção.** Quando a investigação concluir que a fonte é inviável ou quando um provedor publicado for removido em definitivo, registre-o em [provedores rejeitados](../rejected-providers.md) seguindo o padrão de `AGENTS.md` (data `AAAA-MM-DD`, uma das cinco categorias fechadas, domínios investigados, motivo, evidência e critério de reavaliação), sem manter código morto ou segredos.
 
 ## 6. Como manter o mapa
 
@@ -475,5 +486,5 @@ Mapa de metodologias para estudar uma fonte e escolher um caminho de implementa�
 3. Cada entrada deve registrar situação, sinal de reconhecimento, investigação, contrato observado, código de partida, testes e limites. Identifique referências externas pelo repositório/arquivo e data de consulta quando o contrato puder mudar.
 4. Marque ideias sem implementação como **Hipótese**, com a pergunta a responder. Bloco sem consumidor permanece como recurso disponível; não misture essas categorias com uso comprovado.
 5. Corrija referências quando arquivos mudarem ou consumidores forem removidos. Reavalie a classificação, sem preservar uma afirmação de uso apenas porque houve implementação no passado.
-6. Status e rodadas ficam em `providers.md`, decisões específicas no design e comportamento nas specs. Não duplique logs, títulos aprovados ou garantias de funcionamento atual neste guia.
+6. Status e rodadas ficam em `providers.md`, descartes históricos de fontes ficam em `rejected-providers.md`, decisões específicas no design e comportamento nas specs. Não duplique logs, títulos aprovados ou garantias de funcionamento atual neste guia.
 7. Nunca registre segredos, cookies de sessão, tickets ativos ou URLs assinadas de mídia. Use placeholders e fixtures sanitizadas; respeite GPL-3.0 e atribuição ao reaproveitar código.

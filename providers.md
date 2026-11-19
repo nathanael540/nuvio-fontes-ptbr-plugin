@@ -46,6 +46,8 @@
 | [AnimesOnlineCC](#animesonlinecc) | `animesonlinecc` | série | MP4, HLS | 🟢 Estável | 2026-11-18 |
 | [Otakulogia](#otakulogia) | `otakulogia` | filme, série | MP4 | 🟢 Estável | 2026-11-18 |
 | [VenoPlay](#venoplay) | `venoplay` | filme, série | HLS | 🟢 Estável | 2026-11-18 |
+| [Baixa Cine](#baixa-cine) | `baixacine` | filme, série | magnet | 🟠 Não verificado | — |
+| [Tokyvideo](#tokyvideo) | `tokyvideo` | filme, série | MP4 | 🟠 Não verificado | — |
 
 ## MegaEmbed
 
@@ -955,4 +957,19 @@ Filmes e séries em HLS pela VenoPlay, com busca por título, confirmação de t
    9. `tv` `90447` · Hotel del Luna (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    10. `tv` `1396` · Breaking Bad (2008) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
+
+## Baixa Cine
+
+**Status: 🟠 Não verificado.**
+
+Provedor do catálogo Baixa Cine: busca por título na página de busca do site, confirmação da
+identidade por título/ano contra o `MediaInfo` do TMDB e extração do magnet do post confirmado —
+hash base32 convertido para hexadecimal de 40 caracteres, qualidade e idioma descobertos localmente
+na fonte.
+
+## Tokyvideo
+
+**Status: 🟠 Não verificado.**
+
+Provedor do portal Tokyvideo (tokyvideo.com/br): filmes e séries pela busca do título no portal e fichas, com o stream MP4 direto publicado na página do vídeo; a assinatura do CDN é obtida da própria ficha. Título e ano confirmados contra o título do TMDB; idioma de áudio não publicado pelo site, streams com `Idioma Desconhecido`.
 
