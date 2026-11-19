@@ -1,0 +1,18 @@
+{
+  "name": "Contagem",
+  "original_name": "Count Show",
+  "first_air_date": "2020-01-01",
+  "external_ids": {
+    "imdb_id": "tt0000001"
+  },
+  "alternative_titles": {
+    "results": []
+  },
+  "genres": [{ "id": 16, "name": "Animação" }],
+  "original_language": "ja",
+  "origin_country": ["JP"],
+  "seasons": [
+    { "season_number": 1, "episode_count": 2, "name": "Temporada 1", "air_date": null },
+    { "season_number": 2, "episode_count": 1, "name": "Temporada 2", "air_date": null }
+  ]
+}

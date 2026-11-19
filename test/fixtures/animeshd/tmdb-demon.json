@@ -1,0 +1,28 @@
+{
+  "name": "Demon Slayer: Kimetsu no Yaiba",
+  "original_name": "鬼滅の刃",
+  "first_air_date": "2019-04-06",
+  "external_ids": {
+    "imdb_id": "tt9335498"
+  },
+  "alternative_titles": {
+    "results": [
+      { "iso_3166_1": "JP", "title": "Kimetsu no Yaiba", "type": "Romaji" },
+      { "iso_3166_1": "JP", "title": "Kimetsu no Yaiba: Mugen Ressha-hen", "type": "Season 2 Romaji" },
+      { "iso_3166_1": "JP", "title": "Kimetsu no Yaiba: Yuukaku-hen", "type": "Season 3 Romaji" },
+      { "iso_3166_1": "JP", "title": "Kimetsu no Yaiba: Katanakaji no Sato-hen", "type": "Season 4 Romaji" },
+      { "iso_3166_1": "JP", "title": "Kimetsu no Yaiba: Hashira Geiko-hen", "type": "Season 5 Romaji" }
+    ]
+  },
+  "genres": [{ "id": 16, "name": "Animação" }],
+  "original_language": "ja",
+  "origin_country": ["JP"],
+  "seasons": [
+    { "season_number": 0, "episode_count": 18, "name": "Especiais", "air_date": "2020-08-26" },
+    { "season_number": 1, "episode_count": 26, "name": "Demon Slayer: Kimetsu no Yaiba", "air_date": "2019-04-06" },
+    { "season_number": 2, "episode_count": 7, "name": "Arco do Trem Infinito", "air_date": "2021-10-10" },
+    { "season_number": 3, "episode_count": 11, "name": "Arco do Distrito do Entretenimento", "air_date": "2021-12-05" },
+    { "season_number": 4, "episode_count": 11, "name": "Arco do Vilarejo dos Ferreiros", "air_date": "2023-04-09" },
+    { "season_number": 5, "episode_count": 8, "name": "Arco do Treinamento Hashira", "air_date": "2024-05-12" }
+  ]
+}

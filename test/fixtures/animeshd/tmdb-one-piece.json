@@ -1,0 +1,20 @@
+{
+  "name": "One Piece",
+  "original_name": "One Piece",
+  "first_air_date": "1999-10-20",
+  "external_ids": {
+    "imdb_id": "tt0388629"
+  },
+  "alternative_titles": {
+    "results": [
+      { "iso_3166_1": "BR", "title": "One Piece", "type": "" }
+    ]
+  },
+  "genres": [{ "id": 16, "name": "Animação" }],
+  "original_language": "ja",
+  "origin_country": ["JP"],
+  "seasons": [
+    { "season_number": 1, "episode_count": 61, "name": "East Blue", "air_date": null },
+    { "season_number": 2, "episode_count": 16, "name": "Whiskey Peak", "air_date": null }
+  ]
+}

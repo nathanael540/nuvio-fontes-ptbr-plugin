@@ -49,6 +49,7 @@
 | [Baixa Cine](#baixa-cine) | `baixacine` | filme, série | magnet | 🟠 Não verificado | — |
 | [Tokyvideo](#tokyvideo) | `tokyvideo` | filme, série | MP4 | 🟠 Não verificado | — |
 | [Baixe Torrents](#baixetorrents) | `baixetorrent-org` | filme, série | magnet | 🟢 Estável | 2026-11-19 |
+| [AnimesHD](#animeshd) | `animeshd` | série | MP4 | 🟢 Estável | 2026-11-19 |
 
 ## MegaEmbed
 
@@ -993,5 +994,22 @@ Provedor do portal Tokyvideo (tokyvideo.com/br): filmes e séries pela busca do 
    8. `tv` `76479` · The Boys (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    9. `tv` `84958` · Loki (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    10. `tv` `1418` · The Big Bang Theory (2007) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+<!-- online-verification:end -->
+
+## AnimesHD
+
+**Status: 🟢 Estável.**
+
+Séries de anime em MP4 do catálogo AnimesHD, com busca HTML por título PT-BR e romaji, confirmação por título e ano, temporada alinhada pela data de estreia do TMDB, opções DooPlay expandidas por AJAX e MP4 progressivos do Blogger. A fonte não publica filmes.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-19T18:43:59.806Z** · ID `2026-11-19T18-43-34-226Z-animeshd-20261119-84a3` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261119` · algoritmo `sha256-fisher-yates-v1`
+   1. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   2. `tv` `30984` · Bleach (2004) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
+   3. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   4. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
+   5. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
 <!-- online-verification:end -->
 

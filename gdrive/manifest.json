@@ -945,6 +945,25 @@
         "pt"
       ],
       "logo": "https://www.google.com/s2/favicons?domain=baixacine.com&sz=128"
+    },
+    {
+      "id": "animeshd",
+      "name": "AnimesHD",
+      "description": "Séries de anime em MP4 do catálogo AnimesHD, com busca por título PT-BR e romaji, temporada pelo calendário do TMDB e player do Blogger.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "tv"
+      ],
+      "filename": "providers/animeshd.js",
+      "enabled": true,
+      "formats": [
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=animeshd.to&sz=128"
     }
   ]
 }
