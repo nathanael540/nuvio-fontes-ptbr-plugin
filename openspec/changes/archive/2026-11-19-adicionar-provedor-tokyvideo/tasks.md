@@ -35,5 +35,5 @@
 
 ## Workflow follow-up
 
-- [ ] Rodar `npm run test:online -- --provider tokyvideo --record` após o build (com `TMDB_API_KEY`) e registrar a verificação online e o novo status em `providers.md` (atualmente `🟠 Não verificado`).
-- [ ] Arquivar a mudança em `openspec/changes/archive/` e sincronizar `openspec/specs/tokyvideo-provider/spec.md` após a rodada online aprovada.
+- [x] Rodar `npm run test:online -- --provider tokyvideo --record` após o build (com `TMDB_API_KEY`) e registrar a verificação online e o novo status em `providers.md` (atualmente `🟠 Não verificado`).
+- [x] Arquivar a mudança em `openspec/changes/archive/` e sincronizar `openspec/specs/tokyvideo-provider/spec.md` após a rodada online aprovada.

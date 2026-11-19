@@ -47,7 +47,7 @@
 | [Otakulogia](#otakulogia) | `otakulogia` | filme, série | MP4 | 🟢 Estável | 2026-11-18 |
 | [VenoPlay](#venoplay) | `venoplay` | filme, série | HLS | 🟢 Estável | 2026-11-18 |
 | [Baixa Cine](#baixa-cine) | `baixacine` | filme, série | magnet | 🟠 Não verificado | — |
-| [Tokyvideo](#tokyvideo) | `tokyvideo` | filme, série | MP4 | 🟠 Não verificado | — |
+| [Tokyvideo](#tokyvideo) | `tokyvideo` | filme, série | MP4 | 🟢 Estável | 2026-11-19 |
 | [Baixe Torrents](#baixetorrents) | `baixetorrent-org` | filme, série | magnet | 🟢 Estável | 2026-11-19 |
 | [AnimesHD](#animeshd) | `animeshd` | série | MP4 | 🟢 Estável | 2026-11-19 |
 | [AniZero](#anizero) | `anizero` | série | HLS | 🟢 Estável | 2026-11-19 |
@@ -975,10 +975,25 @@ na fonte.
 
 ## Tokyvideo
 
-**Status: 🟠 Não verificado.**
+**Status: 🟢 Estável.**
 
 Provedor do portal Tokyvideo (tokyvideo.com/br): filmes e séries pela busca do título no portal e fichas, com o stream MP4 direto publicado na página do vídeo; a assinatura do CDN é obtida da própria ficha. Título e ano confirmados contra o título do TMDB; idioma de áudio não publicado pelo site, streams com `Idioma Desconhecido`.
 
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-19T20:26:37.987Z** · ID `2026-11-19T20-26-24-458Z-tokyvideo-13fc7f36-6ba7` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `13fc7f36f31c16b6937c4d84674b2d00` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `962489` · Ditto: Conexões do Amor (2022) · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `movie` `118340` · Guardiões da Galáxia (2014) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `122` · O Senhor dos Anéis: O Retorno do Rei (2003) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `634649` · Homem-Aranha: Sem Volta para Casa (2021) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `1419027` · Ataque 13 (2025) · **Resolvido** · 1/1 streams aproveitáveis
+   6. `tv` `100088` · The Last of Us (2023) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   7. `tv` `14853` · O Clone (2001) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   8. `tv` `94605` · Arcane (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   10. `tv` `1622` · Supernatural (2005) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+<!-- online-verification:end -->
 
 ## Baixe Torrents
 
