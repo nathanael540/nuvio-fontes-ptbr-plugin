@@ -1,0 +1,19 @@
+{
+  "id": 209867,
+  "name": "Frieren e a Jornada para o Além",
+  "original_name": "葬送のフリーレン",
+  "first_air_date": "2023-09-29",
+  "original_language": "ja",
+  "origin_country": ["JP"],
+  "genres": [{ "id": 16 }, { "id": 10759 }, { "id": 10765 }],
+  "external_ids": { "imdb_id": "tt22248376" },
+  "alternative_titles": {
+    "results": [
+      { "iso_3166_1": "JP", "title": "Sousou no Frieren", "type": "Romaji" }
+    ]
+  },
+  "seasons": [
+    { "season_number": 0, "episode_count": 26, "name": "Especiais", "air_date": "2023-10-11" },
+    { "season_number": 1, "episode_count": 38, "name": "Temporada 1", "air_date": "2023-09-29" }
+  ]
+}

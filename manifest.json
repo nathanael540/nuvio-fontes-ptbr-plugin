@@ -672,6 +672,19 @@
       "formats": ["m3u8", "mp4"],
       "contentLanguage": ["pt"],
       "logo": "https://www.google.com/s2/favicons?domain=donghuanosekai.com&sz=128"
+    },
+    {
+      "id": "topanimes",
+      "name": "TopAnimes",
+      "description": "Filmes e séries de anime em HLS e MP4 do TopAnimes, com busca por título/romaji, confirmação de temporada e ano e opções dublada e legendada.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": ["movie", "tv"],
+      "filename": "providers/topanimes.js",
+      "enabled": true,
+      "formats": ["m3u8", "mp4"],
+      "contentLanguage": ["pt"],
+      "logo": "https://www.google.com/s2/favicons?domain=topanimes.net&sz=128"
     }
   ]
 }

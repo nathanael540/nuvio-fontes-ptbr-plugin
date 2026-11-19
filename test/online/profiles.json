@@ -27,6 +27,7 @@
     "otakulogia": { "exclusiveTag": "anime" },
     "anizero": { "exclusiveTag": "anime" },
     "superanimes": { "exclusiveTag": "anime" },
-    "donghuanosekai": { "exclusiveTag": "donghua" }
+    "donghuanosekai": { "exclusiveTag": "donghua" },
+    "topanimes": { "exclusiveTag": "anime" }
   }
 }

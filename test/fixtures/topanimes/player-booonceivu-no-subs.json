@@ -1,0 +1,19 @@
+{
+  "status": "success",
+  "titulo": "fixture-dub",
+  "midias": [
+    {
+      "qualidade": "SD",
+      "url": "https://media.example.test/solo/sd.m3u8?token=fixture"
+    },
+    {
+      "qualidade": "LD",
+      "url": "https://media.example.test/solo/ld.m3u8?token=fixture"
+    },
+    {
+      "qualidade": "FD",
+      "url": "https://media.example.test/solo/fd.m3u8?token=fixture"
+    }
+  ],
+  "legendas": []
+}

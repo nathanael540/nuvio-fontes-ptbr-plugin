@@ -1,0 +1,12 @@
+{
+  "code": "fixture02",
+  "title": "fixture",
+  "tracks": [],
+  "playback": {
+    "algorithm": "AES-256-GCM",
+    "iv": "zpW5gRBH_rDjAhik",
+    "payload": "QHP6Omn_pUDfVszSkezzoFLhmaU2l-Dc",
+    "key_parts": [],
+    "version": "1"
+  }
+}

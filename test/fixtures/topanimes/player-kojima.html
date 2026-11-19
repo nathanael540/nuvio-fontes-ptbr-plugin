@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><title>Aviso</title></head>
+<body>
+  <div class="overlay-message">
+    <h2>Atenção</h2>
+    <p>O play foi desativado devido a falta de dinheiro, use outros players "se estiver disponível" ou saia da pagina.</p>
+  </div>
+  <div id="player" class="video"></div>
+  <script>
+    var player = jwplayer("player").setup({
+      sources: [{ "file": "", "type": "mp4", "label": "1080p" }],
+      image: "https://image.tmdb.org/t/p/original/x.jpg"
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+{
+  "code": "fixture01",
+  "title": "fixture",
+  "tracks": [],
+  "playback": {
+    "algorithm": "AES-256-GCM",
+    "iv": "zpW5gRBH_rDjAhik",
+    "payload": "QHP6Omn_pUDfVszSkezzoFLhmaU2l-Dc-8XsLldekqj8FPStzBJAjEezvxPXdkHosVPSy7dOAn2VGp_oeBZmobaTG67DQ-VAfJCb7laD2yFBKSMs0xuPI8cov2VBWOe7pGbXAU_1FMh32pQlR_2Q-adK2wFrzKkllXbGP1kNdZFEgNdO4ZTa1Q6NpTkGloPWrYtcqdrUA2vNfNBY_YbE5WOxyv1xJq4s1EoZn3lTNbhv4E2d8Z7_roKgA3iaFi1wVZ4yP-_xD9Li7BMkDqgN0ktCKcx5hTfcNxVrnsoP1KMZDdTTJ0CJ5oYUbm-GilYQSWek1sKsbDn66zByMP4Kud49zFx5vzX6KQigl_Mpf4Vs4nnaXfeW1E7RK98skf42gmEgDvaW6eyrp_upWKjKHtScfGEuDFar3Eg_cBlTBXF5WcfPd7qn0BSqefqUYlrxUd3teg8g1tj3Ti03VDSp32U3Rg7sPyZiLMMNYghI4Px_pzVY",
+    "key_parts": [
+      "4K4YvtqGweXx9yTgU6IVew",
+      "BK9CT_aOWUbeuWy17eaqqg",
+      "gILpc75jBVTmtDnQuvKYLA",
+      "1wDpiD-rqu5LtCUXVpe3Fw",
+      "xi3VhGeUnGvLxifNYmbpNA",
+      "68C1PAOJYg9i-QaCmaypSw",
+      "vAyvOiUgGf5VDP-6KIqZBw",
+      "ZwtXdu1is99spKdSccYL7Q",
+      "fUVaVr6wEmKj8zSQc-MkYg",
+      "NfLybC_0ThiWfxJ9pkDUxw",
+      "2dHr8IuHz7TY0-9OFRQ1-A",
+      "FDiVAx5Y_04E6_PMzTwwXg",
+      "YU66Kn_ycuIGj9aIuAhXRQ",
+      "B7N7ISSuK_5rbPtyCpqNUw",
+      "v0xKqo7w2AZK-PtOwA34Pw",
+      "u-H4szRTpiolpYkZfRF7oA",
+      "rFmWdlG8-BeZf6oUKs2j2g",
+      "mMv-uAKeU5LCmQZg6xGQZg",
+      "Dx7zqYWradYmngjpsWnnyg",
+      "sY5IzF3wMKWWLB4eHYgqGA",
+      "f8Mg9AiCIObSnKGRc3iM8A",
+      "EtGG0ZUpymcCRMPmlv3aBg",
+      "h586hsVL6Zbsw0yhztTcqA",
+      "fRqDV7Lhl_fRlhcbgvALeQ",
+      "3BTjP2AKn8YlTrLkqWAtgQ",
+      "g_o8QwuFa06JDcuj4KRC-w",
+      "__cVw9_n3uxBYQhstv5Hqw",
+      "2IwI65oihBoY5p_roXMNsQ",
+      "T8jwyL67pWNZwaPKxDqGvQ",
+      "BNUEp32iaxy4OV9jVBS5UQ"
+    ],
+    "version": "1"
+  }
+}

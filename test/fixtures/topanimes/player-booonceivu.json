@@ -1,0 +1,28 @@
+{
+  "status": "success",
+  "titulo": "fixture-sub",
+  "midias": [
+    {
+      "qualidade": "SD",
+      "url": "https://media.example.test/frieren/sd.m3u8?token=fixture"
+    },
+    {
+      "qualidade": "LD",
+      "url": "https://media.example.test/frieren/ld.m3u8?token=fixture"
+    },
+    {
+      "qualidade": "FD",
+      "url": "https://media.example.test/frieren/fd.m3u8?token=fixture"
+    }
+  ],
+  "legendas": [
+    {
+      "url": "https://media.example.test/frieren/pt.vtt",
+      "label": "Português"
+    },
+    {
+      "url": "https://media.example.test/frieren/en.vtt",
+      "label": "English"
+    }
+  ]
+}

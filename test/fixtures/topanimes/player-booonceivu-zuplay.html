@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><title>web</title></head>
+<body>
+  <div id="player" class="video"></div>
+  <script>
+    var player = jwplayer("player").setup({
+      sources: [{ "file": "https://media.example.test/movie/1080.mp4?X-Amz-Signature=fixture", "type": "video/mp4", "label": "1080p" }],
+      image: "https://image.tmdb.org/t/p/original/x.jpg"
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "id": 128,
+  "title": "Princesa Mononoke",
+  "original_title": "もののけ姫",
+  "release_date": "1997-07-12",
+  "original_language": "ja",
+  "origin_country": ["JP"],
+  "genres": [{ "id": 16 }, { "id": 12 }, { "id": 14 }],
+  "external_ids": { "imdb_id": "tt0119698" },
+  "alternative_titles": {
+    "titles": [
+      { "iso_3166_1": "BR", "title": "Princesa Mononoke", "type": "" },
+      { "iso_3166_1": "JP", "title": "Mononoke Hime", "type": "Romaji" }
+    ]
+  }
+}

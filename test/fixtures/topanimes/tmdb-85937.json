@@ -1,0 +1,20 @@
+{
+  "id": 85937,
+  "name": "Demon Slayer",
+  "original_name": "鬼滅の刃",
+  "first_air_date": "2019-04-06",
+  "original_language": "ja",
+  "origin_country": ["JP"],
+  "genres": [{ "id": 16 }, { "id": 10759 }, { "id": 10765 }],
+  "external_ids": { "imdb_id": "tt9335498" },
+  "alternative_titles": {
+    "results": [
+      { "iso_3166_1": "BR", "title": "Demon Slayer", "type": "" },
+      { "iso_3166_1": "JP", "title": "Kimetsu no Yaiba", "type": "Romaji" }
+    ]
+  },
+  "seasons": [
+    { "season_number": 1, "episode_count": 26, "name": "Temporada 1", "air_date": "2019-04-06" },
+    { "season_number": 2, "episode_count": 18, "name": "Temporada 2", "air_date": "2021-10-10" }
+  ]
+}

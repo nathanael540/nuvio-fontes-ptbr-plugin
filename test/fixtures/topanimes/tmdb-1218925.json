@@ -1,0 +1,16 @@
+{
+  "id": 1218925,
+  "title": "Chainsaw Man – O Filme: Arco da Reze",
+  "original_title": "チェンソーマン レゼ篇",
+  "release_date": "2025-09-19",
+  "original_language": "ja",
+  "origin_country": ["JP"],
+  "genres": [{ "id": 16 }, { "id": 28 }],
+  "external_ids": { "imdb_id": "tt21327490" },
+  "alternative_titles": {
+    "titles": [
+      { "iso_3166_1": "BR", "title": "Chainsaw Man – O Filme: Arco da Reze", "type": "" },
+      { "iso_3166_1": "US", "title": "Chainsaw Man – The Movie: Reze Arc", "type": "" }
+    ]
+  }
+}

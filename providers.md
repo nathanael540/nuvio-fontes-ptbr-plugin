@@ -53,6 +53,7 @@
 | [AniZero](#anizero) | `anizero` | série | HLS | 🟢 Estável | 2026-11-19 |
 | [Super Animes](#super-animes) | `superanimes` | filme, série | MP4 | 🟢 Estável | 2026-11-19 |
 | [Donghua No Sekai](#donghua-no-sekai) | `donghuanosekai` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-19 |
+| [TopAnimes](#topanimes) | `topanimes` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-19 |
 
 ## MegaEmbed
 
@@ -1075,5 +1076,27 @@ Provedor de filmes e séries de donghua em HLS e MP4 do catálogo Donghua No Sek
    8. `tv` `223911` · Renegade Immortal (2023) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
    9. `tv` `101172` · Swallowed Star [Tun Shi Xing Kong] (2020) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
    10. `tv` `124003` · Perfect World [Wanmei Shijie] (2021) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+<!-- online-verification:end -->
+
+## TopAnimes
+
+**Status: 🟢 Estável.**
+
+Filmes e séries de anime em HLS e MP4 do TopAnimes, com busca HTML por título/romaji, confirmação de tipo e ano, temporada pelo par `numerando` ou pela numeração absoluta e resolução de Booonceivu, Blogger, `/antivirus`, Ruplay/IncVideo e Filemoon/Byse. O KojimaCDN está desativado pelo site, o `/antivirus2` publica segmentos de um domínio encerrado e VidGuard, StreamWarp, AON, Tera, Abyss e UP ficam em triagem.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-19T19:38:00.389Z** · ID `2026-11-19T19-37-07-167Z-topanimes-163f594d-9bd3` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `163f594d3926f0441149e54b4b4d35eb` · algoritmo `sha256-fisher-yates-v1`
+   1. `movie` `129` · A Viagem de Chihiro (2001) · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `movie` `149` · Akira (1988) · **Resolvido** · 3/3 streams aproveitáveis
+   3. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `372058` · Your Name (2016) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `128` · Princesa Mononoke (1997) · **Resolvido** · 3/3 streams aproveitáveis
+   6. `tv` `37854` · One Piece (1999) · S01E01 · **Resolvido** · 5/5 streams aproveitáveis
+   7. `tv` `30984` · Bleach (2004) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+   8. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   9. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   10. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 

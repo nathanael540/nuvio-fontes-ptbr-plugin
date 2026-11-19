@@ -1,0 +1,16 @@
+{
+  "id": 149,
+  "title": "Akira",
+  "original_title": "Akira",
+  "release_date": "1988-07-16",
+  "original_language": "ja",
+  "origin_country": ["JP"],
+  "genres": [{ "id": 16 }, { "id": 878 }, { "id": 28 }],
+  "external_ids": { "imdb_id": "tt0094625" },
+  "alternative_titles": {
+    "titles": [
+      { "iso_3166_1": "BR", "title": "Akira", "type": "" },
+      { "iso_3166_1": "JP", "title": "Akira", "type": "Romaji" }
+    ]
+  }
+}

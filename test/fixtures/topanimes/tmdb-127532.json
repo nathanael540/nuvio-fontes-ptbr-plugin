@@ -1,0 +1,21 @@
+{
+  "id": 127532,
+  "name": "Solo Leveling",
+  "original_name": "俺だけレベルアップな件",
+  "first_air_date": "2024-01-07",
+  "original_language": "ja",
+  "origin_country": ["JP"],
+  "genres": [{ "id": 16 }, { "id": 10759 }, { "id": 10765 }],
+  "external_ids": { "imdb_id": "tt21209876" },
+  "alternative_titles": {
+    "results": [
+      { "iso_3166_1": "BR", "title": "Solo Leveling 2ª Temporada -Ergam-se das Sombras-", "type": "" },
+      { "iso_3166_1": "JP", "title": "Ore dake Level Up na Ken", "type": "romaji" },
+      { "iso_3166_1": "JP", "title": "Ore dake Level Up na Ken Season 2 -Arise from the Shadow-", "type": "season 2 romaji" }
+    ]
+  },
+  "seasons": [
+    { "season_number": 0, "episode_count": 1, "name": "Especiais", "air_date": "2024-02-25" },
+    { "season_number": 1, "episode_count": 25, "name": "Temporada 1", "air_date": "2024-01-05" }
+  ]
+}
