@@ -1,6 +1,10 @@
 /**
  * Catálogos DLE da rede BrStream: CineAgora, CineGratis e VisionCine.
  *
+ * Origem: github.com/Ivadzf/ivadz-nuvio-repo, providers/cinegratis.js e providers/visioncine.js
+ * (GPL-3.0). Os fluxos DLE de CineGratis e VisionCine foram reimplementados com os blocos
+ * locais; o CineAgora é código local deste repositório (GPL-3.0).
+ *
  * Cada catálogo tem busca, seções de tipo, adaptadores de resultado e de identidade e seletor
  * de espelho próprios. O player BrStream é o mesmo nos três, então o `index.js` une os streams
  * e deduplica pelo arquivo (`uid|md5|id`).

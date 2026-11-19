@@ -154,7 +154,12 @@ Se encontrar uma vulnerabilidade, não abra issue pública: use o [reporte priva
 
 ## Licença
 
-[GPL-3.0](LICENSE). Código reaproveitado de outros repositórios GPL deve manter a atribuição de origem. Ao contribuir, você concorda em licenciar sua contribuição sob a mesma licença. Código reaproveitado de outros repositórios GPL deve manter a atribuição de origem.
+[GPL-3.0](LICENSE). Código reaproveitado de outros repositórios GPL deve manter a atribuição de origem. Ao contribuir, você concorda em licenciar sua contribuição sob a mesma licença.
+
+### Créditos
+
+- Prisma Stream Addon (`codeberg.org/prismastream/install`, GPL-3.0): Otakulogia, AnimesOnlineCC e OverFlix.
+- Ivadz Nuvio Repo (`github.com/Ivadzf/ivadz-nuvio-repo`, GPL-3.0): fluxo VenoPlay e catálogos CineGratis e VisionCine.
 
 ## Aviso
 

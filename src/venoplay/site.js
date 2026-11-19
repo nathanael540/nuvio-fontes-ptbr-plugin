@@ -1,6 +1,10 @@
 /**
  * Catálogo e API da VenoPlay.
  *
+ * Origem: github.com/Ivadzf/ivadz-nuvio-repo, providers/venoplay.js (GPL-3.0).
+ * O fluxo de semente, busca e `get_players` foi reimplementado com os blocos locais; nenhuma
+ * chave, token, cookie ou URL de mídia foi copiado.
+ *
  * A semente `https://www2.venoplay.com` é resolvida a cada chamada; o host final é usado na
  * busca, na página e no `get_players`, sem cache. A busca lê os cartões `div.poster-card` e a
  * página confirma título, tipo e ano no JSON-LD. O `get_players` devolve as opções de player.

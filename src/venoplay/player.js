@@ -1,6 +1,10 @@
 /**
  * Player `mgeb` da VenoPlay e montagem dos streams HLS.
  *
+ * Origem: github.com/Ivadzf/ivadz-nuvio-repo, providers/venoplay.js (GPL-3.0).
+ * A resolução do `mgeb` foi reimplementada com os blocos locais; nenhuma chave, token,
+ * cookie ou URL de mídia foi copiado.
+ *
  * Cada item de `players` é uma opção independente. O `mgeb` publica `var sources`; só HLS
  * `.m3u8` HTTPS de `mgeb.space`/`mgeb.lat`, sem credencial, entra no contrato. `nhdapi.com` e
  * os hosts não comprovados são triagem sem requisição.
