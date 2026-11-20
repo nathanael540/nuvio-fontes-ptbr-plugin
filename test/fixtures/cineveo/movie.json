@@ -1,0 +1,57 @@
+{
+  "type": "movie",
+  "item": {
+    "id": 502356,
+    "internal_id": 12315,
+    "tmdb_id": 502356,
+    "slug": "super-mario-bros-o-filme-10sr4",
+    "type": "movie",
+    "name": "Super Mario Bros. O Filme",
+    "year": "2023",
+    "audio": "DUB",
+    "extension": "mp4",
+    "hidden": false
+  },
+  "servers": {
+    "dub": [
+      {
+        "id": "80f6ec291071ba02f2581e42449abdb6",
+        "name": "Player Principal (HD)",
+        "quality": "HD",
+        "url": "https://cineveo.cfd/api/vod-resolve?token=EXAMPLE_TOKEN_DUB",
+        "type": "mp4",
+        "audio": "dub",
+        "download": "https://cineveo.cfd/api/vod-resolve?token=EXAMPLE_TOKEN_DUB"
+      },
+      {
+        "id": "ccdc97718ef6585a685d3881d07ccfa4",
+        "name": "Servidor 1 (1080p)",
+        "quality": "1080p",
+        "url": "https://media.example/cineveo/super-mario-bros-o-filme-dublado-1080p.mp4",
+        "type": "mp4",
+        "audio": "dub",
+        "download": "https://media.example/cineveo/super-mario-bros-o-filme-dublado-1080p.mp4"
+      }
+    ],
+    "leg": [
+      {
+        "id": "4026eabdfcc9cb1dc940396ec703e0db",
+        "name": "Player Principal (HD)",
+        "quality": "HD",
+        "url": "https://cineveo.cfd/api/vod-resolve?token=EXAMPLE_TOKEN_LEG",
+        "type": "mp4",
+        "audio": "leg",
+        "download": "https://cineveo.cfd/api/vod-resolve?token=EXAMPLE_TOKEN_LEG"
+      },
+      {
+        "id": "ba1dfa23e089f89249f38aba2cacdd4f",
+        "name": "Servidor 1 (1080p)",
+        "quality": "1080p",
+        "url": "https://media.example/cineveo/super-mario-bros-o-filme-legendado-1080p.mp4",
+        "type": "mp4",
+        "audio": "leg",
+        "download": "https://media.example/cineveo/super-mario-bros-o-filme-legendado-1080p.mp4"
+      }
+    ]
+  }
+}

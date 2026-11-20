@@ -1065,6 +1065,26 @@
         "pt"
       ],
       "logo": "https://www.google.com/s2/favicons?domain=es.cuevana4br.com&sz=128"
+    },
+    {
+      "id": "cineveo",
+      "name": "Cineveo",
+      "description": "Filmes e séries em MP4 do catálogo Cineveo, consultados pelo ID do TMDB e dublados ou legendados conforme os grupos de áudio publicados pela fonte.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/cineveo.js",
+      "enabled": true,
+      "formats": [
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=cineveo.cfd&sz=128"
     }
   ]
 }

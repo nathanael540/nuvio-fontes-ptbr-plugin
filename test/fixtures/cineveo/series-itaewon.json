@@ -1,0 +1,28 @@
+{
+  "type": "series",
+  "item": {
+    "id": 96162,
+    "internal_id": 85064,
+    "tmdb_id": 96162,
+    "slug": "itaewon-class-legendado",
+    "type": "series",
+    "name": "Itaewon Class",
+    "year": "",
+    "audio": "DUB",
+    "extension": "mp4",
+    "hidden": false
+  },
+  "episodes": [
+    {
+      "id": 1491293,
+      "tmdb_id": 96162,
+      "season": 1,
+      "episode": 1,
+      "title": "Episódio 1",
+      "extension": "mp4",
+      "available": true,
+      "quality": "",
+      "audio": "leg"
+    }
+  ]
+}

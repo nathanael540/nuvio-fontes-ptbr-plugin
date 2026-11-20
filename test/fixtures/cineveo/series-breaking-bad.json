@@ -1,0 +1,50 @@
+{
+  "type": "series",
+  "item": {
+    "id": 1396,
+    "internal_id": 31789,
+    "tmdb_id": 1396,
+    "slug": "breaking-bad-3m68r",
+    "type": "series",
+    "name": "Breaking Bad",
+    "year": "2008",
+    "audio": "DUB",
+    "extension": "mp4",
+    "hidden": false
+  },
+  "episodes": [
+    {
+      "id": 943931,
+      "tmdb_id": 1396,
+      "season": 1,
+      "episode": 1,
+      "title": "Piloto",
+      "extension": "mp4",
+      "available": true,
+      "quality": "",
+      "audio": "dub"
+    },
+    {
+      "id": 943932,
+      "tmdb_id": 1396,
+      "season": 1,
+      "episode": 2,
+      "title": "Cat's in the Bag...",
+      "extension": "mp4",
+      "available": true,
+      "quality": "",
+      "audio": "dub"
+    },
+    {
+      "id": 943933,
+      "tmdb_id": 1396,
+      "season": 1,
+      "episode": 3,
+      "title": "...And the Bag's in the River",
+      "extension": "mp4",
+      "available": true,
+      "quality": "",
+      "audio": "dub"
+    }
+  ]
+}

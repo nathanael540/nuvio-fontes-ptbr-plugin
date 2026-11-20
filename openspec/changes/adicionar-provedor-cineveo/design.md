@@ -158,3 +158,11 @@ Não há migração. O provedor é novo, não altera o contrato dos existentes e
 3. Testes offline: filme dublado com um servidor, filme com vários servidores, série com episódio dublado, série com opções dublada e legendada, ausência de título (404 documentado), tipo divergente, episódio não publicado, episódio indisponível, página sem `initialEpisodeData`, coordenada divergente, uma opção falhando e outra válida, todas falhando, todas ausentes e deduplicação.
 4. `npm run build:min` e `npm run test:online -- --provider cineveo` para registrar a evidência em `providers.md`.
 5. Conferir que nenhuma fixture, log, relatório ou documentação contém token ativo, URL assinada, cookie ou header de sessão.
+
+## Resultados da implementação
+
+1. `npm run lint` concluiu sem erros em 20/11/2026.
+2. `npm test` passou a suíte completa, sem falhas, incluindo os 17 casos novos de `test/cineveo.test.js`.
+3. `node build.js cineveo` gerou `providers/cineveo.js`, `gdrive/providers/cineveo.js`, `prism/providers/cineveo.js` e os manifests de instalação.
+4. `npm run build:min` minificou os pacotes e `npm run test:online -- --provider cineveo --record` resolveu 5/5 filmes e 4/5 séries, com status `🟢 Estável` registrado em `providers.md` (rodada de 2026-11-20T17:53:28.754Z, manifest `prism/all/all/all`).
+5. A série sem resultado da amostra (Vale Tudo, S01E01) ficou como `Sem resultado`, sem falha; o mínimo de um título resolvido por tipo foi atingido.

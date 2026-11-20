@@ -55,6 +55,7 @@
 | [Donghua No Sekai](#donghua-no-sekai) | `donghuanosekai` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-20 |
 | [TopAnimes](#topanimes) | `topanimes` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-20 |
 | [Seekee](#seekee) | `seekee` | filme, série | HLS | 🟢 Estável | 2026-11-20 |
+| [Cineveo](#cineveo) | `cineveo` | filme, série | MP4 | 🟢 Estável | 2026-11-20 |
 
 ## MegaEmbed
 
@@ -1153,5 +1154,25 @@ Filmes, séries, animes e doramas em HLS do índice Seekee: busca na API públic
    8. `tv` `60059` · Better Call Saul (2015) · S01E01 · **Resolvido** · 5/5 streams aproveitáveis
    9. `tv` `119051` · Wednesday (2022) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
    10. `tv` `1416` · Grey's Anatomy (2005) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+<!-- online-verification:end -->
+
+## Cineveo
+
+**Status: 🟢 Estável.**
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-20T17:53:28.754Z** · ID `2026-11-20T17-53-22-208Z-cineveo-2d657358-7810` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `2d657358c8dbe1f5d9ff7adcedcc96a0` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
+   1. `movie` `1400940` · Cara-de-Barro (2026) · **Resolvido** · 4/4 streams aproveitáveis
+   2. `movie` `1022789` · Divertida Mente 2 (2024) · **Resolvido** · 3/3 streams aproveitáveis
+   3. `movie` `155` · Batman: O Cavaleiro das Trevas (2008) · **Resolvido** · 2/2 streams aproveitáveis
+   4. `movie` `284054` · Pantera Negra (2018) · **Resolvido** · 2/2 streams aproveitáveis
+   5. `movie` `13` · Forrest Gump: O Contador de Histórias (1994) · **Resolvido** · 2/2 streams aproveitáveis
+   6. `tv` `90447` · Hotel del Luna (2019) · S01E01 · **Resolvido** · 5/5 streams aproveitáveis
+   7. `tv` `60625` · Rick and Morty (2013) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+   8. `tv` `66732` · Stranger Things (2016) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+   9. `tv` `46161` · Vale Tudo (1988) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   10. `tv` `1416` · Grey's Anatomy (2005) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
 <!-- online-verification:end -->
 

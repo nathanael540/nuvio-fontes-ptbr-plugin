@@ -89,9 +89,9 @@ Edite `src/` e use o build para atualizar os pacotes e manifests de instalação
 2. Campos obrigatórios em cada entrada de `scrapers`: `id`, `name`, `description`, `version`, `author`, `supportedTypes`, `filename`, `enabled`, `formats`, `contentLanguage` e `logo`.
 3. `logo` é uma URL `https` de imagem que identifica a fonte, ex.: `https://www.google.com/s2/favicons?domain=<dominio>&sz=128`.
 4. Campos opcionais da documentação oficial, usados só quando necessários: `limited`, `disabledPlatforms`, `supportsExternalPlayer` e `hasSettings`.
-5. `contentLanguage` usa `"pt"`. Dublado ou legendado vai na `description` e no `language` de cada stream.
+5. `contentLanguage` é uma lista com `"pt"` (ex.: `["pt"]`). Dublado ou legendado vai na `description` e no `language` de cada stream.
 6. `formats` descreve o que o provedor entrega (ex.: `["m3u8"]`, `["magnet"]`); o app não o usa para decidir a reprodução.
-7. Convenções do cadastro verificadas pelos testes: `id` em kebab-case e único; `filename` igual a `providers/<id>.js`; `version` em semver; `supportedTypes` não vazio, só com `movie` e/ou `tv`; `formats` não vazio; `contentLanguage` com `"pt"`; `logo` em `https`; o arquivo exporta `getStreams`.
+7. Convenções do cadastro verificadas pelos testes: `id` em kebab-case e único; `filename` igual a `providers/<id>.js`; `version` em semver; `supportedTypes` não vazio, só com `movie` e/ou `tv`; `formats` não vazio; `contentLanguage` contém `"pt"`; `logo` em `https`; o arquivo exporta `getStreams`.
 8. A matriz preserva a ordem e os metadados do cadastro. Cada manifest identifica a combinação no nome e usa IDs `<id-base>--<tipo>-<qualidade>-<idioma>` em minúsculas. O `filename` absoluto aponta para `/<formato>/providers/<id-base>.js`.
 9. `/<formato>/all/all/all/manifest.json` é a instalação sem filtros. Cada `all` desativa seu próprio eixo. O adaptador lê `SCRAPER_ID`, valida a combinação após o prefixo do app e filtra a lista final por protocolo, piso de resolução e nível cumulativo de idioma. `QUALITY` centraliza as equivalências de SD a 8K. O filtro preserva a ordem e os dados dos streams aceitos e devolve `[]` se a seleção ficar vazia.
 10. Durante a transição, `/manifest.json`, `/prism/manifest.json` e `/gdrive/manifest.json` mantêm nomes, IDs e `filename` relativos. Os dois formatos fixos usam os mesmos pacotes da matriz.
