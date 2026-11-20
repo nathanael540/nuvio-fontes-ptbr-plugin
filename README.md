@@ -23,8 +23,10 @@ A tabela dos provedores, com o status de cada um (🟢 Estável, 🔵 Parcial, �
 ## Usar no Nuvio
 
 1. Acesse o [gerador de manifest](https://nathanael540.github.io/nuvio-fontes-ptbr-plugin/) para escolher idioma, tipo de stream, qualidade mínima e formatação, e copie a URL gerada.
-2. Abra **Settings > Plugins** no app e adicione a URL de **um** manifest.
-3. Atualize a lista e ative os provedores desejados. Para mudar os filtros depois, remova o manifest atual antes de adicionar o novo para não repetir streams.
+2. No app, abra **Configurações > Conteúdo e descoberta > Plugins**.
+3. Toque em **Adicionar repositório** e cole a URL de **um** manifest. Para mudar os filtros depois, remova o manifest atual antes de adicionar o novo para não repetir streams.
+4. Toque em **Atualizar** para carregar a lista de provedores do manifest.
+5. Ative cada provedor desejado. Adicionar o repositório não ativa nenhum provedor sozinho.
 
 ## Desenvolvimento
 
