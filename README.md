@@ -18,61 +18,9 @@ A tabela dos provedores, com o status de cada um (🟢 Estável, 🔵 Parcial, �
 
 ## Usar no Nuvio
 
-1. Abra **Settings > Plugins** no app.
-2. Adicione a URL de **um** manifest. Estas duas opções recebem a lista completa.
-
-   | Formatação | URL |
-   | --- | --- |
-   | Google Drive | `https://raw.githubusercontent.com/nathanael540/nuvio-fontes-ptbr-plugin/main/gdrive/all/all/all/manifest.json` |
-   | Prism | `https://raw.githubusercontent.com/nathanael540/nuvio-fontes-ptbr-plugin/main/prism/all/all/all/manifest.json` |
-
-3. Atualize a lista e ative os provedores desejados. Para mudar de combinação, remova o manifest atual e adicione o novo. Dois manifests podem repetir streams.
-
-### Escolher filtros
-
-1. No caminho `/<formato>/<tipo>/<qualidade>/<idioma>/manifest.json`, `all` desativa o filtro daquela posição.
-2. Tipo `P2P` aceita magnet e torrent. Tipo `HTTP` aceita streams diretos por HTTP ou HTTPS.
-3. Qualidade é um piso. Use `480p`, `720p`, `1080p`, `1440p`, `2160p` ou `4320p`. Com `720p`, por exemplo, passam também 1080p e 4K. `CAM` e resolução desconhecida passam com qualidade `all`.
-4. Idioma é cumulativo. `pt-br` aceita dublado ou legendado com PT-BR confirmado. `pt` inclui também português sem dialeto comprovado. `gringo` inclui também idiomas estrangeiros. `all` inclui também idioma desconhecido.
-5. Por exemplo, `/prism/P2P/720p/pt-br/manifest.json` traz torrents de 720p ou mais com PT-BR confirmado.
-6. Durante a transição, as URLs `/manifest.json`, `/prism/manifest.json` e `/gdrive/manifest.json` seguem disponíveis sem filtros. A URL da raiz mantém o sorteio de formatação por provedor.
-
-### Exemplos de formatação
-
-O mesmo stream (filme *Matrix*, 1080p, dublado, por torrent, encontrado pelo provedor Baixa Rápido no catálogo `limpotorrents`) aparece assim em cada formatação. Ao lado do texto, o app ainda mostra sua própria linha com qualidade, tamanho e idioma.
-
-1. **Google Drive:** cabeçalho com o nome do provedor e a qualidade; destaca o nome do arquivo.
-
-   ```text
-   Baixa Rápido 1080p
-   🎥 BluRay 🎞️ x264
-   🗣️ Dublado
-   🧲 P2P 👥 120/15 🔍 limpotorrents
-   📁 Matrix.1999.1080p.BluRay.DUAL.mkv
-   ```
-
-2. **Prism:** cabeçalho com um selo de qualidade; destaca o título e o ano.
-
-   ```text
-   🚀 FHD 1080p
-   🎬 Matrix (1999)
-   🎥 BluRay 🎞️ x264
-   🗣️ Dublado
-   🧲 P2P 🌱 120/15
-   📡 limpotorrents
-   ```
-
-3. **URL legada da raiz:** usa um dos dois formatos acima, sorteado quando o app carrega o provedor. Cada provedor faz o próprio sorteio, então provedores diferentes podem aparecer com formatos diferentes. O formato se mantém até o provedor ser carregado de novo (por exemplo, ao reabrir o app ou atualizar os plugins).
-
-Legenda dos símbolos:
-
-1. `🗣️` idioma do áudio: `Dublado`, `Legendado`, `Dublado (Não PT-BR?)`, `Legendado (Não PT-BR?)`, `Gringo` ou `Idioma Desconhecido`.
-2. `🧲 P2P` stream por torrent; `🌐 HTTP` stream direto.
-3. `👥` ou `🌱` seeders/peers do torrent (`?` quando a fonte não informa).
-4. `🔍` ou `📡` catálogo ou servidor de origem dentro do provedor.
-5. `🎥` origem do vídeo e `🎞️` codec; `📁` arquivo da release.
-
-Informações que a fonte não fornece simplesmente não aparecem.
+1. Acesse o [gerador de manifest](https://nathanael540.github.io/nuvio-fontes-ptbr-plugin/) para escolher idioma, tipo de stream, qualidade mínima e formatação, e copie a URL gerada.
+2. Abra **Settings > Plugins** no app e adicione a URL de **um** manifest.
+3. Atualize a lista e ative os provedores desejados. Para mudar os filtros depois, remova o manifest atual antes de adicionar o novo para não repetir streams.
 
 ## Desenvolvimento
 

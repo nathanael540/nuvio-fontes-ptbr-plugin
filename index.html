@@ -1,0 +1,1706 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <title>Nuvio Fontes PT-BR · Gerador de manifest</title>
+  <meta name="description" content="Configure idioma, tipo de stream, qualidade mínima e formato para gerar a URL do manifest do repositório Nuvio Fontes PT-BR.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+  <script>
+    (function () {
+      try {
+        var saved = localStorage.getItem('nuvio-theme');
+        if (saved === 'light' || saved === 'dark') {
+          document.documentElement.setAttribute('data-theme', saved);
+        }
+      } catch (e) {
+        // Armazenamento local indisponível: segue apenas prefers-color-scheme.
+      }
+    })();
+  </script>
+  <style>
+    :root {
+      --bg: #f6f8fa;
+      --surface: #ffffff;
+      --surface-subtle: #f0f3f6;
+      --border: #dfe4ea;
+      --border-strong: #c4cdd5;
+      --text: #111827;
+      --text-muted: #4b5563;
+      --accent: #0f766e;
+      --accent-hover: #115e59;
+      --accent-fg: #ffffff;
+      --accent-soft: #ecfdf5;
+      --accent-border: #0f766e;
+      --preview-bg: #111827;
+      --preview-border: #27303f;
+      --preview-text: #f3f4f6;
+      --preview-muted: #9ca3af;
+      --warn-bg: #fefce8;
+      --warn-border: #eab308;
+      --warn-text: #713f12;
+      --success: #15803d;
+      --shadow-sm: 0 1px 2px rgba(17, 24, 39, 0.05);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --ease: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0d1117;
+        --surface: #161b22;
+        --surface-subtle: #1f2630;
+        --border: #2a323d;
+        --border-strong: #3d4756;
+        --text: #f3f4f6;
+        --text-muted: #9ca3af;
+        --accent: #2dd4bf;
+        --accent-hover: #5eead4;
+        --accent-fg: #042f2e;
+        --accent-soft: rgba(45, 212, 191, 0.11);
+        --accent-border: #2dd4bf;
+        --preview-bg: #0b0f14;
+        --preview-border: #2a323d;
+        --preview-text: #f3f4f6;
+        --preview-muted: #9ca3af;
+        --warn-bg: rgba(234, 179, 8, 0.1);
+        --warn-border: rgba(234, 179, 8, 0.45);
+        --warn-text: #fde68a;
+        --success: #4ade80;
+        --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface-subtle: #1f2630;
+      --border: #2a323d;
+      --border-strong: #3d4756;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent: #2dd4bf;
+      --accent-hover: #5eead4;
+      --accent-fg: #042f2e;
+      --accent-soft: rgba(45, 212, 191, 0.11);
+      --accent-border: #2dd4bf;
+      --preview-bg: #0b0f14;
+      --preview-border: #2a323d;
+      --preview-text: #f3f4f6;
+      --preview-muted: #9ca3af;
+      --warn-bg: rgba(234, 179, 8, 0.1);
+      --warn-border: rgba(234, 179, 8, 0.45);
+      --warn-text: #fde68a;
+      --success: #4ade80;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+      background-color: var(--bg);
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.5;
+      color: var(--text);
+      background-color: var(--bg);
+      transition: background-color 180ms var(--ease), color 180ms var(--ease);
+    }
+
+    button, input, a {
+      font: inherit;
+    }
+
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .page {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 20px 16px calc(32px + env(safe-area-inset-bottom));
+    }
+
+    /* Cabeçalho */
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .brand h1 {
+      margin: 0 0 4px;
+      font-size: 1.375rem;
+      font-weight: 700;
+      line-height: 1.25;
+      letter-spacing: -0.015em;
+    }
+
+    .brand p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.9375rem;
+      max-width: 56ch;
+    }
+
+    .theme-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-shrink: 0;
+      min-height: 44px;
+      min-width: 44px;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: background-color 150ms var(--ease), border-color 150ms var(--ease);
+    }
+
+    .theme-btn:hover {
+      background-color: var(--surface-subtle);
+      border-color: var(--border-strong);
+    }
+
+    .theme-btn svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .theme-btn-label {
+      display: none;
+    }
+
+    /* Navegação por etapas */
+    .stepper {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 6px;
+      margin-bottom: 20px;
+      padding: 0;
+      list-style: none;
+    }
+
+    .step-btn {
+      width: 100%;
+      min-height: 48px;
+      padding: 8px 2px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      text-align: center;
+      transition: background-color 150ms var(--ease), border-color 150ms var(--ease), color 150ms var(--ease);
+    }
+
+    .step-btn:hover {
+      border-color: var(--border-strong);
+      color: var(--text);
+    }
+
+    .step-num {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      background-color: var(--surface-subtle);
+      color: var(--text-muted);
+      transition: background-color 150ms var(--ease), color 150ms var(--ease);
+    }
+
+    .step-name {
+      font-size: 0.6875rem;
+      font-weight: 500;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .step-val {
+      display: none;
+      font-family: var(--font-mono);
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+    }
+
+    .step-btn[aria-current="step"] {
+      border-color: var(--accent-border);
+      background-color: var(--accent-soft);
+      color: var(--text);
+    }
+
+    .step-btn[aria-current="step"] .step-num {
+      background-color: var(--accent);
+      color: var(--accent-fg);
+    }
+
+    .step-btn.is-done:not([aria-current="step"]) .step-num {
+      background-color: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    /* Cartão principal */
+    .card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+    }
+
+    .panel {
+      padding: 20px 16px;
+    }
+
+    .panel[hidden] {
+      display: none;
+    }
+
+    .panel-header {
+      margin-bottom: 20px;
+    }
+
+    .panel-header h2 {
+      margin: 0 0 6px;
+      font-size: 1.1875rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .panel-header p {
+      margin: 0;
+      color: var(--text-muted);
+      font-size: 0.9375rem;
+    }
+
+    fieldset {
+      margin: 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    /* Opções de seleção */
+    .options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .options-quality {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+
+    .options-format {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .option-card {
+      position: relative;
+      display: block;
+      cursor: pointer;
+    }
+
+    .option-card input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 1px;
+      height: 1px;
+      margin: 0;
+    }
+
+    .option-body {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-height: 56px;
+      padding: 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      transition: border-color 150ms var(--ease), background-color 150ms var(--ease);
+    }
+
+    .option-card:hover .option-body {
+      border-color: var(--border-strong);
+      background-color: var(--surface-subtle);
+    }
+
+    .option-card input[type="radio"]:focus-visible + .option-body {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .option-card input[type="radio"]:checked + .option-body {
+      border-color: var(--accent-border);
+      background-color: var(--accent-soft);
+      box-shadow: inset 0 0 0 1px var(--accent-border);
+    }
+
+    .option-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .option-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .radio-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 2px solid var(--border-strong);
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 150ms var(--ease);
+    }
+
+    .radio-dot::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background-color: var(--accent);
+      transform: scale(0);
+      transition: transform 140ms var(--ease);
+    }
+
+    .option-card input[type="radio"]:checked + .option-body .radio-dot {
+      border-color: var(--accent);
+    }
+
+    .option-card input[type="radio"]:checked + .option-body .radio-dot::after {
+      transform: scale(1);
+    }
+
+    .option-title {
+      font-weight: 600;
+      font-size: 0.96875rem;
+      color: var(--text);
+    }
+
+    .code-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background-color: var(--surface-subtle);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .option-card input[type="radio"]:checked + .option-body .code-tag {
+      background-color: var(--surface);
+      border-color: var(--accent-border);
+      color: var(--text);
+    }
+
+    .option-desc {
+      margin: 0;
+      padding-left: 28px;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      line-height: 1.45;
+    }
+
+    /* Caixa de explicação dinâmica */
+    .info-box {
+      margin-top: 16px;
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      background-color: var(--surface-subtle);
+      border: 1px solid var(--border);
+      font-size: 0.875rem;
+    }
+
+    .info-box-title {
+      margin: 0 0 8px;
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--text);
+    }
+
+    .info-box p {
+      margin: 0;
+      color: var(--text-muted);
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .tag-item {
+      font-size: 0.8125rem;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      background-color: var(--surface);
+      color: var(--text);
+    }
+
+    .tag-item.is-excluded {
+      background-color: transparent;
+      color: var(--text-muted);
+      text-decoration: line-through;
+      opacity: 0.65;
+    }
+
+    /* Prévia do formato */
+    .stream-preview {
+      margin: 10px 0 0 28px;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      background-color: var(--preview-bg);
+      border: 1px solid var(--preview-border);
+      color: var(--preview-text);
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      line-height: 1.5;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .legend-details {
+      margin-top: 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background-color: var(--surface-subtle);
+    }
+
+    .legend-details summary {
+      padding: 12px 16px;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .legend-list {
+      margin: 0;
+      padding: 0 16px 14px 32px;
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      display: grid;
+      gap: 6px;
+    }
+
+    /* Etapa 5: Resumo e URL */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .summary-item {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+      padding: 12px 14px;
+      min-height: 64px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border);
+      background-color: var(--surface-subtle);
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: border-color 150ms var(--ease), background-color 150ms var(--ease);
+    }
+
+    .summary-item:hover {
+      border-color: var(--border-strong);
+      background-color: var(--surface);
+    }
+
+    .summary-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .summary-value {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .summary-edit {
+      margin-top: auto;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    .url-section {
+      margin-bottom: 20px;
+    }
+
+    .url-label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .url-box {
+      padding: 14px 16px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-strong);
+      background-color: var(--surface-subtle);
+      font-family: var(--font-mono);
+      font-size: 0.875rem;
+      line-height: 1.55;
+      word-break: break-all;
+      color: var(--text);
+      user-select: all;
+    }
+
+    .url-origin {
+      color: var(--text-muted);
+    }
+
+    .url-path {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .url-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 48px;
+      padding: 12px 18px;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background-color 150ms var(--ease), border-color 150ms var(--ease), color 150ms var(--ease);
+    }
+
+    .btn svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .btn-primary {
+      background-color: var(--accent);
+      color: var(--accent-fg);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--accent-hover);
+    }
+
+    .btn-secondary {
+      background-color: var(--surface);
+      border-color: var(--border-strong);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--surface-subtle);
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--text-muted);
+    }
+
+    .btn-ghost:hover {
+      background-color: var(--surface-subtle);
+      color: var(--text);
+    }
+
+    .copy-feedback {
+      min-height: 22px;
+      margin: 8px 0 0;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--success);
+    }
+
+    .warn-box {
+      margin-bottom: 20px;
+      padding: 12px 14px;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--warn-border);
+      background-color: var(--warn-bg);
+      color: var(--warn-text);
+      font-size: 0.875rem;
+      line-height: 1.45;
+    }
+
+    .warn-box[hidden] {
+      display: none;
+    }
+
+    .install-guide {
+      padding: 16px;
+      border-radius: var(--radius-md);
+      background-color: var(--surface-subtle);
+      border: 1px solid var(--border);
+    }
+
+    .install-guide h3 {
+      margin: 0 0 10px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+    }
+
+    .install-guide ol {
+      margin: 0;
+      padding-left: 20px;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      display: grid;
+      gap: 6px;
+    }
+
+    .install-guide strong {
+      color: var(--text);
+    }
+
+    /* Barra de navegação do cartão */
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      background-color: var(--surface-subtle);
+    }
+
+    .footer-meta {
+      display: none;
+      font-family: var(--font-mono);
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .footer-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+    }
+
+    .footer-nav .btn {
+      flex: 1 1 0;
+    }
+
+    .page-footer {
+      margin-top: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    .page-footer a {
+      color: var(--text);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .page-footer a:hover {
+      color: var(--accent);
+    }
+
+    /* Tablet e desktop */
+    @media (min-width: 640px) {
+      .page {
+        padding: 32px 24px 48px;
+      }
+
+      .brand h1 {
+        font-size: 1.5rem;
+      }
+
+      .theme-btn-label {
+        display: inline;
+      }
+
+      .stepper {
+        gap: 8px;
+      }
+
+      .step-btn {
+        padding: 10px 8px;
+      }
+
+      .step-name {
+        font-size: 0.8125rem;
+      }
+
+      .step-val {
+        display: block;
+      }
+
+      .panel {
+        padding: 28px 28px 24px;
+      }
+
+      .options-quality {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .options-quality .option-card:first-child {
+        grid-column: 1 / -1;
+      }
+
+      .options-format {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .stream-preview {
+        margin-left: 0;
+      }
+
+      .summary-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .card-footer {
+        padding: 16px 28px;
+      }
+
+      .footer-meta {
+        display: block;
+      }
+
+      .footer-nav {
+        width: auto;
+        justify-content: flex-end;
+      }
+
+      .footer-nav .btn {
+        flex: 0 0 auto;
+        min-width: 132px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <div class="brand">
+        <h1>Nuvio Fontes PT-BR</h1>
+        <p>Configure idioma, tipo de stream, qualidade mínima e formato para gerar sua URL de manifest.</p>
+      </div>
+      <button type="button" class="theme-btn" id="themeToggle" aria-label="Alternar tema">
+        <svg id="themeIconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+        </svg>
+        <svg id="themeIconMoon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+        <span class="theme-btn-label" id="themeLabel">Tema escuro</span>
+      </button>
+    </header>
+
+    <nav aria-label="Etapas da configuração">
+      <ol class="stepper">
+        <li>
+          <button type="button" class="step-btn" data-step-nav="1" aria-current="step">
+            <span class="step-num">1</span>
+            <span class="step-name">Idioma</span>
+            <span class="step-val" data-step-val="language">pt-br</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="step-btn" data-step-nav="2">
+            <span class="step-num">2</span>
+            <span class="step-name">Tipo</span>
+            <span class="step-val" data-step-val="type">all</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="step-btn" data-step-nav="3">
+            <span class="step-num">3</span>
+            <span class="step-name">Qualidade</span>
+            <span class="step-val" data-step-val="quality">all</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="step-btn" data-step-nav="4">
+            <span class="step-num">4</span>
+            <span class="step-name">Formato</span>
+            <span class="step-val" data-step-val="format">prism</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="step-btn" data-step-nav="5">
+            <span class="step-num">5</span>
+            <span class="step-name">URL</span>
+            <span class="step-val">manifest</span>
+          </button>
+        </li>
+      </ol>
+    </nav>
+
+    <main class="card">
+      <!-- Etapa 1: Idioma -->
+      <section class="panel" data-panel="1" aria-labelledby="heading-step-1">
+        <div class="panel-header">
+          <h2 id="heading-step-1">1. Escolha o idioma</h2>
+          <p>O filtro de idioma é cumulativo: cada nível inclui as opções dos níveis anteriores.</p>
+        </div>
+
+        <fieldset>
+          <legend class="sr-only">Filtro de idioma</legend>
+          <div class="options">
+            <label class="option-card">
+              <input type="radio" name="language" value="pt-br" checked>
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">PT-BR confirmado</span>
+                  </span>
+                  <span class="code-tag">pt-br</span>
+                </span>
+                <span class="option-desc">Mostra somente streams dublados ou legendados com português do Brasil confirmado.</span>
+              </span>
+            </label>
+
+            <label class="option-card">
+              <input type="radio" name="language" value="pt">
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">Português (inclui dialeto não confirmado)</span>
+                  </span>
+                  <span class="code-tag">pt</span>
+                </span>
+                <span class="option-desc">Inclui PT-BR confirmado e também streams em português sem região comprovada, como releases Dual Áudio.</span>
+              </span>
+            </label>
+
+            <label class="option-card">
+              <input type="radio" name="language" value="gringo">
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">Português e idiomas estrangeiros</span>
+                  </span>
+                  <span class="code-tag">gringo</span>
+                </span>
+                <span class="option-desc">Inclui todas as opções em português e também streams com áudio ou legenda estrangeira.</span>
+              </span>
+            </label>
+
+            <label class="option-card">
+              <input type="radio" name="language" value="all">
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">Todos os idiomas (sem filtro)</span>
+                  </span>
+                  <span class="code-tag">all</span>
+                </span>
+                <span class="option-desc">Desativa o filtro de idioma. Inclui também streams cuja fonte não informa o idioma.</span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="info-box" aria-live="polite">
+          <p class="info-box-title">Rótulos aceitos nesta escolha</p>
+          <ul class="tag-list" id="languageTags"></ul>
+        </div>
+      </section>
+
+      <!-- Etapa 2: Tipo de stream -->
+      <section class="panel" data-panel="2" aria-labelledby="heading-step-2" hidden>
+        <div class="panel-header">
+          <h2 id="heading-step-2">2. Escolha o tipo de stream</h2>
+          <p>Defina se deseja receber links diretos pela web, torrents P2P ou ambos na mesma lista.</p>
+        </div>
+
+        <fieldset>
+          <legend class="sr-only">Filtro de tipo de stream</legend>
+          <div class="options">
+            <label class="option-card">
+              <input type="radio" name="type" value="all" checked>
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">Todos os tipos (HTTP e P2P)</span>
+                  </span>
+                  <span class="code-tag">all</span>
+                </span>
+                <span class="option-desc">Desativa o filtro de protocolo. Combina streams diretos e torrents para maior variedade de fontes.</span>
+              </span>
+            </label>
+
+            <label class="option-card">
+              <input type="radio" name="type" value="HTTP">
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">Apenas HTTP (streaming direto)</span>
+                  </span>
+                  <span class="code-tag">HTTP</span>
+                </span>
+                <span class="option-desc">Aceita apenas links diretos por HTTP ou HTTPS (HLS, MP4 e MKV). Não usa rede torrent nem expõe seu IP em P2P.</span>
+              </span>
+            </label>
+
+            <label class="option-card">
+              <input type="radio" name="type" value="P2P">
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">Apenas P2P (torrent e magnet)</span>
+                  </span>
+                  <span class="code-tag">P2P</span>
+                </span>
+                <span class="option-desc">Aceita apenas links magnet e arquivos de torrent. O Nuvio pede aceite antes de reproduzir e o IP fica visível aos demais participantes.</span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+      </section>
+
+      <!-- Etapa 3: Qualidade mínima -->
+      <section class="panel" data-panel="3" aria-labelledby="heading-step-3" hidden>
+        <div class="panel-header">
+          <h2 id="heading-step-3">3. Escolha a qualidade mínima</h2>
+          <p>A qualidade funciona como piso: escolher 720p mantém 720p, 1080p, 1440p, 4K e 8K.</p>
+        </div>
+
+        <fieldset>
+          <legend class="sr-only">Filtro de qualidade mínima</legend>
+          <div class="options-quality">
+            <label class="option-card">
+              <input type="radio" name="quality" value="all" checked>
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">Qualquer qualidade (sem filtro)</span>
+                  </span>
+                  <span class="code-tag">all</span>
+                </span>
+                <span class="option-desc">Aceita todas as resoluções, incluindo CAM e qualidade desconhecida (comum em alguns links HLS adaptativos).</span>
+              </span>
+            </label>
+
+            <label class="option-card">
+              <input type="radio" name="quality" value="480p">
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">SD · 480p ou mais</span>
+                  </span>
+                  <span class="code-tag">480p</span>
+                </span>
+                <span class="option-desc">Mantém de 480p até 8K. Remove CAM e resolução desconhecida.</span>
+              </span>
+            </label>
+
+            <label class="option-card">
+              <input type="radio" name="quality" value="720p">
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">HD · 720p ou mais</span>
+                  </span>
+                  <span class="code-tag">720p</span>
+                </span>
+                <span class="option-desc">Mantém HD (720p), Full HD, QHD, 4K e 8K.</span>
+              </span>
+            </label>
+
+            <label class="option-card">
+              <input type="radio" name="quality" value="1080p">
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">Full HD · 1080p ou mais</span>
+                  </span>
+                  <span class="code-tag">1080p</span>
+                </span>
+                <span class="option-desc">Mantém Full HD (1080p), QHD, 4K e 8K.</span>
+              </span>
+            </label>
+
+            <label class="option-card">
+              <input type="radio" name="quality" value="1440p">
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">QHD · 1440p ou mais</span>
+                  </span>
+                  <span class="code-tag">1440p</span>
+                </span>
+                <span class="option-desc">Mantém QHD (1440p), 4K e 8K.</span>
+              </span>
+            </label>
+
+            <label class="option-card">
+              <input type="radio" name="quality" value="2160p">
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">4K UHD · 2160p ou mais</span>
+                  </span>
+                  <span class="code-tag">2160p</span>
+                </span>
+                <span class="option-desc">Mantém apenas 4K (2160p) e 8K.</span>
+              </span>
+            </label>
+
+            <label class="option-card">
+              <input type="radio" name="quality" value="4320p">
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">8K · 4320p</span>
+                  </span>
+                  <span class="code-tag">4320p</span>
+                </span>
+                <span class="option-desc">Mantém apenas streams em 8K (4320p).</span>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="info-box" aria-live="polite">
+          <p class="info-box-title">O que passa com este piso</p>
+          <p id="qualityNote"></p>
+        </div>
+      </section>
+
+      <!-- Etapa 4: Formato -->
+      <section class="panel" data-panel="4" aria-labelledby="heading-step-4" hidden>
+        <div class="panel-header">
+          <h2 id="heading-step-4">4. Escolha o formato de exibição</h2>
+          <p>O formato muda apenas como os detalhes de cada stream aparecem na lista do Nuvio.</p>
+        </div>
+
+        <fieldset>
+          <legend class="sr-only">Formato de exibição dos streams</legend>
+          <div class="options-format">
+            <label class="option-card">
+              <input type="radio" name="format" value="prism" checked>
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">Prism</span>
+                  </span>
+                  <span class="code-tag">prism</span>
+                </span>
+                <span class="option-desc">Cabeçalho com selo de qualidade; destaca o título e o ano.</span>
+                <pre class="stream-preview" id="previewPrism" aria-label="Exemplo de exibição no formato Prism"></pre>
+              </span>
+            </label>
+
+            <label class="option-card">
+              <input type="radio" name="format" value="gdrive">
+              <span class="option-body">
+                <span class="option-head">
+                  <span class="option-title-wrap">
+                    <span class="radio-dot" aria-hidden="true"></span>
+                    <span class="option-title">Google Drive</span>
+                  </span>
+                  <span class="code-tag">gdrive</span>
+                </span>
+                <span class="option-desc">Cabeçalho com o nome do provedor e a qualidade; destaca o arquivo.</span>
+                <pre class="stream-preview" id="previewGdrive" aria-label="Exemplo de exibição no formato Google Drive"></pre>
+              </span>
+            </label>
+          </div>
+        </fieldset>
+
+        <details class="legend-details">
+          <summary>Legenda dos símbolos nos exemplos</summary>
+          <ul class="legend-list">
+            <li><strong>🗣️</strong> idioma do áudio ou legenda (Dublado, Legendado, Gringo ou Idioma Desconhecido).</li>
+            <li><strong>🧲 P2P</strong> stream por torrent; <strong>🌐 HTTP</strong> stream direto.</li>
+            <li><strong>🌱</strong> ou <strong>👥</strong> seeders/peers do torrent (exibe ? quando a fonte não informa).</li>
+            <li><strong>📡</strong> ou <strong>🔍</strong> catálogo ou servidor de origem dentro do provedor.</li>
+            <li><strong>🎥</strong> origem do vídeo, <strong>🎞️</strong> codec e <strong>📁</strong> arquivo da release.</li>
+          </ul>
+        </details>
+      </section>
+
+      <!-- Etapa 5: URL gerada -->
+      <section class="panel" data-panel="5" aria-labelledby="heading-step-5" hidden>
+        <div class="panel-header">
+          <h2 id="heading-step-5">5. URL do manifest pronta</h2>
+          <p>Copie o endereço abaixo e adicione no Nuvio. Clique em qualquer item do resumo para alterar.</p>
+        </div>
+
+        <div class="summary-grid" aria-label="Resumo das opções selecionadas">
+          <button type="button" class="summary-item" data-jump-step="1">
+            <span class="summary-label">Idioma</span>
+            <span class="summary-value" id="summaryLanguage">PT-BR confirmado</span>
+            <span class="summary-edit">Alterar</span>
+          </button>
+          <button type="button" class="summary-item" data-jump-step="2">
+            <span class="summary-label">Tipo</span>
+            <span class="summary-value" id="summaryType">Todos</span>
+            <span class="summary-edit">Alterar</span>
+          </button>
+          <button type="button" class="summary-item" data-jump-step="3">
+            <span class="summary-label">Qualidade</span>
+            <span class="summary-value" id="summaryQuality">Qualquer</span>
+            <span class="summary-edit">Alterar</span>
+          </button>
+          <button type="button" class="summary-item" data-jump-step="4">
+            <span class="summary-label">Formato</span>
+            <span class="summary-value" id="summaryFormat">Prism</span>
+            <span class="summary-edit">Alterar</span>
+          </button>
+        </div>
+
+        <div class="url-section">
+          <span class="url-label" id="manifestUrlLabel">URL do manifest</span>
+          <div class="url-box" id="manifestUrlBox" role="region" aria-labelledby="manifestUrlLabel">
+            <span class="url-origin" id="urlOrigin"></span><span class="url-path" id="urlPath"></span>
+          </div>
+
+          <div class="url-actions">
+            <button type="button" class="btn btn-primary" id="copyBtn">
+              <svg id="copyIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+              </svg>
+              <svg id="checkIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+              <span id="copyBtnText">Copiar URL</span>
+            </button>
+            <a class="btn btn-secondary" id="openManifestLink" href="#" target="_blank" rel="noopener noreferrer">
+              <span>Abrir JSON</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                <polyline points="15 3 21 3 21 9"></polyline>
+                <line x1="10" y1="14" x2="21" y2="3"></line>
+              </svg>
+            </a>
+            <button type="button" class="btn btn-ghost" id="resetBtn">Recomeçar</button>
+          </div>
+          <p class="copy-feedback" id="copyFeedback" role="status" aria-live="polite"></p>
+        </div>
+
+        <div class="warn-box" id="p2pWarning">
+          Streams P2P (torrent) pedem aceite no Nuvio antes da reprodução e deixam seu IP visível para os demais participantes.
+        </div>
+
+        <div class="install-guide">
+          <h3>Como adicionar no Nuvio</h3>
+          <ol>
+            <li>Abra <strong>Settings &gt; Plugins</strong> no aplicativo.</li>
+            <li>Cole a URL gerada acima e salve <strong>apenas um</strong> manifest.</li>
+            <li>Atualize a lista e ative os provedores desejados. Para trocar de filtros depois, remova o manifest atual antes de adicionar o novo para não repetir streams.</li>
+          </ol>
+        </div>
+      </section>
+
+      <div class="card-footer">
+        <span class="footer-meta" id="footerPath">/prism/all/all/pt-br/manifest.json</span>
+        <div class="footer-nav">
+          <button type="button" class="btn btn-secondary" id="prevBtn" hidden>Voltar</button>
+          <button type="button" class="btn btn-primary" id="nextBtn">Continuar</button>
+        </div>
+      </div>
+    </main>
+
+    <footer class="page-footer">
+      <span>Repositório Nuvio Fontes PT-BR (GPL-3.0).</span>
+      <a href="https://github.com/nathanael540/nuvio-fontes-ptbr-plugin" target="_blank" rel="noopener noreferrer">Ver código e lista de provedores no GitHub</a>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var PUBLIC_ORIGIN = 'https://raw.githubusercontent.com/nathanael540/nuvio-fontes-ptbr-plugin/main';
+      var TOTAL_STEPS = 5;
+
+      var ALL_LANGUAGE_LABELS = [
+        'Dublado',
+        'Legendado',
+        'Dublado (Não PT-BR?)',
+        'Legendado (Não PT-BR?)',
+        'Gringo',
+        'Idioma Desconhecido'
+      ];
+
+      var LANGUAGE_INCLUDED = {
+        'pt-br': 2,
+        pt: 4,
+        gringo: 5,
+        all: 6
+      };
+
+      var QUALITY_NOTES = {
+        all: 'Aceita todas as resoluções disponíveis, incluindo CAM e streams sem resolução informada (como alguns links HLS adaptativos).',
+        '480p': 'Aceita 480p, 720p, 1080p, 1440p, 4K (2160p) e 8K (4320p). Exclui CAM e resolução desconhecida.',
+        '720p': 'Aceita 720p, 1080p, 1440p, 4K (2160p) e 8K (4320p). Exclui 480p, CAM e resolução desconhecida.',
+        '1080p': 'Aceita 1080p, 1440p, 4K (2160p) e 8K (4320p). Exclui 720p, 480p, CAM e resolução desconhecida.',
+        '1440p': 'Aceita 1440p, 4K (2160p) e 8K (4320p). Exclui 1080p ou inferior, CAM e resolução desconhecida.',
+        '2160p': 'Aceita 4K (2160p) e 8K (4320p). Exclui 1440p ou inferior, CAM e resolução desconhecida.',
+        '4320p': 'Aceita somente 8K (4320p). Exclui 4K ou inferior, CAM e resolução desconhecida.'
+      };
+
+      var LABELS = {
+        language: {
+          'pt-br': 'PT-BR confirmado',
+          pt: 'Português (todos)',
+          gringo: 'PT + estrangeiros',
+          all: 'Todos (sem filtro)'
+        },
+        type: {
+          all: 'HTTP e P2P',
+          HTTP: 'Apenas HTTP',
+          P2P: 'Apenas P2P'
+        },
+        quality: {
+          all: 'Qualquer',
+          '480p': 'SD (480p+)',
+          '720p': 'HD (720p+)',
+          '1080p': 'FHD (1080p+)',
+          '1440p': 'QHD (1440p+)',
+          '2160p': '4K (2160p+)',
+          '4320p': '8K (4320p)'
+        },
+        format: {
+          prism: 'Prism',
+          gdrive: 'Google Drive'
+        }
+      };
+
+      var DEFAULTS = {
+        language: 'pt-br',
+        type: 'all',
+        quality: 'all',
+        format: 'prism'
+      };
+
+      var state = {
+        step: 1,
+        language: DEFAULTS.language,
+        type: DEFAULTS.type,
+        quality: DEFAULTS.quality,
+        format: DEFAULTS.format
+      };
+
+      var copyTimer = null;
+
+      function buildManifestPath(config) {
+        return '/' + config.format + '/' + config.type + '/' + config.quality + '/' + config.language + '/manifest.json';
+      }
+
+      function buildManifestUrl(config) {
+        return PUBLIC_ORIGIN + buildManifestPath(config);
+      }
+
+      function sampleQuality(floor) {
+        if (floor === '1440p') return { label: '1440p', prism: '✨ QHD 1440p', file: '1440p' };
+        if (floor === '2160p') return { label: '4K', prism: '🔥4K UHD', file: '2160p' };
+        if (floor === '4320p') return { label: '4320p', prism: '🔥4K UHD 4320p', file: '4320p' };
+        return { label: '1080p', prism: '🚀 FHD 1080p', file: '1080p' };
+      }
+
+      function renderFormatPreviews() {
+        var q = sampleQuality(state.quality);
+        var isHttp = state.type === 'HTTP';
+
+        var prismLines = [
+          q.prism,
+          '🎬 Matrix (1999)',
+          '🎥 BluRay 🎞️ x264',
+          '🗣️ Dublado',
+          isHttp ? '🌐 HTTP' : '🧲 P2P 🌱 120/15',
+          '📡 limpotorrents'
+        ];
+
+        var gdriveLines = [
+          'Baixa Rápido ' + q.label,
+          '🎥 BluRay 🎞️ x264',
+          '🗣️ Dublado',
+          isHttp ? '🌐 HTTP 🔍 limpotorrents' : '🧲 P2P 👥 120/15 🔍 limpotorrents',
+          '📁 Matrix.1999.' + q.file + '.BluRay.DUAL.mkv'
+        ];
+
+        document.getElementById('previewPrism').textContent = prismLines.join('\n');
+        document.getElementById('previewGdrive').textContent = gdriveLines.join('\n');
+      }
+
+      function renderLanguageTags() {
+        var count = LANGUAGE_INCLUDED[state.language] || 0;
+        var list = document.getElementById('languageTags');
+        list.innerHTML = '';
+        for (var i = 0; i < ALL_LANGUAGE_LABELS.length; i++) {
+          var li = document.createElement('li');
+          li.className = 'tag-item' + (i >= count ? ' is-excluded' : '');
+          li.textContent = ALL_LANGUAGE_LABELS[i];
+          list.appendChild(li);
+        }
+      }
+
+      function renderQualityNote() {
+        document.getElementById('qualityNote').textContent = QUALITY_NOTES[state.quality] || '';
+      }
+
+      function renderResult() {
+        var path = buildManifestPath(state);
+        var url = buildManifestUrl(state);
+
+        document.getElementById('summaryLanguage').textContent = LABELS.language[state.language];
+        document.getElementById('summaryType').textContent = LABELS.type[state.type];
+        document.getElementById('summaryQuality').textContent = LABELS.quality[state.quality];
+        document.getElementById('summaryFormat').textContent = LABELS.format[state.format];
+
+        document.getElementById('urlOrigin').textContent = PUBLIC_ORIGIN;
+        document.getElementById('urlPath').textContent = path;
+        document.getElementById('openManifestLink').href = url;
+        document.getElementById('footerPath').textContent = path;
+        document.getElementById('p2pWarning').hidden = state.type === 'HTTP';
+      }
+
+      function renderStepper() {
+        var stepButtons = document.querySelectorAll('[data-step-nav]');
+        for (var i = 0; i < stepButtons.length; i++) {
+          var btn = stepButtons[i];
+          var num = Number(btn.getAttribute('data-step-nav'));
+          if (num === state.step) {
+            btn.setAttribute('aria-current', 'step');
+          } else {
+            btn.removeAttribute('aria-current');
+          }
+          btn.classList.toggle('is-done', num < state.step);
+        }
+
+        document.querySelector('[data-step-val="language"]').textContent = state.language;
+        document.querySelector('[data-step-val="type"]').textContent = state.type;
+        document.querySelector('[data-step-val="quality"]').textContent = state.quality;
+        document.querySelector('[data-step-val="format"]').textContent = state.format;
+      }
+
+      function renderPanels() {
+        var panels = document.querySelectorAll('[data-panel]');
+        for (var i = 0; i < panels.length; i++) {
+          var panel = panels[i];
+          var num = Number(panel.getAttribute('data-panel'));
+          panel.hidden = num !== state.step;
+        }
+
+        var prevBtn = document.getElementById('prevBtn');
+        var nextBtn = document.getElementById('nextBtn');
+
+        prevBtn.hidden = state.step === 1;
+        nextBtn.hidden = state.step === TOTAL_STEPS;
+
+        if (state.step === 4) {
+          nextBtn.textContent = 'Gerar URL';
+        } else {
+          nextBtn.textContent = 'Continuar';
+        }
+      }
+
+      function syncRadios() {
+        var keys = ['language', 'type', 'quality', 'format'];
+        for (var i = 0; i < keys.length; i++) {
+          var key = keys[i];
+          var input = document.querySelector('input[name="' + key + '"][value="' + state[key] + '"]');
+          if (input) input.checked = true;
+        }
+      }
+
+      function renderAll() {
+        renderStepper();
+        renderPanels();
+        renderLanguageTags();
+        renderQualityNote();
+        renderFormatPreviews();
+        renderResult();
+      }
+
+      function goToStep(stepNumber) {
+        if (stepNumber < 1 || stepNumber > TOTAL_STEPS) return;
+        state.step = stepNumber;
+        clearCopyFeedback();
+        renderAll();
+        var heading = document.getElementById('heading-step-' + stepNumber);
+        if (heading) {
+          heading.setAttribute('tabindex', '-1');
+          heading.focus({ preventScroll: true });
+        }
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+
+      function setHidden(el, shouldHide) {
+        if (shouldHide) {
+          el.setAttribute('hidden', '');
+        } else {
+          el.removeAttribute('hidden');
+        }
+      }
+
+      function clearCopyFeedback() {
+        if (copyTimer) {
+          clearTimeout(copyTimer);
+          copyTimer = null;
+        }
+        document.getElementById('copyFeedback').textContent = '';
+        document.getElementById('copyBtnText').textContent = 'Copiar URL';
+        setHidden(document.getElementById('copyIcon'), false);
+        setHidden(document.getElementById('checkIcon'), true);
+      }
+
+      function showCopyFeedback(ok) {
+        clearCopyFeedback();
+        var feedback = document.getElementById('copyFeedback');
+        if (ok) {
+          feedback.textContent = 'URL copiada para a área de transferência.';
+          document.getElementById('copyBtnText').textContent = 'URL copiada';
+          setHidden(document.getElementById('copyIcon'), true);
+          setHidden(document.getElementById('checkIcon'), false);
+        } else {
+          feedback.textContent = 'Não foi possível copiar automaticamente. Selecione o texto da URL acima e copie.';
+        }
+        copyTimer = setTimeout(clearCopyFeedback, 2800);
+      }
+
+      function copyManifestUrl() {
+        var url = buildManifestUrl(state);
+        if (navigator.clipboard && typeof navigator.clipboard.writeText === 'function') {
+          navigator.clipboard.writeText(url).then(
+            function () { showCopyFeedback(true); },
+            function () { fallbackCopy(url); }
+          );
+          return;
+        }
+        fallbackCopy(url);
+      }
+
+      function fallbackCopy(text) {
+        var area = document.createElement('textarea');
+        area.value = text;
+        area.setAttribute('readonly', '');
+        area.style.position = 'fixed';
+        area.style.opacity = '0';
+        document.body.appendChild(area);
+        area.select();
+        var copied = false;
+        try {
+          copied = document.execCommand('copy');
+        } catch (e) {
+          copied = false;
+        }
+        document.body.removeChild(area);
+        showCopyFeedback(copied);
+      }
+
+      /* Tema claro/escuro com detecção automática do navegador */
+      var colorSchemeQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+
+      function currentTheme() {
+        var attr = document.documentElement.getAttribute('data-theme');
+        if (attr === 'light' || attr === 'dark') return attr;
+        return colorSchemeQuery && colorSchemeQuery.matches ? 'dark' : 'light';
+      }
+
+      function updateThemeButton() {
+        var dark = currentTheme() === 'dark';
+        var btn = document.getElementById('themeToggle');
+        var label = document.getElementById('themeLabel');
+        var sun = document.getElementById('themeIconSun');
+        var moon = document.getElementById('themeIconMoon');
+
+        setHidden(sun, !dark);
+        setHidden(moon, dark);
+        label.textContent = dark ? 'Tema claro' : 'Tema escuro';
+        btn.setAttribute('aria-label', dark ? 'Mudar para tema claro' : 'Mudar para tema escuro');
+      }
+
+      function toggleTheme() {
+        var next = currentTheme() === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', next);
+        try {
+          localStorage.setItem('nuvio-theme', next);
+        } catch (e) {
+          // Segue sem persistência se o navegador bloquear localStorage.
+        }
+        updateThemeButton();
+      }
+
+      /* Eventos */
+      document.addEventListener('change', function (event) {
+        var target = event.target;
+        if (!target || target.type !== 'radio') return;
+        var name = target.name;
+        if (name === 'language' || name === 'type' || name === 'quality' || name === 'format') {
+          state[name] = target.value;
+          clearCopyFeedback();
+          renderAll();
+        }
+      });
+
+      var navButtons = document.querySelectorAll('[data-step-nav]');
+      for (var i = 0; i < navButtons.length; i++) {
+        navButtons[i].addEventListener('click', function () {
+          goToStep(Number(this.getAttribute('data-step-nav')));
+        });
+      }
+
+      var jumpButtons = document.querySelectorAll('[data-jump-step]');
+      for (var j = 0; j < jumpButtons.length; j++) {
+        jumpButtons[j].addEventListener('click', function () {
+          goToStep(Number(this.getAttribute('data-jump-step')));
+        });
+      }
+
+      document.getElementById('prevBtn').addEventListener('click', function () {
+        goToStep(state.step - 1);
+      });
+
+      document.getElementById('nextBtn').addEventListener('click', function () {
+        goToStep(state.step + 1);
+      });
+
+      document.getElementById('copyBtn').addEventListener('click', copyManifestUrl);
+
+      document.getElementById('resetBtn').addEventListener('click', function () {
+        state.language = DEFAULTS.language;
+        state.type = DEFAULTS.type;
+        state.quality = DEFAULTS.quality;
+        state.format = DEFAULTS.format;
+        syncRadios();
+        goToStep(1);
+      });
+
+      document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+
+      if (colorSchemeQuery && typeof colorSchemeQuery.addEventListener === 'function') {
+        colorSchemeQuery.addEventListener('change', function () {
+          if (!document.documentElement.getAttribute('data-theme')) {
+            updateThemeButton();
+          }
+        });
+      }
+
+      syncRadios();
+      updateThemeButton();
+      renderAll();
+    })();
+  </script>
+</body>
+</html>
