@@ -103,7 +103,7 @@ Alternativa descartada: deduplicar pela URL completa; a assinatura R2 muda a cad
 
 ### D10. Fronteira de erro, isolamento e tempo
 
-TMDB, busca e estrutura de página são fatais: HTTP fora de 2xx, busca sem marcador, série sem lista de episódios, episódio sem `h1` de coordenadas e ficha sem player sobem. Ficha 404 é candidato removido e a busca continua. Cada candidato é uma opção independente; falha gera `console.warn('[RedeCanais Deals] Opção <rótulo> descartada: <causa>')`; se nenhuma produzir stream e alguma falhar, o erro agregado sobe.
+TMDB, busca e estrutura de página são fatais: HTTP fora de 2xx, busca sem marcador, série sem lista de episódios e episódio sem `h1` de coordenadas sobem. Ficha 404 é candidato removido e a busca continua. A ausência de player na ficha falha como opção isolada, com aviso, conforme a spec. Cada candidato é uma opção independente; falha gera `console.warn('[RedeCanais Deals] Opção <rótulo> descartada: <causa>')`; se nenhuma produzir stream e alguma falhar, o erro agregado sobe.
 
 Nenhum timeout, `AbortController`, retentativa, cache ou settings. `getStreams` é a única camada que captura o erro final, registra `console.error('[RedeCanais Deals] ...')` e devolve `[]`.
 

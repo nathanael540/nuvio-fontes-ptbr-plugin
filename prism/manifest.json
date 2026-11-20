@@ -1105,6 +1105,26 @@
         "pt"
       ],
       "logo": "https://www.google.com/s2/favicons?domain=redecanais.lt&sz=128"
+    },
+    {
+      "id": "redecanais-deals",
+      "name": "RedeCanais Deals",
+      "description": "Filmes e séries em MP4 do catálogo RedeCanais Deals, dublados ou legendados conforme o áudio do arquivo resolvido pelo player.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": [
+        "movie",
+        "tv"
+      ],
+      "filename": "providers/redecanais-deals.js",
+      "enabled": true,
+      "formats": [
+        "mp4"
+      ],
+      "contentLanguage": [
+        "pt"
+      ],
+      "logo": "https://www.google.com/s2/favicons?domain=redecanais.deals&sz=128"
     }
   ]
 }

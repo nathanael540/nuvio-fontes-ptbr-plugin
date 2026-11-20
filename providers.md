@@ -57,6 +57,7 @@
 | [Seekee](#seekee) | `seekee` | filme, série | HLS | 🟢 Estável | 2026-11-20 |
 | [Cineveo](#cineveo) | `cineveo` | filme, série | MP4 | 🟢 Estável | 2026-11-20 |
 | [RedeCanais](#redecanais) | `redecanais` | filme, série | MP4 | 🟢 Estável | 2026-11-20 |
+| [RedeCanais Deals](#redecanais-deals) | `redecanais-deals` | filme, série | MP4 | 🟢 Estável | 2026-11-20 |
 
 ## MegaEmbed
 
@@ -1199,3 +1200,24 @@ Filmes e séries em MP4 do catálogo PhpMelody do RedeCanais: busca HTML por tí
    10. `tv` `46101` · Senhora do Destino (2004) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 
+## RedeCanais Deals
+
+**Status: 🟢 Estável.**
+
+Filmes e séries em MP4 do catálogo `redecanais.deals`: busca HTML de página única por título, confirmação por título/ano e pelo `vid` do player com o ID do TMDB, episódio selecionado pelo par publicado e MP4 resolvido por `SOURCE_URL`/`action=resolve`. O idioma é classificado pelo `audio` do arquivo resolvido; o catálogo da amostra é dublado e a variante `?audio=leg` da página não altera a mídia.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-20T18:41:00.380Z** · ID `2026-11-20T18-40-37-961Z-redecanais-deals-b02e404e-793d` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `b02e404ec9162a960a2bc73175bba378` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
+   1. `movie` `149` · Akira (1988) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `437109` · A Vilã (2017) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `1570488` · O Natal Perfeito de um Cachorro (2026) · **Resolvido** · 1/1 streams aproveitáveis
+   4. `movie` `1070514` · 100 Coisas para Fazer Antes de Virar Zumbi (2023) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `372058` · Your Name (2016) · **Resolvido** · 1/1 streams aproveitáveis
+   6. `tv` `2316` · The Office (2005) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   7. `tv` `7979` · Caminho das Índias (2009) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   8. `tv` `76572` · Douluo Dalu (Soul Land) (2018) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `119051` · Wednesday (2022) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   10. `tv` `1668` · Friends (1994) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+<!-- online-verification:end -->
