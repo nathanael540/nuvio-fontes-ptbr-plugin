@@ -69,7 +69,7 @@ O provedor SHALL ler `li.dooplay_player_option` com `data-post`, `data-nume` e `
 
 ### Requirement: Resolução das famílias comprovadas
 
-O provedor SHALL resolver `jwplayer/?source=<valor>` decodificando o parâmetro `source` e aceitando somente `http(s)`, com tipo `hls` quando o caminho contiver `.m3u8` e `mp4` nos demais casos. Para `rumble.com/embed/<id>`, SHALL ler o objeto `p.f["<id>"]` da página, usar `u.hls.url` como mídia e a maior chave numérica de `u.ua.tar` como qualidade. Hosts fora dessas famílias SHALL ser descartados por triagem.
+O provedor SHALL resolver `jwplayer/?source=<valor>` decodificando `source`, aceitando somente `http(s)`, com `hls` quando o caminho contiver `.m3u8` e `mp4` nos demais casos. Para `rumble.com/embed/<id>`, SHALL ler `p.f["<id>"]` mesmo com a propriedade JavaScript `loaded:<função>()`, usar `u.hls.url` como mídia e a maior chave numérica de `ua.tar` como qualidade. Hosts fora dessas famílias SHALL ser descartados por triagem.
 
 #### Scenario: Fonte `jwplayer` com HLS assinado
 
@@ -78,8 +78,8 @@ O provedor SHALL resolver `jwplayer/?source=<valor>` decodificando o parâmetro 
 
 #### Scenario: Rumble embed com HLS
 
-- **WHEN** o embed é `https://rumble.com/embed/<id>/?pub=...` e a página publica `p.f["<id>"].u.hls.url`
-- **THEN** o provedor devolve o master HLS e a qualidade da maior chave de `u.ua.tar`.
+- **WHEN** o embed é `https://rumble.com/embed/<id>/?pub=...` e a página publica `p.f["<id>"]` com `loaded:v()` e `ua.tar`
+- **THEN** o provedor devolve `u.hls.url` como master HLS e a qualidade da maior chave numérica de `ua.tar`.
 
 #### Scenario: Host não suportado
 

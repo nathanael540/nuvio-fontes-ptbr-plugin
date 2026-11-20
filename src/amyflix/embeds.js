@@ -89,11 +89,29 @@ function readRumblePayload(html, id) {
   const start = match.index + match[0].length;
   const json = readJsonObject(html, start);
   if (json === null) return null;
+  const parsed = parseRumbleObject(json);
+  return parsed && typeof parsed === 'object' ? parsed : null;
+}
+
+/**
+ * Interpreta o objeto publicado pelo Rumble.
+ *
+ * A fonte acrescenta propriedades JavaScript, como `loaded:v()`, que não são JSON válido.
+ * Remove somente uma propriedade com valor de chamada ao final do objeto antes de interpretar.
+ * @param {string} json - Objeto recortado do HTML.
+ * @returns {object|null} Objeto interpretado ou `null` quando inválido.
+ */
+function parseRumbleObject(json) {
   try {
-    const parsed = JSON.parse(json);
-    return parsed && typeof parsed === 'object' ? parsed : null;
+    return JSON.parse(json);
   } catch {
-    return null;
+    const sanitized = json.replace(/,\s*[A-Za-z_$][\w$]*\s*:\s*[A-Za-z_$][\w$]*\s*\(\s*\)\s*\}\s*$/, '}');
+    if (sanitized === json) return null;
+    try {
+      return JSON.parse(sanitized);
+    } catch {
+      return null;
+    }
   }
 }
 
@@ -129,12 +147,12 @@ function readJsonObject(text, start) {
 }
 
 /**
- * Maior qualidade declarada em `u.ua.tar`.
+ * Maior qualidade declarada em `ua.tar`.
  * @param {object} payload - Objeto do vídeo.
  * @returns {string|null} Qualidade no formato `<n>p` ou `null` sem chaves numéricas.
  */
 function bestRumbleQuality(payload) {
-  const tar = payload.u && payload.u.ua && payload.u.ua.tar;
+  const tar = payload.ua && payload.ua.tar;
   if (!tar || typeof tar !== 'object' || Array.isArray(tar)) return null;
   let best = 0;
   for (const key of Object.keys(tar)) {

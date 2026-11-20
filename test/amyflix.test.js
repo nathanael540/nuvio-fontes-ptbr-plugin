@@ -248,7 +248,7 @@ test('série resolve jwplayer HLS, jwplayer MP4 e Rumble pelo par temporada/epis
   const rumble = streams.find((stream) => stream.provider === 'Rumble');
   assert.equal(rumble.url, 'https://rumble.com/hls-vod/placeholder/playlist.m3u8');
   assert.equal(rumble.type, 'hls');
-  assert.equal(rumble.quality, '1080p');
+  assert.equal(rumble.quality, '720p');
   assert.equal(rumble.language, 'Legendado');
   assert.equal(rumble.headers, undefined);
   assert.match(rumble.title, /Amor que Machuca/);
@@ -279,14 +279,14 @@ test('episódio S01E01 usa a URL publicada e devolve MP4 sem qualidade declarada
   assert.deepEqual(runtime.errors, []);
 });
 
-test('filme resolve o embed Rumble e descarta Google Drive por triagem', async () => {
+test('filme resolve o embed Rumble com objeto JavaScript e descarta Google Drive por triagem', async () => {
   const runtime = makeRuntime(makeRoute(), codes.prism);
   const streams = await runtime.exports.getStreams(MOVIE_ID, 'movie', null, null);
   assert.equal(streams.length, 1);
   const [stream] = streams;
   assert.equal(stream.provider, 'Rumble');
   assert.equal(stream.url, 'https://rumble.com/hls-vod/placeholder/playlist.m3u8');
-  assert.equal(stream.quality, '1080p');
+  assert.equal(stream.quality, '720p');
   assert.equal(stream.language, 'Legendado');
   assert.match(stream.title, /Ammonite/);
   assert.doesNotMatch(stream.title, /T\d+E\d+/);

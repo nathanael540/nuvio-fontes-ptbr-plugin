@@ -731,7 +731,7 @@
       "id": "amyflix",
       "name": "AmyFlix",
       "description": "Filmes e séries GL do AmyFlix em HLS e MP4, com busca por título, opções DooPlay e players jwplayer e Rumble.",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "nathanael540",
       "supportedTypes": [
         "movie",

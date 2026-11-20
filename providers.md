@@ -808,17 +808,17 @@ Limitação da rodada: o perfil generalista usa títulos que não pertencem ao a
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-20T13:21:29.072Z** · ID `2026-11-20T13-21-12-316Z-amyflix-20261120-050c` · **Instável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
-   1. `movie` `76341` · Mad Max: Estrada da Fúria (2015) · **Sem resultado** · 0/0 streams aproveitáveis
-   2. `movie` `122` · O Senhor dos Anéis: O Retorno do Rei (2003) · **Sem resultado** · 0/0 streams aproveitáveis
-   3. `movie` `1466115` · Se Esse Amor Desaparecesse Hoje (2025) · **Sem resultado** · 0/0 streams aproveitáveis
-   4. `movie` `361743` · Top Gun: Maverick (2022) · **Sem resultado** · 0/0 streams aproveitáveis
-   5. `movie` `155` · Batman: O Cavaleiro das Trevas (2008) · **Sem resultado** · 0/0 streams aproveitáveis
-   6. `tv` `34957` · Laços de Família (2000) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
-   7. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
-   8. `tv` `456` · Os Simpsons (1989) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
-   9. `tv` `223911` · Renegade Immortal (2023) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
-   10. `tv` `46101` · Senhora do Destino (2004) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+1. **2026-11-20T14:36:25.006Z** · ID `2026-11-20T14-36-08-565Z-amyflix-a257ed8e-3ea9` · **Instável** · pacote 1.0.1 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `a257ed8e53ce2e7bfebd05b5639ba91a` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
+   1. `movie` `284054` · Pantera Negra (2018) · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `movie` `1184918` · Robô Selvagem (2024) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `1398725` · Swallowed Star The Movie: Xueluo Continent (2024) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `502356` · Super Mario Bros. O Filme (2023) · **Sem resultado** · 0/0 streams aproveitáveis
+   5. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `119051` · Wednesday (2022) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   7. `tv` `30984` · Bleach (2004) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   8. `tv` `60059` · Better Call Saul (2015) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   10. `tv` `124003` · Perfect World [Wanmei Shijie] (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
 <!-- online-verification:end -->
 
 ## SeuDorama
