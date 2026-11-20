@@ -1,4 +1,6 @@
-# Nuvio Fontes PT-BR
+<p align="center">
+  <a href="https://nathanael540.github.io/nuvio-fontes-ptbr-plugin/"><img src="assets/branding/logo.png" alt="Nuvio Fontes PT-BR" width="460"></a>
+</p>
 
 <p align="center">
   <a href="https://nathanael540.github.io/nuvio-fontes-ptbr-plugin/"><img src="https://img.shields.io/badge/Gerar-manifest-orange" alt="Gerar manifest"></a> <a href="providers.md"><img src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fraw.githubusercontent.com%2Fnathanael540%2Fnuvio-fontes-ptbr-plugin%2Fmain%2Fsrc%2Fmanifest.json&query=%24.scrapers.length&label=provedores&color=brightgreen" alt="Provedores"></a> <a href="https://discord.com/invite/YvCqRYe9gw"><img src="https://img.shields.io/badge/Comunidade_no-Discord-blue?logo=discord&logoColor=white" alt="Discord"></a> <a href="https://discord.com/invite/YvCqRYe9gw"><img src="https://img.shields.io/discord/1539847210143981619?label=discord&logo=discord&logoColor=white" alt="Discord Online"></a> <a href="https://github.com/tapframe/NuvioStreaming"><img src="https://img.shields.io/badge/Feito_para_o-Nuvio-purple" alt="Feito para o Nuvio"></a>

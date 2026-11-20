@@ -4,8 +4,22 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f8fa" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
   <title>Nuvio Fontes PT-BR · Gerador de manifest</title>
   <meta name="description" content="Configure idioma, tipo de stream, qualidade mínima e formato para gerar a URL do manifest do repositório Nuvio Fontes PT-BR.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Nuvio Fontes PT-BR · Gerador de manifest">
+  <meta property="og:description" content="Configure idioma, tipo de stream, qualidade mínima e formato para gerar a URL do manifest do repositório Nuvio Fontes PT-BR.">
+  <meta property="og:image" content="https://nathanael540.github.io/nuvio-fontes-ptbr-plugin/assets/branding/social-header.png">
+  <meta property="og:image:width" content="1280">
+  <meta property="og:image:height" content="640">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nuvio Fontes PT-BR · Gerador de manifest">
+  <meta name="twitter:description" content="Configure idioma, tipo de stream, qualidade mínima e formato para gerar a URL do manifest do repositório Nuvio Fontes PT-BR.">
+  <meta name="twitter:image" content="https://nathanael540.github.io/nuvio-fontes-ptbr-plugin/assets/branding/social-header.png">
+  <link rel="icon" type="image/png" href="assets/branding/icon-transparent.png">
+  <link rel="apple-touch-icon" href="assets/branding/icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -147,6 +161,35 @@
       justify-content: space-between;
       gap: 16px;
       margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      flex-shrink: 0;
+      border-radius: var(--radius-sm);
+      background-color: #0d1117;
+      padding: 3px;
+      margin-top: 2px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) .brand-icon {
+        background-color: transparent;
+        padding: 0;
+      }
+    }
+
+    :root[data-theme="dark"] .brand-icon {
+      background-color: transparent;
+      padding: 0;
     }
 
     .brand h1 {
@@ -804,6 +847,11 @@
         padding: 32px 24px 48px;
       }
 
+      .brand-icon {
+        width: 48px;
+        height: 48px;
+      }
+
       .brand h1 {
         font-size: 1.5rem;
       }
@@ -882,8 +930,11 @@
   <div class="page">
     <header class="topbar">
       <div class="brand">
-        <h1>Nuvio Fontes PT-BR</h1>
-        <p>Gere a URL do manifest para instalar os provedores no Nuvio.</p>
+        <img class="brand-icon" src="assets/branding/icon-transparent.png" alt="" width="44" height="44">
+        <div>
+          <h1>Nuvio Fontes PT-BR</h1>
+          <p>Gere a URL do manifest para instalar os provedores no Nuvio.</p>
+        </div>
       </div>
       <button type="button" class="theme-btn" id="themeToggle" aria-label="Alternar tema">
         <svg id="themeIconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
