@@ -134,6 +134,7 @@ function runtime(route, options = {}) {
   const context = {
     module: { exports: {} },
     TMDB_API_KEY: apiKey,
+    SCRAPER_ID: options.scraperId,
     URL,
     URLSearchParams,
     Uint8Array,
@@ -633,6 +634,16 @@ test('4.1, 4.2, 4.3, 4.4, 4.5 e 4.6 base32, tamanhos, idiomas, contagens, format
   const prismStreams = await runnerPrism.getStreams('603', 'movie', null, null);
   assert.equal(prismStreams.length, 1);
   assert.match(prismStreams[0].name, /FHD 1080p/);
+
+  const route = (url) => {
+    if (url.hostname === 'api.themoviedb.org') return { body: moviePayload() };
+    if (url.hostname === 'magnetbr.flixbr.online') return { body: { count: items.length, results: items } };
+    throw new Error(`URL inesperada: ${url}`);
+  };
+  const p2p = runtime(route, { bundle: codes.gdrive, scraperId: 'repo:magnetbr--p2p-1080p-pt' });
+  assert.deepEqual(await p2p.getStreams('603', 'movie', null, null), streams.slice(0, 2));
+  const http = runtime(route, { bundle: codes.gdrive, scraperId: 'repo:magnetbr--http-all-all' });
+  assert.deepEqual(await http.getStreams('603', 'movie', null, null), []);
 });
 
 test('5.1 a 5.6 resolução de pacotes de temporada, deduplicação por seeders, prevalência do episódio avulso e falha do cache', async () => {

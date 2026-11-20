@@ -35,7 +35,7 @@ const playerMovie = read('player-movie.html');
 const playerTv = read('player-tv.html');
 const http403 = read('http-403.txt');
 const http500 = read('http-500.txt');
-const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'manifest.json'), 'utf8'));
+const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'src', 'manifest.json'), 'utf8'));
 
 let codes = {};
 

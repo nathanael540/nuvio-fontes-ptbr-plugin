@@ -9,6 +9,7 @@
 import { randomBytes } from 'node:crypto';
 import fs from 'node:fs';
 import path from 'node:path';
+import build from '../../../build.js';
 import { STATUSES } from './classify.mjs';
 import { sanitizeText } from './sanitize.mjs';
 
@@ -69,6 +70,9 @@ export function parseStatus(value) {
  * // result.status === 'Estável'
  */
 export function recordRun({ rootDir, report }) {
+  if (report.identity.combination && report.identity.combination !== build.REFERENCE_COMBINATION) {
+    throw new Error(`registro público exige ${build.REFERENCE_COMBINATION}`);
+  }
   const file = path.join(rootDir, 'providers.md');
   const original = fs.readFileSync(file, 'utf8');
   const row = findRow(original, report.provider.id);
@@ -147,7 +151,7 @@ export function renderRound(report, number) {
   const profile = report.identity.profile.exclusiveTag === null ? 'generalista' : report.identity.profile.exclusiveTag;
   const catalogs = report.identity.catalogs;
   const lines = [
-    `${number}. **${report.generatedAt}** · ID \`${report.runId}\` · **${report.summary.status}** · pacote ${report.provider.version} · perfil \`${profile}\` · catálogos \`movie@${catalogs.movie.revision}\`, \`tv@${catalogs.tv.revision}\` · semente \`${report.selection.seed}\` · algoritmo \`${report.selection.algorithm}\``,
+    `${number}. **${report.generatedAt}** · ID \`${report.runId}\` · **${report.summary.status}** · pacote ${report.provider.version} · perfil \`${profile}\` · catálogos \`movie@${catalogs.movie.revision}\`, \`tv@${catalogs.tv.revision}\` · semente \`${report.selection.seed}\` · algoritmo \`${report.selection.algorithm}\`${report.identity.combination ? ` · manifest \`${report.identity.combination}\`` : ''}`,
   ];
   if (report.preparationFailure) lines.push(`   Preparação: ${sanitizeText(report.preparationFailure)}`);
   report.cases.forEach((item, index) => {

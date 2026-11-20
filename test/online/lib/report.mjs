@@ -61,6 +61,7 @@ export function buildReport({
       protocolVersion: identity.protocolVersion,
       hash: identity.hash,
       packageHash: identity.packageHash,
+      ...(identity.combination ? { combination: identity.combination, scraperId: identity.scraperId } : {}),
       supportedTypes: identity.supportedTypes,
       profile: identity.profile,
       catalogs: identity.catalogs,

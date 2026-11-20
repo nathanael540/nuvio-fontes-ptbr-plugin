@@ -35,7 +35,7 @@ const byseReal = readJson('byse-avengers.json');
 const byseNoSources = readJson('byse-no-sources.json');
 const byseWithTracks = readJson('byse-with-tracks.json');
 const byseUnknownQuality = readJson('byse-unknown-quality.json');
-const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'manifest.json'), 'utf8'));
+const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'src', 'manifest.json'), 'utf8'));
 
 const KEY_A = Buffer.from('00112233445566778899aabbccddeeff', 'hex');
 const KEY_B = Buffer.from('ffeeddccbbaa99887766554433221100', 'hex');

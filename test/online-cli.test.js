@@ -40,6 +40,7 @@ test('parseArgs aceita provedor, semente, timeout e registro', () => {
   assert.deepEqual(runner.parseArgs(['--provider', 'betor', '--seed', 'x', '--timeout', '500', '--record']), {
     help: false,
     provider: 'betor',
+    combination: 'prism/all/all/all',
     seed: 'x',
     record: true,
     timeoutMs: 500,
@@ -195,4 +196,40 @@ test('registro recebe o relatório da mesma rodada', async (t) => {
   assert.equal(code, 0);
   assert.equal(received.provider.id, 'betor');
   assert.equal(received.summary.status, 'Estável');
+});
+
+
+test('combinações com os mesmos bytes passam IDs e registram identidades distintas', async (t) => {
+  const artifactsDir = tempArtifacts(t);
+  const reports = [];
+  const combinations = ['prism/HTTP/720p/pt-br', 'prism/HTTP/1080p/pt-br'];
+  for (const combination of combinations) {
+    const requests = [];
+    const code = await runner.runCli({
+      argv: ['--provider', 'seekee', '--manifest', combination, '--seed', 'identidade'],
+      artifactsDir,
+      runCaseImpl: async (request) => {
+        requests.push(request);
+        return { streams: [VALID_STREAM], consoleMessages: { error: [], warn: [] } };
+      },
+      writeReportImpl: ({ report }) => { reports.push(report); return 'test/report.json'; },
+      log: () => {},
+    });
+    assert.equal(code, 0);
+    assert.ok(requests.every(({ providerId }) => providerId === `seekee--http-${combination.split('/')[2]}-pt-br`));
+    assert.ok(requests.every(({ packagePath }) => packagePath === path.resolve('prism/providers/seekee.js')));
+    assert.equal(reports.at(-1).identity.combination, combination);
+    assert.equal(reports.at(-1).identity.scraperId, requests[0].providerId);
+  }
+  assert.equal(reports[0].identity.packageHash, reports[1].identity.packageHash);
+  assert.notEqual(reports[0].identity.hash, reports[1].identity.hash);
+});
+
+test('runner rejeita combinação inexistente e registro fora da referência', async () => {
+  const errors = [];
+  for (const args of [['--manifest', 'prism/HTTP/721p/pt-br'], ['--manifest', 'prism/HTTP/720p/pt-br', '--record']]) {
+    assert.equal(await runner.runCli({ argv: ['--provider', 'seekee', ...args], logError: (text) => errors.push(text) }), 3);
+  }
+  assert.match(errors[0], /combinação de manifest inválida/);
+  assert.match(errors[1], /--record exige prism\/all\/all\/all/);
 });

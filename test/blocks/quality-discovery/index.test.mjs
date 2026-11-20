@@ -1,10 +1,21 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import { discoverQuality, normalizeQuality, UNKNOWN_QUALITY } from '../../../src/_blocks/quality-discovery/index.mjs';
+import { discoverQuality, normalizeQuality, QUALITY, qualityToHeight, UNKNOWN_QUALITY } from '../../../src/_blocks/quality-discovery/index.mjs';
 
 test('UNKNOWN_QUALITY é o sentinela de qualidade desconhecida', () => {
   assert.equal(UNKNOWN_QUALITY, 'Desconhecida');
+});
+
+test('equivalências e alturas preservam as resoluções intermediárias', () => {
+  assert.deepEqual(QUALITY, { SD: 480, HD: 720, FHD: 1080, QHD: 1440, '4K': 2160, '8K': 4320 });
+  for (const [label, height] of Object.entries(QUALITY)) {
+    assert.equal(qualityToHeight(normalizeQuality(label)), height);
+    assert.equal(discoverQuality([`Filme ${label}`]), normalizeQuality(label));
+  }
+  assert.equal(qualityToHeight('800p'), 800);
+  assert.equal(qualityToHeight('CAM'), null);
+  assert.equal(qualityToHeight(UNKNOWN_QUALITY), null);
 });
 
 // --- normalizeQuality ---
@@ -29,6 +40,8 @@ const QUALITY_CASES = [
   ['4k', '4K'],
   ['UHD', '4K'],
   ['fhd', '1080p'],
+  ['QHD', '1440p'],
+  ['8K', '4320p'],
   ['FullHD', '1080p'],
   ['Full HD', '1080p'],
   ['CAM', 'CAM'],

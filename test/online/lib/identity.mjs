@@ -42,13 +42,13 @@ export function profileHash(profile) {
 /**
  * Monta a identidade completa de uma avaliação.
  *
- * @param {{ packageHash: string, supportedTypes: string[], profile: { exclusiveTag: string|null }, catalogs: { movie: object, tv: object } }} options - Componentes da identidade.
- * @returns {{ algorithm: string, protocolVersion: number, hash: string, packageHash: string, supportedTypes: string[], profile: object, catalogs: object }} Identidade.
+ * @param {{ packageHash: string, combination?: string, scraperId?: string, supportedTypes: string[], profile: { exclusiveTag: string|null }, catalogs: { movie: object, tv: object } }} options - Componentes da identidade.
+ * @returns {{ algorithm: string, protocolVersion: number, hash: string, packageHash: string, combination?: string, scraperId?: string, supportedTypes: string[], profile: object, catalogs: object }} Identidade.
  * @throws {Error} Se algum componente obrigatório faltar.
  * @example
  * evaluationIdentity({ packageHash, supportedTypes: ['movie'], profile, catalogs }).hash;
  */
-export function evaluationIdentity({ packageHash, supportedTypes, profile, catalogs }) {
+export function evaluationIdentity({ packageHash, combination, scraperId, supportedTypes, profile, catalogs }) {
   if (typeof packageHash !== 'string' || !/^[a-f0-9]{64}$/.test(packageHash)) {
     throw new Error('identidade exige packageHash SHA-256');
   }
@@ -63,6 +63,7 @@ export function evaluationIdentity({ packageHash, supportedTypes, profile, catal
     algorithm: IDENTITY_ALGORITHM,
     protocolVersion: PROTOCOL_VERSION,
     packageHash,
+    ...(combination ? { combination, scraperId } : {}),
     supportedTypes: supportedTypes.slice(),
     profile: { exclusiveTag: profile.exclusiveTag },
     catalogs: catalogRefs,

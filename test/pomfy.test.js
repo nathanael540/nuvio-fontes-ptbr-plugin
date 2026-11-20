@@ -24,7 +24,7 @@ const fileReadySeries = readJson('file-ready-series.json');
 const fileProcessing = readJson('file-processing.json');
 const fileNoQualities = readJson('file-no-qualities.json');
 const assignFixture = readJson('assign.json');
-const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'manifest.json'), 'utf8'));
+const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'src', 'manifest.json'), 'utf8'));
 
 const MOVIE_ID = '550';
 const TV_ID = '1396';

@@ -1,18 +1,5 @@
 #!/usr/bin/env node
-/**
- * Empacota cada provedor de src/<id>/index.js em providers/<id>.js (CommonJS, es2016) e, para cada
- * template do bloco custom-formatter, em <formato>/providers/<id>.js, e gera <formato>/manifest.json a
- * partir do manifest.json. Cada formato fica numa pasta porque o NuvioMobile só aceita
- * repositório com URL terminada em /manifest.json e busca o `filename` relativo à pasta do manifest.
- *
- * Uso:
- *   node build.js               # todos os provedores
- *   node build.js <id> [<id>]   # apenas os informados (os manifests de formato são sempre gerados)
- *   node build.js --minify      # com minificação (publicação)
- *
- * Pastas iniciadas por "_" (ex.: src/_template) são ignoradas.
- * Sai com código 1 se algum provedor ou manifest falhar.
- */
+/** Empacota provedores em CommonJS ES2016 e gera os manifests de instalação. */
 
 const esbuild = require('esbuild');
 const fs = require('fs');
@@ -22,6 +9,9 @@ const { pathToFileURL } = require('url');
 const ROOT_DIR = __dirname;
 const SRC_DIR = path.join(ROOT_DIR, 'src');
 const OUT_DIR = path.join(ROOT_DIR, 'providers');
+const REFERENCE_COMBINATION = 'prism/all/all/all';
+const PUBLIC_ORIGIN = 'https://raw.githubusercontent.com/nathanael540/nuvio-fontes-ptbr-plugin/main';
+const FILTER_MODULE = path.join(SRC_DIR, '_blocks', 'stream-filter', 'index.mjs');
 const FORMATTER_MODULE = path.join(SRC_DIR, '_blocks', 'custom-formatter', 'index.mjs');
 
 // Módulos que o app entrega via require() (NuvioMobile e NuvioTV): não devem ser empacotados.
@@ -69,7 +59,27 @@ async function buildProvider(id, { minify = false, outDir, formatter = null } = 
   const outfile = path.join(outDir || (formatter === null ? OUT_DIR : formatOutDir(formatter)), `${id}.js`);
   const label = formatter === null ? id : `${id} (formato ${formatter})`;
   await esbuild.build({
-    entryPoints: [entryPoint],
+    ...(formatter === null ? { entryPoints: [entryPoint] } : {
+      stdin: {
+        contents: `
+          import { filterStreams, readStreamFilters } from './_blocks/stream-filter/index.mjs';
+          const provider = require(${JSON.stringify(`./${id}/index.js`)});
+          const baseId = ${JSON.stringify(id)};
+          module.exports = { ...provider, async getStreams(tmdbId, type, season, episode) {
+            let filters;
+            try {
+              filters = readStreamFilters(typeof SCRAPER_ID === 'undefined' ? baseId : SCRAPER_ID, baseId);
+            } catch (error) {
+              console.error('[' + baseId + '] ' + error.message);
+              return [];
+            }
+            return filterStreams(await provider.getStreams(tmdbId, type, season, episode), filters);
+          } };
+        `,
+        sourcefile: `${id}-manifest.js`,
+        resolveDir: SRC_DIR,
+      },
+    }),
     outfile,
     bundle: true,
     format: 'cjs',
@@ -93,17 +103,58 @@ function formatManifest(manifest, formatter) {
   return { ...manifest, name: `${manifest.name} (${formatter})` };
 }
 
-/**
- * Gera <rootDir>/<formato>/manifest.json para cada formato a partir de <rootDir>/manifest.json.
- * Retorna os caminhos gerados.
- */
+function readManifestSource(rootDir = ROOT_DIR) {
+  return JSON.parse(fs.readFileSync(path.join(rootDir, 'src', 'manifest.json'), 'utf8'));
+}
+
+async function manifestVariants() {
+  const formats = await loadFormats();
+  const { STREAM_TYPES, QUALITY_FLOORS, LANGUAGE_LEVELS } = await import(pathToFileURL(FILTER_MODULE).href);
+  return formats.flatMap((formatter) => STREAM_TYPES.flatMap((type) => QUALITY_FLOORS.flatMap((quality) => (
+    LANGUAGE_LEVELS.map((language) => `${formatter}/${type}/${quality}/${language}`)
+  ))));
+}
+
+function variantScraperId(id, combination) {
+  const [, type, quality, language] = combination.split('/');
+  return `${id}--${type.toLowerCase()}-${quality}-${language}`;
+}
+
+function variantManifest(manifest, combination, origin = PUBLIC_ORIGIN) {
+  const [formatter, type, quality, language] = combination.split('/');
+  const label = type === 'all' && quality === 'all' && language === 'all'
+    ? `${formatter} · lista completa`
+    : `${formatter} · ${type}/${quality}/${language}`;
+  return {
+    ...manifest,
+    name: `${manifest.name} (${label})`,
+    scrapers: manifest.scrapers.map((scraper) => ({
+      ...scraper,
+      id: variantScraperId(scraper.id, combination),
+      filename: `${origin}/${formatter}/${scraper.filename}`,
+    })),
+  };
+}
+
 async function writeFormatManifests(rootDir = ROOT_DIR) {
   const formats = await loadFormats();
-  const manifest = JSON.parse(fs.readFileSync(path.join(rootDir, 'manifest.json'), 'utf8'));
-  return formats.map((formatter) => {
-    const file = path.join(rootDir, formatter, 'manifest.json');
+  const manifest = readManifestSource(rootDir);
+  const missing = ['', ...formats].flatMap((formatter) => (
+    manifest.scrapers.map(({ filename }) => path.join(formatter, filename))
+  )).filter((file) => !fs.existsSync(path.join(rootDir, file)));
+  if (missing.length) throw new Error(`pacotes ausentes: ${missing.join(', ')}. Rode npm run build para gerar todos.`);
+
+  const variants = await manifestVariants();
+  const entries = [
+    ['', manifest],
+    ...formats.map((formatter) => [formatter, formatManifest(manifest, formatter)]),
+    ...variants.map((combination) => [combination, variantManifest(manifest, combination)]),
+  ];
+  return entries.map(([folder, data]) => {
+    const file = path.join(rootDir, folder, 'manifest.json');
     fs.mkdirSync(path.dirname(file), { recursive: true });
-    fs.writeFileSync(file, `${JSON.stringify(formatManifest(manifest, formatter), null, 2)}\n`);
+    const indent = variants.includes(folder) ? undefined : 2;
+    fs.writeFileSync(file, `${JSON.stringify(data, null, indent)}\n`);
     return file;
   });
 }
@@ -156,4 +207,7 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { buildProvider, formatManifest, formatOutDir, loadFormats, writeFormatManifests };
+module.exports = {
+  buildProvider, formatManifest, formatOutDir, loadFormats, manifestVariants,
+  PUBLIC_ORIGIN, REFERENCE_COMBINATION, readManifestSource, variantManifest, variantScraperId, writeFormatManifests,
+};

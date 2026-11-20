@@ -29,7 +29,7 @@ Guia para agentes de IA e contribuidores deste repositório.
 ## Regras de código
 
 1. JavaScript puro com JSDoc; módulos ES em `src/`, saída CommonJS em `providers/` e nas pastas de formato.
-2. Nunca edite os arquivos gerados (`providers/*.js`, `<formato>/providers/*.js`, `<formato>/manifest.json`); altere `src/<id>/` ou `manifest.json` e rode `node build.js <id>`.
+2. Nunca edite os arquivos gerados (`providers/*.js`, `<formato>/providers/*.js` e manifests de instalação). Altere `src/<id>/` ou `src/manifest.json`, rode `node build.js <id>` para desenvolvimento e `npm run build:min` para publicação.
 3. Respeite as restrições do runtime do app (QuickJS) descritas em `docs/arch.md`: sem APIs do Node e sem rede no carregamento do módulo.
 4. Use apenas os módulos que o app fornece: `cheerio-without-node-native` (só a API básica, por causa do NuvioTV) e `crypto-js`. Para HTTP, use o `fetch` global; `axios` não existe no app.
 5. Erros internos são lançados; só `getStreams` captura, registra com `console.error('[Nome] ...')` e retorna `[]`. Exceção: a falha de uma opção de mídia independente descarta só essa opção, com `console.warn('[Nome] ...')`, e o erro só sobe se nenhuma opção produzir stream. Não implemente limite de tempo próprio; o app gerencia a espera.
@@ -51,10 +51,10 @@ Guia para agentes de IA e contribuidores deste repositório.
 
 ## Testes
 
-1. Rode `npm run lint` e `npm test` após qualquer alteração em `manifest.json`, `build.js`, `src/` ou `test/`. Não desative regras do lint sem justificar no próprio comentário (`-- motivo`).
+1. Rode `npm run lint` e `npm test` após qualquer alteração em `src/manifest.json`, `build.js`, `src/` ou `test/`. Não desative regras do lint sem justificar no próprio comentário (`-- motivo`).
 2. Rode `node build.js <id>` para o provedor alterado e confirme que o build não falha.
 3. Testes de desenvolvimento são em Node, sem o app Nuvio instalado e sem acesso à internet. Mudanças em provedores exigem testes Node em `test/<id>.test.js` cobrindo filme, episódio, pacote e ausência quando aplicáveis, com fixtures de respostas reais da fonte (ver `docs/tests.md`). A aprovação offline não comprova funcionamento nem autoriza publicação.
-4. Funcionamento e publicação exigem evidência online do pacote final, obtida com `npm run test:online -- --provider <id>` após o build, e registrada em `providers.md`. A rodada usa rede real e `TMDB_API_KEY` apenas do ambiente quando o provedor consulta o TMDB; nenhuma chave entra no repositório.
+4. Funcionamento e publicação exigem evidência online do pacote final, obtida com `npm run test:online -- --provider <id>` após `npm run build:min`, e registrada em `providers.md` para `prism/all/all/all`. Outras combinações ficam no relatório transitório. A rodada usa rede real e `TMDB_API_KEY` apenas do ambiente quando o provedor consulta o TMDB; nenhuma chave entra no repositório.
 5. Preencha todos os campos opcionais do stream que a fonte fornecer (contrato em `docs/arch.md`), mesmo os que o app ainda não usa.
 6. Toda a infraestrutura de testes fica em `test/`; saídas geradas vão para `test/artifacts/`, ignorada pelo Git.
 
@@ -76,7 +76,7 @@ Guia para agentes de IA e contribuidores deste repositório.
 2. Mantenha no topo uma tabela resumo com exatamente as colunas `Provedor`, `ID`, `Categoria`, `Motivo resumido` e `Data`, com `ID` único em kebab-case e `Data` no formato `AAAA-MM-DD`.
 3. Use na coluna e no campo `Categoria` exatamente um dos cinco valores fechados: `Bloqueio anti-bot`, `Autenticação ou chave`, `Execução incompatível`, `Sem mídia utilizável` ou `Escopo ou duplicidade`.
 4. Crie uma seção `## <Provedor>` para cada linha da tabela (em correspondência 1-para-1), usando lista numerada com os seis campos obrigatórios na seguinte ordem: `Data da rejeição`, `Categoria`, `Domínios investigados`, `Motivo`, `Evidência e referência` e `Critério de reavaliação`.
-5. Nenhum `ID` listado em `rejected-providers.md` pode constar em `manifest.json`. Se um provedor rejeitado voltar a ser implementado e publicado, remova sua entrada de `rejected-providers.md` na mesma mudança que o inclui no `manifest.json`.
+5. Nenhum `ID` listado em `rejected-providers.md` pode constar em `src/manifest.json`. Se um provedor rejeitado voltar a ser implementado e publicado, remova sua entrada de `rejected-providers.md` na mesma mudança que o inclui em `src/manifest.json`.
 6. Players, hosts ou opções descartadas isoladamente dentro de um provedor ativo continuam documentados apenas em `docs/provider-investigation.md` e no `design.md` da change, sem entrar em `rejected-providers.md`.
 7. Nunca registre segredos, tokens, cookies de sessão, credenciais na URL, links `magnet:?`, URLs assinadas de mídia ou hashes SHA-256 em `rejected-providers.md`.
 

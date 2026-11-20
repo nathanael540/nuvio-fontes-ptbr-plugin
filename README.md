@@ -19,22 +19,23 @@ A tabela dos provedores, com o status de cada um (🟢 Estável, 🔵 Parcial, �
 ## Usar no Nuvio
 
 1. Abra **Settings > Plugins** no app.
-2. Adicione a URL raw de **apenas um** dos manifests abaixo. Os três trazem exatamente os mesmos provedores e encontram os mesmos streams; a única diferença é o texto que descreve cada stream na lista do app.
+2. Adicione a URL de **um** manifest. Estas duas opções recebem a lista completa.
 
-   | Manifest | Formatação dos streams | URL |
-   | --- | --- | --- |
-   | Padrão | Sorteia Google Drive ou Prism sempre que o app carrega o provedor | `https://raw.githubusercontent.com/nathanael540/nuvio-fontes-ptbr-plugin/main/manifest.json` |
-   | Google Drive | Sempre Google Drive | `https://raw.githubusercontent.com/nathanael540/nuvio-fontes-ptbr-plugin/main/gdrive/manifest.json` |
-   | Prism | Sempre Prism | `https://raw.githubusercontent.com/nathanael540/nuvio-fontes-ptbr-plugin/main/prism/manifest.json` |
+   | Formatação | URL |
+   | --- | --- |
+   | Google Drive | `https://raw.githubusercontent.com/nathanael540/nuvio-fontes-ptbr-plugin/main/gdrive/all/all/all/manifest.json` |
+   | Prism | `https://raw.githubusercontent.com/nathanael540/nuvio-fontes-ptbr-plugin/main/prism/all/all/all/manifest.json` |
 
-3. Atualize a lista e ative os provedores desejados.
+3. Atualize a lista e ative os provedores desejados. Para mudar de combinação, remova o manifest atual e adicione o novo. Dois manifests podem repetir streams.
 
-### Um manifest basta
+### Escolher filtros
 
-1. Escolha só pela aparência que preferir: nenhum manifest tem provedores, fontes ou qualidade a mais que os outros.
-2. Instalar dois ou três não amplia a busca. O app executa os mesmos provedores uma vez por manifest, e cada stream aparece repetido na lista.
-3. Para trocar de formatação, remova o manifest atual em **Settings > Plugins** e adicione o novo.
-4. No app, o repositório aparece como `Nuvio Fontes PT-BR`, `Nuvio Fontes PT-BR (gdrive)` ou `Nuvio Fontes PT-BR (prism)`, conforme o manifest instalado.
+1. No caminho `/<formato>/<tipo>/<qualidade>/<idioma>/manifest.json`, `all` desativa o filtro daquela posição.
+2. Tipo `P2P` aceita magnet e torrent. Tipo `HTTP` aceita streams diretos por HTTP ou HTTPS.
+3. Qualidade é um piso. Use `480p`, `720p`, `1080p`, `1440p`, `2160p` ou `4320p`. Com `720p`, por exemplo, passam também 1080p e 4K. `CAM` e resolução desconhecida passam com qualidade `all`.
+4. Idioma é cumulativo. `pt-br` aceita dublado ou legendado com PT-BR confirmado. `pt` inclui também português sem dialeto comprovado. `gringo` inclui também idiomas estrangeiros. `all` inclui também idioma desconhecido.
+5. Por exemplo, `/prism/P2P/720p/pt-br/manifest.json` traz torrents de 720p ou mais com PT-BR confirmado.
+6. Durante a transição, as URLs `/manifest.json`, `/prism/manifest.json` e `/gdrive/manifest.json` seguem disponíveis sem filtros. A URL da raiz mantém o sorteio de formatação por provedor.
 
 ### Exemplos de formatação
 
@@ -61,7 +62,7 @@ O mesmo stream (filme *Matrix*, 1080p, dublado, por torrent, encontrado pelo pro
    📡 limpotorrents
    ```
 
-3. **Padrão:** usa um dos dois formatos acima, sorteado quando o app carrega o provedor. Cada provedor faz o próprio sorteio, então provedores diferentes podem aparecer com formatos diferentes. O formato se mantém até o provedor ser carregado de novo (por exemplo, ao reabrir o app ou atualizar os plugins).
+3. **URL legada da raiz:** usa um dos dois formatos acima, sorteado quando o app carrega o provedor. Cada provedor faz o próprio sorteio, então provedores diferentes podem aparecer com formatos diferentes. O formato se mantém até o provedor ser carregado de novo (por exemplo, ao reabrir o app ou atualizar os plugins).
 
 Legenda dos símbolos:
 
@@ -121,8 +122,8 @@ Contribuições são bem-vindas, feitas por pessoas ou com ajuda de agentes de I
 1. Faça um fork e crie um branch descritivo, ex.: `add-<id>` para um provedor novo ou `fix-<id>` para uma correção.
 2. Leia o [AGENTS.md](AGENTS.md) e siga as regras de código, blocos e validação. Mudanças de comportamento (provedor novo, contrato, build ou manifest) começam por uma proposta em `openspec/changes/`.
 3. Monte o provedor a partir de `src/_template/` e dos blocos do [catálogo](src/_blocks/index.md). Código reutilizável entre provedores vai para `src/_blocks/`, com JSDoc e testes.
-4. Antes de abrir o PR, rode `npm run lint`, `npm test` e `node build.js <id>`. Cubra o provedor com testes Node de desenvolvimento, conforme [docs/tests.md](docs/tests.md); eles rodam em Node, sem o app Nuvio instalado e sem internet. A evidência de funcionamento para publicação é a rodada online explícita com `npm run test:online -- --provider <id>`, também descrita em [docs/tests.md](docs/tests.md).
-5. Inclua no PR os arquivos gerados, a entrada no `manifest.json` e a linha e a seção do provedor em [providers.md](providers.md).
+4. Antes de abrir o PR, rode `npm run lint`, `npm test` e `node build.js <id>`. Cubra o provedor com testes Node de desenvolvimento, conforme [docs/tests.md](docs/tests.md); eles rodam em Node, sem o app Nuvio instalado e sem internet. Gere os pacotes de publicação com `npm run build:min`. A evidência de funcionamento é a rodada online explícita com `npm run test:online -- --provider <id>`, também descrita em [docs/tests.md](docs/tests.md).
+5. Inclua no PR os arquivos gerados, a entrada em `src/manifest.json` e a linha e a seção do provedor em [providers.md](providers.md).
 6. Nunca inclua chaves, tokens ou senhas: o repositório é público. Bypass, proxy, VPN e qualquer outro serviço são permitidos quando forem abertos, públicos e utilizáveis sem conta e sem chave. É proibido o que exige chave, token, senha ou criação de conta. A única chave externa é a do catálogo, entregue pelo app (`TMDB_API_KEY`). Cálculo local, sem conta e sem chave, é permitido.
 
 ### Commits

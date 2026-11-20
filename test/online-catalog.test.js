@@ -59,7 +59,7 @@ test('catálogos reais são válidos, não truncam e mantêm pelo menos 20 títu
     assert.ok(Number.isInteger(title.episode) && title.episode > 0);
   }
   const profiles = catalogModule.loadProfiles(ROOT, {
-    manifest: JSON.parse(require('node:fs').readFileSync(path.join(ROOT, 'manifest.json'), 'utf8')),
+    manifest: JSON.parse(require('node:fs').readFileSync(path.join(ROOT, 'src', 'manifest.json'), 'utf8')),
     catalogs,
   });
   assert.deepEqual(profiles.providers, {

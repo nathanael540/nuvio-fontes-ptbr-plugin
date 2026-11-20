@@ -11,8 +11,8 @@ Referências:
 
 ## 1. Visão geral
 
-1. O Nuvio baixa um `manifest.json` deste repositório pela URL raw do GitHub, no branch `main`: o da raiz ou o `<formato>/manifest.json` do template de formatação escolhido.
-2. Para cada entrada em `scrapers`, o app baixa o arquivo indicado em `filename` (`providers/<id>.js`), relativo à pasta do manifest.
+1. O Nuvio baixa um `manifest.json` deste repositório pela URL raw do GitHub, no branch `main`: o da combinação `/<formato>/<tipo>/<qualidade>/<idioma>/manifest.json` ou um dos caminhos temporários.
+2. Para cada entrada em `scrapers`, o app baixa o arquivo indicado em `filename`. A matriz usa a URL absoluta do pacote compartilhado. Os manifests temporários usam o caminho relativo à pasta do próprio manifest.
 3. O app executa o arquivo no motor JavaScript QuickJS e chama `getStreams(tmdbId, mediaType, season, episode)`.
 4. O provedor consulta a fonte, extrai URLs diretas (m3u8, mp4, mkv) ou links de torrent e devolve uma lista de streams.
 
@@ -21,16 +21,16 @@ Referências:
 1. `src/<id>/`: código-fonte de cada provedor, em módulos ES. Ponto de entrada obrigatório: `index.js`.
 2. `src/_template/`: modelo para novos provedores, já montado com os blocos no fluxo típico do catálogo: `index.js` (contrato do app, captura única de erros e ordenação por qualidade) e `extractor.js` (TMDB, busca, escolha do resultado, extração no player e montagem dos streams, com os pontos a adaptar comentados). Pastas com prefixo `_` não são empacotadas.
 3. `src/_blocks/`: blocos reutilizáveis pelos provedores. `src/_blocks/index.md` é o catálogo; cada bloco fica em `src/_blocks/<bloco>/index.mjs` (inglês, kebab-case). O provedor importa só os blocos que usa, com o caminho completo (`../_blocks/<bloco>/index.mjs`), e o build os inclui no arquivo final.
-4. `providers/<id>.js`: saída do build lida pelo app, versionada no Git. Sorteia o template de formatação a cada carregamento.
-5. `gdrive/` e `prism/`: uma pasta por template de formatação, cada uma com `manifest.json` e `providers/<id>.js` com o template fixo. Geradas pelo build e versionadas.
-6. `manifest.json`: registro do repositório e dos provedores publicados, escrito à mão. Os `<formato>/manifest.json` são gerados a partir dele.
-7. `build.js`: empacotador (esbuild) de `src/<id>/` para `providers/<id>.js` e as variantes de formato, e gerador dos `<formato>/manifest.json`.
+4. `providers/<id>.js` é o pacote temporário usado por `/manifest.json` durante a transição. Sorteia o template de formatação a cada carregamento.
+5. `gdrive/` e `prism/` contêm a matriz de manifests e um pacote compartilhado por provedor e formato.
+6. `src/manifest.json` é o cadastro editável do repositório e dos provedores publicados. O build gera todos os manifests de instalação a partir dele.
+7. `build.js` empacota `src/<id>/` com esbuild e gera os manifests de instalação.
 8. `test/`: toda a infraestrutura de testes, só em Node, sem o app instalado: suítes `node:test`, testes de blocos em `test/blocks/<bloco>/index.test.mjs`, fixtures em `test/fixtures/`, utilitários em `test/support/`, servidor local `test/server.js`, verificação online em `test/online/` e saídas geradas em `test/artifacts/` (ignorada pelo Git). Detalhes em [tests.md](tests.md).
 9. `openspec/`: especificações (`specs/`) e mudanças (`changes/`, com as concluídas em `changes/archive/`).
 10. `docs/`: arquitetura (`arch.md`), testes (`tests.md`) e mapa de métodos para investigar novos provedores (`provider-investigation.md`).
-11. `providers.md`: tabela dos provedores publicados, com uma seção de status por provedor. O teste `test/providers-catalog.test.js` o confere contra o `manifest.json`.
+11. `providers.md`: tabela dos provedores publicados, com uma seção de status por provedor. O teste `test/providers-catalog.test.js` o confere contra `src/manifest.json`.
 
-Nunca edite manualmente `providers/`, `<formato>/providers/` nem `<formato>/manifest.json`.
+Edite `src/` e use o build para atualizar os pacotes e manifests de instalação versionados.
 
 ## 3. Runtime do app (QuickJS)
 
@@ -91,15 +91,17 @@ Nunca edite manualmente `providers/`, `<formato>/providers/` nem `<formato>/mani
 4. Campos opcionais da documentação oficial, usados só quando necessários: `limited`, `disabledPlatforms`, `supportsExternalPlayer` e `hasSettings`.
 5. `contentLanguage` usa `"pt"`. Dublado ou legendado vai na `description` e no `language` de cada stream.
 6. `formats` descreve o que o provedor entrega (ex.: `["m3u8"]`, `["magnet"]`); o app não o usa para decidir a reprodução.
-7. Convenções verificadas pelos testes: `id` em kebab-case e único; `filename` igual a `providers/<id>.js`; `version` em semver; `supportedTypes` não vazio, só com `movie` e/ou `tv`; `formats` não vazio; `contentLanguage` com `"pt"`; `logo` em `https`; o arquivo exporta `getStreams`.
-8. Cada `<formato>/manifest.json` repete o `version` e as entradas do `manifest.json`, na mesma ordem e com os mesmos `id` e `filename`, e só acrescenta ` (<formato>)` ao `name`. Quem instala dois manifests vê cada stream repetido.
-9. O NuvioMobile acrescenta `/manifest.json` a toda URL de repositório que não termina assim e resolve o `filename` pela pasta do manifest. Por isso cada variante é uma pasta com seu próprio `manifest.json`.
-10. Atualizar o repositório no NuvioMobile baixa de novo o manifest e o código de cada provedor, sem depender de mudar `version`.
+7. Convenções do cadastro verificadas pelos testes: `id` em kebab-case e único; `filename` igual a `providers/<id>.js`; `version` em semver; `supportedTypes` não vazio, só com `movie` e/ou `tv`; `formats` não vazio; `contentLanguage` com `"pt"`; `logo` em `https`; o arquivo exporta `getStreams`.
+8. A matriz preserva a ordem e os metadados do cadastro. Cada manifest identifica a combinação no nome e usa IDs `<id-base>--<tipo>-<qualidade>-<idioma>` em minúsculas. O `filename` absoluto aponta para `/<formato>/providers/<id-base>.js`.
+9. `/<formato>/all/all/all/manifest.json` é a instalação sem filtros. Cada `all` desativa seu próprio eixo. O adaptador lê `SCRAPER_ID`, valida a combinação após o prefixo do app e filtra a lista final por protocolo, piso de resolução e nível cumulativo de idioma. `QUALITY` centraliza as equivalências de SD a 8K. O filtro preserva a ordem e os dados dos streams aceitos e devolve `[]` se a seleção ficar vazia.
+10. Durante a transição, `/manifest.json`, `/prism/manifest.json` e `/gdrive/manifest.json` mantêm nomes, IDs e `filename` relativos. Os dois formatos fixos usam os mesmos pacotes da matriz.
+11. O NuvioMobile acrescenta `/manifest.json` a URLs de repositório que não terminam assim e resolve os caminhos relativos pela pasta do manifest.
+12. Atualizar o repositório no NuvioMobile baixa de novo o manifest e o código de cada provedor, sem depender de mudar `version`.
 
 ## 6. Build, lint e dependências
 
-1. `npm run build` empacota todos os provedores; `node build.js <id>` só os informados. Cada provedor gera o arquivo base e uma variante por template (o `define` do esbuild fixa `NUVIO_FORMATTER`), e toda execução gera de novo os `<formato>/manifest.json`. A lista de templates vem do enum `FORMATTER` do bloco `custom-formatter`.
-2. `npm run build:min` gera a versão minificada. O build sai com código 1 se algum arquivo falhar.
+1. `npm run build` empacota todos os provedores; `node build.js <id>` só os informados. Cada provedor gera o arquivo base e uma variante por template (o `define` do esbuild fixa `NUVIO_FORMATTER`), e toda execução regenera os manifests de instalação após verificar se os pacotes referenciados existem. A lista de templates vem do enum `FORMATTER` do bloco `custom-formatter`.
+2. `npm run build:min` gera os pacotes de publicação minificados em ES2016 e preserva os logs. O build sai com código 1 se algum arquivo falhar.
 3. `npm run lint` roda o ESLint com três perfis em `eslint.config.mjs`: runtime do app (`src/`, só as globais e módulos da seção 3, item 5), blocos (`src/_blocks/**/index.mjs`, mais JSDoc completo nas funções exportadas) e Node (scripts da raiz e `test/`).
 4. Requer Node.js `^22.22.2 || >=24.15.0` (campo `engines`).
 5. `overrides` do `package.json` fixa `minimatch@^11.0.5`, versão corrigida exigida pelas dependências do ESLint. Remova quando elas aceitarem a versão corrigida sem o override.
@@ -108,12 +110,12 @@ Nunca edite manualmente `providers/`, `<formato>/providers/` nem `<formato>/mani
 
 ## 7. Verificação online
 
-1. `npm test` continua offline e não executa rede. A verificação de funcionamento é o comando explícito `npm run test:online -- --provider <id>`, que lê o pacote já gerado em `providers/<id>.js` e não reconstrói o arquivo.
-2. O runner identifica o pacote por SHA-256, usa os catálogos e perfis de `test/online/`, sorteia cinco títulos por tipo de `supportedTypes` e executa cada caso em um worker isolado. A semente e a seleção ficam no relatório e no resumo.
+1. `npm test` continua offline e não executa rede. A verificação de funcionamento é o comando explícito `npm run test:online -- --provider <id>`, que usa o pacote já gerado para `prism/all/all/all` por padrão. `--manifest <formato>/<tipo>/<qualidade>/<idioma>` seleciona outra combinação.
+2. O runner fornece o ID da entrada a `SCRAPER_ID` e inclui a combinação na identidade, junto com o SHA-256 do pacote. Ele usa os catálogos e perfis de `test/online/`, sorteia cinco títulos por tipo de `supportedTypes` e executa cada caso em um worker isolado. A semente e a seleção ficam no relatório e no resumo.
 3. A execução usa `fetch` real e os módulos externos reais, sem fixture, `basic-html` ou resposta simulada. `TMDB_API_KEY` entra só pelo ambiente local; sem ela, um provedor que consulta o TMDB fica inconclusivo por configuração, não por falha da fonte.
 4. O limite de tempo é externo, por caso, configurável no harness (padrão 120 segundos). O provedor publicado continua sem timeout próprio. Um caso expirado é `Inconclusivo` e não interrompe os demais.
 5. O relatório transitório fica em `test/artifacts/online/<run-id>/result.json` e é sanitizado: sem streams completos, URLs, corpos de resposta, cabeçalhos ou credenciais. O resumo público fica em `providers.md`, com uma única rodada por provedor, status visual e data curta, sem hashes.
-6. O status público usa somente evidência online da mesma identidade (pacote, tipos, perfil e catálogos). Testes de desenvolvimento não aprovam funcionamento nem alteram `providers.md`.
+6. O status público usa somente a referência `prism/all/all/all`. A identidade inclui pacote, combinação, ID do manifest, tipos, perfil e catálogos. Testes de desenvolvimento não aprovam funcionamento nem alteram `providers.md`.
 7. O harness Node não reproduz o QuickJS, não abre o app, não reproduz vídeo e não baixa mídia por P2P. A rodada comprova a resolução e o contrato dos streams, não a reprodução no aparelho.
 
 ## 8. Convenção de commits

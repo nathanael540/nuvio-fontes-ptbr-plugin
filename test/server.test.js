@@ -1,5 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const { manifestVariants } = require('../build.js');
 const { createServer } = require('./server.js');
 
 function listen(server) {
@@ -13,7 +14,7 @@ function close(server) {
 }
 
 test('modo estático mantém URLs permitidas, CORS e 404 fora das rotas', async (t) => {
-  const server = createServer(['', '/prism']);
+  const server = createServer(['', '/prism', '/gdrive'], await manifestVariants());
   const base = await listen(server);
   t.after(() => close(server));
 
@@ -26,7 +27,13 @@ test('modo estático mantém URLs permitidas, CORS e 404 fora das rotas', async 
   assert.equal((await fetch(`${base}/providers/betor.js`)).status, 200);
   assert.equal((await fetch(`${base}/prism/providers/betor.js`)).status, 200);
 
-  for (const forbidden of ['/package.json', '/src/manifest.json', '/manifest.prism.json', '/providers/../package.json']) {
+  const variant = await fetch(`${base}/prism/P2P/720p/pt-br/manifest.json`);
+  assert.equal(variant.status, 200);
+  const entry = (await variant.json()).scrapers.find((scraper) => scraper.id === 'betor--p2p-720p-pt-br');
+  assert.equal(entry.filename, `${base}/prism/providers/betor.js`);
+  assert.equal((await fetch(entry.filename)).status, 200);
+
+  for (const forbidden of ['/package.json', '/src/manifest.json', '/manifest.prism.json', '/providers/../package.json', '/prism/P2P/721p/pt-br/manifest.json', '/prism/providers/%2fbetor.js']) {
     assert.equal((await fetch(`${base}${forbidden}`)).status, 404, forbidden);
   }
 });

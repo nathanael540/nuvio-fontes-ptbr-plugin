@@ -9,19 +9,16 @@
  */
 
 import { formatStream } from '../custom-formatter/index.mjs';
-import { discoverQuality, normalizeQuality, UNKNOWN_QUALITY } from '../quality-discovery/index.mjs';
+import { discoverQuality, normalizeQuality, qualityToHeight, UNKNOWN_QUALITY } from '../quality-discovery/index.mjs';
 import { discoverLanguage, LANGUAGE } from '../language-discovery/index.mjs';
 
 export { normalizeQuality };
 
-const UHD_HEIGHT = 2160;
-const FOUR_K = '4K';
 const CAM = 'CAM';
 const CAM_RANK = 0;
 const UNKNOWN_RANK = -1;
 const HTTP_PROTOCOLS = ['http:', 'https:'];
 
-const QUALITY_TOKEN = /^(\d{3,4})p$/;
 
 const MAGNET_PREFIX = /^magnet:/i;
 // Parâmetro xt com btih em qualquer posição da query (o primeiro encontrado).
@@ -292,14 +289,13 @@ function applyTorrentFile(stream) {
 function qualityRank(stream, label) {
   if (!isPlainObject(stream)) throw new Error(`${label} deve ser objeto (recebido: ${describe(stream)})`);
   const { quality } = stream;
-  if (quality === FOUR_K) return UHD_HEIGHT;
   if (quality === CAM) return CAM_RANK;
   if (quality === UNKNOWN_QUALITY) return UNKNOWN_RANK;
-  const match = typeof quality === 'string' && quality.match(QUALITY_TOKEN);
-  if (!match) {
+  const height = qualityToHeight(quality);
+  if (height === null) {
     throw new Error(`${label}.quality fora do formato normalizado (recebido: ${describe(quality)}; esperado "<n>p", "4K", "CAM" ou "${UNKNOWN_QUALITY}")`);
   }
-  return Number(match[1]);
+  return height;
 }
 
 /**

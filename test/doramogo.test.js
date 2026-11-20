@@ -57,7 +57,7 @@ const episodeLojaDub = read('episode-loja-dub.html');
 const episodeLojaLeg = read('episode-loja-leg.html');
 const episodeWallToWall = read('episode-wall-to-wall.html');
 
-const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'manifest.json'), 'utf8'));
+const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'src', 'manifest.json'), 'utf8'));
 const NOT_FOUND = '<!DOCTYPE html><html><body><h1>Página não encontrada</h1></body></html>';
 
 let codes = {};

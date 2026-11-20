@@ -29,7 +29,7 @@ const playerTwoSources = read('player-two-sources.html');
 const playerOneSource = read('player-one-source.html');
 const playerDuplicateSource = read('player-duplicate-source.html');
 const playerMissingSource = read('player-missing-source.html');
-const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'manifest.json'), 'utf8'));
+const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'src', 'manifest.json'), 'utf8'));
 
 let codes = {};
 

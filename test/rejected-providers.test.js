@@ -148,7 +148,7 @@ function validateRejectedProvidersDocument({ markdown, manifest }) {
     }
     seenIds.add(row.id);
     if (manifestIds.has(row.id)) {
-      throw new Error(`Conflito: "${row.id}" está publicado em manifest.json e listado em rejected-providers.md.`);
+      throw new Error(`Conflito: "${row.id}" está publicado em src/manifest.json e listado em rejected-providers.md.`);
     }
   }
 
@@ -212,9 +212,9 @@ Texto introdutório.
 6. **Critério de reavaliação:** Remoção do desafio no fetch direto.
 `;
 
-test('rejected-providers.md segue o padrão e não conflita com manifest.json', () => {
+test('rejected-providers.md segue o padrão e não conflita com src/manifest.json', () => {
   const markdown = fs.readFileSync(path.join(ROOT, 'rejected-providers.md'), 'utf8');
-  const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'manifest.json'), 'utf8'));
+  const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'src', 'manifest.json'), 'utf8'));
   const result = validateRejectedProvidersDocument({ markdown, manifest });
   assert.ok(result.rows.length >= 2);
 });

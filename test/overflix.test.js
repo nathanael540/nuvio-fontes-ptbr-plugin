@@ -222,7 +222,7 @@ test('1.1 carregamento CommonJS sem rede, coordenadas inválidas e TMDB key ause
 
 // 1.3, 1.4, 7.4, 7.5 Manifest e pacotes gerados
 test('1.3, 1.4 e 7.4 manifest e pacotes gerados anunciam o OverFlix', () => {
-  const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'manifest.json'), 'utf8'));
+  const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'src', 'manifest.json'), 'utf8'));
   const entry = manifest.scrapers.find((scraper) => scraper.id === 'overflix');
   assert.ok(entry);
   assert.equal(entry.name, 'OverFlix');

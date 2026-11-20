@@ -19,7 +19,7 @@
  * e recebe o stream já validado por `buildStream` (bloco stream-build).
  */
 
-import { UNKNOWN_QUALITY } from '../quality-discovery/index.mjs';
+import { QUALITY, qualityToHeight, UNKNOWN_QUALITY } from '../quality-discovery/index.mjs';
 import { LANGUAGE_MODES } from '../language-discovery/index.mjs';
 
 /** Templates disponíveis. `AUTO` delega a escolha ao build (variante) ou ao sorteio (arquivo base). */
@@ -50,15 +50,12 @@ export const LIMITS = Object.freeze({
 const P2P_URL = /^(?:magnet:|torrent:\/\/)/i;
 const HTTP_URL = /^https?:\/\//i;
 
-const QUALITY_HEIGHT = /^(\d{3,4})p$/;
-const UHD_HEIGHT = 2160;
-
 // Selo do Prism por altura mínima, da maior para a menor.
 const PRISM_BADGES = [
-  [UHD_HEIGHT, '🔥4K UHD'],
-  [1440, '✨ QHD'],
-  [1080, '🚀 FHD'],
-  [720, '💿 HD'],
+  [QUALITY['4K'], '🔥4K UHD'],
+  [QUALITY.QHD, '✨ QHD'],
+  [QUALITY.FHD, '🚀 FHD'],
+  [QUALITY.HD, '💿 HD'],
   [0, '💩 Baixa qualidade'],
 ];
 
@@ -423,11 +420,11 @@ function prismHeader(data) {
   const { quality } = data;
   if (quality === UNKNOWN_QUALITY) return `❓ ${UNKNOWN_QUALITY}`;
   if (quality === 'CAM') return '💩 CAM';
-  const match = quality === '4K' ? [null, String(UHD_HEIGHT)] : quality.match(QUALITY_HEIGHT);
-  if (!match) {
+  const height = qualityToHeight(quality);
+  if (height === null) {
     throw new Error(`stream.quality fora do formato normalizado (recebido: "${quality}"; esperado "<n>p", "4K", "CAM" ou "${UNKNOWN_QUALITY}")`);
   }
-  const badge = PRISM_BADGES.find(([minimum]) => Number(match[1]) >= minimum)[1];
+  const badge = PRISM_BADGES.find(([minimum]) => height >= minimum)[1];
   return badge.includes(quality) ? badge : `${badge} ${quality}`;
 }
 
@@ -554,8 +551,10 @@ function readText(value, label) {
  * @param {*} url - `stream.url` já validada por `buildStream`.
  * @returns {string} "P2P" para `magnet:` e `torrent://`; "HTTP" para http(s).
  * @throws {Error} Se `url` não for texto não vazio ou tiver outro esquema.
+ * @example
+ * readDelivery('https://example.org/video.mp4'); // 'HTTP'
  */
-function readDelivery(url) {
+export function readDelivery(url) {
   if (url === undefined) throw new Error('stream.url é obrigatório (dela sai o tipo de entrega P2P ou HTTP)');
   const text = readText(url, 'stream.url');
   if (P2P_URL.test(text)) return 'P2P';

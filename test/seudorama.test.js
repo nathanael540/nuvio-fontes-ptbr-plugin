@@ -11,7 +11,7 @@ const FIXTURES = path.join(__dirname, 'fixtures', 'seudorama');
 const read = (name) => fs.readFileSync(path.join(FIXTURES, name), 'utf8');
 const readJson = (name) => JSON.parse(read(name));
 
-const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'manifest.json'), 'utf8'));
+const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'src', 'manifest.json'), 'utf8'));
 const tmdbTv = readJson('tmdb-tv.json');
 const tmdbTvSeason2 = readJson('tmdb-tv-season2.json');
 

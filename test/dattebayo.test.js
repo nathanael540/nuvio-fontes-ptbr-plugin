@@ -65,7 +65,7 @@ const signatureSd = read('signature-sd.json');
 const signatureHd = read('signature-hd.json');
 const signatureFullhd = read('signature-fullhd.json');
 const signatureMissing = read('signature-missing.json');
-const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'manifest.json'), 'utf8'));
+const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'src', 'manifest.json'), 'utf8'));
 
 const TMDB = {
   '693134': {

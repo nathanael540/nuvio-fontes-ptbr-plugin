@@ -20,7 +20,7 @@ const sourceMalformed = readJson('source-malformed.json');
 const sourceDuplicates = readJson('source-duplicates.json');
 const metaMovie = readJson('meta-movie.json');
 const metaTv = readJson('meta-tv.json');
-const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'manifest.json'), 'utf8'));
+const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'src', 'manifest.json'), 'utf8'));
 
 const MOVIE_ID = '693134';
 const TV_ID = '250307';

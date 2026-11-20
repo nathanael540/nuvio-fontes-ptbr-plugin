@@ -455,11 +455,11 @@ for (const { label, fields, error } of INVALID_MAGNET_CASES) {
 // --- sortByQuality ---
 
 test('sortByQuality: ordena da maior para a menor qualidade', () => {
-  const qualities = ['480p', 'CAM', 'Desconhecida', '1080p', '360p', '4K', '720p', '240p', '1440p'];
+  const qualities = ['480p', 'CAM', 'Desconhecida', '1080p', '360p', '4K', '720p', '240p', '1440p', '800p', '4320p'];
   const sorted = sortByQuality(qualities.map((quality) => ({ quality })));
   assert.deepEqual(
     sorted.map((stream) => stream.quality),
-    ['4K', '1440p', '1080p', '720p', '480p', '360p', '240p', 'CAM', 'Desconhecida'],
+    ['4320p', '4K', '1440p', '1080p', '800p', '720p', '480p', '360p', '240p', 'CAM', 'Desconhecida'],
   );
 });
 

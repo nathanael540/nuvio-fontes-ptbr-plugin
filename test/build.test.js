@@ -109,15 +109,17 @@ test('formatManifest troca só o name do repositório; o filename continua relat
   assert.equal(manifest.name, 'Repo', 'não altera a entrada');
 });
 
-test('writeFormatManifests gera <formato>/manifest.json para cada formato', async (t) => {
+test('writeFormatManifests gera a raiz, os formatos legados e a matriz', async (t) => {
   const rootDir = tempDir(t, 'nuvio-manifests-');
-  fs.writeFileSync(path.join(rootDir, 'manifest.json'), JSON.stringify({ name: 'Repo', version: '1.0.0', scrapers: [] }));
+  fs.mkdirSync(path.join(rootDir, 'src'));
+  fs.writeFileSync(path.join(rootDir, 'src', 'manifest.json'), JSON.stringify({ name: 'Repo', version: '1.0.0', scrapers: [] }));
 
   const written = await writeFormatManifests(rootDir);
 
   assert.deepEqual(
-    written.map((file) => path.relative(rootDir, file).split(path.sep).join('/')),
-    ['gdrive/manifest.json', 'prism/manifest.json'],
+    written.slice(0, 3).map((file) => path.relative(rootDir, file).split(path.sep).join('/')),
+    ['manifest.json', 'gdrive/manifest.json', 'prism/manifest.json'],
   );
-  assert.equal(JSON.parse(fs.readFileSync(written[1], 'utf8')).name, 'Repo (prism)');
+  assert.equal(written.length, 171);
+  assert.equal(JSON.parse(fs.readFileSync(written[2], 'utf8')).name, 'Repo (prism)');
 });

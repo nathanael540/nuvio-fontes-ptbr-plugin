@@ -22,7 +22,7 @@ const metaMovie = readJson('meta-movie.json');
 const metaGta6 = readJson('meta-gta6.json');
 const metaGameOn = readJson('meta-game-on.json');
 const metaTv = readJson('meta-tv.json');
-const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'manifest.json'), 'utf8'));
+const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, 'src', 'manifest.json'), 'utf8'));
 
 const MOVIE_ID = '12345';
 const TV_ID = '12346';

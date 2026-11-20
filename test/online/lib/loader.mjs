@@ -1,7 +1,7 @@
 /**
  * Carregador do pacote publicado em contexto isolado por caso.
  *
- * O pacote executado é o arquivo CommonJS gerado em `providers/<id>.js`. O SHA-256 é calculado sobre
+ * O pacote executado é o arquivo CommonJS gerado em `<formato>/providers/<id>.js`. O SHA-256 é calculado sobre
  * os mesmos bytes entregues ao motor, e `require` aceita somente os módulos externos reais do app.
  */
 
@@ -10,6 +10,7 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 import path from 'node:path';
 import vm from 'node:vm';
+import build from '../../../build.js';
 
 const nodeRequire = createRequire(import.meta.url);
 
@@ -23,23 +24,26 @@ const ALLOWED_MODULES = {
 /**
  * Localiza o pacote do provedor pelo manifest e calcula seu hash.
  *
- * @param {{ rootDir: string, manifest: object, providerId: string }} options - Raiz, manifest e ID.
+ * @param {{ rootDir: string, manifest: object, providerId: string, combination?: string }} options - Raiz, manifest e ID.
  * @returns {{ provider: object, file: string, code: string, packageHash: string }} Pacote pronto para executar.
  * @throws {Error} Se o provedor não existir no manifest ou o arquivo gerado estiver ausente.
  * @example
  * const pkg = resolveProviderPackage({ rootDir, manifest, providerId: 'betor' });
  * // pkg.packageHash tem 64 caracteres hexadecimais
  */
-export function resolveProviderPackage({ rootDir, manifest, providerId }) {
-  const provider = manifest.scrapers.find((scraper) => scraper.id === providerId);
+export function resolveProviderPackage({ rootDir, manifest, providerId, combination }) {
+  const scraperId = combination ? build.variantScraperId(providerId, combination) : providerId;
+  const provider = manifest.scrapers.find((scraper) => scraper.id === scraperId);
   if (!provider) {
     throw new Error(`provedor "${providerId}" não está no manifest`);
   }
-  const expectedFilename = `providers/${providerId}.js`;
+  const formatter = combination?.split('/')[0];
+  const relativeFile = formatter ? `${formatter}/providers/${providerId}.js` : `providers/${providerId}.js`;
+  const expectedFilename = combination ? `${build.PUBLIC_ORIGIN}/${relativeFile}` : relativeFile;
   if (provider.filename !== expectedFilename) {
     throw new Error(`manifest de "${providerId}" aponta para "${provider.filename}"; esperado "${expectedFilename}"`);
   }
-  const file = path.join(rootDir, expectedFilename);
+  const file = path.join(rootDir, relativeFile);
   let bytes;
   try {
     bytes = fs.readFileSync(file);

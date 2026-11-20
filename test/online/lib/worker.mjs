@@ -86,13 +86,14 @@ export function runCase({
 /**
  * Executa todos os casos da seleção, sequencialmente e sem parar no primeiro sucesso.
  *
- * @param {{ provider: object, selection: object, packagePath: string, packageHash: string, tmdbApiKey: string|null, timeoutMs?: number, runCaseImpl?: Function }} options - Contexto da rodada.
+ * @param {{ provider: object, scraperId?: string, selection: object, packagePath: string, packageHash: string, tmdbApiKey: string|null, timeoutMs?: number, runCaseImpl?: Function }} options - Contexto da rodada.
  * @returns {Promise<object[]>} Casos classificados com os metadados do título.
  * @example
  * const cases = await runProviderSample({ provider, selection, packagePath, packageHash, tmdbApiKey: null });
  */
 export async function runProviderSample({
   provider,
+  scraperId = provider.id,
   selection,
   packagePath,
   packageHash,
@@ -115,7 +116,7 @@ export async function runProviderSample({
         raw = await runCaseImpl({
           packagePath,
           packageHash,
-          providerId: provider.id,
+          providerId: scraperId,
           tmdbApiKey,
           request,
           timeoutMs,

@@ -3,9 +3,9 @@
  * Runner da verificação online de um provedor.
  *
  * Uso:
- *   npm run test:online -- --provider <id> [--seed <valor>] [--timeout <ms>] [--record]
+ *   npm run test:online -- --provider <id> [--manifest <combinação>] [--seed <valor>] [--timeout <ms>] [--record]
  *
- * O build precisa ser executado antes. O comando usa o pacote de `providers/<id>.js`, sortea cinco
+ * O build precisa ser executado antes. O comando usa o pacote do manifest escolhido, sorteia cinco
  * títulos por tipo suportado, executa cada caso em worker e grava um relatório sanitizado em
  * `test/artifacts/online/`. Com `--record`, também acrescenta a rodada em `providers.md`.
  */
@@ -13,6 +13,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import build from '../../build.js';
 import { loadCatalogs, loadProfiles, resolveProfile } from './lib/catalog.mjs';
 import { aggregateProvider } from './lib/classify.mjs';
 import { readTmdbApiKey } from './lib/fetch.mjs';
@@ -22,39 +23,43 @@ import { buildReport, createRunId, formatSummary, writeReport } from './lib/repo
 import { buildSelection, createSeed } from './lib/sample.mjs';
 import { DEFAULT_CASE_TIMEOUT_MS, runProviderSample } from './lib/worker.mjs';
 
+const { manifestVariants, readManifestSource, REFERENCE_COMBINATION } = build;
+
 const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 
-const USAGE = `Uso: npm run test:online -- --provider <id> [--seed <valor>] [--timeout <ms>] [--record]
+const USAGE = `Uso: npm run test:online -- --provider <id> [--manifest <combinação>] [--seed <valor>] [--timeout <ms>] [--record]
 
-Executa o pacote já gerado em providers/<id>.js com rede real, sorteia cinco títulos por tipo
+Executa o pacote do manifest escolhido com rede real, sorteia cinco títulos por tipo
 suportado e grava um relatório sanitizado em test/artifacts/online/<run-id>/result.json.
 
 Opções:
   --provider <id>   ID do provedor no manifest (obrigatório)
+  --manifest <combinação>  Formato/tipo/qualidade/idioma (padrão: ${REFERENCE_COMBINATION})
   --seed <valor>    Semente para repetir a mesma seleção
   --timeout <ms>    Limite externo por caso (padrão: ${DEFAULT_CASE_TIMEOUT_MS})
-  --record          Acrescenta a rodada em providers.md
+  --record          Registra a rodada de ${REFERENCE_COMBINATION} em providers.md
   --help            Mostra esta ajuda
 
-Antes de executar, rode node build.js <id>. Se o provedor consultar o TMDB, defina TMDB_API_KEY no
+Antes de executar, rode npm run build:min. Se o provedor consultar o TMDB, defina TMDB_API_KEY no
 ambiente local. A chave não é gravada em arquivo, relatório ou histórico.
 
 Exemplos:
   npm run test:online -- --provider betor
   npm run test:online -- --provider dooplay --seed 20261112
-  npm run test:online -- --provider fshd --record`;
+  npm run test:online -- --provider fshd --record
+  npm run test:online -- --provider seekee --manifest prism/HTTP/720p/pt-br`;
 
 /**
  * Lê os argumentos da linha de comando.
  *
  * @param {string[]} argv - Argumentos após o nome do script.
- * @returns {{ help: boolean, provider: string|null, seed: string|null, record: boolean, timeoutMs: number }} Opções.
+ * @returns {{ help: boolean, provider: string|null, combination: string, seed: string|null, record: boolean, timeoutMs: number }} Opções.
  * @throws {Error} Se faltar valor ou houver argumento desconhecido.
  * @example
  * parseArgs(['--provider', 'betor', '--record']);
  */
 export function parseArgs(argv) {
-  const options = { help: false, provider: null, seed: null, record: false, timeoutMs: DEFAULT_CASE_TIMEOUT_MS };
+  const options = { help: false, provider: null, combination: REFERENCE_COMBINATION, seed: null, record: false, timeoutMs: DEFAULT_CASE_TIMEOUT_MS };
   for (let index = 0; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === '--help' || arg === '-h') {
@@ -65,13 +70,14 @@ export function parseArgs(argv) {
       options.record = true;
       continue;
     }
-    if (arg === '--provider' || arg === '--seed' || arg === '--timeout') {
+    if (arg === '--provider' || arg === '--manifest' || arg === '--seed' || arg === '--timeout') {
       const value = argv[index + 1];
       if (value === undefined || value.startsWith('--')) {
         throw new Error(`faltou valor para ${arg}`);
       }
       index += 1;
       if (arg === '--provider') options.provider = value;
+      if (arg === '--manifest') options.combination = value;
       if (arg === '--seed') options.seed = value;
       if (arg === '--timeout') {
         if (!/^\d+$/.test(value) || Number(value) <= 0) {
@@ -125,7 +131,13 @@ export async function runCli({
   let catalogs;
   let profiles;
   try {
-    manifest = JSON.parse(fs.readFileSync(path.join(rootDir, 'manifest.json'), 'utf8'));
+    if (!(await manifestVariants()).includes(options.combination)) {
+      throw new Error(`combinação de manifest inválida: ${options.combination}`);
+    }
+    if (options.record && options.combination !== REFERENCE_COMBINATION) {
+      throw new Error(`--record exige ${REFERENCE_COMBINATION}`);
+    }
+    manifest = readManifestSource(rootDir);
     catalogs = loadCatalogs(rootDir);
     profiles = loadProfiles(rootDir, { manifest, catalogs });
   } catch (error) {
@@ -141,8 +153,20 @@ export async function runCli({
 
   const seed = options.seed || createSeed();
   const profile = resolveProfile(profiles, provider.id);
-  const packageInfo = resolveProviderPackage({ rootDir, manifest, providerId: provider.id });
+  const combination = options.combination;
+  let packageInfo;
+  try {
+    const file = path.join(rootDir, combination, 'manifest.json');
+    const installedManifest = JSON.parse(fs.readFileSync(file, 'utf8'));
+    packageInfo = resolveProviderPackage({ rootDir, manifest: installedManifest, providerId: provider.id, combination });
+  } catch (error) {
+    logError(error.message);
+    return 3;
+  }
+  const scraperId = packageInfo.provider.id;
   const identity = evaluationIdentity({
+    combination,
+    scraperId,
     packageHash: packageInfo.packageHash,
     supportedTypes: provider.supportedTypes,
     profile,
@@ -199,6 +223,7 @@ export async function runCli({
     provider,
     selection,
     packagePath: packageInfo.file,
+    scraperId,
     packageHash: packageInfo.packageHash,
     tmdbApiKey,
     timeoutMs: options.timeoutMs,

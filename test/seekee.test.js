@@ -4,6 +4,7 @@ const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
+const { Linter } = require('eslint');
 const { buildProvider } = require('../build.js');
 const { createTempDir } = require('./support/temp-dir');
 
@@ -59,8 +60,10 @@ const codes = {};
 test.before(async () => {
   const outDir = createTempDir('seekee-test-');
   try {
+    codes.base = fs.readFileSync(await buildProvider('seekee', { outDir }), 'utf8');
     codes.gdrive = fs.readFileSync(await buildProvider('seekee', { outDir, formatter: 'gdrive' }), 'utf8');
     codes.prism = fs.readFileSync(await buildProvider('seekee', { outDir, formatter: 'prism' }), 'utf8');
+    codes.min = fs.readFileSync(await buildProvider('seekee', { outDir, formatter: 'prism', minify: true }), 'utf8');
   } finally {
     fs.rmSync(outDir, { recursive: true, force: true });
   }
@@ -88,7 +91,7 @@ function editPage(html, change) {
   return html.replace(/(<script id="__NEXT_DATA__"[^>]*>)[\s\S]*?(<\/script>)/, (_, open, close) => `${open}${data}${close}`);
 }
 
-function makeRuntime(route, { bundle = codes.gdrive, random } = {}) {
+function makeRuntime(route, { bundle = codes.gdrive, random, scraperId } = {}) {
   const calls = [];
   const errors = [];
   const warnings = [];
@@ -99,6 +102,7 @@ function makeRuntime(route, { bundle = codes.gdrive, random } = {}) {
     btoa,
     atob,
     TMDB_API_KEY: 'chave-ficticia',
+    SCRAPER_ID: scraperId,
     require: (name) => {
       if (name === 'crypto-js') return require('crypto-js');
       throw new Error(`require inesperado: ${name}`);
@@ -126,7 +130,7 @@ function makeRuntime(route, { bundle = codes.gdrive, random } = {}) {
   vm.runInContext(bundle, context);
   // Copia o resultado para este realm: arrays do vm não passam no deepStrictEqual.
   const getStreams = async (...args) => JSON.parse(JSON.stringify(await context.module.exports.getStreams(...args)));
-  return { getStreams, calls, errors, warnings };
+  return { getStreams, calls, errors, warnings, exports: Object.keys(context.module.exports) };
 }
 
 /**
@@ -455,5 +459,45 @@ test('entrada inválida de série é rejeitada antes de qualquer requisição', 
     assert.deepEqual(await runtime.getStreams(TV_ID, 'tv', season, episode), []);
     assert.deepEqual(runtime.calls, []);
     assert.match(runtime.errors[0], /^\[Seekee\] Falha em tv 1396: Entrada: série sem temporada\/episódio válidos/);
+  }
+});
+
+
+test('mesmo pacote atende dois pisos e aceita ID legado ou prefixado', async () => {
+  const pages = {
+    [PATHS.zootopiaDub]: editPage(PAGES[PATHS.zootopiaDub], (props) => {
+      props.mediaInfoList[0].currentDefinition = 'GROOT_HD';
+    }),
+  };
+  const route = seekeeRoute({ pages });
+  const load = (scraperId, bundle = codes.prism, random) => makeRuntime(route, { bundle, scraperId, random });
+  const get = (runtime) => runtime.getStreams(MOVIE_ID, 'movie', null, null);
+  const at720 = await get(load('repo-mobile:seekee--http-720p-pt-br'));
+  const at1080 = await get(load('repo-tv:seekee--http-1080p-pt-br'));
+  assert.deepEqual(at720.map((stream) => stream.quality), ['1080p', '720p']);
+  assert.deepEqual(at1080, at720.slice(0, 1));
+  for (const bundle of [codes.prism, codes.gdrive]) {
+    assert.deepEqual(await get(load('repo:seekee', bundle)), await get(load('repo:seekee--all-all-all', bundle)));
+  }
+  assert.deepEqual(await get(load('repo:seekee', codes.base, 0)), await get(load('repo:seekee', codes.gdrive)));
+  assert.deepEqual(await get(load('repo:seekee', codes.base, 0.99)), await get(load('repo:seekee', codes.prism)));
+  const invalid = load('repo:seekee--http-720p-pt-br-extra');
+  assert.deepEqual(await get(invalid), []);
+  assert.deepEqual(invalid.calls, []);
+  assert.match(invalid.errors[0], /ID de manifest inválido/);
+});
+
+test('pacote minificado ES2016 preserva resultados, exportações e logs', async () => {
+  const parseErrors = new Linter().verify(codes.min, [{ languageOptions: { ecmaVersion: 2016, sourceType: 'script' } }]);
+  assert.deepEqual(parseErrors, []);
+  assert.ok(codes.min.length < codes.prism.length);
+  for (const route of [seekeeRoute(), seekeeRoute({ search: () => ({ status: 500, body: 'erro' }) })]) {
+    const scraperId = 'repo:seekee--http-720p-pt-br';
+    const dev = makeRuntime(route, { bundle: codes.prism, scraperId });
+    const min = makeRuntime(route, { bundle: codes.min, scraperId });
+    assert.deepEqual(await min.getStreams(MOVIE_ID, 'movie', null, null), await dev.getStreams(MOVIE_ID, 'movie', null, null));
+    assert.deepEqual(min.exports, dev.exports);
+    assert.deepEqual(min.errors, dev.errors);
+    assert.deepEqual(min.warnings, dev.warnings);
   }
 });

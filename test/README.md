@@ -45,15 +45,15 @@ Comandos e operação da infraestrutura de testes. Os testes de desenvolvimento 
 3. Todos os testes: `npm test`.
 4. Uma suíte: `node --test test/<id>.test.js` ou `node --test test/blocks/<bloco>/index.test.mjs`.
 5. Build de um provedor: `node build.js <id>`; de todos: `npm run build`.
-6. Verificação online: `node build.js <id>` e depois `npm run test:online -- --provider <id>`.
+6. Verificação online: `npm run build:min` e depois `npm run test:online -- --provider <id>`.
 
 ## Verificação online
 
-1. O comando `npm run test:online -- --provider <id>` usa o arquivo já gerado em `providers/<id>.js`; ele não reconstrói o pacote. Rode `node build.js <id>` antes.
+1. O comando `npm run test:online -- --provider <id>` usa o pacote local referenciado por `prism/all/all/all`. Rode `npm run build:min` antes. Com `--manifest prism/HTTP/720p/pt-br`, por exemplo, o mesmo pacote recebe outro ID em `SCRAPER_ID` e aplica os filtros escolhidos.
 2. A amostra tem cinco títulos por tipo declarado em `supportedTypes`, sorteados com semente. `--seed <valor>` repete a seleção; sem ela, o runner registra uma semente nova. `--timeout <ms>` troca o limite externo por caso (padrão 120000 ms).
 3. Provedores que consultam o TMDB exigem `TMDB_API_KEY` no ambiente local, nunca em arquivo versionado. Exemplos: `$env:TMDB_API_KEY="sua-chave"; npm run test:online -- --provider dooplay` no PowerShell ou `TMDB_API_KEY=sua-chave npm run test:online -- --provider dooplay` em shell POSIX. Provedores que não consultam o TMDB rodam sem a chave.
-4. `--record` acrescenta a rodada em `providers.md`, inclusive resultados negativos e inconclusivos. Sem a opção, o comando grava apenas o relatório transitório e o resumo no terminal.
-5. Relatórios ficam em `test/artifacts/online/<run-id>/result.json`, sem streams completos, URLs, respostas brutas, cabeçalhos ou credenciais. A pasta é ignorada pelo Git.
+4. `--record` registra a rodada de `prism/all/all/all` em `providers.md`, inclusive resultados negativos e inconclusivos. Outras combinações ficam no relatório transitório. Sem a opção, o comando grava apenas o relatório transitório e o resumo no terminal.
+5. Relatórios registram a combinação e o ID da entrada em `test/artifacts/online/<run-id>/result.json`, sem streams completos, URLs, respostas brutas, cabeçalhos ou credenciais. A pasta é ignorada pelo Git.
 6. Códigos de saída: `0` funcionamento comprovado em todos os tipos, `1` falta de resolução em algum tipo, `2` avaliação inconclusiva e `3` argumento, preparação ou registro inválido.
 7. A verificação usa `fetch` real e o `cheerio-without-node-native` real. Fixtures, `basic-html` e módulos falsos não entram nesse caminho.
 8. O Node não reproduz o QuickJS e o harness não reproduz vídeo nem P2P. A rodada comprova a resolução do pacote no Node, com os campos do contrato, não a reprodução no app.
@@ -62,6 +62,7 @@ Comandos e operação da infraestrutura de testes. Os testes de desenvolvimento 
 
 1. `npm start` serve por HTTP local, na porta 3000 (`PORT=xxxx` para trocar), somente:
    1. `/manifest.json` e `/providers/<id>.js`;
-   2. `/<formato>/manifest.json` e `/<formato>/providers/<id>.js` para cada formato (`gdrive`, `prism`).
+   2. `/<formato>/manifest.json` e `/<formato>/providers/<id>.js` para cada formato (`gdrive`, `prism`);
+   3. `/<formato>/<tipo>/<qualidade>/<idioma>/manifest.json`, com `filename` apontando para o pacote no servidor local.
 2. Outras rotas respondem 404. O endereço na rede local aparece no terminal.
-3. O servidor entrega os arquivos gerados; rode o build antes. Ele não faz parte dos testes.
+3. O servidor entrega os arquivos gerados; rode o build antes. A suíte `test/server.test.js` cobre as rotas permitidas e as respostas 404.

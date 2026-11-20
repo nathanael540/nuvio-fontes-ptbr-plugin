@@ -9,15 +9,15 @@ Todos os testes de desenvolvimento rodam em Node, sem o app Nuvio instalado, sem
 1. **Lint** (`npm run lint`): aplica as restrições do runtime do app em `src/` (globais e módulos permitidos, sem APIs do Node) e exige JSDoc completo nas funções exportadas dos blocos. É a barreira contra código que só falharia no QuickJS.
 2. **Testes Node** (`npm test`): `node:test` nativo. Validam a lógica dos blocos, dos provedores, do build, do manifest e dos catálogos com respostas controladas.
 3. **Build** (`node build.js <id>`): confirma que o provedor empacota em CommonJS `es2016` no arquivo base e em cada formato.
-4. **Verificação online** (`npm run test:online -- --provider <id>`): executa o pacote publicado com rede real, cinco títulos sorteados por tipo suportado, e produz a evidência de funcionamento usada em `providers.md`. Exige build prévio e, quando o provedor consulta o TMDB, `TMDB_API_KEY` no ambiente local.
+4. **Verificação online** (`npm run test:online -- --provider <id>`): executa o pacote publicado com rede real, cinco títulos sorteados por tipo suportado, e produz a evidência de funcionamento usada em `providers.md`. Usa `prism/all/all/all` por padrão, exige `npm run build:min` prévio e, quando o provedor consulta o TMDB, `TMDB_API_KEY` no ambiente local.
 
 ## 2. Suítes
 
 1. **Blocos** (`test/blocks/<bloco>/index.test.mjs`): uma suíte por bloco, importando `src/_blocks/<bloco>/index.mjs` diretamente. `globalThis.fetch` é substituído por respostas controladas. O teste `test/blocks-catalog.test.js` exige exatamente uma suíte por bloco e confere o catálogo `src/_blocks/index.md` contra as pastas existentes.
 2. **Provedores** (`test/<id>.test.js`): empacotam o provedor com `buildProvider` em diretório temporário, nos formatos publicados, e executam o pacote gerado com `fetch` simulado a partir de `test/fixtures/<fonte>/`. O teste exercita o mesmo arquivo publicado, não só o código-fonte. Os casos do provedor (filme, episódio avulso, episódio em pacote e ausência, quando aplicáveis) ficam aqui.
-3. **Manifest** (`test/manifest.test.js`): campos obrigatórios e convenções de `docs/arch.md` (seção Manifest) e sincronia dos `<formato>/manifest.json` com o `manifest.json`.
+3. **Manifest** (`test/manifest.test.js`): campos obrigatórios e convenções de `docs/arch.md` (seção Manifest) e sincronia da matriz e das URLs legadas com `src/manifest.json`.
 4. **Catálogo de provedores** (`test/providers-catalog.test.js`): `providers.md` lista exatamente os provedores do manifest, com o mesmo nome e status visual válido, `Desativado` somente para `enabled: false`, uma seção `## <nome>` com `**Status: <status>.**` e consistência entre tabela, seção e a última rodada online.
-5. **Provedores rejeitados** (`test/rejected-providers.test.js`): valida estrutura da tabela, datas `AAAA-MM-DD`, categorias fechadas, correspondência 1-para-1 com as seções e os seis campos obrigatórios em `rejected-providers.md`, além de impedir conflito com `manifest.json` e conteúdo não sanitizado.
+5. **Provedores rejeitados** (`test/rejected-providers.test.js`): valida estrutura da tabela, datas `AAAA-MM-DD`, categorias fechadas, correspondência 1-para-1 com as seções e os seis campos obrigatórios em `rejected-providers.md`, além de impedir conflito com `src/manifest.json` e conteúdo não sanitizado.
 6. **Build** (`test/build.test.js`): o template empacota em CommonJS sem `async`/`await`; provedor ou formato inexistente falha de forma explícita; os formatos vêm do bloco `custom-formatter`; os manifests de formato são gerados corretamente.
 7. **Servidor** (`test/server.test.js`): rotas permitidas, CORS e 404 fora das rotas do servidor local.
 8. **Catálogos online** (`test/online-catalog.test.js`): valida os catálogos e os perfis de nicho da verificação online sem acessar a internet. Confere mínimo de 20 títulos, ausência de truncamento, unicidade, coordenadas de episódio, tags, IDs de provedores e amostra elegível por perfil.
@@ -68,8 +68,8 @@ O status em `providers.md` reflete a evidência online aplicável ao pacote e ao
 ## 8. Resumo e registro
 
 1. `providers.md` é a fonte versionada da última evidência online. A tabela exibe `🟢` para `Estável`, `🔵` para `Parcial`, `🔴` para `Instável`, `🟠` para `Não verificado` e `⚫` para `Desativado`, além da data da última verificação em `AAAA-MM-DD`.
-2. Cada seção de provedor tem um bloco delimitado com somente a última rodada. Ela registra data com fuso, ID, status, versão do pacote, perfil, revisões dos catálogos, semente, algoritmo e os casos por título com temporada e episódio quando aplicáveis. Hashes não aparecem no resumo público.
-3. A evidência só vale para a versão do pacote, o perfil e as revisões de catálogo atuais. Se esses dados mudarem, a rodada antiga permanece no bloco, mas a tabela fica `Não verificado` até uma nova execução.
+2. Cada seção de provedor tem um bloco delimitado com somente a última rodada. Ela registra data com fuso, ID, status, versão do pacote, manifest, perfil, revisões dos catálogos, semente, algoritmo e os casos por título com temporada e episódio quando aplicáveis. Hashes não aparecem no resumo público.
+3. O registro público usa `prism/all/all/all`. A identidade no relatório inclui combinação, ID da entrada, hash do pacote, tipos, perfil e catálogos. Se a identidade mudar, a rodada antiga permanece no bloco, mas a tabela fica `Não verificado` até uma nova execução.
 4. Uma rodada nova substitui a anterior, inclusive quando é inconclusiva. O histórico completo não é mantido no Markdown; os relatórios transitórios ficam em `test/artifacts/online/`.
 5. Reprocessar o mesmo ID não duplica a rodada; conteúdo divergente com o mesmo ID é rejeitado. A escrita é atômica e altera somente a linha e o bloco do provedor selecionado.
 6. Contagens de testes offline não entram no resumo. Reprodução, download P2P e disponibilidade de seeders não são registrados como resultado online.

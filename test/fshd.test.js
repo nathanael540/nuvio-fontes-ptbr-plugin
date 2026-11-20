@@ -26,7 +26,7 @@ const fireplayerPackedHtml = fs.readFileSync(path.join(FIXTURES_DIR, 'fireplayer
 const masterVariantsTxt = fs.readFileSync(path.join(FIXTURES_DIR, 'master-variants.txt'), 'utf8');
 const masterUnknownTxt = fs.readFileSync(path.join(FIXTURES_DIR, 'master-unknown-quality.txt'), 'utf8');
 const master1080Txt = fs.readFileSync(path.join(FIXTURES_DIR, 'master-series-1080-900.txt'), 'utf8');
-const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'manifest.json'), 'utf8'));
+const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'src', 'manifest.json'), 'utf8'));
 
 test.before(async () => {
   const outDir = createTempDir('fshd-test-');

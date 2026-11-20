@@ -18,9 +18,9 @@ import { normalizeText } from '../slugify/index.mjs';
 /** Qualidade exibida quando a fonte não informa e a descoberta local não encontra. */
 export const UNKNOWN_QUALITY = 'Desconhecida';
 
-const UHD_HEIGHT = 2160;
+/** Alturas em pixels dos rótulos de qualidade. */
+export const QUALITY = Object.freeze({ SD: 480, HD: 720, FHD: 1080, QHD: 1440, '4K': 2160, '8K': 4320 });
 const FOUR_K = '4K';
-const FULL_HD = '1080p';
 const CAM = 'CAM';
 
 const QUALITY_TOKEN = /^(\d{3,4})p$/;
@@ -32,16 +32,18 @@ const FULL_HD_SEQUENCE = /\bfull hd\b/g;
 // Rótulos de qualidade em ordem de prioridade: o primeiro grupo com palavra presente vence.
 const QUALITY_LABEL_RULES = [
   [['4k', 'uhd'], FOUR_K],
-  [['fhd', 'fullhd'], FULL_HD],
+  [['8k'], heightToQuality(QUALITY['8K'])],
+  [['qhd'], heightToQuality(QUALITY.QHD)],
+  [['fhd', 'fullhd'], heightToQuality(QUALITY.FHD)],
   [['cam', 'ts', 'hdcam', 'hdts', 'telesync'], CAM],
-  [['hd'], '720p'],
-  [['sd'], '480p'],
+  [['hd'], heightToQuality(QUALITY.HD)],
+  [['sd'], heightToQuality(QUALITY.SD)],
 ];
 
 // Fonte baixa: prevalece sobre qualquer resolução no mesmo texto.
 const CAM_WORDS = /(?:^| )(?:cam|camrip|hdcam|hdts|ts|telesync)(?: |$)/;
 // Procura a última qualidade no texto bruto, inclusive colada ao container ("MP4720P").
-const QUALITY_SEARCH = /(?:(?:\b|(?:mp4|mkv))(?:144|240|360|480|540|576|720|1080|1440|2160|4320)p|\b\d{3,4}p|\b(?:full\s*hd|hdcam|telesync|camrip|hdts|uhd|4k|fhd|cam|hd|sd))\b/gi;
+const QUALITY_SEARCH = /(?:(?:\b|(?:mp4|mkv))(?:144|240|360|480|540|576|720|1080|1440|2160|4320)p|\b\d{3,4}p|\b(?:full\s*hd|hdcam|telesync|camrip|hdts|uhd|4k|8k|qhd|fhd|cam|hd|sd))\b/gi;
 
 /**
  * Converte a qualidade informada pela fonte no texto que o app exibe.
@@ -53,10 +55,11 @@ const QUALITY_SEARCH = /(?:(?:\b|(?:mp4|mkv))(?:144|240|360|480|540|576|720|1080
  * 2. palavra só de dígitos, apenas se for altura conhecida (144, 240, 360, 480, 540, 576, 720, 1080,
  *    1440, 2160, 4320), para que um ano como 2024 não vire qualidade;
  * 3. "4k" ou "uhd" → "4K";
- * 4. "fhd", "fullhd" ou a sequência "full hd" → "1080p";
- * 5. "cam", "ts", "hdcam", "hdts" ou "telesync" → "CAM";
- * 6. "hd" → "720p" (palavra inteira: "HDTV" não conta);
- * 7. "sd" → "480p".
+ * 4. "8k" → "4320p" e "qhd" → "1440p";
+ * 5. "fhd", "fullhd" ou a sequência "full hd" → "1080p";
+ * 6. "cam", "ts", "hdcam", "hdts" ou "telesync" → "CAM";
+ * 7. "hd" → "720p" (palavra inteira: "HDTV" não conta);
+ * 8. "sd" → "480p".
  *
  * @param {number|string} value - Qualidade como a fonte fornece.
  * @returns {string} "<n>p", "4K" ou "CAM".
@@ -75,7 +78,21 @@ export function normalizeQuality(value) {
     const quality = qualityFromWords(words(normalizeText(value).replace(FULL_HD_SEQUENCE, 'fullhd')));
     if (quality) return quality;
   }
-  throw new Error(`Qualidade não reconhecida: ${describe(value)} (esperado 3–4 dígitos, ex.: "1080p", ou 4K, UHD, FHD, HD, SD, CAM)`);
+  throw new Error(`Qualidade não reconhecida: ${describe(value)} (esperado 3–4 dígitos, ex.: "1080p", ou 8K, 4K, UHD, QHD, FHD, HD, SD, CAM)`);
+}
+
+/**
+ * Converte qualidade normalizada em altura em pixels.
+ * @param {string} value - Qualidade normalizada do stream.
+ * @returns {number|null} Altura ou null quando não há resolução normalizada.
+ * @example
+ * qualityToHeight('4K'); // 2160
+ * qualityToHeight('CAM'); // null
+ */
+export function qualityToHeight(value) {
+  if (value === FOUR_K) return QUALITY['4K'];
+  const match = typeof value === 'string' && value.match(QUALITY_TOKEN);
+  return match ? Number(match[1]) : null;
 }
 
 /**
@@ -148,7 +165,7 @@ function lastQualityToken(text) {
  * @returns {string} "<n>p" ou "4K" para 2160.
  */
 function heightToQuality(height) {
-  return height === UHD_HEIGHT ? FOUR_K : `${height}p`;
+  return height === QUALITY['4K'] ? FOUR_K : `${height}p`;
 }
 
 /**

@@ -38,7 +38,7 @@ const watchEpisode = read('watch-episode.html');
 const watchTv = read('watch-tv.html');
 const watchInvalid = read('watch-invalid.html');
 const seriesData = readJson('series-data.json');
-const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'manifest.json'), 'utf8'));
+const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'src', 'manifest.json'), 'utf8'));
 
 let codes = {};
 
