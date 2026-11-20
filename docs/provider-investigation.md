@@ -509,6 +509,17 @@ Mapa de metodologias para estudar uma fonte e escolher um caminho de implementa�
 9. **Referências.** [Cliente assinado](../src/seekee/api.js), [extrator](../src/seekee/extractor.js), [entrada](../src/seekee/index.js), [testes](../test/seekee.test.js) e fixtures em [test/fixtures/seekee](../test/fixtures/seekee/). Blocos usados: `tmdb-info`, `title-match`, `http`, `stream-build`, `custom-formatter` e `language-discovery`; nenhum bloco novo.
 10. **Limites.** A busca devolve só cinco itens, então títulos com muitos homônimos ou derivados podem ficar fora; não há paginação observada. A chave pública e os cabeçalhos do cliente podem mudar com o app. `queryFreshDomainList` da API nativa é **Hipótese** para renovar a lista de espelhos e não foi testado sem conta. A URL de mídia é assinada e efêmera e não entra em fixture, log ou documentação.
 
+### 3.47. Expansão DooPlay no domínio final da ficha
+
+1. **Situação: Em uso no DooPlay PT-BR.** O provedor agrega espelhos WordPress com o tema DooPlay. A busca parte da origem configurada, mas a ficha confirmada pode redirecionar para outro host; a expansão da opção precisa acompanhar a URL final. Observado em 20/11/2026.
+2. **Confirmar a ficha.** Busque por IMDb, título PT-BR, título original e alternativos; aceite só cartões do tipo pedido e confirme IMDb ou TMDB publicado, ou o IMDb obrigatório em filme de origem de iframe. Guarde a URL final de `fetchPage`, não a URL do cartão.
+3. **Expandir na origem final.** Derive a origem HTTPS da URL final da ficha e envie o `POST /wp-admin/admin-ajax.php` com `action=doo_player_ajax`, `post`, `nume` e `type`, ou o `GET /wp-json/dooplayer/v2/<post>/<tipo>/<nume>`, para esse host. O `Referer` continua sendo a URL final e o formulário não muda.
+4. **Exigir HTTPS.** Se a URL final não usar HTTPS, a expansão daquela origem falha com erro explícito, sem enviar o formulário. Não substitua a origem final pela configurada depois de um redirect.
+5. **Não fixar a marca.** Trocar a lista de domínios por um mapa de marcas novas envelhece a cada migração. A origem configurada continua sendo a semente da busca; o host de expansão vem da ficha confirmada em tempo de execução.
+6. **Origens e falhas.** Remova da lista a origem cuja home e busca respondem HTTP 404 permanente. HTTP 403 de desafio Cloudflare, 404, 5xx e página de bloqueio são falha externa da origem, nunca ausência de acervo, e não são contornados. Redirect público HTTPS é seguido normalmente.
+7. **Referências.** [Origens e busca](../src/dooplay/sources.js), [expansão das opções](../src/dooplay/players.js), [entrada](../src/dooplay/index.js) e [testes](../test/dooplay.test.js). Blocos usados: `tmdb-info`, `title-match`, `slugify`, `http`, `fireplayer` e `stream-build`; nenhum bloco novo.
+8. **Limites.** A URL final pode mudar sem aviso, e a correção não garante resolução de todos os títulos: a cadeia compartilhada do plenoflu ainda pode falhar por `hash ausente`, o player `embedplayabyss.top` permanece em triagem e a cobertura de séries varia por espelho. A URL de mídia é assinada e efêmera e não entra em fixture, log ou documentação. A resolução do contrato não comprova reprodução no aparelho.
+
 ## 4. Serviços intermediários e enriquecimento
 
 1. Use esta seção quando a fonte já fornecer uma página ou um hash, mas faltar conteúdo legível, o índice de um episódio ou evidência do que há na mídia. Esses serviços podem complementar métodos de catálogo sem pertencer à mesma fonte.

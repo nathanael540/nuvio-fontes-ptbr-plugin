@@ -3,7 +3,7 @@
 | Provedor | ID | Tipos | Formato | Status | Última verificação |
 | --- | --- | --- | --- | --- | --- |
 | [MegaEmbed](#megaembed) | `megaembed` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-20 |
-| [DooPlay PT-BR](#dooplay-pt-br) | `dooplay` | filme, série | HLS | 🔵 Parcial | 2026-11-20 |
+| [DooPlay PT-BR](#dooplay-pt-br) | `dooplay` | filme, série | HLS | 🟢 Estável | 2026-11-20 |
 | [Filmestorrent](#filmestorrent) | `filmestorrent` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-20 |
 | [LimeFilmes](#limefilmes) | `limefilmes` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-20 |
 | [Baixa Rápido](#baixa-rápido) | `baixarapido` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-20 |
@@ -78,22 +78,22 @@
 
 ## DooPlay PT-BR
 
-**Status: 🔵 Parcial.**
+**Status: 🟢 Estável.**
 
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-20T13:22:44.050Z** · ID `2026-11-20T13-19-23-765Z-dooplay-20261120-b238` · **Parcial** · pacote 1.3.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
-   1. `movie` `438631` · Duna (2021) · **Falha** · 0/0 streams aproveitáveis · Motivo: [DooPlay PT-BR] Nenhuma origem entregou streams: filmesamadoresgratis.com=ausencia; www.pobreflixnow.rest=falha; pobrexflix.art=ausencia; hypetvflix.one=falha; megafilmehdonline.blog=falha; boraflix.mom=ausencia
-   2. `movie` `502356` · Super Mario Bros. O Filme (2023) · **Resolvido** · 1/1 streams aproveitáveis
-   3. `movie` `24428` · Os Vingadores (2012) · **Resolvido** · 1/1 streams aproveitáveis
-   4. `movie` `603` · Matrix (1999) · **Resolvido** · 1/1 streams aproveitáveis
-   5. `movie` `122` · O Senhor dos Anéis: O Retorno do Rei (2003) · **Falha** · 0/0 streams aproveitáveis · Motivo: [DooPlay PT-BR] Nenhuma origem entregou streams: filmesamadoresgratis.com=ausencia; www.pobreflixnow.rest=falha; pobrexflix.art=ausencia; hypetvflix.one=falha; megafilmehdonline.blog=falha; boraflix.mom=ausencia
-   6. `tv` `7448` · A Favorita (2008) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [DooPlay PT-BR] Nenhuma origem entregou streams: filmesamadoresgratis.com=ausencia; www.pobreflixnow.rest=ausencia; pobrexflix.art=ausencia; hypetvflix.one=falha; megafilmehdonline.blog=falha; boraflix.mom=ausencia
-   7. `tv` `223911` · Renegade Immortal (2023) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [DooPlay PT-BR] Nenhuma origem entregou streams: filmesamadoresgratis.com=ausencia; www.pobreflixnow.rest=ausencia; pobrexflix.art=ausencia; hypetvflix.one=falha; megafilmehdonline.blog=falha; boraflix.mom=ausencia
-   8. `tv` `1399` · A Guerra dos Tronos (2011) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [DooPlay PT-BR] Nenhuma origem entregou streams: filmesamadoresgratis.com=falha; www.pobreflixnow.rest=falha; pobrexflix.art=ausencia; hypetvflix.one=falha; megafilmehdonline.blog=falha; boraflix.mom=ausencia
-   9. `tv` `124003` · Perfect World [Wanmei Shijie] (2021) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [DooPlay PT-BR] Nenhuma origem entregou streams: filmesamadoresgratis.com=ausencia; www.pobreflixnow.rest=ausencia; pobrexflix.art=ausencia; hypetvflix.one=falha; megafilmehdonline.blog=falha; boraflix.mom=ausencia
-   10. `tv` `30984` · Bleach (2004) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [DooPlay PT-BR] Nenhuma origem entregou streams: filmesamadoresgratis.com=ausencia; www.pobreflixnow.rest=falha; pobrexflix.art=ausencia; hypetvflix.one=falha; megafilmehdonline.blog=falha; boraflix.mom=ausencia
+1. **2026-11-20T14:31:37.974Z** · ID `2026-11-20T14-28-47-307Z-dooplay-92423415-a687` · **Estável** · pacote 1.3.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `924234152284d843610f26886b51e9e9` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
+   1. `movie` `299536` · Vingadores: Guerra Infinita (2018) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `122` · O Senhor dos Anéis: O Retorno do Rei (2003) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `437109` · A Vilã (2017) · **Falha** · 0/0 streams aproveitáveis · Motivo: [DooPlay PT-BR] Nenhuma origem entregou streams: filmesamadoresgratis.com=ausencia; www.pobreflixnow.rest=falha; pobrexflix.art=ausencia; megafilmehdonline.blog=falha; boraflix.mom=ausencia
+   4. `movie` `76341` · Mad Max: Estrada da Fúria (2015) · **Falha** · 0/0 streams aproveitáveis · Motivo: [DooPlay PT-BR] Nenhuma origem entregou streams: filmesamadoresgratis.com=ausencia; www.pobreflixnow.rest=falha; pobrexflix.art=ausencia; megafilmehdonline.blog=falha; boraflix.mom=ausencia
+   5. `movie` `1419027` · Ataque 13 (2025) · **Resolvido** · 1/1 streams aproveitáveis
+   6. `tv` `456` · Os Simpsons (1989) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [DooPlay PT-BR] Nenhuma origem entregou streams: filmesamadoresgratis.com=falha; www.pobreflixnow.rest=falha; pobrexflix.art=ausencia; megafilmehdonline.blog=falha; boraflix.mom=ausencia
+   7. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [DooPlay PT-BR] Nenhuma origem entregou streams: filmesamadoresgratis.com=ausencia; www.pobreflixnow.rest=falha; pobrexflix.art=ausencia; megafilmehdonline.blog=falha; boraflix.mom=ausencia
+   8. `tv` `90447` · Hotel del Luna (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   9. `tv` `124003` · Perfect World [Wanmei Shijie] (2021) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [DooPlay PT-BR] Nenhuma origem entregou streams: filmesamadoresgratis.com=ausencia; www.pobreflixnow.rest=ausencia; pobrexflix.art=ausencia; megafilmehdonline.blog=falha; boraflix.mom=ausencia
+   10. `tv` `60574` · Peaky Blinders (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 
 ## Filmestorrent

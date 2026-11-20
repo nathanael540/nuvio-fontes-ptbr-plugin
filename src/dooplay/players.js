@@ -54,16 +54,29 @@ export async function playEntries(domain, entries, ctx) {
   return { streams: played.streams, failures: [...failures, ...played.failures] };
 }
 
+/**
+ * Deriva a origem HTTPS da URL final da ficha confirmada.
+ * @param {string} referer - URL final da ficha.
+ * @returns {string} Origem com protocolo e host finais.
+ * @throws {Error} Se a URL final não usar HTTPS.
+ */
+function expansionOrigin(referer) {
+  const url = new URL(referer);
+  if (url.protocol !== 'https:') throw new Error('origem final não HTTPS');
+  return `${url.protocol}//${url.host}`;
+}
+
 async function fetchEmbed(entry) {
   const referer = entry.referer;
   const type = entry.type;
+  const origin = expansionOrigin(referer);
   let data;
   if (entry.mode === 'rest') {
-    data = await readJson(`${entry.origin}/wp-json/dooplayer/v2/${entry.post}/${type}/${entry.nume}`, {
+    data = await readJson(`${origin}/wp-json/dooplayer/v2/${entry.post}/${type}/${entry.nume}`, {
       profile: 'api', headers: { Referer: referer },
     });
   } else {
-    data = await readJson(`${entry.origin}/wp-admin/admin-ajax.php`, {
+    data = await readJson(`${origin}/wp-admin/admin-ajax.php`, {
       method: 'POST', profile: 'api', headers: { Referer: referer },
       form: { action: 'doo_player_ajax', post: entry.post, nume: entry.nume, type },
     });

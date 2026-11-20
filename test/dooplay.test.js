@@ -12,7 +12,9 @@ const HASH = 'a'.repeat(32);
 const FAG = 'https://filmesamadoresgratis.com';
 const POBRE = 'https://www.pobreflixnow.rest';
 const POBREX = 'https://pobrexflix.art';
-const HYPE = 'https://hypetvflix.one';
+const BORA = 'https://boraflix.mom';
+const FAG_FINAL = 'https://startrekfilms.net';
+const POBRE_FINAL = 'https://www.pobreflixfull.com';
 const FIRE = `https://embedplayer2.xyz/video/${HASH}`;
 const SECURED = 'https://cdn.example/master.m3u8?md5=fictionmd5&expires=999';
 const VIDEO_OK = { hls: true, securedLink: SECURED, videoSource: 'https://cdn.example/master.txt' };
@@ -225,6 +227,146 @@ test('origem seguinte entrega depois de falha da primeira', async () => {
   assert.ok(!calls.some((call) => call.url.includes('72773') || call.url.includes('70499')));
 });
 
+test('expansão AJAX usa a origem final da ficha após redirect', async () => {
+  const { streams, calls, logs } = await play(chain([
+    (url) => (url.hostname === 'api.themoviedb.org' ? { body: movieInfo() } : undefined),
+    (url) => (url.pathname.includes('/dcfilter/') ? jsonItems([]) : undefined),
+    (url) => {
+      if (url.hostname !== 'www.pobreflixnow.rest') return undefined;
+      if (url.searchParams.get('s') === 'Filme Fictício') return card(POBRE, '/filmes/redirecionado/', 'Filme Fictício', 2026);
+      if (url.searchParams.has('s')) return fixture('search-empty.html');
+      if (url.pathname === '/filmes/redirecionado/') {
+        return { url: `${POBRE_FINAL}/filmes/redirecionado/`, body: movieHtml({ post: '71242' }) };
+      }
+      return undefined;
+    },
+    (url) => (url.hostname === 'www.pobreflixfull.com' && url.pathname === '/wp-admin/admin-ajax.php'
+      ? { body: { embed_url: FIRE } }
+      : undefined),
+    (url) => (url.searchParams.has('s') ? fixture('search-empty.html') : undefined),
+    fireChain(),
+  ]));
+  assert.equal(streams.length, 2);
+  const ajax = calls.find((call) => call.url.includes('admin-ajax.php'));
+  assert.equal(new URL(ajax.url).hostname, 'www.pobreflixfull.com');
+  assert.equal(formOf(ajax).get('post'), '71242');
+  assert.equal(formOf(ajax).get('nume'), '1');
+  assert.equal(formOf(ajax).get('type'), 'movie');
+  assert.equal(ajax.init.headers.Referer, `${POBRE_FINAL}/filmes/redirecionado/`);
+  assert.ok(!calls.some((call) => call.url === `${POBRE}/wp-admin/admin-ajax.php`));
+  assert.equal(logs.error.length, 0);
+});
+
+test('expansão REST usa a origem final da ficha após redirect', async () => {
+  const { streams, calls, logs } = await play(chain([
+    (url) => (url.hostname === 'api.themoviedb.org' ? { body: movieInfo() } : undefined),
+    (url) => {
+      if (url.hostname !== 'filmesamadoresgratis.com') return undefined;
+      if (url.pathname.includes('/dcfilter/')) {
+        return url.searchParams.get('keyword') === 'Filme Fictício'
+          ? jsonItems([{ url: `${FAG}/filme/redirecionado/`, title: 'Filme Fictício', year: 2026, type: 'Filme' }])
+          : jsonItems([]);
+      }
+      if (url.pathname === '/filme/redirecionado/') {
+        return { url: `${FAG_FINAL}/filme/redirecionado/`, body: movieHtml({ post: '164791' }) };
+      }
+      return undefined;
+    },
+    (url) => (url.hostname === 'startrekfilms.net' && url.pathname.includes('/wp-json/dooplayer/v2/164791/movie/1')
+      ? { body: { embed_url: FIRE } }
+      : undefined),
+    (url) => (url.searchParams.has('s') ? fixture('search-empty.html') : undefined),
+    fireChain(),
+  ]));
+  assert.equal(streams.length, 2);
+  const rest = calls.find((call) => call.url.includes('/wp-json/dooplayer/'));
+  assert.equal(new URL(rest.url).hostname, 'startrekfilms.net');
+  assert.equal(rest.init.headers.Referer, `${FAG_FINAL}/filme/redirecionado/`);
+  assert.ok(!calls.some((call) => call.url === `${FAG}/wp-json/dooplayer/v2/164791/movie/1`));
+  assert.equal(logs.error.length, 0);
+});
+
+test('sem redirect a expansão continua na origem configurada', async () => {
+  const { streams, calls } = await play(chain([
+    (url) => (url.hostname === 'api.themoviedb.org' ? { body: movieInfo() } : undefined),
+    (url) => (url.pathname.includes('/dcfilter/') ? jsonItems([]) : undefined),
+    (url) => {
+      if (url.hostname !== 'www.pobreflixnow.rest') return undefined;
+      if (url.searchParams.get('s') === 'Filme Fictício') return card(POBRE, '/filmes/sem-redirect/', 'Filme Fictício', 2026);
+      if (url.searchParams.has('s')) return fixture('search-empty.html');
+      if (url.pathname === '/filmes/sem-redirect/') return movieHtml({ post: '72773' });
+      if (url.pathname === '/wp-admin/admin-ajax.php') return { body: { embed_url: FIRE } };
+      return undefined;
+    },
+    fireChain(),
+  ]));
+  assert.equal(streams.length, 2);
+  const ajax = calls.find((call) => call.url.includes('admin-ajax.php'));
+  assert.equal(new URL(ajax.url).hostname, 'www.pobreflixnow.rest');
+  assert.equal(ajax.init.headers.Referer, `${POBRE}/filmes/sem-redirect/`);
+  assert.equal(formOf(ajax).get('post'), '72773');
+});
+
+test('destino não HTTPS e HTTP 400 no host final ficam isolados', async () => {
+  const insecure = await play(chain([
+    (url) => (url.hostname === 'api.themoviedb.org' ? { body: movieInfo() } : undefined),
+    (url) => {
+      if (url.hostname !== 'filmesamadoresgratis.com') return undefined;
+      if (url.pathname.includes('/dcfilter/')) {
+        return url.searchParams.get('keyword') === 'Filme Fictício'
+          ? jsonItems([{ url: `${FAG}/filme/inseguro/`, title: 'Filme Fictício', year: 2026, type: 'Filme' }])
+          : jsonItems([]);
+      }
+      if (url.pathname === '/filme/inseguro/') {
+        return { url: 'http://startrekfilms.net/filme/inseguro/', body: movieHtml({ post: '10' }) };
+      }
+      return undefined;
+    },
+    (url) => {
+      if (url.hostname !== 'www.pobreflixnow.rest') return undefined;
+      if (url.searchParams.get('s') === 'Filme Fictício') return card(POBRE, '/filmes/seguro/', 'Filme Fictício', 2026);
+      if (url.searchParams.has('s')) return fixture('search-empty.html');
+      if (url.pathname === '/filmes/seguro/') return movieHtml({ post: '72773' });
+      if (url.pathname === '/wp-admin/admin-ajax.php') return { body: { embed_url: FIRE } };
+      return undefined;
+    },
+    (url) => (url.searchParams.has('s') ? fixture('search-empty.html') : undefined),
+    fireChain(),
+  ]));
+  assert.equal(insecure.streams.length, 2);
+  assert.ok(insecure.logs.warn.some((line) => line.includes('filmesamadoresgratis.com') && line.includes('origem final não HTTPS')));
+  assert.equal(insecure.logs.error.length, 0);
+
+  const bad = await play(chain([
+    (url) => (url.hostname === 'api.themoviedb.org' ? { body: movieInfo() } : undefined),
+    (url) => (url.pathname.includes('/dcfilter/') ? jsonItems([]) : undefined),
+    (url) => {
+      if (url.hostname !== 'www.pobreflixnow.rest') return undefined;
+      if (url.searchParams.get('s') === 'Filme Fictício') return card(POBRE, '/filmes/duas-opcoes/', 'Filme Fictício', 2026);
+      if (url.searchParams.has('s')) return fixture('search-empty.html');
+      if (url.pathname === '/filmes/duas-opcoes/') {
+        return {
+          url: `${POBRE_FINAL}/filmes/duas-opcoes/`,
+          body: `<html><body><a href="https://www.imdb.com/title/tt9000001/">imdb</a><ul>${buttons([
+            { post: '10', nume: '1', label: 'Falha' },
+            { post: '10', nume: '2', label: 'Dublado' },
+          ])}</ul></body></html>`,
+        };
+      }
+      return undefined;
+    },
+    (url, init) => {
+      if (url.hostname !== 'www.pobreflixfull.com' || url.pathname !== '/wp-admin/admin-ajax.php') return undefined;
+      const nume = new URLSearchParams(init.body || '').get('nume');
+      return nume === '1' ? { status: 400, body: '0' } : { body: { embed_url: FIRE } };
+    },
+    fireChain(),
+  ]));
+  assert.equal(bad.streams.length, 2);
+  assert.ok(bad.logs.warn.some((line) => line.includes('Falha') && line.includes('HTTP 400')));
+  assert.equal(bad.logs.error.length, 0);
+});
+
 test('ausência em todas as origens não é falha e o resumo traz as classes', async () => {
   const { streams, logs, calls } = await play(emptyEverywhere(movieInfo()));
   assert.deepEqual(streams, []);
@@ -241,11 +383,11 @@ test('falha de todas as origens resume com console.error e a classe de cada dom�
   });
   assert.deepEqual(streams, []);
   const summary = logs.error.find((line) => line.includes('Nenhuma origem entregou streams'));
-  for (const domain of ['filmesamadoresgratis.com', 'www.pobreflixnow.rest', 'pobrexflix.art', 'hypetvflix.one', 'megafilmehdonline.blog', 'boraflix.mom']) {
+  for (const domain of ['filmesamadoresgratis.com', 'www.pobreflixnow.rest', 'pobrexflix.art', 'megafilmehdonline.blog', 'boraflix.mom']) {
     assert.ok(summary.includes(`${domain}=falha`), summary);
   }
   assert.deepEqual(calls.slice(1).map(hostOf), [
-    'filmesamadoresgratis.com', 'www.pobreflixnow.rest', 'pobrexflix.art', 'hypetvflix.one', 'megafilmehdonline.blog', 'boraflix.mom',
+    'filmesamadoresgratis.com', 'www.pobreflixnow.rest', 'pobrexflix.art', 'megafilmehdonline.blog', 'boraflix.mom',
   ]);
 });
 
@@ -384,7 +526,7 @@ test('IMDb ou TMDB divergente e empate não escolhem página nem reutilizam slug
   assert.equal(posts.streams.length, 2);
   assert.ok(posts.calls.some((call) => call.url.includes('/filmes/slug-71242/')));
   assert.ok(!posts.calls.some((call) => call.url.includes('admin-ajax') || call.url.includes('72773') || call.url.includes('70499') || call.url.includes('dooplayer')));
-  assert.equal(posts.calls.filter((call) => hostOf(call) === 'hypetvflix.one').length, 0);
+  assert.equal(posts.calls.filter((call) => hostOf(call) === 'boraflix.mom').length, 0);
 });
 
 test('T2 E3 ignora outro E3, episódio ausente é ausência e iframe sem números não é preenchido', async () => {
@@ -433,10 +575,10 @@ test('T2 E3 ignora outro E3, episódio ausente é ausência e iframe sem número
       if (url.pathname === '/episodios/serie-2x3/' && url.hostname === 'pobrexflix.art') {
         return '<html><body><iframe class="metaframe" src="https://myembed.biz/serie/1396/"></iframe></body></html>';
       }
-      if (url.hostname === 'hypetvflix.one' && url.searchParams.get('s') === 'Breaking Bad') return card(HYPE, '/series/breaking-h/', 'Breaking Bad', 2008);
-      if (url.hostname === 'hypetvflix.one' && url.searchParams.has('s')) return fixture('search-empty.html');
-      if (url.pathname === '/series/breaking-h/') return seriesList(HYPE, [{ label: 'T2 E3', season: 2, episode: 3 }]);
-      if (url.hostname === 'hypetvflix.one' && url.pathname === '/episodios/serie-2x3/') {
+      if (url.hostname === 'boraflix.mom' && url.searchParams.get('s') === 'Breaking Bad') return card(BORA, '/series/breaking-h/', 'Breaking Bad', 2008);
+      if (url.hostname === 'boraflix.mom' && url.searchParams.has('s')) return fixture('search-empty.html');
+      if (url.pathname === '/series/breaking-h/') return seriesList(BORA, [{ label: 'T2 E3', season: 2, episode: 3 }]);
+      if (url.hostname === 'boraflix.mom' && url.pathname === '/episodios/serie-2x3/') {
         return '<html><body><iframe class="metaframe" src="https://myembed.biz/serie/1396/2/3"></iframe></body></html>';
       }
       if (url.hostname === 'myembed.biz') return `<html><body><iframe id="video-player" src="${FIRE}"></iframe></body></html>`;

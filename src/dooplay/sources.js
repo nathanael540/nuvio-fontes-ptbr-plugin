@@ -9,7 +9,6 @@ export const SOURCES = [
   { domain: 'filmesamadoresgratis.com', mode: 'rest', origin: 'https://filmesamadoresgratis.com' },
   { domain: 'www.pobreflixnow.rest', mode: 'ajax', origin: 'https://www.pobreflixnow.rest' },
   { domain: 'pobrexflix.art', mode: 'iframe', origin: 'https://pobrexflix.art' },
-  { domain: 'hypetvflix.one', mode: 'iframe', origin: 'https://hypetvflix.one' },
   { domain: 'megafilmehdonline.blog', mode: 'iframe', origin: 'https://megafilmehdonline.blog' },
   { domain: 'boraflix.mom', mode: 'iframe', origin: 'https://boraflix.mom' },
 ];
@@ -200,7 +199,7 @@ function readEntries(source, page, media, request) {
     if (type !== request.mediaType) throw new Error('tipo do player diverge do pedido');
     const label = button.find('.title').text().trim() || `Opção ${nume}`;
     entries.push({
-      kind: 'dooplayer', label, post, nume, type, mode: source.mode, origin: source.origin,
+      kind: 'dooplayer', label, post, nume, type, mode: source.mode,
       referer: page.url, languageHint: label,
     });
   }
