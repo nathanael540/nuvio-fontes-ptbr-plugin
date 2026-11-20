@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head><title>Resultados de pesquisa - VenoPlay Online</title></head>
+<body>
+  <div class="max-w-7xl mx-auto">
+    <div class="flex gap-2">
+      <button id="tab-all" type="button">Todos</button>
+      <button id="tab-movies" type="button">Filmes</button>
+      <button id="tab-series" type="button">Séries</button>
+      <button id="tab-animes" type="button">Animes</button>
+      <button id="tab-reels" type="button">Reels</button>
+    </div>
+
+    <div id="results-all" class="tab-content grid">
+      <div class="col-span-full flex flex-col items-center justify-center py-16 text-center">
+        <span class="material-symbols-outlined !text-6xl text-secondary mb-4">search_off</span>
+        <h3 class="text-lg font-bold text-white">Nenhum resultado encontrado</h3>
+        <p class="text-xs text-secondary mt-1">Tente pesquisar com termos diferentes.</p>
+      </div>
+    </div>
+
+    <div id="results-movies" class="tab-content hidden grid">
+      <div class="col-span-full flex flex-col items-center justify-center py-16 text-center">
+        <span class="material-symbols-outlined !text-6xl text-secondary mb-4">movie</span>
+        <h3 class="text-lg font-bold text-white">Nenhum filme encontrado</h3>
+      </div>
+    </div>
+
+    <div id="results-series" class="tab-content hidden grid">
+      <div class="col-span-full flex flex-col items-center justify-center py-16 text-center">
+        <span class="material-symbols-outlined !text-6xl text-secondary mb-4">tv</span>
+        <h3 class="text-lg font-bold text-white">Nenhuma série encontrada</h3>
+      </div>
+    </div>
+
+    <div id="results-animes" class="tab-content hidden grid">
+      <div class="col-span-full flex flex-col items-center justify-center py-16 text-center">
+        <span class="material-symbols-outlined !text-6xl text-secondary mb-4">animation</span>
+        <h3 class="text-lg font-bold text-white">Nenhum anime encontrado</h3>
+      </div>
+    </div>
+
+    <div id="results-reels" class="tab-content hidden grid">
+      <div class="col-span-full flex flex-col items-center justify-center py-16 text-center">
+        <span class="material-symbols-outlined !text-6xl text-secondary mb-4">video_library</span>
+        <h3 class="text-lg font-bold text-white">Nenhum reel encontrado</h3>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

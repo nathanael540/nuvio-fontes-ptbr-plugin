@@ -8,6 +8,7 @@
  * A semente `https://www2.venoplay.com` é resolvida a cada chamada; o host final é usado na
  * busca, na página e no `get_players`, sem cache. A busca lê os cartões `div.poster-card` e a
  * página confirma título, tipo e ano no JSON-LD. O `get_players` devolve as opções de player.
+ * Sem cartões, a ausência é reconhecida pelo marcador em português ou inglês.
  */
 
 import { fetchJson, fetchPage } from '../_blocks/http/index.mjs';
@@ -18,7 +19,7 @@ const FALLBACK_URL = 'https://w2.venoplay.site';
 const SEARCH_PATH = '/busca?q=';
 const API_PATH = '/api/get_players';
 const SITE_ID = '4';
-const NO_RESULTS = /site search yielded no results/i;
+const NO_RESULTS = /site search yielded no results|Nenhum resultado encontrado/i;
 const MEDIA_ID = /const\s+mediaId\s*=\s*(\d+)/;
 const MEDIA_ID_API = /get_players\?id=(\d+)/;
 const CARD_URL = /location\.href\s*=\s*['"]([^'"]+)['"]/i;

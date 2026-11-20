@@ -1,0 +1,30 @@
+{
+  "id": 1416,
+  "name": "Grey's Anatomy",
+  "original_name": "Grey's Anatomy",
+  "first_air_date": "2005-03-27",
+  "original_language": "en",
+  "genres": [
+    {
+      "id": 18,
+      "name": "Drama"
+    }
+  ],
+  "external_ids": {
+    "imdb_id": "tt0413573"
+  },
+  "alternative_titles": {
+    "results": []
+  },
+  "origin_country": [
+    "US"
+  ],
+  "seasons": [
+    {
+      "season_number": 1,
+      "episode_count": 9,
+      "name": "Temporada 1",
+      "air_date": "2005-03-27"
+    }
+  ]
+}

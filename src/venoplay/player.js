@@ -6,8 +6,8 @@
  * cookie ou URL de mídia foi copiado.
  *
  * Cada item de `players` é uma opção independente. O `mgeb` publica `var sources`; só HLS
- * `.m3u8` HTTPS de `mgeb.space`/`mgeb.lat`, sem credencial, entra no contrato. `nhdapi.com` e
- * os hosts não comprovados são triagem sem requisição.
+ * `.m3u8` ou `.php` HTTPS de `mgeb.space`/`mgeb.lat`, sem credencial, entra no contrato.
+ * `nhdapi.com` e os hosts não comprovados são triagem sem requisição.
  */
 
 import { FORMATTER } from '../_blocks/custom-formatter/index.mjs';
@@ -24,7 +24,7 @@ const MGEB_HOSTS = new Set(['mgeb.space', 'mgeb.lat']);
 const TRIAGE_HOSTS = ['nhdapi.com', 'novix.x10.mx', 'infrastructuredesign.space', 'fontedecanais'];
 const REJECTED_PARAMS = new Set(['username', 'token', 'password']);
 const WORKERS = /\.workers\.dev$/i;
-const HLS_PATH = /\.m3u8$/i;
+const HLS_PATH = /\.(?:m3u8|php)$/i;
 
 /**
  * @typedef {object} PlayerOption

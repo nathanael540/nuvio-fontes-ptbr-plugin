@@ -45,7 +45,7 @@
 | [OverFlix](#overflix) | `overflix` | filme, série | MP4 | 🟢 Estável | 2026-11-20 |
 | [AnimesOnlineCC](#animesonlinecc) | `animesonlinecc` | série | MP4, HLS | 🟢 Estável | 2026-11-20 |
 | [Otakulogia](#otakulogia) | `otakulogia` | filme, série | MP4 | 🟢 Estável | 2026-11-20 |
-| [VenoPlay](#venoplay) | `venoplay` | filme, série | HLS | 🔵 Parcial | 2026-11-20 |
+| [VenoPlay](#venoplay) | `venoplay` | filme, série | HLS | 🟢 Estável | 2026-11-20 |
 | [Baixa Cine](#baixa-cine) | `baixacine` | filme, série | magnet | 🟢 Estável | 2026-11-20 |
 | [Tokyvideo](#tokyvideo) | `tokyvideo` | filme, série | MP4 | 🟢 Estável | 2026-11-20 |
 | [Baixe Torrents](#baixetorrents) | `baixetorrent-org` | filme, série | magnet | 🟢 Estável | 2026-11-20 |
@@ -945,20 +945,20 @@ Filmes e séries de anime em MP4 do catálogo Otakulogia pelo GraphQL público, 
 
 ## VenoPlay
 
-**Status: 🔵 Parcial.**
+**Status: 🟢 Estável.**
 
-Filmes e séries em HLS pela VenoPlay, com busca por título, confirmação de tipo e ano no JSON-LD ou no `h1`/`datePublished` e player `mgeb` dublado; o catálogo aceita HLS de `mgeb.space`/`mgeb.lat` e descarta hosts sem prova.
+Filmes e séries em HLS pela VenoPlay, com busca por título, confirmação de tipo e ano no JSON-LD ou no `h1`/`datePublished` e player `mgeb` dublado; o catálogo aceita HLS `.m3u8` ou `.php` de `mgeb.space`/`mgeb.lat` e descarta hosts sem prova.
 
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-20T13:22:58.161Z** · ID `2026-11-20T13-21-31-526Z-venoplay-20261120-cc44` · **Parcial** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
-   1. `movie` `284054` · Pantera Negra (2018) · **Sem resultado** · 0/0 streams aproveitáveis
+1. **2026-11-20T14:29:15.502Z** · ID `2026-11-20T14-28-20-628Z-venoplay-20261120-8679` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
+   1. `movie` `284054` · Pantera Negra (2018) · **Resolvido** · 1/1 streams aproveitáveis
    2. `movie` `120` · O Senhor dos Anéis: A Sociedade do Anel (2001) · **Sem resultado** · 0/0 streams aproveitáveis
    3. `movie` `76600` · Avatar: O Caminho da Água (2022) · **Sem resultado** · 0/0 streams aproveitáveis
-   4. `movie` `1398725` · Swallowed Star The Movie: Xueluo Continent (2024) · **Falha** · 0/0 streams aproveitáveis · Motivo: [VenoPlay] Falha em movie 1398725: Busca sem cartões nem mensagem explícita de ausência
+   4. `movie` `1398725` · Swallowed Star The Movie: Xueluo Continent (2024) · **Sem resultado** · 0/0 streams aproveitáveis
    5. `movie` `573699` · A Lenda da Serpente (2019) · **Sem resultado** · 0/0 streams aproveitáveis
-   6. `tv` `76572` · Douluo Dalu (Soul Land) (2018) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [VenoPlay] Falha em tv 76572: Busca sem cartões nem mensagem explícita de ausência
+   6. `tv` `76572` · Douluo Dalu (Soul Land) (2018) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    7. `tv` `82856` · The Mandalorian (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    8. `tv` `1416` · Grey's Anatomy (2005) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
    9. `tv` `93405` · Round 6 (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis

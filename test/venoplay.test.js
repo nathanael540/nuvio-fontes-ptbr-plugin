@@ -19,6 +19,8 @@ const searchSeries = read('search-series.html');
 const searchAmbiguous = read('search-ambiguous.html');
 const searchTypeMismatch = read('search-type-mismatch.html');
 const searchEmpty = read('search-empty.html');
+const searchEmptyPt = read('search-empty-pt.html');
+const searchCardsEmptyCategory = read('search-cards-empty-category.html');
 const searchMalformed = read('search-malformed.html');
 const pageMovie = read('page-movie.html');
 const pageSeries = read('page-series.html');
@@ -33,6 +35,7 @@ const playersSeries = readJson('players-series.json');
 const playersEmpty = readJson('players-empty.json');
 const playersInvalid = readJson('players-invalid.json');
 const mgebHls = read('mgeb-hls.html');
+const mgebHlsPhp = read('mgeb-hls-php.html');
 const mgebHlsLat = read('mgeb-hls-lat.html');
 const mgebCredential = read('mgeb-credential.html');
 const mgebWorker = read('mgeb-worker.html');
@@ -43,6 +46,16 @@ const mgebEmpty = read('mgeb-empty.html');
 const mgebNoSources = read('mgeb-no-sources.html');
 const mgebMixed = read('mgeb-mixed.html');
 const mgebDuplicate = read('mgeb-duplicate.html');
+const mgebGreys = read('mgeb-greys-anatomy.html');
+const mgebBreakingBad = read('mgeb-breaking-bad.html');
+const searchGreys = read('search-greys-anatomy.html');
+const searchBreakingBad = read('search-breaking-bad.html');
+const pageGreys = read('page-greys-anatomy.html');
+const pageBreakingBad = read('page-breaking-bad.html');
+const playersGreys = readJson('players-greys-anatomy.json');
+const playersBreakingBad = readJson('players-breaking-bad.json');
+const tmdbGreys = readJson('tmdb-greys-anatomy.json');
+const tmdbBreakingBad = readJson('tmdb-breaking-bad.json');
 
 let codes = {};
 
@@ -108,6 +121,8 @@ function makeRuntime(route = () => { throw new Error('fetch inesperado'); }, bun
 function tmdbResponse(url) {
   if (url.pathname.endsWith('/movie/693134')) return { body: tmdbDuna };
   if (url.pathname.endsWith('/tv/250307')) return { body: tmdbThePitt };
+  if (url.pathname.endsWith('/tv/1416')) return { body: tmdbGreys };
+  if (url.pathname.endsWith('/tv/1396')) return { body: tmdbBreakingBad };
   return { status: 404, body: 'TMDB ausente' };
 }
 
@@ -330,6 +345,44 @@ test('2.2 busca sem cartões nem ausência é erro de estrutura', async () => {
   assert.match(runtime.errors[0], /\[VenoPlay\].*Busca sem cartões/);
 });
 
+test('2.2 busca sem cartões com ausência localizada é ausência', async () => {
+  const runtime = makeRuntime(fullRoute({ search: searchEmptyPt }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.deepEqual(Array.from(streams), []);
+  assert.deepEqual(runtime.errors, []);
+  assert.deepEqual(runtime.warnings, []);
+});
+
+test('2.2 busca sem cartões com ausência em inglês continua ausência', async () => {
+  const runtime = makeRuntime(fullRoute({ search: searchEmpty }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.deepEqual(Array.from(streams), []);
+  assert.deepEqual(runtime.errors, []);
+  assert.deepEqual(runtime.warnings, []);
+});
+
+test('2.2 cartões com mensagem de categoria vazia são processados', async () => {
+  const runtime = makeRuntime(fullRoute({ search: searchCardsEmptyCategory }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.equal(streams.length, 1);
+  assert.equal(streams[0].url, 'https://mgeb.space/cache/hls/EXAMPLE.m3u8');
+  assert.deepEqual(runtime.errors, []);
+  assert.deepEqual(runtime.warnings, []);
+});
+
+test('2.2 busca com HTTP 522 é falha HTTP saneada', async () => {
+  const runtime = makeRuntime(fullRoute({ search: () => ({ status: 522, body: 'erro de borda' }) }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.deepEqual(Array.from(streams), []);
+  assert.equal(runtime.errors.length, 1);
+  assert.match(runtime.errors[0], /\[VenoPlay\].*HTTP 522 em \[url\]/);
+  assert.doesNotMatch(runtime.errors[0], /Busca sem cartões/);
+});
+
 test('3.2 get_players vazio é ausência', async () => {
   const runtime = makeRuntime(fullRoute({ players: playersEmpty }));
   const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
@@ -371,6 +424,61 @@ test('3.3 aceita HLS em mgeb.lat', async () => {
 
   assert.equal(streams.length, 1);
   assert.equal(streams[0].url, 'https://mgeb.lat/cache/hls/EXAMPLE.m3u8');
+});
+
+test('3.3 aceita HLS em endpoint .php no host mgeb', async () => {
+  const runtime = makeRuntime(fullRoute({ player: mgebHlsPhp }));
+  const streams = await runtime.exports.getStreams('693134', 'movie', null, null);
+
+  assert.equal(streams.length, 1);
+  assert.equal(streams[0].url, 'https://mgeb.space/cache/hls/EXAMPLE.php');
+  assert.equal(streams[0].type, 'hls');
+  assert.equal(streams[0].provider, 'MGEB');
+  assert.deepEqual(runtime.errors, []);
+  assert.deepEqual(runtime.warnings, []);
+});
+
+test("3.3 preserva Grey's Anatomy com dois HLS .m3u8 no mgeb", async () => {
+  const runtime = makeRuntime(fullRoute({
+    search: () => ({ body: searchGreys }),
+    page: () => ({ body: pageGreys }),
+    players: () => ({ body: playersGreys }),
+    player: () => ({ body: mgebGreys }),
+  }));
+  const streams = await runtime.exports.getStreams('1416', 'tv', 1, 1);
+
+  assert.equal(streams.length, 2);
+  assert.deepEqual(
+    Array.from(streams, (stream) => stream.url).sort(),
+    ['https://mgeb.space/cache/hls/GREYS-1.m3u8', 'https://mgeb.space/cache/hls/GREYS-2.m3u8'],
+  );
+  for (const stream of streams) {
+    assert.equal(stream.language, 'Dublado');
+    assert.equal(stream.quality, 'Desconhecida');
+    assert.equal(stream.provider, 'MGEB');
+    assert.equal(stream.type, 'hls');
+  }
+  assert.deepEqual(runtime.errors, []);
+  assert.deepEqual(runtime.warnings, []);
+  assert.equal(runtime.calls.some((call) => new URL(call.url).hostname === 'nhdapi.com'), false);
+});
+
+test('3.3 preserva Breaking Bad com um HLS .m3u8 no mgeb', async () => {
+  const runtime = makeRuntime(fullRoute({
+    search: () => ({ body: searchBreakingBad }),
+    page: () => ({ body: pageBreakingBad }),
+    players: () => ({ body: playersBreakingBad }),
+    player: () => ({ body: mgebBreakingBad }),
+  }));
+  const streams = await runtime.exports.getStreams('1396', 'tv', 1, 1);
+
+  assert.equal(streams.length, 1);
+  assert.equal(streams[0].url, 'https://mgeb.space/cache/hls/BREAKING-BAD.m3u8');
+  assert.equal(streams[0].language, 'Dublado');
+  assert.equal(streams[0].quality, 'Desconhecida');
+  assert.deepEqual(runtime.errors, []);
+  assert.deepEqual(runtime.warnings, []);
+  assert.equal(runtime.calls.some((call) => new URL(call.url).hostname === 'nhdapi.com'), false);
 });
 
 test('3.3 credencial na URL é triagem', async () => {

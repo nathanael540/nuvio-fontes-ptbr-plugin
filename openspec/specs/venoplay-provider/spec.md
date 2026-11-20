@@ -78,6 +78,30 @@ O provedor SHALL buscar em `/busca?q=<termo>` com o título PT-BR e o original d
 - **WHEN** nenhum termo encontra um candidato confirmado
 - **THEN** o provedor devolve lista vazia sem erro fatal.
 
+### Requirement: Ausência localizada na busca
+
+Quando a busca não trouxer cartões, o provedor SHALL reconhecer a mensagem localizada de ausência da fonte e devolver lista vazia, sem `console.error`. Página sem cartões e sem marcador de ausência SHALL continuar sendo erro de estrutura. Mensagem de categoria vazia em página com cartões SHALL NOT ser tratada como ausência.
+
+#### Scenario: Busca sem resultados em português
+
+- **WHEN** a busca responde 200 sem `div.poster-card` e publica `Nenhum resultado encontrado`
+- **THEN** o provedor devolve lista vazia, sem erro fatal e sem `console.error`.
+
+#### Scenario: Busca sem resultados em inglês
+
+- **WHEN** a busca responde 200 sem cartões e publica `site search yielded no results`
+- **THEN** o provedor devolve lista vazia, preservando o comportamento anterior.
+
+#### Scenario: Busca sem cartões e sem marcador
+
+- **WHEN** a busca responde 200 sem cartões e sem marcador de ausência em português ou inglês
+- **THEN** o provedor lança erro de estrutura, em vez de tratar como ausência.
+
+#### Scenario: Mensagem de categoria vazia com cartões
+
+- **WHEN** a página da busca tem cartões e uma seção publica `Nenhum anime encontrado` ou outra mensagem de categoria vazia
+- **THEN** o provedor processa os cartões normalmente e não trata a mensagem como ausência.
+
 ### Requirement: Player por `get_players`
 
 O provedor SHALL extrair o `mediaId` da página do título e consultar `GET /api/get_players?id=<id>&season_number=<s>&episode_number=<e>&site_id=4`; em filme, temporada e episódio SHALL ser vazios. A resposta SHALL trazer `players` em lista; lista vazia é ausência e resposta fora desse contrato é erro.
@@ -104,7 +128,7 @@ O provedor SHALL extrair o `mediaId` da página do título e consultar `GET /api
 
 ### Requirement: Resolução do player `mgeb`
 
-Cada item de `players` SHALL ser uma opção independente. O provedor SHALL abrir a URL do player `mgeb.space`/`mgeb.lat`, ler `var sources` e manter somente HLS `.m3u8` HTTPS de `mgeb.space` ou `mgeb.lat`, sem `workers.dev`, sem userinfo e sem parâmetro `username`, `token` ou `password`; `novix.x10.mx`, `infrastructuredesign.space` e `fontedecanais` SHALL ser triagem. O host `nhdapi.com` SHALL ser triagem sem requisição. Falha de uma opção SHALL preservar as demais.
+Cada item de `players` SHALL ser uma opção independente. O provedor SHALL abrir a URL do player `mgeb.space`/`mgeb.lat`, ler `var sources` e manter somente HLS HTTPS de `mgeb.space` ou `mgeb.lat`, com caminho `.m3u8` ou `.php`, sem `workers.dev`, sem userinfo e sem parâmetro `username`, `token` ou `password`; `novix.x10.mx`, `infrastructuredesign.space` e `fontedecanais` SHALL ser triagem. O host `nhdapi.com` SHALL ser triagem sem requisição. Falha de uma opção SHALL preservar as demais.
 
 #### Scenario: Opção dublada no `mgeb`
 
@@ -115,6 +139,16 @@ Cada item de `players` SHALL ser uma opção independente. O provedor SHALL abri
 
 - **WHEN** `sources` traz uma URL `.m3u8` HTTPS de `mgeb.space` ou `mgeb.lat`
 - **THEN** o provedor monta um stream HLS com essa URL.
+
+#### Scenario: Fonte HLS em endpoint `.php`
+
+- **WHEN** `sources` traz `type: hls` com URL HTTPS de `mgeb.space` ou `mgeb.lat` cujo caminho termina em `.php`
+- **THEN** o provedor monta um stream HLS com essa URL.
+
+#### Scenario: Fonte HLS em caminho não comprovado
+
+- **WHEN** `sources` traz `type: hls` em `mgeb.space` ou `mgeb.lat` com caminho diferente de `.m3u8` e `.php`
+- **THEN** o provedor descarta a fonte por triagem.
 
 #### Scenario: Fonte com credencial
 
