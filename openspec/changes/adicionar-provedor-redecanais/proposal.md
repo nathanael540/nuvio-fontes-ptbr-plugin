@@ -11,7 +11,7 @@ A investigação de 20/11/2026 confirmou que a fonte responde ao `fetch` direto,
 1. Adicionar o provedor `redecanais`, para `movie` e `tv`, em `src/redecanais/`, com versão `1.0.0` e registro em `src/manifest.json`.
 2. Obter título PT-BR, original, alternativos, romaji e ano com `getMediaInfo`; consultar `GET https://redecanais.lt/search.php?keywords=<termo>` com até oito termos deduplicados.
 3. Ler os cartões `div.thumbnail .caption h3 a`, com título no formato `Título (Dublado|Legendado) - AAAA - Qualidade`, e paginar com `&page=<n>` até cinco páginas de oito cartões.
-4. Separar filme de série pela rota: série publica `-lista-de-episodios_<hash>.html`; filme publica `<slug>_<hash>.html`.
+4. Separar filme de série pela rota e pela estrutura da ficha: a rota `-lista-de-episodios_<hash>.html` é a pista comum, mas séries como `Chernobyl` usam `<slug>_<hash>.html`; o contêiner `div[itemprop="description"]` confirma a série.
 5. Confirmar identidade por similaridade de título (0,85) e ano com tolerância de um, validando o `h1` da ficha e o JSON-LD quando presentes.
 6. Em série, ler os episódios dentro de `div[itemprop="description"]` e selecionar o par `Nª Temporada - Episódio N` publicado no próprio `href`; usar sempre o `href` da fonte, nunca montar URL de episódio.
 7. Resolver o player em `iframe[name="Player"]` com `Referer` da ficha e ler `var SRC`, `SOURCE_FORMAT` e `SOURCE_MIME`; aceitar `file`/`video/mp4` como MP4 e `hls`/`.m3u8` como HLS quando a fonte declarar.

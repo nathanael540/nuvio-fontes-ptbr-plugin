@@ -1,0 +1,30 @@
+{
+  "id": 263001,
+  "name": "Ninguém Além de Você",
+  "original_name": "渡清欢",
+  "first_air_date": "2024-09-10",
+  "original_language": "zh",
+  "genres": [
+    {
+      "id": 18,
+      "name": "Drama"
+    }
+  ],
+  "external_ids": {
+    "imdb_id": null
+  },
+  "alternative_titles": {
+    "results": []
+  },
+  "seasons": [
+    {
+      "season_number": 1,
+      "episode_count": 24,
+      "name": "Temporada 1",
+      "air_date": "2024-09-10"
+    }
+  ],
+  "origin_country": [
+    "CN"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "id": 100088,
+  "name": "The Last of Us",
+  "original_name": "The Last of Us",
+  "first_air_date": "2023-01-15",
+  "original_language": "en",
+  "genres": [
+    {
+      "id": 18,
+      "name": "Drama"
+    }
+  ],
+  "external_ids": {
+    "imdb_id": "tt3581920"
+  },
+  "alternative_titles": {
+    "results": []
+  },
+  "seasons": [
+    {
+      "season_number": 1,
+      "episode_count": 9,
+      "name": "Temporada 1",
+      "air_date": "2023-01-15"
+    },
+    {
+      "season_number": 2,
+      "episode_count": 7,
+      "name": "Temporada 2",
+      "air_date": "2025-04-13"
+    }
+  ],
+  "origin_country": [
+    "US"
+  ]
+}

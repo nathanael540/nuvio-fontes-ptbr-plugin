@@ -56,6 +56,7 @@
 | [TopAnimes](#topanimes) | `topanimes` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-20 |
 | [Seekee](#seekee) | `seekee` | filme, série | HLS | 🟢 Estável | 2026-11-20 |
 | [Cineveo](#cineveo) | `cineveo` | filme, série | MP4 | 🟢 Estável | 2026-11-20 |
+| [RedeCanais](#redecanais) | `redecanais` | filme, série | MP4 | 🟢 Estável | 2026-11-20 |
 
 ## MegaEmbed
 
@@ -1174,5 +1175,27 @@ Filmes, séries, animes e doramas em HLS do índice Seekee: busca na API públic
    8. `tv` `66732` · Stranger Things (2016) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
    9. `tv` `46161` · Vale Tudo (1988) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    10. `tv` `1416` · Grey's Anatomy (2005) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+<!-- online-verification:end -->
+
+## RedeCanais
+
+**Status: 🟢 Estável.**
+
+Filmes e séries em MP4 do catálogo PhpMelody do RedeCanais: busca HTML por título, confirmação por título e ano no `h1`/JSON-LD e tipo confirmado pela estrutura da ficha, episódio selecionado pelo par publicado e player `player3` com `Referer` da ficha. O áudio dublado/legendado vem do rótulo da ficha e, em episódio, do marcador do próprio episódio; a URL de mídia é assinada e efêmera.
+
+<!-- online-verification:start -->
+### Verificações online
+
+1. **2026-11-20T18:10:04.532Z** · ID `2026-11-20T18-09-46-645Z-redecanais-ed43fab3-0c4f` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `ed43fab38374e690697f3a66883bb6e1` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
+   1. `movie` `372058` · Your Name (2016) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `1466115` · Se Esse Amor Desaparecesse Hoje (2025) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `122` · O Senhor dos Anéis: O Retorno do Rei (2003) · **Resolvido** · 1/1 streams aproveitáveis
+   4. `movie` `149` · Akira (1988) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `324857` · Homem-Aranha: No Aranhaverso (2018) · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `124003` · Perfect World [Wanmei Shijie] (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   7. `tv` `93405` · Round 6 (2021) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   8. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   9. `tv` `94605` · Arcane (2021) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   10. `tv` `46101` · Senhora do Destino (2004) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 

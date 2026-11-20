@@ -51,22 +51,27 @@ O provedor SHALL consultar `GET /search.php?keywords=<termo>` com título PT-BR,
 
 ### Requirement: Separação entre filme e série
 
-O provedor SHALL aceitar como série somente a rota com `-lista-de-episodios_<hash>.html` e como filme somente a rota sem esse marcador. Cartão de tipo divergente SHALL ser descartado sem abrir a ficha.
+O provedor SHALL usar a rota `-lista-de-episodios_` como pista de série e SHALL confirmar o tipo pela presença de `div[itemprop="description"]` na ficha: com o contêiner é série, sem ele é filme. Ficha confirmada com pista de série e sem o contêiner SHALL lançar erro de estrutura; os demais tipos divergentes SHALL ser descartados sem erro.
 
 #### Scenario: Cartão de filme
 
 - **WHEN** o cartão aponta para `/duna-parte-dois-2024-dublado_<hash>.html` em pedido de filme
-- **THEN** o provedor abre a ficha do filme.
+- **THEN** o provedor abre a ficha e confirma o filme pela ausência do contêiner de episódios.
 
 #### Scenario: Cartão de série
 
 - **WHEN** o cartão aponta para `/the-last-of-us-lista-de-episodios_<hash>.html` em pedido de série
-- **THEN** o provedor abre a página da série para localizar o episódio.
+- **THEN** o provedor abre a página da série e confirma o tipo pelo contêiner de episódios.
+
+#### Scenario: Série sem marcador na rota
+
+- **WHEN** o cartão aponta para `/chernobyl_<hash>.html` em pedido de série e a ficha publica o contêiner de episódios
+- **THEN** o provedor trata a ficha como série e localiza o episódio.
 
 #### Scenario: Tipo divergente
 
-- **WHEN** o cartão de série aparece em pedido de filme ou o cartão de filme aparece em pedido de série
-- **THEN** o candidato é descartado sem abrir a ficha.
+- **WHEN** a ficha confirmada de um pedido de filme publica o contêiner de episódios, ou a ficha sem a pista de série de um pedido de série não publica o contêiner
+- **THEN** o candidato é descartado sem erro e o provedor tenta o próximo.
 
 ### Requirement: Confirmação de identidade
 

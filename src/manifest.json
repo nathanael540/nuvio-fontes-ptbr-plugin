@@ -711,6 +711,19 @@
       "formats": ["mp4"],
       "contentLanguage": ["pt"],
       "logo": "https://www.google.com/s2/favicons?domain=cineveo.cfd&sz=128"
+    },
+    {
+      "id": "redecanais",
+      "name": "RedeCanais",
+      "description": "Filmes e séries em MP4 do catálogo RedeCanais, dublados ou legendados conforme a ficha e o episódio publicado.",
+      "version": "1.0.0",
+      "author": "nathanael540",
+      "supportedTypes": ["movie", "tv"],
+      "filename": "providers/redecanais.js",
+      "enabled": true,
+      "formats": ["mp4"],
+      "contentLanguage": ["pt"],
+      "logo": "https://www.google.com/s2/favicons?domain=redecanais.lt&sz=128"
     }
   ]
 }

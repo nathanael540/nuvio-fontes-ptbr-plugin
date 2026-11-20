@@ -7,7 +7,7 @@ O RedeCanais (`https://redecanais.lt`) é um catálogo PT-BR em PhpMelody com o 
 A investigação de 20/11/2026 usou somente a URL pública, com `fetch` e leitura de HTML. Nenhum scraper externo foi consultado.
 
 1. **Busca.** `GET /search.php?keywords=<termo>` devolve oito cartões por página e paginação `&page=<n>`. O cartão é `div.thumbnail .caption h3 a`, com texto `Título (Dublado|Legendado) - AAAA - Qualidade`. Busca válida sem cartões não publica mensagem própria; a página mantém o título `Buscar Conteúdo RedeCanais: <termo>`. Uma resposta sem esse título não é busca válida.
-2. **Tipo.** Série publica `/<slug>-lista-de-episodios_<hash>.html`; filme publica `/<slug>_<hash>.html`. O mesmo padrão vale para animes, novelas e desenhos, que o app pede como `movie` ou `tv`.
+2. **Tipo.** Série publica episódios em `div[itemprop="description"]`; filme não tem esse contêiner. A rota `/<slug>-lista-de-episodios_<hash>.html` é o caso comum, mas não é universal: `Chernobyl` publica `/chernobyl_<hash>.html` e episódios no contêiner. O mesmo padrão vale para animes, novelas e desenhos, que o app pede como `movie` ou `tv`.
 3. **Identidade.** A fonte não publica o ID do TMDB. As fichas têm `h1` no formato `Título (Dublado|Legendado) - AAAA - Qualidade` e JSON-LD `Movie`/`TVSeries` com `name` e `dateCreated`. A confirmação é textual, por título e ano, como em outros provedores do repositório.
 4. **Série.** A página da série publica os episódios em `div[itemprop="description"]`, com cabeçalhos `Nª Temporada` e links `...-<N>a-temporada-episodio-<M>-..._<hash>.html`. Em 24 páginas de série sorteadas, os 869 links de episódio seguiram esse par. O `h1` do episódio confirma `Nª Temporada - Episódio N`. O texto do episódio é genérico (`Dublado e Legendado`), e o marcador real pode estar no link (`-leg-`) ou no título (`[LEG]`). O rótulo da série nem sempre corresponde ao áudio dos episódios: `Ninguém Além de Você (Dublado)` publica episódios `[LEG]`.
 5. **Player.** A ficha publica `iframe[name="Player"]` com `/player3/server.php?categoria=vod&server=R2&subfolder=media&vid=r2-<id>`. O player responde `HTTP 403` sem `Referer` e `HTTP 200` com `Referer` de qualquer página de `redecanais.lt`. O HTML publica `var SRC`, `var SOURCE_FORMAT` e `var SOURCE_MIME`. Na amostra, todos os players usaram `SOURCE_FORMAT: "file"` e `SOURCE_MIME: "video\/mp4"`.
@@ -50,11 +50,11 @@ A página é válida quando o título do documento contém `Buscar Conteúdo Red
 
 Alternativas descartadas: `/ajax_search.php` (sugestões, sem ano nem tipo) e busca por ID (a fonte não aceita TMDB/IMDb).
 
-### D3. Tipo pela rota
+### D3. Tipo pela rota e pela estrutura da ficha
 
-O cartão só entra em pedido de filme quando o `href` não contém `-lista-de-episodios_`; só entra em pedido de série quando contém. Isso evita abrir uma ficha de série para um filme homônimo e vice-versa. A rota é o discriminador observado em todas as listas de filmes, séries, animes, novelas e desenhos.
+A rota com `-lista-de-episodios_` é pista forte de série e evita abrir uma ficha de série em pedido de filme. A rota sem o marcador pode ser filme ou série: em 20/11/2026, `Chernobyl` publicou `/chernobyl_<hash>.html` com episódios no contêiner. Em pedido de série, o cartão é aberto e o tipo é decidido pela presença de `div[itemprop="description"]`: com o contêiner é série; sem ele é filme e o candidato é descartado. Em pedido de filme, ficha com o contêiner é descartada; a pista de série sem o contêiner em ficha confirmada de pedido de série é erro de estrutura.
 
-Alternativa descartada: usar o JSON-LD `@type` como discriminador principal, porque ele só existe depois de abrir a ficha e não evita consultas desnecessárias.
+Alternativa descartada: usar o JSON-LD `@type` como discriminador, porque a fonte publica `Movie` também nas séries e não separa os tipos.
 
 ### D4. Identidade e múltiplos candidatos
 
@@ -163,5 +163,5 @@ Não há migração. O provedor é novo, não altera o contrato dos existentes e
 1. `npm run lint` e `npm test` sem rede.
 2. `node build.js redecanais` para o arquivo base e as variantes `gdrive` e `prism`.
 3. Testes offline: filme dublado, filme legendado, série com episódio, série com episódio `[LEG]`, ausência, busca sem resultado, estrutura inválida, 404 de candidato, uma opção falhando e outra funcionando, todas falhando, player sem `SRC`, formato não suportado e deduplicação.
-4. `npm run test:online -- --provider redecanais` com `TMDB_API_KEY` do ambiente, após `npm run build:min`, para registrar a evidência em `providers.md`.
+4. `npm run test:online -- --provider redecanais` com `TMDB_API_KEY` do ambiente, após `npm run build:min`, para registrar a evidência em `providers.md`. A rodada de 20/11/2026 registrou 4/5 em filme e 4/5 em série, com status `Estável`.
 5. Conferir que nenhuma fixture, log ou relatório contém URL assinada, `exp`, `sig` ou cookie.
