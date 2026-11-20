@@ -1,26 +1,72 @@
 {
-  "ok": true,
-  "fast": false,
-  "count": 1,
+  "elapsedMs": 0,
+  "cached": true,
   "streams": [
     {
-      "id": "anime-1080",
-      "source": "veyra",
-      "providerName": "Veyra",
-      "url": "/api/proxy?url=https%3A%2F%2Fcdn.example%2Fdemon-slayer-s01e01-1080.mp4&referer=veyra",
-      "type": "hls",
-      "quality": "1080p",
-      "rank": 1,
+      "id": "anime-1",
+      "label": "Servidor 1",
+      "audio": "PT-BR · Dublado",
+      "quality": "1080p Full HD",
+      "codec": "h264",
+      "format": "mp4",
+      "isPtBr": true,
       "is4k": false,
-      "isHls": true,
-      "isDub": true,
-      "isDual": false,
-      "subtitles": [],
-      "dead": false,
-      "alive": true,
-      "status": 200,
-      "server": "Veyra",
-      "isFastest": true
+      "streamUrl": "/api/stream/anime-1/media.mp4"
+    },
+    {
+      "id": "anime-2",
+      "label": "Servidor 2",
+      "audio": "PT-BR · Dublado",
+      "quality": "1080p Full HD",
+      "codec": "h264",
+      "format": "mp4",
+      "isPtBr": true,
+      "is4k": false,
+      "streamUrl": "/api/stream/anime-2/media.mp4"
+    },
+    {
+      "id": "anime-3",
+      "label": "Servidor 3",
+      "audio": "PT-BR · Dublado",
+      "quality": "1080p Full HD",
+      "codec": "h264",
+      "format": "mp4",
+      "isPtBr": true,
+      "is4k": false,
+      "streamUrl": "/api/stream/anime-3/media.mp4"
+    },
+    {
+      "id": "anime-4",
+      "label": "Servidor 4",
+      "audio": "PT-BR · Dublado",
+      "quality": "1080p Full HD",
+      "codec": "h264",
+      "format": "mp4",
+      "isPtBr": true,
+      "is4k": false,
+      "streamUrl": "/api/stream/anime-4/media.mp4"
+    },
+    {
+      "id": "anime-5",
+      "label": "Servidor 5",
+      "audio": "PT-BR · Dublado",
+      "quality": "1080p Full HD",
+      "codec": "h264",
+      "format": "mp4",
+      "isPtBr": true,
+      "is4k": false,
+      "streamUrl": "/api/stream/anime-5/media.mp4"
+    },
+    {
+      "id": "anime-6",
+      "label": "Servidor 6",
+      "audio": "PT-BR · Dublado",
+      "quality": "720p HD",
+      "codec": "h264",
+      "format": "mp4",
+      "isPtBr": true,
+      "is4k": false,
+      "streamUrl": "/api/stream/anime-6/media.mp4"
     }
   ],
   "subtitles": []

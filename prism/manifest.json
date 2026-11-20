@@ -427,7 +427,7 @@
       "id": "kairou",
       "name": "Kairou",
       "description": "Filmes, séries e animes em HLS e MP4 pela API do Kairou por TMDB, dublados ou legendados conforme o áudio e as legendas anunciados.",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "author": "nathanael540",
       "supportedTypes": [
         "movie",

@@ -1,7 +1,6 @@
 {
-  "ok": true,
-  "fast": false,
-  "count": 0,
+  "elapsedMs": 1502,
+  "cached": false,
   "streams": [],
   "subtitles": []
 }

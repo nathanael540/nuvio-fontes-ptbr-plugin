@@ -1,62 +1,62 @@
 {
-  "ok": true,
-  "fast": false,
-  "count": 2,
+  "elapsedMs": 1817,
+  "cached": false,
   "streams": [
     {
-      "id": "ep-1080-sub",
-      "source": "zeusoficial",
-      "providerName": "Zeus Oficial",
-      "url": "/api/proxy?url=https%3A%2F%2Fcdn.example%2Fbreaking-bad-s01e01-1080.mp4&referer=zeusoficial",
-      "type": "mp4",
-      "quality": "1080p",
-      "rank": 1,
+      "id": "episode-1",
+      "label": "Servidor 1",
+      "audio": "PT-BR · Dublado",
+      "quality": "1080p Full HD",
+      "codec": "h264",
+      "format": "mp4",
+      "isPtBr": true,
       "is4k": false,
-      "isHls": false,
-      "isDub": false,
-      "isDual": false,
-      "subtitles": [
-        {
-          "id": "ep-sub-en",
-          "lang": "en",
-          "flag": "us",
-          "label": "English · Opção 1",
-          "url": "/api/proxy?format=vtt&url=https%3A%2F%2Fsubs.example%2Fbreaking-bad-s01e01-en.vtt"
-        }
-      ],
-      "dead": false,
-      "alive": true,
-      "status": 200,
-      "server": "Zeus Oficial",
-      "isFastest": true
+      "streamUrl": "/api/stream/episode-1/media.mp4"
     },
     {
-      "id": "ep-720-dub",
-      "source": "popplay",
-      "providerName": "PopPlay",
-      "url": "/api/proxy?url=https%3A%2F%2Fcdn.example%2Fbreaking-bad-s01e01-720.mp4&referer=popplay",
-      "type": "mp4",
-      "quality": "720p",
-      "rank": 2,
+      "id": "episode-2",
+      "label": "Servidor 2",
+      "audio": "PT-BR · Dublado",
+      "quality": "1080p Full HD",
+      "codec": "h264",
+      "format": "mp4",
+      "isPtBr": true,
       "is4k": false,
-      "isHls": false,
-      "isDub": true,
-      "isDual": false,
-      "subtitles": [],
-      "dead": false,
-      "alive": true,
-      "status": 200,
-      "server": "PopPlay",
-      "isFastest": false
+      "streamUrl": "/api/stream/episode-2/media.mp4"
+    },
+    {
+      "id": "episode-3",
+      "label": "Servidor 3",
+      "audio": "PT-BR · Dublado",
+      "quality": "1080p Full HD",
+      "codec": "h264",
+      "format": "mp4",
+      "isPtBr": true,
+      "is4k": false,
+      "streamUrl": "/api/stream/episode-3/media.mp4"
+    },
+    {
+      "id": "episode-4",
+      "label": "Servidor 4",
+      "audio": "PT-BR · Dublado",
+      "quality": "1080p Full HD",
+      "codec": "h264",
+      "format": "mp4",
+      "isPtBr": true,
+      "is4k": false,
+      "streamUrl": "/api/stream/episode-4/media.mp4"
+    },
+    {
+      "id": "episode-5",
+      "label": "Servidor 5",
+      "audio": "PT-BR · Dublado",
+      "quality": "1080p Full HD",
+      "codec": "h264",
+      "format": "mp4",
+      "isPtBr": true,
+      "is4k": false,
+      "streamUrl": "/api/stream/episode-5/media.mp4"
     }
   ],
-  "subtitles": [
-    {
-      "id": "ep-sub-en",
-      "lang": "en",
-      "flag": "us",
-      "label": "English · Opção 1",
-      "url": "/api/proxy?format=vtt&url=https%3A%2F%2Fsubs.example%2Fbreaking-bad-s01e01-en.vtt"
-    }
-  ]
+  "subtitles": []
 }

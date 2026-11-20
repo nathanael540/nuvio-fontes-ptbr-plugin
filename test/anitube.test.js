@@ -238,7 +238,9 @@ const playerInstance = jwplayer('video-player').setup({
 }
 
 function makeRoute(options = {}) {
-  return async (url) => {
+  return async (url, init = {}) => {
+    const requestHeaders = init.headers || {};
+
     if (url.hostname === 'api.themoviedb.org') {
       const match = /\/3\/(movie|tv)\/(\d+)/.exec(url.pathname);
       const id = match === null ? null : Number(match[2]);
@@ -260,6 +262,9 @@ function makeRoute(options = {}) {
         if (custom !== undefined) return asResponse(custom);
       }
       if (url.pathname.startsWith('/token-')) {
+        if (options.requireIframe && requestHeaders['Sec-Fetch-Dest'] !== 'iframe') {
+          return asResponse({ status: 403, body: '' });
+        }
         if (options.player1Status) return asResponse({ status: options.player1Status, body: 'erro' });
         const token = url.pathname.split('/').filter(Boolean).pop();
         return asResponse({
@@ -272,7 +277,18 @@ function makeRoute(options = {}) {
       throw new Error(`Página inesperada: ${url.pathname}`);
     }
 
+    if (url.hostname === 'api.anivideo.net' && url.pathname.startsWith('/cdn/')) {
+      if (options.requireIframe && requestHeaders['Sec-Fetch-Dest'] !== 'iframe') {
+        return asResponse({ status: 403, body: '' });
+      }
+      if (options.cdnStatus) return asResponse({ status: options.cdnStatus, body: 'erro' });
+      return asResponse({ body: read(options.fhdCdnFixture || 'player-fhd-cdn.html') });
+    }
+
     if (url.hostname === 'api.anivideo.net' && url.pathname === '/videohls.php') {
+      if (options.requireIframe && requestHeaders['Sec-Fetch-Dest'] !== 'iframe') {
+        return asResponse({ status: 403, body: '' });
+      }
       if (options.fhdStatus) return asResponse({ status: options.fhdStatus, body: 'erro' });
       const media = url.searchParams.get('d');
       const label = options.fhdLabel === undefined ? '720p HD' : options.fhdLabel;
@@ -439,6 +455,24 @@ test('2.2 descarta spin-off, temporada conflitante e ano divergente', async () =
   );
 });
 
+test('3.1 classifica o FHD por `videohls.php` e pela rota `/cdn/`', async () => {
+  globalThis.require = require;
+  try {
+    const { collectPlayers } = await import('../src/anitube/players.js');
+    const html = `<html><body>
+      <iframe src="https://api.anivideo.net/videohls.php?d=https%3A%2F%2Fcdn.example.test%2Fmaster.m3u8"></iframe>
+      <iframe src="https://api.anivideo.net/cdn/v1.fixture-token?i=https://www.anitube.zip/poster.jpg"></iframe>
+      <iframe src="https://www.anitube.zip/token-fixture"></iframe>
+      <iframe src="https://player.example.test/embed/1"></iframe>
+    </body></html>`;
+    const players = collectPlayers(html, 'https://www.anitube.zip/video/970539b');
+    assert.deepEqual(players.map((player) => player.kind), ['fhd', 'fhd', 'player1', 'unsupported']);
+    assert.deepEqual(players.map((player) => player.label), ['Player FHD', 'Player FHD', 'Player 1', 'player.example.test']);
+  } finally {
+    delete globalThis.require;
+  }
+});
+
 // --- Integração com o pacote gerado ---
 
 test('1.1 e 5.1 carrega o pacote sem rede e expõe getStreams', () => {
@@ -490,6 +524,32 @@ test('4.3 filme direto dublado monta o contrato e o formato', async () => {
   assert.deepEqual(app.warnings, []);
 });
 
+test('3.1 filme com FHD em `/cdn/` resolve o HLS da página em contexto de iframe', async () => {
+  const app = makeRuntime(makeRoute({
+    requireIframe: true,
+    fhdCdnFixture: 'player-fhd-cdn-movie.html',
+    page: (url) => (url.pathname === '/video/1030445/' ? { body: read('movie-chihiro-cdn.html') } : undefined),
+  }));
+  const streams = await app.getStreams('129', 'movie', null, null);
+
+  assert.equal(streams.length, 1);
+  const [stream] = streams;
+  assert.equal(stream.url, 'https://cdn.example.test/chihiro/01.mp4/index.m3u8');
+  assert.equal(stream.quality, 'Desconhecida');
+  assert.equal(stream.language, 'Dublado');
+  assert.equal(stream.provider, 'Player FHD');
+  assert.equal(stream.type, 'hls');
+  assert.match(stream.name, /^AniTube Desconhecida\n/);
+  assert.match(stream.title, /🔍 Player FHD/);
+  assert.deepEqual(app.errors, []);
+  assert.deepEqual(app.warnings, []);
+
+  const fhdCall = app.calls.find((call) => new URL(call.url).hostname === 'api.anivideo.net' && new URL(call.url).pathname.startsWith('/cdn/'));
+  assert.ok(fhdCall, 'página do FHD /cdn/ não foi consultada');
+  assert.equal(fhdCall.init.headers['Sec-Fetch-Dest'], 'iframe');
+  assert.equal(fhdCall.init.headers.Referer, 'https://www.anitube.zip/video/1030445/');
+});
+
 test('4.3 e 4.4 filme agregado resolve dublado e legendado', async () => {
   const app = makeRuntime(makeRoute());
   const streams = await app.getStreams('372058', 'movie', null, null);
@@ -536,6 +596,48 @@ test('4.4 episódio só com Player 1 usa os MP4 do Blogger', async () => {
   assert.ok(pageCalls(app).includes('/video/932006/'));
   assert.deepEqual(app.errors, []);
   assert.deepEqual(app.warnings, []);
+});
+
+test('3.1 e 4.4 episódio com FHD em `/cdn/` e Player 1 resolve em contexto de iframe', async () => {
+  const app = makeRuntime(makeRoute({
+    requireIframe: true,
+    page: (url) => (url.pathname === '/video/970539b' ? { body: read('episode-jujutsu-2-dub-01-cdn.html') } : undefined),
+  }));
+  const streams = await app.getStreams('95479', 'tv', 2, 1);
+
+  assert.equal(streams.length, 6);
+  const dubbedFhd = streams.find((stream) => stream.provider === 'Player FHD' && stream.language === 'Dublado');
+  assert.ok(dubbedFhd, 'FHD dublado ausente');
+  assert.equal(dubbedFhd.url, 'https://cdn.example.test/jujutsu-2-dub/01.mp4/index.m3u8');
+  assert.equal(dubbedFhd.quality, 'Desconhecida');
+  assert.equal(dubbedFhd.type, 'hls');
+  const dubbedPlayer1 = streams.filter((stream) => stream.provider === 'Player 1' && stream.language === 'Dublado');
+  assert.equal(dubbedPlayer1.length, 2);
+  assert.ok(dubbedPlayer1.every((stream) => stream.url.startsWith('https://video.example.test/token-jujutsu-2-dub/')));
+  assert.deepEqual(app.errors, []);
+  assert.deepEqual(app.warnings, []);
+
+  const fhdCall = app.calls.find((call) => new URL(call.url).hostname === 'api.anivideo.net' && new URL(call.url).pathname.startsWith('/cdn/'));
+  assert.ok(fhdCall, 'página do FHD /cdn/ não foi consultada');
+  assert.equal(fhdCall.init.headers['Sec-Fetch-Dest'], 'iframe');
+  assert.equal(fhdCall.init.headers.Referer, 'https://www.anitube.zip/video/970539b');
+
+  const player1Call = app.calls.find((call) => new URL(call.url).hostname === 'www.anitube.zip' && new URL(call.url).pathname.startsWith('/token-'));
+  assert.ok(player1Call, 'Player 1 não foi consultado');
+  assert.equal(player1Call.init.headers['Sec-Fetch-Dest'], 'iframe');
+});
+
+test('3.3 FHD em `/cdn/` com HTTP 403 é descartado e o Player 1 permanece', async () => {
+  const app = makeRuntime(makeRoute({
+    cdnStatus: 403,
+    page: (url) => (url.pathname === '/video/970539b' ? { body: read('episode-jujutsu-2-dub-01-cdn.html') } : undefined),
+  }));
+  const streams = await app.getStreams('95479', 'tv', 2, 1);
+
+  assert.equal(streams.length, 5);
+  assert.ok(streams.some((stream) => stream.provider === 'Player 1' && stream.language === 'Dublado'));
+  assert.ok(app.warnings.some((warning) => /Opção Player FHD descartada: HTTP 403/.test(warning)));
+  assert.deepEqual(app.errors, []);
 });
 
 test('4.4 episódio com dois players e duas fichas de áudio', async () => {
@@ -601,7 +703,7 @@ test('3.3 um player falha e o outro resolve com aviso', async () => {
   assert.equal(streams.length, 5);
   assert.ok(streams.some((stream) => stream.provider === 'Player FHD' && stream.language === 'Legendado'));
   assert.equal(app.warnings.length, 1);
-  assert.match(app.warnings[0], /\[AniTube\] Opção Player FHD descartada: Player FHD sem parâmetro d/);
+  assert.match(app.warnings[0], /\[AniTube\] Opção Player FHD descartada: Player FHD sem mídia/);
   assert.deepEqual(app.errors, []);
 });
 
@@ -621,7 +723,7 @@ test('3.3 todos os players falham e o erro agregado sobe', async () => {
   assert.deepEqual(streams, []);
   assert.equal(app.errors.length, 1);
   assert.match(app.errors[0], /^\[AniTube\] Falha em tv 95479: Nenhuma ficha produziu stream/);
-  assert.ok(app.warnings.some((warning) => /Opção Player FHD descartada: Player FHD sem parâmetro d/.test(warning)));
+  assert.ok(app.warnings.some((warning) => /Opção Player FHD descartada: Player FHD sem mídia/.test(warning)));
   assert.ok(app.warnings.some((warning) => /Opção Player 1 descartada: HTTP 500/.test(warning)));
   assert.ok(app.warnings.some((warning) => /Ficha Dublado descartada/.test(warning)));
   assert.ok(app.warnings.some((warning) => /Ficha Legendado descartada/.test(warning)));

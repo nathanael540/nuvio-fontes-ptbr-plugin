@@ -28,6 +28,7 @@ const embedHtml = read('embedplayapi-embed.html');
 const linkJson = readJson('embedplay-link.json');
 const linkRefused = readJson('embedplay-link-refused.json');
 const vipHtml = read('embedplay-vip.html');
+const vipWithoutByse = read('embedplay-vip-without-byse.html');
 const playerByse = readJson('embedplay-player-byse.json');
 const playerAbyss = readJson('embedplay-player-abyss.json');
 const playerError = readJson('embedplay-player-error.json');
@@ -115,6 +116,24 @@ function makeRuntime(route = () => { throw new Error('fetch inesperado'); }, bun
 
 function videoUrl(code) {
   return `https://embedplaybyse.top/e/${code}/fixture`;
+}
+
+const ABSENCE_WARNING = Object.freeze({
+  candidate: '[VaqueiroFilmes] Ausência: nenhum candidato confirmado no catálogo',
+  ambiguous: '[VaqueiroFilmes] Ausência: identidade ambígua entre candidatos confirmados',
+  embed: '[VaqueiroFilmes] Ausência: opção EmbedPlay não disponível',
+  byse: '[VaqueiroFilmes] Ausência: nenhuma opção Byse suportada entre as opções dubladas',
+});
+
+function absenceWarnings(runtime) {
+  return runtime.warnings.filter((warning) => warning.includes('Ausência:'));
+}
+
+function assertAbsence(runtime, expected) {
+  assert.deepEqual(absenceWarnings(runtime), [expected]);
+  for (const message of absenceWarnings(runtime)) {
+    assert.doesNotMatch(message, /https?:\/\/|\?video=|data-id|data-movie-id/);
+  }
 }
 
 function defaultPlayer(init) {
@@ -278,6 +297,7 @@ test('2.1 ausência nas duas buscas não vira falha', async () => {
   assert.deepEqual(Array.from(streams), []);
   assert.equal(searchCalls(runtime.calls).length, 2);
   assert.deepEqual(runtime.errors, []);
+  assertAbsence(runtime, ABSENCE_WARNING.candidate);
 });
 
 test('2.1 erro HTTP, JSON inválido e resposta sem lista falham sem fallback silencioso', async () => {
@@ -286,16 +306,19 @@ test('2.1 erro HTTP, JSON inválido e resposta sem lista falham sem fallback sil
   assert.deepEqual(Array.from(httpStreams), []);
   assert.equal(searchCalls(http.calls).length, 1);
   assert.match(http.errors[0], /\[VaqueiroFilmes\] Falha em movie 9320: HTTP 500/);
+  assert.deepEqual(absenceWarnings(http), []);
 
   const invalidJson = makeRuntime(fullRoute({ search: () => ({ body: 'isto não é json' }) }));
   const jsonStreams = await invalidJson.exports.getStreams('9320', 'movie', null, null);
   assert.deepEqual(Array.from(jsonStreams), []);
   assert.match(invalidJson.errors[0], /Resposta não é JSON válido/);
+  assert.deepEqual(absenceWarnings(invalidJson), []);
 
   const noList = makeRuntime(fullRoute({ search: () => ({ body: {} }) }));
   const listStreams = await noList.exports.getStreams('9320', 'movie', null, null);
   assert.deepEqual(Array.from(listStreams), []);
   assert.match(noList.errors[0], /Busca do WordPress sem lista de resultados/);
+  assert.deepEqual(absenceWarnings(noList), []);
 });
 
 test('2.1 lê duas páginas de 20 resultados e descarta subtipo diferente de movie', async () => {
@@ -344,6 +367,7 @@ test('2.1 lê duas páginas de 20 resultados e descarta subtipo diferente de mov
   );
   assert.ok(!runtime.calls.some((call) => call.url.includes('/pt/movie/serie/')));
   assert.ok(runtime.logs.some((log) => /EmbedPlay ausente/.test(log)));
+  assertAbsence(runtime, ABSENCE_WARNING.embed);
 });
 
 test('2.2 descarta ano divergente e resultado de série', async () => {
@@ -361,6 +385,7 @@ test('2.2 descarta ano divergente e resultado de série', async () => {
   const divergentStreams = await divergent.exports.getStreams('9320', 'movie', null, null);
   assert.deepEqual(Array.from(divergentStreams), []);
   assert.equal(divergent.errors.length, 0);
+  assertAbsence(divergent, ABSENCE_WARNING.candidate);
 
   const series = makeRuntime(fullRoute({
     search: () => ({
@@ -376,6 +401,7 @@ test('2.2 descarta ano divergente e resultado de série', async () => {
   const seriesStreams = await series.exports.getStreams('9320', 'movie', null, null);
   assert.deepEqual(Array.from(seriesStreams), []);
   assert.equal(series.errors.length, 0);
+  assertAbsence(series, ABSENCE_WARNING.candidate);
 });
 
 test('2.2 ambiguidade de dois candidatos confirmados é ausência sem escolher o primeiro', async () => {
@@ -396,6 +422,7 @@ test('2.2 ambiguidade de dois candidatos confirmados é ausência sem escolher o
   assert.deepEqual(Array.from(streams), []);
   assert.equal(searchCalls(runtime.calls).length, 1);
   assert.equal(runtime.errors.length, 0);
+  assertAbsence(runtime, ABSENCE_WARNING.ambiguous);
 });
 
 test('3.1 EmbedPlay ausente é ausência reconhecida e as opções desconhecidas são triagem', async () => {
@@ -403,11 +430,24 @@ test('3.1 EmbedPlay ausente é ausência reconhecida e as opções desconhecidas
   const streams = await runtime.exports.getStreams('9320', 'movie', null, null);
   assert.deepEqual(Array.from(streams), []);
   assert.deepEqual(runtime.errors, []);
-  assert.deepEqual(runtime.warnings, []);
+  assertAbsence(runtime, ABSENCE_WARNING.embed);
   assert.equal(videoCalls(runtime.calls, '1').length, 0);
   for (const label of ['Myembed', 'VidSrc', 'Superflixapi']) {
     assert.ok(runtime.logs.some((log) => log.includes(`Opção ${label} descartada por triagem`)));
   }
+});
+
+test('3.4 ausência de opção Byse usa diagnóstico próprio e não vira falha', async () => {
+  const runtime = makeRuntime(fullRoute({
+    options: vipWithoutByse,
+    player: () => ({ body: playerAbyss }),
+  }));
+  const streams = await runtime.exports.getStreams('9320', 'movie', null, null);
+  assert.deepEqual(Array.from(streams), []);
+  assert.deepEqual(runtime.errors, []);
+  assertAbsence(runtime, ABSENCE_WARNING.byse);
+  assert.equal(playerCalls(runtime.calls).length, 2);
+  assert.ok(runtime.logs.some((log) => /host abyssplayer\.com não suportado/.test(log)));
 });
 
 test('3.2 iframe de outro host e iframe ausente falham a opção', async () => {
@@ -415,11 +455,13 @@ test('3.2 iframe de outro host e iframe ausente falham a opção', async () => {
   const wrongStreams = await wrongHost.exports.getStreams('9320', 'movie', null, null);
   assert.deepEqual(Array.from(wrongStreams), []);
   assert.match(wrongHost.errors[0], /Iframe de host não suportado: myembed\.biz/);
+  assert.deepEqual(absenceWarnings(wrongHost), []);
 
   const missing = makeRuntime(fullRoute({ video1: movie1998 }));
   const missingStreams = await missing.exports.getStreams('9320', 'movie', null, null);
   assert.deepEqual(Array.from(missingStreams), []);
   assert.match(missing.errors[0], /Iframe do EmbedPlay ausente/);
+  assert.deepEqual(absenceWarnings(missing), []);
 });
 
 test('3.3 get_stream_link valida success, HTTP e JSON', async () => {
@@ -427,21 +469,25 @@ test('3.3 get_stream_link valida success, HTTP e JSON', async () => {
   const refusedStreams = await refused.exports.getStreams('9320', 'movie', null, null);
   assert.deepEqual(Array.from(refusedStreams), []);
   assert.match(refused.errors[0], /EmbedPlay recusou a consulta do link/);
+  assert.deepEqual(absenceWarnings(refused), []);
 
   const http = makeRuntime(fullRoute({ link: { status: 500, body: 'erro' } }));
   const httpStreams = await http.exports.getStreams('9320', 'movie', null, null);
   assert.deepEqual(Array.from(httpStreams), []);
   assert.match(http.errors[0], /HTTP 500/);
+  assert.deepEqual(absenceWarnings(http), []);
 
   const invalid = makeRuntime(fullRoute({ link: { body: 'não é json' } }));
   const invalidStreams = await invalid.exports.getStreams('9320', 'movie', null, null);
   assert.deepEqual(Array.from(invalidStreams), []);
   assert.match(invalid.errors[0], /Resposta não é JSON válido/);
+  assert.deepEqual(absenceWarnings(invalid), []);
 
   const missingLink = makeRuntime(fullRoute({ link: { body: { success: true, data: {} } } }));
   const missingStreams = await missingLink.exports.getStreams('9320', 'movie', null, null);
   assert.deepEqual(Array.from(missingStreams), []);
   assert.match(missingLink.errors[0], /Endereço obrigatório ausente/);
+  assert.deepEqual(absenceWarnings(missingLink), []);
 });
 
 test('3.4 falha de uma opção dublada preserva as demais e só consulta o grupo Dublado', async () => {
@@ -462,6 +508,7 @@ test('3.4 falha de uma opção dublada preserva as demais e só consulta o grupo
   assert.equal(runtime.warnings.length, 1);
   assert.match(runtime.warnings[0], /\[VaqueiroFilmes\] Opção 2 \(BYSE\) descartada: getPlayer recusou a opção/);
   assert.deepEqual(runtime.errors, []);
+  assert.deepEqual(absenceWarnings(runtime), []);
 });
 
 test('3.4 opção sem video_url e errors diferente de zero falham isoladamente', async () => {
@@ -481,6 +528,7 @@ test('3.4 opção sem video_url e errors diferente de zero falham isoladamente',
     assert.equal(runtime.warnings.length, 1);
     assert.match(runtime.warnings[0], /Opção 2 \(BYSE\) descartada/);
     assert.match(runtime.errors[0], /Falha em movie 9320: Opção 2 \(BYSE\)/);
+    assert.deepEqual(absenceWarnings(runtime), []);
   }
 });
 
@@ -489,6 +537,7 @@ test('4.1 playback ausente e host não suportado são tratados sem inventar stre
   const absentStreams = await absent.exports.getStreams('9320', 'movie', null, null);
   assert.deepEqual(Array.from(absentStreams), []);
   assert.match(absent.errors[0], /Playback Byse ausente/);
+  assert.deepEqual(absenceWarnings(absent), []);
 
   const unsupported = makeRuntime(fullRoute({
     player: () => ({ body: playerAbyss }),
@@ -497,6 +546,7 @@ test('4.1 playback ausente e host não suportado são tratados sem inventar stre
   assert.deepEqual(Array.from(unsupportedStreams), []);
   assert.equal(unsupported.errors.length, 0);
   assert.ok(unsupported.logs.some((log) => /host abyssplayer\.com não suportado/.test(log)));
+  assertAbsence(unsupported, ABSENCE_WARNING.byse);
   assert.equal(unsupported.calls.filter((call) => call.url.includes('/api/videos/')).length, 0);
 });
 
@@ -513,6 +563,7 @@ test('4.1 playback sem sources falha com mensagem explícita', async () => {
   const streams = await runtime.exports.getStreams('9320', 'movie', null, null);
   assert.deepEqual(Array.from(streams), []);
   assert.match(runtime.errors[0], /Playback Byse sem fontes/);
+  assert.deepEqual(absenceWarnings(runtime), []);
 });
 
 test('4.2 decifra o payload real da fixture e rejeita chave, IV e JSON inválidos', () => {
@@ -606,6 +657,7 @@ test('4.4 falha total registra console.error e retorna lista vazia', async () =>
   assert.equal(runtime.warnings.length, 1);
   assert.match(runtime.warnings[0], /Opção 2 \(BYSE\) descartada: HTTP 500/);
   assert.match(runtime.errors[0], /\[VaqueiroFilmes\] Falha em movie 9320: Opção 2 \(BYSE\)/);
+  assert.deepEqual(absenceWarnings(runtime), []);
 });
 
 test('4.4 dois pedidos executam a cadeia de novo e obtêm URLs diferentes', async () => {

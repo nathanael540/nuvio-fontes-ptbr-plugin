@@ -8,7 +8,7 @@
  */
 
 import { FORMATTER } from '../_blocks/custom-formatter/index.mjs';
-import { fetchJson } from '../_blocks/http/index.mjs';
+import { HEADER_PROFILES } from '../_blocks/http/index.mjs';
 import { discoverQuality, UNKNOWN_QUALITY } from '../_blocks/quality-discovery/index.mjs';
 import { normalizeText } from '../_blocks/slugify/index.mjs';
 import { getMediaInfo } from '../_blocks/tmdb-info/index.mjs';
@@ -86,6 +86,10 @@ export async function extractStreams(request, providerName = PROVIDER_NAME) {
   }
 
   const work = await fetchWork(media, valid);
+  if (work === null) {
+    console.log(`[${providerName}] Obra ${media.imdbId} não encontrada na fonte`);
+    return [];
+  }
   if (work.torrents.length === 0) {
     console.log(`[${providerName}] Obra ${media.imdbId} sem torrents na resposta`);
     return [];
@@ -137,15 +141,28 @@ function validateRequest(request) {
 /**
  * Consulta a obra pelo IMDb e confere identidade, tipo e lista de torrents.
  *
+ * A rota responde HTTP 404 com `{"error":"not found"}` quando o IMDb não está indexado; esse é o
+ * contrato de ausência reconhecida. Qualquer outro 404, status fora de 2xx, JSON inválido ou
+ * estrutura fora do esquema sobe como falha, sem virar ausência.
+ *
  * @param {import('../_blocks/tmdb-info/index.mjs').MediaInfo} media - Metadados do TMDB.
  * @param {ValidRequest} request - Pedido validado.
- * @returns {Promise<object>} Resposta da obra com `torrents` em lista.
+ * @returns {Promise<object|null>} Resposta da obra ou `null` quando a fonte documenta a ausência.
  * @throws {Error} Se a resposta não for objeto, contradizer IMDb/TMDB/tipo ou não trouxer lista.
  */
 async function fetchWork(media, request) {
   const query = request.mediaType === 'tv' ? `?season=${request.season}&episode=${request.episode}` : '';
   const url = `${THERARBG_API}/title/${encodeURIComponent(media.imdbId)}/${query}`;
-  const data = await fetchJson(url, { profile: 'api' });
+  const response = await fetch(url, { headers: { ...HEADER_PROFILES.api } });
+  const text = await response.text();
+  if (response.status === 404) {
+    const body = parseJson(text);
+    if (isPlainObject(body) && body.error === 'not found') return null;
+    throw new Error(`HTTP 404 em ${url}`);
+  }
+  if (!response.ok) throw new Error(`HTTP ${response.status} em ${url}`);
+  const data = parseJson(text);
+  if (data === undefined) throw new Error(`Resposta não é JSON válido em ${url}`);
   if (!isPlainObject(data)) throw new Error(`Obra inválida em ${url}`);
 
   const imdb = typeof data.imdb === 'string' ? data.imdb.toLowerCase() : '';
@@ -748,6 +765,20 @@ function nonNegativeInteger(value) {
  */
 function positiveNumber(value) {
   return typeof value === 'number' && Number.isFinite(value) && value > 0 ? value : undefined;
+}
+
+/**
+ * Interpreta JSON sem lançar; usado para distinguir o 404 de ausência do corpo inválido.
+ *
+ * @param {string} text - Corpo bruto.
+ * @returns {*} JSON interpretado ou `undefined` quando o corpo não é JSON.
+ */
+function parseJson(text) {
+  try {
+    return JSON.parse(text);
+  } catch {
+    return undefined;
+  }
 }
 
 /**

@@ -21,6 +21,8 @@ const movieVerifile = () => clone(JSON.parse(fs.readFileSync(path.join(FIXTURES,
 const seriesTitle = () => clone(JSON.parse(fs.readFileSync(path.join(FIXTURES, 'series-title.json'), 'utf8')));
 const seriesVerifile = () => clone(JSON.parse(fs.readFileSync(path.join(FIXTURES, 'series-verifile-pack.json'), 'utf8')));
 const singleVerifile = () => clone(JSON.parse(fs.readFileSync(path.join(FIXTURES, 'series-verifile-single.json'), 'utf8')));
+const workNotFound = () => clone(JSON.parse(fs.readFileSync(path.join(FIXTURES, 'work-not-found.json'), 'utf8')));
+const emptySeries = () => clone(JSON.parse(fs.readFileSync(path.join(FIXTURES, 'series-empty.json'), 'utf8')));
 
 const codes = {};
 test.before(async () => {
@@ -376,6 +378,71 @@ test('1.5 IMDb divergente em item gera falha isolada e resumo agregado', async (
   assert.equal(callsTo(runner, 'therarbg.com', '/api/v1/verifile/').length, 0);
   assert.ok(runner.logs.warn.some((message) => message.includes('IMDb')));
   assert.ok(runner.logs.error.some((message) => message.includes('Todas as opções falharam')));
+});
+
+test('1.6 404 documentado da obra é ausência reconhecida para filme e série', async () => {
+  const notFound = workNotFound();
+  const movieTmdb = moviePayload({
+    title: 'Swallowed Star The Movie: Xueluo Continent',
+    original_title: 'Swallowed Star The Movie: Xueluo Continent',
+    external_ids: { imdb_id: 'tt39673613' },
+  });
+  const movie = runtime(makeRoute({ tmdb: movieTmdb, title: { status: 404, body: notFound } }));
+  assert.deepEqual(await movie.getStreams('1398725', 'movie', null, null), []);
+  assert.deepEqual(movie.logs.error, []);
+  assert.deepEqual(movie.logs.warn, []);
+  assert.ok(movie.logs.log.some((message) => message.includes('não encontrada na fonte')));
+  assert.equal(callsTo(movie, 'therarbg.com', '/api/v1/verifile/').length, 0);
+
+  const seriesTmdb = seriesPayload({
+    name: 'Laços de Família',
+    original_name: 'Laços de Família',
+    external_ids: { imdb_id: 'tt0249299' },
+  });
+  const series = runtime(makeRoute({ tmdb: seriesTmdb, title: { status: 404, body: notFound } }));
+  assert.deepEqual(await series.getStreams('34957', 'tv', 1, 1), []);
+  assert.deepEqual(series.logs.error, []);
+  assert.ok(series.logs.log.some((message) => message.includes('não encontrada na fonte')));
+  const titleCall = new URL(callsTo(series, 'therarbg.com', '/api/v1/title/')[0].url);
+  assert.equal(titleCall.searchParams.get('season'), '1');
+  assert.equal(titleCall.searchParams.get('episode'), '1');
+  assert.equal(callsTo(series, 'therarbg.com', '/api/v1/verifile/').length, 0);
+});
+
+test('1.7 404 sem contrato de ausência, 429 e JSON inválido continuam falha', async () => {
+  const cases = [
+    { title: { status: 404, body: { error: 'internal' } }, pattern: /HTTP 404/ },
+    { title: { status: 404, body: { error: 'Not Found' } }, pattern: /HTTP 404/ },
+    { title: { status: 404, body: { message: 'not found' } }, pattern: /HTTP 404/ },
+    { title: { status: 404, rawBody: 'not found', body: null }, pattern: /HTTP 404/ },
+    { title: { status: 429, body: {} }, pattern: /HTTP 429/ },
+    { title: { rawBody: '{"error": "not found"', body: null }, pattern: /JSON válido/ },
+  ];
+  for (const entry of cases) {
+    const runner = runtime(makeRoute({ tmdb: moviePayload(), title: entry.title }));
+    assert.deepEqual(await runner.getStreams('1263337', 'movie', null, null), []);
+    assert.equal(callsTo(runner, 'therarbg.com', '/api/v1/verifile/').length, 0, entry.pattern);
+    assert.ok(runner.logs.error.some((message) => entry.pattern.test(message)), entry.pattern);
+  }
+});
+
+test('1.8 lista de torrents vazia real da série é ausência, não falha', async () => {
+  const tmdb = seriesPayload({
+    name: 'Attack on Titan',
+    original_name: 'Shingeki no Kyojin',
+    first_air_date: '2013-04-07',
+    external_ids: { imdb_id: 'tt2560140' },
+  });
+  const runner = runtime(makeRoute({ tmdb, title: emptySeries() }));
+  assert.deepEqual(await runner.getStreams('1429', 'tv', 1, 1), []);
+  assert.deepEqual(runner.logs.error, []);
+  assert.deepEqual(runner.logs.warn, []);
+  assert.ok(runner.logs.log.some((message) => message.includes('sem torrents')));
+  assert.equal(callsTo(runner, 'therarbg.com', '/api/v1/verifile/').length, 0);
+  const titleCall = new URL(callsTo(runner, 'therarbg.com', '/api/v1/title/')[0].url);
+  assert.equal(titleCall.pathname, '/api/v1/title/tt2560140/');
+  assert.equal(titleCall.searchParams.get('season'), '1');
+  assert.equal(titleCall.searchParams.get('episode'), '1');
 });
 
 test('2.1 a consulta de série acrescenta temporada e episódio e aceita tvSeries', async () => {

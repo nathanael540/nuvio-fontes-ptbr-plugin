@@ -1,4 +1,3 @@
 {
-  "ok": false,
-  "error": "Título não encontrado no catálogo"
+  "error": "Formato inválido. Use ID de filme (ex: 772), série (ex: 62650/12/2) ou URL http(s)."
 }

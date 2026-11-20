@@ -883,7 +883,7 @@
     <header class="topbar">
       <div class="brand">
         <h1>Nuvio Fontes PT-BR</h1>
-        <p>Configure idioma, tipo de stream, qualidade mínima e formato para gerar sua URL de manifest.</p>
+        <p>Gere a URL do manifest para instalar os provedores no Nuvio.</p>
       </div>
       <button type="button" class="theme-btn" id="themeToggle" aria-label="Alternar tema">
         <svg id="themeIconSun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" hidden>
@@ -942,7 +942,7 @@
       <section class="panel" data-panel="1" aria-labelledby="heading-step-1">
         <div class="panel-header">
           <h2 id="heading-step-1">1. Escolha o idioma</h2>
-          <p>O filtro de idioma é cumulativo: cada nível inclui as opções dos níveis anteriores.</p>
+          <p>Cada opção inclui as anteriores.</p>
         </div>
 
         <fieldset>
@@ -972,7 +972,7 @@
                   </span>
                   <span class="code-tag">pt</span>
                 </span>
-                <span class="option-desc">Inclui PT-BR confirmado e também streams em português sem região comprovada, como releases Dual Áudio.</span>
+                <span class="option-desc">Inclui PT-BR confirmado e também streams em português sem região confirmada, como releases Dual Áudio.</span>
               </span>
             </label>
 
@@ -1000,7 +1000,7 @@
                   </span>
                   <span class="code-tag">all</span>
                 </span>
-                <span class="option-desc">Desativa o filtro de idioma. Inclui também streams cuja fonte não informa o idioma.</span>
+                <span class="option-desc">Inclui também streams cuja fonte não informa o idioma.</span>
               </span>
             </label>
           </div>
@@ -1016,7 +1016,6 @@
       <section class="panel" data-panel="2" aria-labelledby="heading-step-2" hidden>
         <div class="panel-header">
           <h2 id="heading-step-2">2. Escolha o tipo de stream</h2>
-          <p>Defina se deseja receber links diretos pela web, torrents P2P ou ambos na mesma lista.</p>
         </div>
 
         <fieldset>
@@ -1032,7 +1031,6 @@
                   </span>
                   <span class="code-tag">all</span>
                 </span>
-                <span class="option-desc">Desativa o filtro de protocolo. Combina streams diretos e torrents para maior variedade de fontes.</span>
               </span>
             </label>
 
@@ -1046,7 +1044,7 @@
                   </span>
                   <span class="code-tag">HTTP</span>
                 </span>
-                <span class="option-desc">Aceita apenas links diretos por HTTP ou HTTPS (HLS, MP4 e MKV). Não usa rede torrent nem expõe seu IP em P2P.</span>
+                <span class="option-desc">Links HLS, MP4 e MKV, sem expor seu IP em rede torrent.</span>
               </span>
             </label>
 
@@ -1060,7 +1058,7 @@
                   </span>
                   <span class="code-tag">P2P</span>
                 </span>
-                <span class="option-desc">Aceita apenas links magnet e arquivos de torrent. O Nuvio pede aceite antes de reproduzir e o IP fica visível aos demais participantes.</span>
+                <span class="option-desc">O Nuvio pede aceite antes de reproduzir e seu IP fica visível aos demais participantes.</span>
               </span>
             </label>
           </div>
@@ -1071,7 +1069,6 @@
       <section class="panel" data-panel="3" aria-labelledby="heading-step-3" hidden>
         <div class="panel-header">
           <h2 id="heading-step-3">3. Escolha a qualidade mínima</h2>
-          <p>A qualidade funciona como piso: escolher 720p mantém 720p, 1080p, 1440p, 4K e 8K.</p>
         </div>
 
         <fieldset>
@@ -1086,9 +1083,7 @@
                     <span class="option-title">Qualquer qualidade (sem filtro)</span>
                   </span>
                   <span class="code-tag">all</span>
-                </span>
-                <span class="option-desc">Aceita todas as resoluções, incluindo CAM e qualidade desconhecida (comum em alguns links HLS adaptativos).</span>
-              </span>
+                </span>              </span>
             </label>
 
             <label class="option-card">
@@ -1100,9 +1095,7 @@
                     <span class="option-title">SD · 480p ou mais</span>
                   </span>
                   <span class="code-tag">480p</span>
-                </span>
-                <span class="option-desc">Mantém de 480p até 8K. Remove CAM e resolução desconhecida.</span>
-              </span>
+                </span>              </span>
             </label>
 
             <label class="option-card">
@@ -1114,9 +1107,7 @@
                     <span class="option-title">HD · 720p ou mais</span>
                   </span>
                   <span class="code-tag">720p</span>
-                </span>
-                <span class="option-desc">Mantém HD (720p), Full HD, QHD, 4K e 8K.</span>
-              </span>
+                </span>              </span>
             </label>
 
             <label class="option-card">
@@ -1128,9 +1119,7 @@
                     <span class="option-title">Full HD · 1080p ou mais</span>
                   </span>
                   <span class="code-tag">1080p</span>
-                </span>
-                <span class="option-desc">Mantém Full HD (1080p), QHD, 4K e 8K.</span>
-              </span>
+                </span>              </span>
             </label>
 
             <label class="option-card">
@@ -1142,9 +1131,7 @@
                     <span class="option-title">QHD · 1440p ou mais</span>
                   </span>
                   <span class="code-tag">1440p</span>
-                </span>
-                <span class="option-desc">Mantém QHD (1440p), 4K e 8K.</span>
-              </span>
+                </span>              </span>
             </label>
 
             <label class="option-card">
@@ -1156,9 +1143,7 @@
                     <span class="option-title">4K UHD · 2160p ou mais</span>
                   </span>
                   <span class="code-tag">2160p</span>
-                </span>
-                <span class="option-desc">Mantém apenas 4K (2160p) e 8K.</span>
-              </span>
+                </span>              </span>
             </label>
 
             <label class="option-card">
@@ -1170,9 +1155,7 @@
                     <span class="option-title">8K · 4320p</span>
                   </span>
                   <span class="code-tag">4320p</span>
-                </span>
-                <span class="option-desc">Mantém apenas streams em 8K (4320p).</span>
-              </span>
+                </span>              </span>
             </label>
           </div>
         </fieldset>
@@ -1202,9 +1185,7 @@
                     <span class="option-title">Prism</span>
                   </span>
                   <span class="code-tag">prism</span>
-                </span>
-                <span class="option-desc">Cabeçalho com selo de qualidade; destaca o título e o ano.</span>
-                <pre class="stream-preview" id="previewPrism" aria-label="Exemplo de exibição no formato Prism"></pre>
+                </span>                <pre class="stream-preview" id="previewPrism" aria-label="Exemplo de exibição no formato Prism"></pre>
               </span>
             </label>
 
@@ -1217,9 +1198,7 @@
                     <span class="option-title">Google Drive</span>
                   </span>
                   <span class="code-tag">gdrive</span>
-                </span>
-                <span class="option-desc">Cabeçalho com o nome do provedor e a qualidade; destaca o arquivo.</span>
-                <pre class="stream-preview" id="previewGdrive" aria-label="Exemplo de exibição no formato Google Drive"></pre>
+                </span>                <pre class="stream-preview" id="previewGdrive" aria-label="Exemplo de exibição no formato Google Drive"></pre>
               </span>
             </label>
           </div>
@@ -1241,7 +1220,6 @@
       <section class="panel" data-panel="5" aria-labelledby="heading-step-5" hidden>
         <div class="panel-header">
           <h2 id="heading-step-5">5. URL do manifest pronta</h2>
-          <p>Copie o endereço abaixo e adicione no Nuvio. Clique em qualquer item do resumo para alterar.</p>
         </div>
 
         <div class="summary-grid" aria-label="Resumo das opções selecionadas">

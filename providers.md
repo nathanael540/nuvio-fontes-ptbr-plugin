@@ -16,19 +16,19 @@
 | [BeTor](#betor) | `betor` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-20 |
 | [Starck Filmes](#starck-filmes) | `starckfilmes` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-20 |
 | [TheRARBG](#therarbg) | `therarbg` | filme, série | magnet, torrent:// | 🔴 Instável | 2026-11-20 |
-| [VaqueiroFilmes](#vaqueirofilmes) | `vaqueirofilmes` | filme | HLS | 🔴 Instável | 2026-11-20 |
+| [VaqueiroFilmes](#vaqueirofilmes) | `vaqueirofilmes` | filme | HLS | 🟢 Estável | 2026-11-20 |
 | [TopFilmes](#topfilmes) | `topfilmes` | filme | MP4 | 🟢 Estável | 2026-11-20 |
 | [CineAgora](#cineagora) | `cineagora` | filme, série | HLS | 🟢 Estável | 2026-11-20 |
 | [BRFlix](#brflix) | `brflix` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-20 |
 | [RIVO](#rivo) | `rivo` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-20 |
 | [Primeflix](#primeflix) | `primeflix` | filme, série | HLS, MKV | 🟢 Estável | 2026-11-20 |
 | [EmbedMovies](#embedmovies) | `embedmovies` | filme, série | HLS | 🟢 Estável | 2026-11-20 |
-| [Kairou](#kairou) | `kairou` | filme, série | HLS, MP4 | 🔴 Instável | 2026-11-20 |
+| [Kairou](#kairou) | `kairou` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-20 |
 | [Pomfy](#pomfy) | `pomfy` | filme, série | HLS | 🔴 Instável | 2026-11-20 |
 | [AnimeFire](#animefire) | `animefire` | filme, série | HLS | 🟢 Estável | 2026-11-20 |
 | [Doramogo](#doramogo) | `doramogo` | filme, série | HLS | 🟢 Estável | 2026-11-20 |
 | [Dattebayo BR](#dattebayo-br) | `dattebayo` | filme, série | MP4 | 🔴 Instável | 2026-11-20 |
-| [AniTube](#anitube) | `anitube` | filme, série | HLS, MP4 | 🔴 Instável | 2026-11-20 |
+| [AniTube](#anitube) | `anitube` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-20 |
 | [OxeAnimes](#oxeanimes) | `oxeanimes` | filme, série | HLS | 🟢 Estável | 2026-11-20 |
 | [Animy](#animy) | `animy` | filme, série | MP4 | 🟢 Estável | 2026-11-20 |
 | [AniBunker](#anibunker) | `anibunker` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-20 |
@@ -318,34 +318,34 @@
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-20T13:19:58.403Z** · ID `2026-11-20T13-19-49-673Z-therarbg-20261120-1632` · **Instável** · pacote 1.1.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
+1. **2026-11-20T15:19:52.405Z** · ID `2026-11-20T15-19-43-882Z-therarbg-20261120-5d1e` · **Instável** · pacote 1.1.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
    1. `movie` `129` · A Viagem de Chihiro (2001) · **Sem resultado** · 0/0 streams aproveitáveis
    2. `movie` `872585` · Oppenheimer (2023) · **Sem resultado** · 0/0 streams aproveitáveis
    3. `movie` `635389` · Jiang Ziya (2020) · **Sem resultado** · 0/0 streams aproveitáveis
-   4. `movie` `1398725` · Swallowed Star The Movie: Xueluo Continent (2024) · **Falha** · 0/0 streams aproveitáveis · Motivo: [TheRARBG] Falha em movie 1398725: HTTP 404 em <url>
+   4. `movie` `1398725` · Swallowed Star The Movie: Xueluo Continent (2024) · **Sem resultado** · 0/0 streams aproveitáveis
    5. `movie` `1630420` · Crime em Cena (2026) · **Sem resultado** · 0/0 streams aproveitáveis
    6. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    7. `tv` `79481` · Doupo Cangqiong (2017) · S02E01 · **Sem resultado** · 0/0 streams aproveitáveis
-   8. `tv` `34957` · Laços de Família (2000) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [TheRARBG] Falha em tv 34957: HTTP 404 em <url>
+   8. `tv` `34957` · Laços de Família (2000) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    9. `tv` `1416` · Grey's Anatomy (2005) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    10. `tv` `96162` · Itaewon Class (2020) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
 <!-- online-verification:end -->
 
 ## VaqueiroFilmes
 
-**Status: 🔴 Instável.**
+**Status: 🟢 Estável.**
 
-Provedor de filmes em HLS pela cadeia EmbedPlay/Byse, com áudio dublado confirmado pelo grupo Dublado. A rodada de 2026-11-12 usou a semente `byse-20261112-8` e resolveu 2/5: Barbie e Crime em Cena ofereceram a opção Byse; os outros três títulos sorteados não. O catálogo `movie` foi ampliado com cinco títulos que expõem Byse (Cara-de-Barro, O Natal Perfeito de um Cachorro, Um Ano de Vida, Compre Um Homem, Crime em Cena e Frequência Explosiva) para melhorar a cobertura da amostra. Séries e downloads ficam fora do contrato.
+Provedor de filmes em HLS pela cadeia EmbedPlay/Byse, com áudio dublado confirmado pelo grupo Dublado. O provedor registra em `console.warn` a etapa de ausência reconhecida (nenhum candidato confirmado, identidade ambígua, EmbedPlay ausente ou nenhuma opção Byse suportada), sem alterar o retorno de `getStreams`. A rodada de 2026-11-12 usou a semente `byse-20261112-8` e resolveu 2/5: Barbie e Crime em Cena ofereceram a opção Byse; os outros três títulos sorteados não. O catálogo `movie` foi ampliado com cinco títulos que expõem Byse (Cara-de-Barro, O Natal Perfeito de um Cachorro, Um Ano de Vida, Compre Um Homem, Crime em Cena e Frequência Explosiva) para melhorar a cobertura da amostra. Séries e downloads ficam fora do contrato. A cobertura continua limitada à opção Byse: títulos que oferecem apenas ABYS, UPNS, Loadvid, VidSrc ou Superflixapi no grupo Dublado retornam lista vazia.
 
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-20T13:20:13.048Z** · ID `2026-11-20T13-19-53-192Z-vaqueirofilmes-20261120-5b7e` · **Instável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
-   1. `movie` `68718` · Django Livre (2012) · **Sem resultado** · 0/0 streams aproveitáveis
-   2. `movie` `361743` · Top Gun: Maverick (2022) · **Sem resultado** · 0/0 streams aproveitáveis
-   3. `movie` `502356` · Super Mario Bros. O Filme (2023) · **Sem resultado** · 0/0 streams aproveitáveis
-   4. `movie` `1070514` · 100 Coisas para Fazer Antes de Virar Zumbi (2023) · **Sem resultado** · 0/0 streams aproveitáveis
-   5. `movie` `1466115` · Se Esse Amor Desaparecesse Hoje (2025) · **Sem resultado** · 0/0 streams aproveitáveis
+1. **2026-11-20T15:17:01.131Z** · ID `2026-11-20T15-16-37-864Z-vaqueirofilmes-d7d3eb04-6bcb` · **Estável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `d7d3eb044deb6b160cbda30e1361b948` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
+   1. `movie` `1398725` · Swallowed Star The Movie: Xueluo Continent (2024) · **Falha** · 0/0 streams aproveitáveis · Motivo: [VaqueiroFilmes] Falha em movie 1398725: Identificador do filme ausente no embed da EmbedPlay
+   2. `movie` `299534` · Vingadores: Ultimato (2019) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `372058` · Your Name (2016) · **Resolvido** · 1/1 streams aproveitáveis
+   4. `movie` `346698` · Barbie (2023) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `734519` · The Fable: The Killer Who Doesn't Kill (2021) · **Sem resultado** · 0/0 streams aproveitáveis
 <!-- online-verification:end -->
 
 ## TopFilmes
@@ -473,24 +473,24 @@ Provedor de filmes e séries em HLS ou MKV do catálogo Primeflix, com busca JSO
 
 ## Kairou
 
-**Status: 🔴 Instável.**
+**Status: 🟢 Estável.**
 
-Provedor de filmes e séries em HLS e MP4 pela API pública de extração do Kairou, consultada pelo ID do TMDB com temporada e episódio. O áudio dublado ou legendado vem das marcações da fonte, as legendas VTT usam o proxy público do próprio site e as opções 4K são descartadas por triagem porque a fonte as reserva a assinantes.
+Provedor de filmes e séries em HLS e MP4 pela API pública de extração do Kairou, consultada por `POST /api/extract` com o ID do TMDB e, em série, temporada e episódio. O áudio dublado ou original vem de `isPtBr`/`audio`, as legendas do topo usam `trackUrl` quando publicadas e as opções 4K são descartadas por triagem porque a fonte as reserva a assinantes. Na rodada de 20/11/2026, 4/5 filmes e 3/5 séries resolveram; Oppenheimer e Hotel del Luna falharam com `fetch failed` e Doupo Cangqiong ficou sem resultado. A amostra não trouxe legendas externas preenchidas.
 
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-20T13:20:16.946Z** · ID `2026-11-20T13-20-04-597Z-kairou-20261120-9e32` · **Instável** · pacote 1.0.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
-   1. `movie` `680` · Pulp Fiction: Tempo de Violência (1994) · **Falha** · 0/0 streams aproveitáveis · Motivo: [Kairou] Falha em movie 680: HTTP 404 em <url>
-   2. `movie` `1184918` · Robô Selvagem (2024) · **Falha** · 0/0 streams aproveitáveis · Motivo: [Kairou] Falha em movie 1184918: HTTP 404 em <url>
-   3. `movie` `155` · Batman: O Cavaleiro das Trevas (2008) · **Falha** · 0/0 streams aproveitáveis · Motivo: [Kairou] Falha em movie 155: HTTP 404 em <url>
-   4. `movie` `299534` · Vingadores: Ultimato (2019) · **Falha** · 0/0 streams aproveitáveis · Motivo: [Kairou] Falha em movie 299534: HTTP 404 em <url>
-   5. `movie` `120` · O Senhor dos Anéis: A Sociedade do Anel (2001) · **Falha** · 0/0 streams aproveitáveis · Motivo: [Kairou] Falha em movie 120: HTTP 404 em <url>
-   6. `tv` `71912` · The Witcher (2019) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Kairou] Falha em tv 71912: HTTP 404 em <url>
-   7. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Kairou] Falha em tv 95479: HTTP 404 em <url>
-   8. `tv` `37854` · One Piece (1999) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Kairou] Falha em tv 37854: HTTP 404 em <url>
-   9. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Kairou] Falha em tv 65930: HTTP 404 em <url>
-   10. `tv` `87108` · Chernobyl (2019) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Kairou] Falha em tv 87108: HTTP 404 em <url>
+1. **2026-11-20T15:24:08.917Z** · ID `2026-11-20T15-23-08-856Z-kairou-986ab692-c4e9` · **Estável** · pacote 1.1.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `986ab692b4c82682c22151903405ae56` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
+   1. `movie` `13` · Forrest Gump: O Contador de Histórias (1994) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `680` · Pulp Fiction: Tempo de Violência (1994) · **Resolvido** · 6/6 streams aproveitáveis
+   3. `movie` `872585` · Oppenheimer (2023) · **Falha** · 0/0 streams aproveitáveis · Motivo: [Kairou] Falha em movie 872585: fetch failed
+   4. `movie` `135397` · Jurassic World: O Mundo dos Dinossauros (2015) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `155` · Batman: O Cavaleiro das Trevas (2008) · **Resolvido** · 2/2 streams aproveitáveis
+   6. `tv` `60735` · The Flash (2014) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   7. `tv` `1416` · Grey's Anatomy (2005) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   8. `tv` `79481` · Doupo Cangqiong (2017) · S02E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `87108` · Chernobyl (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   10. `tv` `90447` · Hotel del Luna (2019) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Kairou] Falha em tv 90447: fetch failed
 <!-- online-verification:end -->
 
 ## Pomfy
@@ -584,24 +584,24 @@ Provedor de animes, tokusatsus, doramas e donghuas em MP4 do catálogo Dattebayo
 
 ## AniTube
 
-**Status: 🔴 Instável.**
+**Status: 🟢 Estável.**
 
-Provedor de filmes e séries de anime em HLS e MP4 do AniTube, com busca por títulos romaji do TMDB, confirmação de temporada e ano, e dois players independentes: FHD em HLS e Player 1 em MP4 do Blogger. A rodada de 2026-11-13 resolveu 3/5 filmes e 5/5 séries; Akira e Princesa Mononoke não têm página correspondente no recorte do site.
+Provedor de filmes e séries de anime em HLS e MP4 do AniTube, com busca por títulos romaji do TMDB, confirmação de temporada e ano, e dois players independentes: FHD em HLS, publicado pelo parâmetro `d` ou pela página `/cdn/` com contexto de iframe, e Player 1 em MP4 do Blogger. A rodada de 2026-11-20 resolveu 3/5 filmes e 5/5 séries; Akira e Princesa Mononoke não têm página correspondente no recorte do site.
 
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-20T13:21:17.799Z** · ID `2026-11-20T13-20-26-846Z-anitube-20261120-a115` · **Instável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
-   1. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AniTube] Falha em movie 635302: Nenhuma ficha produziu stream: Nenhuma opção produziu stream: Host não suportado: api.anivideo.net
-   2. `movie` `129` · A Viagem de Chihiro (2001) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AniTube] Falha em movie 129: Nenhuma ficha produziu stream: Nenhuma opção produziu stream: Host não suportado: api.anivideo.net
+1. **2026-11-20T15:23:32.198Z** · ID `2026-11-20T15-22-50-177Z-anitube-20261120-2e51` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
+   1. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `129` · A Viagem de Chihiro (2001) · **Resolvido** · 1/1 streams aproveitáveis
    3. `movie` `149` · Akira (1988) · **Sem resultado** · 0/0 streams aproveitáveis
-   4. `movie` `372058` · Your Name (2016) · **Falha** · 0/0 streams aproveitáveis · Motivo: [AniTube] Falha em movie 372058: Nenhuma ficha produziu stream: Nenhuma opção produziu stream: Host não suportado: api.anivideo.net; Nenhuma opção produziu stream: Host não suportado: api.anivideo.net
+   4. `movie` `372058` · Your Name (2016) · **Resolvido** · 2/2 streams aproveitáveis
    5. `movie` `128` · Princesa Mononoke (1997) · **Sem resultado** · 0/0 streams aproveitáveis
-   6. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [AniTube] Falha em tv 95479: Nenhuma ficha produziu stream: Nenhuma opção produziu stream: Host não suportado: api.anivideo.net; HTTP 403 em [url]; Nenhuma opção produziu stream: Host não suportado: api.anivideo.net; HTTP 403 em [url]
-   7. `tv` `30984` · Bleach (2004) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [AniTube] Falha em tv 30984: Nenhuma ficha produziu stream: Nenhuma opção produziu stream: Host não suportado: api.anivideo.net; HTTP 403 em [url]; Nenhuma opção produziu stream: Host não suportado: api.anivideo.net; HTTP 403 em [url]
-   8. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [AniTube] Falha em tv 1429: Nenhuma ficha produziu stream: Nenhuma opção produziu stream: Host não suportado: api.anivideo.net; HTTP 403 em [url]
-   9. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [AniTube] Falha em tv 65930: Nenhuma ficha produziu stream: Nenhuma opção produziu stream: Host não suportado: api.anivideo.net; HTTP 403 em [url]
-   10. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [AniTube] Falha em tv 85937: Nenhuma ficha produziu stream: Nenhuma opção produziu stream: Host não suportado: api.anivideo.net; HTTP 403 em [url]; Nenhuma opção produziu stream: HTTP 403 em [url]
+   6. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
+   7. `tv` `30984` · Bleach (2004) · S01E01 · **Resolvido** · 5/5 streams aproveitáveis
+   8. `tv` `1429` · Attack on Titan (2013) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+   9. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 3/3 streams aproveitáveis
+   10. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 5/5 streams aproveitáveis
 <!-- online-verification:end -->
 
 ## OxeAnimes

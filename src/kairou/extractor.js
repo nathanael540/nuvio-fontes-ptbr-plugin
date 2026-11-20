@@ -1,11 +1,12 @@
 /**
- * Extrator do Kairou: consulta a API pública de extração pelo ID do TMDB e monta os streams.
+ * Extrator do Kairou: consulta a API pública de extração por POST com o ID do TMDB e monta os streams.
  *
- * A resposta do Kairou já traz as opções resolvidas (HLS e MP4) e as legendas. O provedor preserva
- * a URL de reprodução publicada, inclusive o proxy público `/api/proxy`, porque os hosts de origem
- * bloqueiam parte dos MP4. As opções 4K são descartadas por triagem, pois a fonte as reserva a
- * assinantes. Erros de rede, JSON inválido e estrutura inesperada são lançados; `ok: true` com
- * `streams: []` é ausência reconhecida.
+ * O corpo JSON identifica o título pelo `target` (ID do TMDB, com temporada e episódio em série). A
+ * resposta já traz as opções resolvidas (HLS e MP4) e as legendas. O provedor preserva a URL de
+ * reprodução publicada, inclusive o proxy público `/api/stream/<id>`, porque é ele que entrega a
+ * mídia. As opções 4K são descartadas por triagem, pois a fonte as reserva a assinantes. Erros de
+ * rede, JSON inválido e estrutura inesperada são lançados; HTTP 200 com `streams: []` é ausência
+ * reconhecida.
  */
 
 import { FORMATTER } from '../_blocks/custom-formatter/index.mjs';
@@ -93,7 +94,13 @@ export async function extractStreams(request, providerName) {
   validateRequest(request);
 
   const media = await getMediaInfo({ tmdbId: request.tmdbId, mediaType: request.mediaType });
-  const payload = readPayload(await fetchJson(extractUrl(request, media), { profile: 'api' }));
+  const payload = readPayload(
+    await fetchJson(`${SOURCE_URL}${EXTRACT_PATH}`, {
+      method: 'POST',
+      profile: 'api',
+      json: extractBody(request, media),
+    }),
+  );
   if (payload.streams.length === 0) return [];
 
   const streams = [];
@@ -141,39 +148,36 @@ function validateRequest(request) {
 }
 
 /**
- * Monta a URL da extração com os parâmetros que o site usa.
+ * Monta o corpo JSON da extração com os campos que o site envia.
  * @param {StreamRequest} request - Pedido validado.
  * @param {MediaInfo} media - Dados do TMDB.
- * @returns {string} URL absoluta de `/api/extract`.
+ * @returns {{ target: string, imdbId?: string, title: string, originalTitle: string, isAnime: boolean }}
+ *   Corpo da requisição; `imdbId` só entra quando o TMDB o fornece.
  */
-function extractUrl(request, media) {
-  const params = new URLSearchParams();
-  params.append('tmdbId', String(request.tmdbId).trim());
-  params.append('type', request.mediaType === 'movie' ? 'movie' : 'series');
-  params.append('title', media.title);
-  if (request.mediaType === 'tv') {
-    params.append('season', String(request.season));
-    params.append('episode', String(request.episode));
-  }
-  if (media.kind === 'anime') params.append('isAnime', '1');
-  return `${SOURCE_URL}${EXTRACT_PATH}?${params.toString()}`;
+function extractBody(request, media) {
+  const tmdbId = String(request.tmdbId).trim();
+  const body = {
+    target: request.mediaType === 'tv' ? `${tmdbId}/${request.season}/${request.episode}` : tmdbId,
+    title: media.title,
+    originalTitle: media.originalTitle,
+    isAnime: media.kind === 'anime',
+  };
+  if (media.imdbId) body.imdbId = media.imdbId;
+  return body;
 }
 
 /**
  * Valida o envelope da resposta e separa streams e legendas.
  * @param {*} payload - Corpo JSON devolvido pela API.
  * @returns {ExtractPayload} Streams e legendas da resposta.
- * @throws {Error} Se a resposta não for objeto, se `ok` não for `true`, se `streams` não for lista ou
- *   se `subtitles` estiver presente fora do formato de lista.
+ * @throws {Error} Se a resposta não for objeto, se `streams` não for lista ou se `subtitles`
+ *   estiver presente fora do formato de lista.
  */
 function readPayload(payload) {
   if (!isPlainObject(payload)) throw new Error('Resposta da extração não é objeto');
-  if (payload.ok !== true) {
-    const reason = failureReason(payload);
-    throw new Error(`Extração recusada pela fonte${reason ? `: ${reason}` : ''}`);
-  }
   if (!Array.isArray(payload.streams)) {
-    throw new Error('Resposta da extração sem "streams" como lista');
+    const reason = failureReason(payload);
+    throw new Error(`Resposta da extração sem "streams" como lista${reason ? `: ${reason}` : ''}`);
   }
   return {
     streams: payload.streams,
@@ -194,7 +198,7 @@ function readSubtitleList(value) {
 }
 
 /**
- * Motivo informado pela fonte quando `ok` não é `true`.
+ * Motivo informado pela fonte em uma resposta sem `streams`.
  * @param {object} payload - Corpo JSON da resposta.
  * @returns {string} Texto do motivo ou string vazia.
  */
@@ -221,18 +225,16 @@ function buildOption(option, payload, media, request, providerName) {
   if (isFourK(option)) return null;
 
   const fields = {
-    url: httpUrl(option.url),
+    url: httpUrl(option.streamUrl),
     format: formatDetails(providerName, media, request),
   };
   const quality = qualityFromOption(option);
   if (quality) fields.quality = quality;
   const language = streamLanguage(option, payload);
   if (language) fields.language = language;
-  const provider = text(option.source);
-  if (provider) fields.provider = provider;
   const type = streamType(option);
   if (type) fields.type = type;
-  const subtitles = subtitlesFor(option, payload);
+  const subtitles = subtitlesFor(payload);
   if (subtitles.length > 0) fields.subtitles = subtitles;
 
   return buildStream(fields);
@@ -275,24 +277,28 @@ function isFourK(option) {
  * Classifica o áudio da opção e, sem dublagem, se há legenda em português.
  * @param {object} option - Item de `streams`.
  * @param {ExtractPayload} payload - Resposta validada.
- * @returns {string|null} Membro de `LANGUAGE` ou null quando a fonte não informa `isDub`.
+ * @returns {string|null} Membro de `LANGUAGE` ou null quando a fonte não informa áudio nem `isPtBr`.
  */
 function streamLanguage(option, payload) {
-  if (option.isDub === true) return LANGUAGE.DUBBED;
-  if (option.isDub !== false) return null;
-  return offersPortugueseSubtitles(option, payload) ? LANGUAGE.SUBTITLED : LANGUAGE.NON_PT_BR;
+  const audio = text(option.audio);
+  if (option.isPtBr === true) return LANGUAGE.DUBBED;
+  if (option.isPtBr === false) {
+    if (/dublado|dubbed/i.test(audio)) return LANGUAGE.DUBBED_NON_PT_BR;
+    return offersPortugueseSubtitles(payload) ? LANGUAGE.SUBTITLED : LANGUAGE.NON_PT_BR;
+  }
+  if (/pt[-_ ]?br/i.test(audio)) return LANGUAGE.DUBBED;
+  if (/dublado|dubbed/i.test(audio)) return LANGUAGE.DUBBED_NON_PT_BR;
+  if (offersPortugueseSubtitles(payload)) return LANGUAGE.SUBTITLED;
+  return audio ? LANGUAGE.NON_PT_BR : null;
 }
 
 /**
- * Indica se a opção ou a resposta oferece legenda em português.
- * @param {object} option - Item de `streams`.
+ * Indica se a resposta oferece legenda em português.
  * @param {ExtractPayload} payload - Resposta validada.
  * @returns {boolean} `true` para legenda com `lang` "pt" ou "pt-BR".
  */
-function offersPortugueseSubtitles(option, payload) {
-  return [option.subtitles, payload.subtitles].some(
-    (list) => Array.isArray(list) && list.some((item) => isPlainObject(item) && isPortugueseLang(item.lang)),
-  );
+function offersPortugueseSubtitles(payload) {
+  return payload.subtitles.some((item) => isPlainObject(item) && isPortugueseLang(item.lang));
 }
 
 /**
@@ -305,32 +311,27 @@ function isPortugueseLang(value) {
 }
 
 /**
- * Tipo do stream informado pela fonte; sem ele, infere de `isHls`.
+ * Tipo do stream informado pela fonte em `format`.
  * @param {object} option - Item de `streams`.
  * @returns {string|null} Tipo do stream ou null quando não há informação.
  */
 function streamType(option) {
-  const declared = text(option.type);
-  if (declared) return declared;
-  if (option.isHls === true) return 'hls';
-  if (option.isHls === false) return 'mp4';
-  return null;
+  const declared = text(option.format);
+  return declared || null;
 }
 
 /**
- * Legendas da opção, ou as da resposta quando a opção não traz lista preenchida.
- * @param {object} option - Item de `streams`.
+ * Legendas do topo da resposta.
  * @param {ExtractPayload} payload - Resposta validada.
  * @returns {object[]} Legendas válidas, sem URL repetida.
  */
-function subtitlesFor(option, payload) {
-  const own = Array.isArray(option.subtitles) && option.subtitles.length > 0;
-  return readSubtitles(own ? option.subtitles : payload.subtitles);
+function subtitlesFor(payload) {
+  return readSubtitles(payload.subtitles);
 }
 
 /**
  * Resolve, normaliza e deduplica as legendas. Legenda inválida é omitida sem descartar o vídeo.
- * @param {object[]} list - Lista de legendas da opção ou da resposta.
+ * @param {object[]} list - Lista de legendas da resposta.
  * @returns {object[]} Legendas no formato do contrato, na ordem da lista.
  */
 function readSubtitles(list) {
@@ -339,7 +340,7 @@ function readSubtitles(list) {
     if (!isPlainObject(item)) continue;
     let url;
     try {
-      url = httpUrl(item.url);
+      url = httpUrl(subtitleUrl(item));
     } catch {
       continue;
     }
@@ -351,6 +352,16 @@ function readSubtitles(list) {
     if (!subtitles.has(url)) subtitles.set(url, subtitle);
   }
   return [...subtitles.values()];
+}
+
+/**
+ * Endereço da legenda: `trackUrl` é o campo atual do cliente da fonte; `url` fica como reserva de
+ * respostas antigas.
+ * @param {object} item - Item de `subtitles`.
+ * @returns {string} Endereço publicado, relativo ou absoluto.
+ */
+function subtitleUrl(item) {
+  return text(item.trackUrl) || text(item.url);
 }
 
 /**
@@ -404,14 +415,14 @@ function formatDetails(providerName, media, request) {
 }
 
 /**
- * Rótulo da opção nas mensagens: `id` da fonte ou posição na lista.
+ * Rótulo da opção nas mensagens: `label` legível da fonte ou posição na lista.
  * @param {*} option - Item de `streams`.
  * @param {number} index - Posição a partir de zero.
  * @returns {string} Rótulo estável para o aviso.
  */
 function optionLabel(option, index) {
-  const id = isPlainObject(option) ? text(option.id) : '';
-  return id || String(index + 1);
+  const label = isPlainObject(option) ? text(option.label) : '';
+  return label || String(index + 1);
 }
 
 /**

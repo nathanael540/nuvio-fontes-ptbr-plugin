@@ -1,0 +1,32 @@
+{
+  "id": 438631,
+  "title": "Duna",
+  "original_title": "Dune",
+  "release_date": "2021-09-15",
+  "original_language": "en",
+  "genres": [
+    {
+      "id": 878,
+      "name": "Ficção científica"
+    },
+    {
+      "id": 12,
+      "name": "Aventura"
+    }
+  ],
+  "external_ids": {
+    "imdb_id": "tt1160419"
+  },
+  "alternative_titles": {
+    "titles": [
+      {
+        "iso_3166_1": "BR",
+        "title": "Duna: Parte Um",
+        "type": ""
+      }
+    ]
+  },
+  "origin_country": [
+    "US"
+  ]
+}

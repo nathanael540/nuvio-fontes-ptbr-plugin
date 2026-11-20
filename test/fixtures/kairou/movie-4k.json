@@ -1,0 +1,73 @@
+{
+  "elapsedMs": 272,
+  "cached": false,
+  "streams": [
+    {
+      "id": "fourk-1",
+      "label": "Servidor 1",
+      "audio": "PT-BR · Dublado",
+      "quality": "1080p Full HD",
+      "codec": "h264",
+      "format": "mp4",
+      "isPtBr": true,
+      "is4k": false,
+      "streamUrl": "/api/stream/fourk-1/media.mp4"
+    },
+    {
+      "id": "fourk-2",
+      "label": "Servidor 2",
+      "audio": "PT-BR · Dublado",
+      "quality": "1080p Full HD",
+      "codec": "h264",
+      "format": "mp4",
+      "isPtBr": true,
+      "is4k": false,
+      "streamUrl": "/api/stream/fourk-2/media.mp4"
+    },
+    {
+      "id": "fourk-3",
+      "label": "Servidor 3",
+      "audio": "PT-BR · Dublado",
+      "quality": "4K UHD",
+      "codec": "h265",
+      "format": "mp4",
+      "isPtBr": true,
+      "is4k": true,
+      "streamUrl": "/api/stream/fourk-3/media.mp4"
+    },
+    {
+      "id": "fourk-4",
+      "label": "Servidor 4",
+      "audio": "PT-BR · Dublado",
+      "quality": "4K UHD",
+      "codec": "h265",
+      "format": "mp4",
+      "isPtBr": true,
+      "is4k": true,
+      "streamUrl": "/api/stream/fourk-4/media.mp4"
+    },
+    {
+      "id": "fourk-5",
+      "label": "Servidor 5",
+      "audio": "PT-BR · Dublado",
+      "quality": "4K UHD",
+      "codec": "h265",
+      "format": "mp4",
+      "isPtBr": true,
+      "is4k": true,
+      "streamUrl": "/api/stream/fourk-5/media.mp4"
+    },
+    {
+      "id": "fourk-6",
+      "label": "Servidor 6",
+      "audio": "PT-BR · Dublado",
+      "quality": "4K UHD",
+      "codec": "h265",
+      "format": "mp4",
+      "isPtBr": true,
+      "is4k": true,
+      "streamUrl": "/api/stream/fourk-6/media.mp4"
+    }
+  ],
+  "subtitles": []
+}

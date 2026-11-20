@@ -1,21 +1,26 @@
 /**
  * Resolução dos dois players do AniTube.
  *
- * O player FHD entrega HLS direto pelo parâmetro `d` do iframe. O Player 1 é um caminho de token
- * no domínio do site que redireciona para `api.anivideo.net/file/...`; essa página publica um iframe
- * do Blogger, cujo HTML traz `streamingData.formats` com MP4 progressivos. Cada player é resolvido
- * em isolamento: a falha de um descarta só aquela opção.
+ * O player FHD entrega HLS pelo parâmetro `d` do iframe ou pela página publicada em
+ * `api.anivideo.net/cdn/v1...`, que exige o contexto de iframe e publica `sources.file`. O Player 1
+ * é um caminho de token no domínio do site que redireciona para `api.anivideo.net/file/...`; essa
+ * página também exige o contexto de iframe e publica um iframe do Blogger, cujo HTML traz
+ * `streamingData.formats` com MP4 progressivos. Cada player é resolvido em isolamento: a falha de
+ * um descarta só aquela opção.
  */
 
 import { extractBloggerFormats } from '../_blocks/blogger-video/index.mjs';
 import { fetchPage, fetchText } from '../_blocks/http/index.mjs';
+import { extractScriptString } from '../_blocks/script-extract/index.mjs';
 import { loadHtml } from './html.js';
 
 const FHD_HOST = 'api.anivideo.net';
 const FHD_PATH = 'videohls.php';
+const FHD_CDN_PATH = '/cdn/';
 const ANITUBE_HOSTS = new Set(['anitube.zip', 'www.anitube.zip']);
 const BLOGGER_HOSTS = new Set(['blogger.com', 'www.blogger.com']);
 const HTTP_PROTOCOLS = ['http:', 'https:'];
+const IFRAME_HEADERS = Object.freeze({ 'Sec-Fetch-Dest': 'iframe' });
 
 /**
  * @typedef {object} PlayerOption
@@ -50,7 +55,7 @@ export function collectPlayers(html, pageUrl) {
     if (!src) continue;
     const url = new URL(src, pageUrl).href;
     const parsed = new URL(url);
-    if (parsed.hostname === FHD_HOST && parsed.pathname.includes(FHD_PATH)) {
+    if (parsed.hostname === FHD_HOST && isFhdPath(parsed.pathname)) {
       players.push({ kind: 'fhd', url, label: 'Player FHD' });
     } else if (ANITUBE_HOSTS.has(parsed.hostname)) {
       players.push({ kind: 'player1', url, label: 'Player 1' });
@@ -59,6 +64,15 @@ export function collectPlayers(html, pageUrl) {
     }
   }
   return players;
+}
+
+/**
+ * Indica se o caminho no host FHD pertence a uma das formas públicas do player.
+ * @param {string} pathname - Caminho da URL do iframe.
+ * @returns {boolean} `true` para `videohls.php` ou para a rota `/cdn/`.
+ */
+function isFhdPath(pathname) {
+  return pathname.includes(FHD_PATH) || pathname.startsWith(FHD_CDN_PATH);
 }
 
 /**
@@ -114,25 +128,31 @@ async function resolveOption(player, pageUrl) {
 
 /**
  * Resolve o player FHD como HLS.
+ *
+ * O parâmetro `d` é a fonte direta quando existe; a página do player, aberta com o contexto de
+ * iframe exigido pela fonte, pode publicar `sources.file` e `sources.label`. Na rota `/cdn/`, a
+ * página é obrigatória porque o iframe não traz a mídia.
+ *
  * @param {PlayerOption} player - Iframe do player FHD.
  * @param {string} pageUrl - URL da ficha, usada como `Referer`.
  * @returns {Promise<PlayerStream[]>} Um stream HLS.
- * @throws {Error} Se o iframe não tiver o parâmetro `d`.
+ * @throws {Error} Se a página falhar sem URL direta ou se nenhuma mídia válida for encontrada.
  */
 async function resolveFhd(player, pageUrl) {
-  const mediaUrl = readFhdUrl(player.url);
+  const directUrl = readFhdUrl(player.url);
   let quality = null;
-  let url = mediaUrl;
+  let url = directUrl;
 
   try {
-    const page = await fetchPage(player.url, { profile: 'player', headers: { Referer: pageUrl } });
+    const page = await fetchPage(player.url, { profile: 'player', headers: { Referer: pageUrl, ...IFRAME_HEADERS } });
     const source = readFhdSource(page.text);
-    if (source.file !== null) url = new URL(source.file, page.url).href;
+    if (source.file !== null && isHttpUrl(source.file)) url = new URL(source.file, page.url).href;
     if (source.label !== null) quality = source.label;
-  } catch {
-    // A mídia já está no parâmetro `d`; a página do player só melhora o rótulo.
+  } catch (error) {
+    if (directUrl === null) throw error;
   }
 
+  if (url === null) throw new Error('Player FHD sem mídia');
   return [{ url, quality, provider: 'Player FHD', type: 'hls' }];
 }
 
@@ -144,7 +164,7 @@ async function resolveFhd(player, pageUrl) {
  * @throws {Error} Se a cadeia não chegar ao iframe do Blogger ou não tiver MP4.
  */
 async function resolvePlayer1(player, pageUrl) {
-  const page = await fetchPage(player.url, { profile: 'player', headers: { Referer: pageUrl } });
+  const page = await fetchPage(player.url, { profile: 'player', headers: { Referer: pageUrl, ...IFRAME_HEADERS } });
   const bloggerUrl = readBloggerIframe(page.text, page.url);
   const blogger = await fetchText(bloggerUrl, { profile: 'player', headers: { Referer: page.url } });
   return extractBloggerFormats(blogger).map((format) => ({
@@ -158,20 +178,23 @@ async function resolvePlayer1(player, pageUrl) {
 /**
  * Lê o parâmetro `d` do iframe do player FHD.
  * @param {string} url - URL do iframe.
- * @returns {string} URL do HLS.
- * @throws {Error} Se o parâmetro não existir ou não for http(s).
+ * @returns {string|null} URL do HLS, ou `null` quando o iframe não traz o parâmetro.
+ * @throws {Error} Se o parâmetro existir vazio ou fora de http(s).
  */
 function readFhdUrl(url) {
   const mediaUrl = new URL(url).searchParams.get('d');
-  if (typeof mediaUrl !== 'string' || mediaUrl.trim() === '') {
-    throw new Error('Player FHD sem parâmetro d');
-  }
+  if (mediaUrl === null) return null;
+  if (mediaUrl.trim() === '') throw new Error('Player FHD com parâmetro d vazio');
   if (!isHttpUrl(mediaUrl)) throw new Error('Player FHD com parâmetro d fora de http(s)');
   return mediaUrl;
 }
 
 /**
  * Lê `sources.file` e `sources.label` da página do player FHD.
+ *
+ * A página usa uma string JavaScript; `extractScriptString` desfaz os escapes `\/` e `\uXXXX`
+ * antes de a URL ser usada.
+ *
  * @param {string} html - HTML do player.
  * @returns {{ file: string|null, label: string|null }} Dados encontrados.
  * @throws {Error} Se a página não tiver o bloco `sources`.
@@ -179,9 +202,10 @@ function readFhdUrl(url) {
 function readFhdSource(html) {
   const block = /sources\s*:\s*\[([\s\S]*?)\]/i.exec(html);
   if (block === null) throw new Error('Player FHD sem bloco sources');
-  const file = /file\s*:\s*['"]([^'"]+)['"]/i.exec(block[1]);
-  const label = /label\s*:\s*['"]([^'"]+)['"]/i.exec(block[1]);
-  return { file: file === null ? null : file[1], label: label === null ? null : label[1] };
+  return {
+    file: extractScriptString(block[1], 'file'),
+    label: extractScriptString(block[1], 'label'),
+  };
 }
 
 /**

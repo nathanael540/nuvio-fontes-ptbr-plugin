@@ -24,7 +24,7 @@ const MAX_PAGES = 2;
  */
 export async function extractStreams(request, providerName) {
   const media = await getMediaInfo({ tmdbId: request.tmdbId, mediaType: 'movie' });
-  const movie = await findMovie(media);
+  const movie = await findMovie(media, providerName);
   if (movie === null) return [];
   const result = await resolveStreams(media, movie.url, providerName);
   if (!result.streams.length && result.failures.length) {
@@ -36,10 +36,11 @@ export async function extractStreams(request, providerName) {
 /**
  * Procura o filme pelo título PT-BR e, se nenhum candidato for confirmado, pelo título original.
  * @param {object} media - Dados do TMDB.
+ * @param {string} providerName - Nome usado no diagnóstico de ausência.
  * @returns {Promise<{ url: string, title: string }|null>} Página confirmada ou `null` em ausência/ambiguidade.
  * @throws {Error} Em erro HTTP, JSON inválido ou página de candidato sem JSON-LD.
  */
-async function findMovie(media) {
+async function findMovie(media, providerName) {
   const queries = [media.title, media.originalTitle];
   const seen = new Set();
   for (const query of queries) {
@@ -54,8 +55,12 @@ async function findMovie(media) {
       if (isConfirmed(identity, media)) confirmed.push({ url: page.url, title: candidate.title });
     }
     if (confirmed.length === 1) return confirmed[0];
-    if (confirmed.length > 1) return null;
+    if (confirmed.length > 1) {
+      console.warn(`[${providerName}] Ausência: identidade ambígua entre candidatos confirmados`);
+      return null;
+    }
   }
+  console.warn(`[${providerName}] Ausência: nenhum candidato confirmado no catálogo`);
   return null;
 }
 

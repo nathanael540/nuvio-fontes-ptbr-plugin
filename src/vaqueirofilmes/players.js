@@ -26,6 +26,7 @@ export async function resolveStreams(media, movieUrl, providerName) {
     for (const source of sources) {
       console.log(`[VaqueiroFilmes] Opção ${source.label} descartada por triagem: EmbedPlay ausente`);
     }
+    console.warn('[VaqueiroFilmes] Ausência: opção EmbedPlay não disponível');
     return { streams: [], failures: [] };
   }
   for (const source of sources) {
@@ -35,7 +36,11 @@ export async function resolveStreams(media, movieUrl, providerName) {
   const variant = await fetchPage(embed.url, { headers: { Referer: listPage.url } });
   const embedUrl = readEmbedIframe(variant.text, variant.url);
   const chain = await openEmbedPlay(embedUrl, variant.url);
-  return playOptions(chain, media, providerName);
+  const result = await playOptions(chain, media, providerName);
+  if (!result.streams.length && !result.failures.length) {
+    console.warn('[VaqueiroFilmes] Ausência: nenhuma opção Byse suportada entre as opções dubladas');
+  }
+  return result;
 }
 
 /**
