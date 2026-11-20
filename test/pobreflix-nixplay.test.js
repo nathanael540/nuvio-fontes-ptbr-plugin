@@ -20,6 +20,16 @@ const blockedScriptHtml = fs.readFileSync(path.join(FIXTURES_DIR, 'challenge-wit
 const movieHtml = fs.readFileSync(path.join(FIXTURES_DIR, 'redeflix-movie.html'), 'utf8');
 const seriesHtml = fs.readFileSync(path.join(FIXTURES_DIR, 'redeflix-series.html'), 'utf8');
 const noQualityHtml = fs.readFileSync(path.join(FIXTURES_DIR, 'redeflix-no-quality.html'), 'utf8');
+const importedSearchMovieHtml = fs.readFileSync(path.join(FIXTURES_DIR, 'imported-search-movie.html'), 'utf8');
+const importedSearchTvHtml = fs.readFileSync(path.join(FIXTURES_DIR, 'imported-search-tv.html'), 'utf8');
+const importedSearchEmptyHtml = fs.readFileSync(path.join(FIXTURES_DIR, 'imported-search-empty.html'), 'utf8');
+const importedMovieHtml = fs.readFileSync(path.join(FIXTURES_DIR, 'imported-content-movie.html'), 'utf8');
+const importedTvHtml = fs.readFileSync(path.join(FIXTURES_DIR, 'imported-content-tv.html'), 'utf8');
+const importedMovieOption = fs.readFileSync(path.join(FIXTURES_DIR, 'imported-option-movie.json'), 'utf8');
+const importedTvOption = fs.readFileSync(path.join(FIXTURES_DIR, 'imported-option-tv.json'), 'utf8');
+const importedSourceNotFound = fs.readFileSync(path.join(FIXTURES_DIR, 'imported-source-not-found.json'), 'utf8');
+const importedInvalidPost = fs.readFileSync(path.join(FIXTURES_DIR, 'imported-invalid-post.json'), 'utf8');
+const importedForeignOption = fs.readFileSync(path.join(FIXTURES_DIR, 'imported-option-foreign.json'), 'utf8');
 
 function makeMp4Buffer() {
   const buf = new Uint8Array(64);
@@ -104,7 +114,9 @@ function runtime(route = () => { throw new Error('fetch inesperado'); }, bundle 
       let result;
       if (new URL(url).host === 'api.themoviedb.org') {
         const isTv = String(url).includes('/tv/');
-        const title = isTv ? 'Breaking Bad' : String(url).includes('/550?') ? 'Clube da Luta' : 'Homem-Aranha: Um Novo Dia';
+        const title = isTv
+          ? (String(url).includes('/14853?') ? 'O Clone' : 'Breaking Bad')
+          : (String(url).includes('/550?') ? 'Clube da Luta' : 'Homem-Aranha: Um Novo Dia');
         result = { body: {
           title, name: title, original_title: title, original_name: title,
           release_date: '2026-01-01', first_air_date: '2008-01-01',
@@ -202,9 +214,9 @@ test('1.2 aliases convergentes são lidos por fetchPage e POST só usa a origem 
     return { body: themeHtml };
   }, originCode);
   assert.deepEqual([...rt.context.module.exports.ALIASES], [
-    'https://pobreflix.boutique', 'https://pobreflix.cab', 'https://pobreflix.garden', 'https://pobreflix.monster',
+    'https://pobreflix.boutique', 'https://pobreflix.cab', 'https://pobreflix.garden', 'https://pobreflixtv.camp',
   ]);
-  const result = await rt.context.module.exports.resolveEffectiveOrigin('https://pobreflix.monster');
+  const result = await rt.context.module.exports.resolveEffectiveOrigin('https://pobreflix.garden');
   assert.equal(result.effectiveOrigin, 'https://pobreflix.boutique');
   assert.equal(rt.calls.length, 1);
   assert.equal(rt.calls[0].init.method, 'GET');
@@ -335,6 +347,10 @@ test('2.2 distingue ausência funcional de falha operacional', async () => {
   const absentEp = await makePlayerTest(404, { success: false, message: 'Episódio não sincronizado.' });
   assert.equal(absentEp.status, 'absent');
 
+  // 404 título não cadastrado no catálogo
+  const absentCatalog = await makePlayerTest(404, { code: 'not_found', message: 'Título não cadastrado' });
+  assert.equal(absentCatalog.status, 'absent');
+
   // 400 falha operacional
   await assert.rejects(
     makePlayerTest(400, { success: false, message: 'Conteúdo inválido.' }),
@@ -358,6 +374,28 @@ test('2.2 distingue ausência funcional de falha operacional', async () => {
     makePlayerTest(200, { success: false, message: 'Erro desconhecido do servidor' }),
     /Player API erro/,
   );
+});
+
+test('2.2 conteúdo importado é status próprio, não ausência nem 404 operacional', async () => {
+  const playerContext = {
+    module: { exports: {} },
+    URL, URLSearchParams,
+    require: () => ({ load }),
+    fetch: async () => ({
+      status: 404,
+      text: async () => JSON.stringify({
+        code: 'imported_source',
+        message: 'O conteúdo importado usa a fonte RedeMuvi',
+        data: { status: 404 },
+      }),
+    }),
+  };
+  vm.runInNewContext(playerCode, playerContext);
+  const result = await playerContext.module.exports.queryPlayer('https://pobreflixtv.camp', {
+    tmdbId: '969681', mediaType: 'movie', season: null, episode: null,
+  });
+  assert.equal(result.status, 'imported');
+  assert.match(result.message, /RedeMuvi/);
 });
 
 // 3. Resolução de players e recuperação
@@ -906,4 +944,219 @@ test('HLS compartilhado preserva playlist sem resolução e rejeita conteúdo in
       'https://pobreflix.boutique', { mediaType: 'movie' }, { title: 'Título', year: null },
     ), expected);
   }
+});
+
+// Conteúdo importado (RedeMuvi) pela interface pública da própria origem
+const importedPlayer = {
+  status: 404,
+  text: async () => JSON.stringify({ code: 'imported_source', message: 'O conteúdo importado usa a fonte RedeMuvi' }),
+};
+
+test('importado: filme confirma o TMDB, usa o post público e sonda mídia com Referer', async () => {
+  const rt = runtime((url, init) => {
+    const u = url.href;
+    if (u === 'https://pobreflixtv.camp/wp-json/api/v1/player') return importedPlayer;
+    if (url.pathname === '/' && url.searchParams.get('pf12_search') === '1') {
+      assert.equal(url.searchParams.get('type'), 'movie');
+      return { body: importedSearchMovieHtml };
+    }
+    if (url.pathname === '/assistir/filme/homem-aranha-um-novo-dia/') return { body: importedMovieHtml };
+    if (url.pathname === '/wp-admin/admin-ajax.php') {
+      assert.equal(init.method, 'POST');
+      const body = new URLSearchParams(init.body);
+      assert.equal(body.get('action'), 'pf12_public_player');
+      assert.equal(body.get('provider'), 'redemuvi');
+      assert.equal(body.get('post_id'), '19298');
+      assert.equal(body.get('tmdb'), '969681');
+      return { body: importedMovieOption };
+    }
+    if (url.host === 'media.example') {
+      assert.equal(init.headers.Referer, 'https://pobreflixtv.camp/assistir/filme/homem-aranha-um-novo-dia/');
+      assert.equal(init.headers.Origin, 'https://pobreflixtv.camp');
+      assert.equal(init.headers.Range, 'bytes=0-63');
+      return { status: 206, headers: { 'content-range': 'bytes 0-63/1002373403' }, buffer: makeMp4Buffer() };
+    }
+    throw new Error(`URL inesperada: ${u}`);
+  }, playerCode);
+
+  const result = await rt.context.module.exports.resolvePlayer('https://pobreflixtv.camp', movieRequest);
+  assert.equal(result.status, 'ok');
+  assert.equal(result.streams.length, 1);
+  assert.equal(result.streams[0].url, 'https://media.example/movie/multilogado/abc123/20461.mp4');
+  assert.equal(result.streams[0].provider, 'RedeMuvi');
+  assert.equal(result.streams[0].type, 'mp4');
+  assert.equal(result.streams[0].size, '0.9 GB');
+  assert.equal(result.streams[0].quality, 'Desconhecida');
+  assert.equal(result.streams[0].language, 'Idioma Desconhecido');
+  assert.equal(result.streams[0].headers.Referer, 'https://pobreflixtv.camp/assistir/filme/homem-aranha-um-novo-dia/');
+  assert.equal(result.streams[0].headers.Origin, 'https://pobreflixtv.camp');
+  assert.match(result.streams[0].name, /Desconhecida/);
+});
+
+test('importado: episódio envia temporada/episódio e usa a página da série confirmada', async () => {
+  const rt = runtime((url, init) => {
+    if (url.pathname === '/wp-json/api/v1/player') return importedPlayer;
+    if (url.pathname === '/' && url.searchParams.get('pf12_search') === '1') {
+      assert.equal(url.searchParams.get('type'), 'tv');
+      return { body: importedSearchTvHtml };
+    }
+    if (url.pathname === '/assistir/serie/o-clone/') return { body: importedTvHtml };
+    if (url.pathname === '/wp-admin/admin-ajax.php') {
+      const body = new URLSearchParams(init.body);
+      assert.equal(body.get('type'), 'episode');
+      assert.equal(body.get('tmdb'), '14853');
+      assert.equal(body.get('post_id'), '21370');
+      assert.equal(body.get('season'), '2');
+      assert.equal(body.get('episode'), '3');
+      return { body: importedTvOption };
+    }
+    if (url.host === 'media.example') {
+      assert.equal(init.headers.Referer, 'https://pobreflixtv.camp/assistir/serie/o-clone/');
+      return { status: 206, headers: { 'content-range': 'bytes 0-63/636297792' }, buffer: makeMp4Buffer() };
+    }
+    throw new Error(`URL inesperada: ${url.href}`);
+  }, playerCode);
+
+  const result = await rt.context.module.exports.resolvePlayer('https://pobreflixtv.camp', {
+    tmdbId: '14853', mediaType: 'tv', season: 2, episode: 3,
+  });
+  assert.equal(result.status, 'ok');
+  assert.equal(result.streams.length, 1);
+  assert.equal(result.streams[0].url, 'https://media.example/series/multilogado/abc123/406983.mp4');
+  assert.equal(result.streams[0].size, '606.8 MB');
+});
+
+test('importado: source_not_found retorna ausência sem erro operacional', async () => {
+  const rt = runtime((url) => {
+    if (url.pathname === '/wp-json/api/v1/player') return importedPlayer;
+    if (url.pathname === '/') return { body: importedSearchMovieHtml };
+    if (url.pathname === '/assistir/filme/homem-aranha-um-novo-dia/') return { body: importedMovieHtml };
+    if (url.pathname === '/wp-admin/admin-ajax.php') return { body: importedSourceNotFound };
+    throw new Error(`URL inesperada: ${url.href}`);
+  }, playerCode);
+
+  const result = await rt.context.module.exports.resolvePlayer('https://pobreflixtv.camp', movieRequest);
+  assert.equal(result.status, 'absent');
+});
+
+test('importado: source_not_found só é ausência em resposta 200', async () => {
+  const rt = runtime((url) => {
+    if (url.pathname === '/wp-json/api/v1/player') return importedPlayer;
+    if (url.pathname === '/') return { body: importedSearchMovieHtml };
+    if (url.pathname === '/assistir/filme/homem-aranha-um-novo-dia/') return { body: importedMovieHtml };
+    if (url.pathname === '/wp-admin/admin-ajax.php') return { status: 500, body: importedSourceNotFound };
+    throw new Error(`URL inesperada: ${url.href}`);
+  }, playerCode);
+
+  await assert.rejects(
+    rt.context.module.exports.resolvePlayer('https://pobreflixtv.camp', movieRequest),
+    /HTTP 500 na recuperação pública/,
+  );
+});
+
+test('importado: mídia 404 Episode not found é ausência', async () => {
+  const rt = runtime((url) => {
+    if (url.pathname === '/wp-json/api/v1/player') return importedPlayer;
+    if (url.pathname === '/') return { body: importedSearchMovieHtml };
+    if (url.pathname === '/assistir/filme/homem-aranha-um-novo-dia/') return { body: importedMovieHtml };
+    if (url.pathname === '/wp-admin/admin-ajax.php') return { body: importedMovieOption };
+    if (url.host === 'media.example') return { status: 404, text: 'Episode not found' };
+    throw new Error(`URL inesperada: ${url.href}`);
+  }, playerCode);
+
+  const result = await rt.context.module.exports.resolvePlayer('https://pobreflixtv.camp', movieRequest);
+  assert.equal(result.status, 'absent');
+});
+
+test('importado: invalid_post é falha operacional e não ausência', async () => {
+  const rt = runtime((url) => {
+    if (url.pathname === '/wp-json/api/v1/player') return importedPlayer;
+    if (url.pathname === '/') return { body: importedSearchMovieHtml };
+    if (url.pathname === '/assistir/filme/homem-aranha-um-novo-dia/') return { body: importedMovieHtml };
+    if (url.pathname === '/wp-admin/admin-ajax.php') return { status: 404, body: importedInvalidPost };
+    throw new Error(`URL inesperada: ${url.href}`);
+  }, playerCode);
+
+  await assert.rejects(
+    rt.context.module.exports.resolvePlayer('https://pobreflixtv.camp', movieRequest),
+    /Recuperação recusou a coordenada do post/,
+  );
+});
+
+test('importado: mídia fora da base declarada é rejeitada antes da sonda', async () => {
+  const rt = runtime((url) => {
+    if (url.pathname === '/wp-json/api/v1/player') return importedPlayer;
+    if (url.pathname === '/') return { body: importedSearchMovieHtml };
+    if (url.pathname === '/assistir/filme/homem-aranha-um-novo-dia/') return { body: importedMovieHtml };
+    if (url.pathname === '/wp-admin/admin-ajax.php') return { body: importedForeignOption };
+    throw new Error(`URL inesperada: ${url.href}`);
+  }, playerCode);
+
+  await assert.rejects(
+    rt.context.module.exports.resolvePlayer('https://pobreflixtv.camp', movieRequest),
+    /Origem de mídia divergente da base declarada/,
+  );
+  assert.ok(rt.calls.every((call) => new URL(call.url).host !== 'evil.example'));
+});
+
+test('importado: sonda sem assinatura ftyp falha sem montar stream', async () => {
+  const rt = runtime((url) => {
+    if (url.pathname === '/wp-json/api/v1/player') return importedPlayer;
+    if (url.pathname === '/') return { body: importedSearchMovieHtml };
+    if (url.pathname === '/assistir/filme/homem-aranha-um-novo-dia/') return { body: importedMovieHtml };
+    if (url.pathname === '/wp-admin/admin-ajax.php') return { body: importedMovieOption };
+    if (url.host === 'media.example') {
+      return { status: 206, headers: { 'content-range': 'bytes 0-63/1000' }, buffer: new Uint8Array(64).buffer };
+    }
+    throw new Error(`URL inesperada: ${url.href}`);
+  }, playerCode);
+
+  await assert.rejects(
+    rt.context.module.exports.resolvePlayer('https://pobreflixtv.camp', movieRequest),
+    /Assinatura ftyp não encontrada/,
+  );
+});
+
+test('importado: busca sem TMDB confirmado retorna ausência e não consulta a recuperação', async () => {
+  const rt = runtime((url) => {
+    if (url.pathname === '/wp-json/api/v1/player') return importedPlayer;
+    if (url.pathname === '/') return { body: importedSearchEmptyHtml };
+    throw new Error(`URL inesperada: ${url.href}`);
+  }, playerCode);
+
+  const result = await rt.context.module.exports.resolvePlayer('https://pobreflixtv.camp', movieRequest);
+  assert.equal(result.status, 'absent');
+  assert.ok(rt.calls.every((call) => call.url !== 'https://pobreflixtv.camp/wp-admin/admin-ajax.php'));
+});
+
+test('importado: página com TMDB divergente não é usada e vira ausência', async () => {
+  const rt = runtime((url) => {
+    if (url.pathname === '/wp-json/api/v1/player') return importedPlayer;
+    if (url.pathname === '/') return { body: importedSearchMovieHtml };
+    if (url.pathname === '/assistir/filme/homem-aranha-um-novo-dia/') {
+      return { body: importedMovieHtml.replace('data-tmdb="969681"', 'data-tmdb="1"') };
+    }
+    if (url.pathname === '/assistir/filme/outro-filme/') {
+      return { body: '<div class="pf12-player" data-post-id="2" data-type="movie" data-tmdb="2"></div>' };
+    }
+    if (url.pathname === '/wp-admin/admin-ajax.php') throw new Error('Recuperação não deveria ser consultada');
+    throw new Error(`URL inesperada: ${url.href}`);
+  }, playerCode);
+
+  const result = await rt.context.module.exports.resolvePlayer('https://pobreflixtv.camp', movieRequest);
+  assert.equal(result.status, 'absent');
+  assert.ok(rt.calls.every((call) => call.url !== 'https://pobreflixtv.camp/wp-admin/admin-ajax.php'));
+});
+
+test('importado: busca redirecionada para origem não aprovada é falha operacional', async () => {
+  const rt = runtime((url) => {
+    if (url.pathname === '/wp-json/api/v1/player') return importedPlayer;
+    if (url.pathname === '/') return { url: 'https://evil.example/', body: importedSearchMovieHtml };
+    throw new Error(`URL inesperada: ${url.href}`);
+  }, playerCode);
+
+  await assert.rejects(
+    rt.context.module.exports.resolvePlayer('https://pobreflixtv.camp', movieRequest),
+    /Busca redirecionou para origem não aprovada/,
+  );
 });

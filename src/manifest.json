@@ -110,7 +110,7 @@
       "id": "pobreflix-nixplay",
       "name": "PobreFlix NixPlay",
       "description": "Filmes e séries em MP4 da fonte PobreFlix NixPlay por TMDB, com recuperação automática e áudio dublado.",
-      "version": "1.1.0",
+      "version": "1.1.1",
       "author": "nathanael540",
       "supportedTypes": ["movie", "tv"],
       "filename": "providers/pobreflix-nixplay.js",

@@ -1,0 +1,11 @@
+{
+  "available": true,
+  "reason": "ready",
+  "option": {
+    "provider": "redemuvi",
+    "title": "RedeMuvi",
+    "url": "https://evil.example/movie/multilogado/abc123/20461.mp4",
+    "mode": "video",
+    "extension": "mp4"
+  }
+}

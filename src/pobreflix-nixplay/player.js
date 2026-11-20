@@ -4,12 +4,14 @@
 
 import { FORMATTER } from '../_blocks/custom-formatter/index.mjs';
 import { interpretPlaylist } from '../_blocks/fireplayer/index.mjs';
-import { DEFAULT_USER_AGENT, fetchPage, fetchText } from '../_blocks/http/index.mjs';
+import { DEFAULT_USER_AGENT, fetchPage, fetchText, playbackHeaders } from '../_blocks/http/index.mjs';
 import { getMediaInfo } from '../_blocks/tmdb-info/index.mjs';
 import { buildRequestedPath, resolveOriginPage, extractPlayerStreams, probeMedia } from '../_blocks/redeflix-player/index.mjs';
 import { normalizeLanguage } from '../_blocks/language-discovery/index.mjs';
 import { buildStream } from '../_blocks/stream-build/index.mjs';
 const VERIFIED_REDEFLIX_HOSTS = new Set(['redeflixapi.click', 'redeflixapi.bar', 'redeflixapi.store']);
+const IMPORTED_MEDIA_PATH = /^\/(movie|series)\/[^/]+\/[^/]+\/\d+\.(mp4|webm)$/i;
+const MAX_SEARCH_CANDIDATES = 8;
 
 function getCheerio() {
   return require('cheerio-without-node-native');
@@ -17,6 +19,15 @@ function getCheerio() {
 
 export const PLAYER_PATH = '/wp-json/api/v1/player';
 export const RESOLVE_PATH = '/wp-json/api/v1/player-resolve';
+
+/**
+ * Verifica se a resposta do player indica conteúdo importado da RedeMuvi.
+ * @param {*} json - Corpo JSON interpretado.
+ * @returns {boolean} True quando a origem delega o conteúdo à RedeMuvi.
+ */
+function isImportedMessage(json) {
+  return Boolean(json && typeof json.message === 'string' && json.message.includes('importado usa a fonte RedeMuvi'));
+}
 
 /**
  * Monta o corpo urlencoded para os endpoints de player.
@@ -34,7 +45,7 @@ function buildRequestBody(request) {
  * Consulta o endpoint principal de player da fonte.
  * @param {string} effectiveOrigin - Origem do catálogo (ex: "https://pobreflix.boutique").
  * @param {{ tmdbId: string, mediaType: 'movie'|'tv', season: number|null, episode: number|null }} request - Pedido validado.
- * @returns {Promise<{ status: 'ok', data: object } | { status: 'absent', message: string }>}
+ * @returns {Promise<{ status: 'ok', data: object } | { status: 'absent', message: string } | { status: 'imported', message: string }>}
  * @throws {Error} Se houver erro HTTP operacional, JSON inválido ou divergência de identidade.
  */
 export async function queryPlayer(effectiveOrigin, request) {
@@ -65,8 +76,13 @@ export async function queryPlayer(effectiveOrigin, request) {
 
   if (response.status === 404) {
     if (json && typeof json.message === 'string') {
-      if (json.message.includes('Este título ainda não está disponível') || json.message.includes('Episódio não sincronizado')) {
+      if (json.message.includes('Este título ainda não está disponível')
+        || json.message.includes('Episódio não sincronizado')
+        || json.message.includes('Título não cadastrado')) {
         return { status: 'absent', message: json.message };
+      }
+      if (isImportedMessage(json)) {
+        return { status: 'imported', message: json.message };
       }
     }
     throw new Error(`HTTP 404 em ${url} (${json?.code || '404'}): ${json?.message || text}`);
@@ -78,6 +94,10 @@ export async function queryPlayer(effectiveOrigin, request) {
 
   if (!json || typeof json !== 'object') {
     throw new Error(`Resposta do player não é JSON válido em ${url}`);
+  }
+
+  if (isImportedMessage(json)) {
+    return { status: 'imported', message: json.message };
   }
 
   if (json.success === false) {
@@ -202,6 +222,327 @@ export function isChallengePage(html) {
 }
 
 /**
+ * Confere se a URL final continua na origem verificada.
+ * @param {string} finalUrl - URL após redirecionamentos.
+ * @param {string} effectiveOrigin - Origem aprovada.
+ * @param {string} stage - Etapa usada na mensagem de erro.
+ * @returns {void}
+ * @throws {Error} Se a URL final pertencer a outra origem.
+ */
+function assertCatalogOrigin(finalUrl, effectiveOrigin, stage) {
+  const origin = new URL(finalUrl).origin;
+  if (origin !== effectiveOrigin) {
+    throw new Error(`${stage} redirecionou para origem não aprovada: ${origin}`);
+  }
+}
+
+/**
+ * Lê a configuração pública do player embutida na página de conteúdo.
+ * @param {string} html - HTML da página confirmada.
+ * @returns {{ api?: string, ajax: string, base: string, fallback?: string }} Configuração validada.
+ * @throws {Error} Se a configuração estiver ausente, inválida ou sem os campos exigidos.
+ */
+function readPlayerConfig(html) {
+  const match = html.match(/var\s+pf12Player\s*=\s*(\{[\s\S]*?\});/);
+  if (!match) throw new Error('Configuração pf12Player ausente na página de conteúdo');
+  let config;
+  try {
+    config = JSON.parse(match[1]);
+  } catch (error) {
+    throw new Error(`Configuração pf12Player inválida na página de conteúdo: ${error.message}`, { cause: error });
+  }
+  if (!config || typeof config !== 'object') throw new Error('Configuração pf12Player não é objeto');
+  if (typeof config.ajax !== 'string' || config.ajax.trim() === '') {
+    throw new Error('Configuração pf12Player sem endpoint de recuperação');
+  }
+  if (typeof config.base !== 'string' || config.base.trim() === '') {
+    throw new Error('Configuração pf12Player sem base de mídia');
+  }
+  return config;
+}
+
+/**
+ * Localiza a página pública do conteúdo pelo TMDB e devolve a coordenada do post.
+ * @param {string} effectiveOrigin - Origem verificada do catálogo.
+ * @param {{ tmdbId: string, mediaType: 'movie'|'tv', season: number|null, episode: number|null }} request - Pedido validado.
+ * @param {{ title: string, originalTitle: string, alternativeTitles: string[] }} mediaInfo - Dados do TMDB.
+ * @returns {Promise<{ postId: string, pageUrl: string, config: object } | null>} Conteúdo confirmado ou null.
+ * @throws {Error} Se a busca falhar, redirecionar para outra origem ou a página tiver estrutura inválida.
+ */
+async function findCatalogContent(effectiveOrigin, request, mediaInfo) {
+  const terms = [];
+  for (const value of [mediaInfo.title, mediaInfo.originalTitle, ...(mediaInfo.alternativeTitles || [])]) {
+    const term = typeof value === 'string' ? value.trim() : '';
+    if (term && !terms.some((item) => item.toLowerCase() === term.toLowerCase())) terms.push(term);
+  }
+  if (terms.length === 0) throw new Error('TMDB sem título para a busca no catálogo');
+
+  const searchType = request.mediaType === 'movie' ? 'movie' : 'tv';
+  const wantedSegment = request.mediaType === 'movie' ? '/filme/' : '/serie/';
+  const expectedType = request.mediaType === 'movie' ? 'movie' : 'episode';
+  let pageBudget = MAX_SEARCH_CANDIDATES * 2;
+
+  for (const term of terms) {
+    const searchUrl = `${effectiveOrigin}/?pf12_search=1&q=${encodeURIComponent(term)}&type=${searchType}`;
+    const searchPage = await fetchPage(searchUrl);
+    assertCatalogOrigin(searchPage.url, effectiveOrigin, 'Busca');
+    const $ = getCheerio().load(searchPage.text);
+    const cards = $('a.pf12-card');
+    const candidates = [];
+    for (let i = 0; i < cards.length && candidates.length < MAX_SEARCH_CANDIDATES; i++) {
+      const href = cards.eq(i).attr('href');
+      if (typeof href !== 'string' || href.trim() === '') continue;
+      let candidate;
+      try {
+        candidate = new URL(href, effectiveOrigin);
+      } catch {
+        continue;
+      }
+      if (candidate.origin !== effectiveOrigin || !candidate.pathname.includes(wantedSegment)) continue;
+      if (!candidates.includes(candidate.href)) candidates.push(candidate.href);
+    }
+
+    for (const candidate of candidates) {
+      if (pageBudget <= 0) break;
+      pageBudget--;
+      const page = await fetchPage(candidate);
+      assertCatalogOrigin(page.url, effectiveOrigin, 'Página de conteúdo');
+      const $page = getCheerio().load(page.text);
+      const root = $page('.pf12-player').eq(0);
+      if (root.length === 0) throw new Error(`Página de conteúdo sem player em ${page.url}`);
+      const tmdb = root.attr('data-tmdb');
+      const type = root.attr('data-type');
+      const postId = root.attr('data-post-id');
+      if (tmdb === undefined || postId === undefined) {
+        throw new Error(`Página de conteúdo sem coordenadas em ${page.url}`);
+      }
+      if (String(tmdb) !== String(request.tmdbId) || String(type) !== expectedType) continue;
+      if (!/^\d+$/.test(String(postId))) throw new Error(`Post inválido na página de conteúdo: ${postId}`);
+      return { postId: String(postId), pageUrl: page.url, config: readPlayerConfig(page.text) };
+    }
+    if (pageBudget <= 0) break;
+  }
+  return null;
+}
+
+/**
+ * Consulta a recuperação pública de conteúdo importado na origem verificada.
+ * @param {{ postId: string, pageUrl: string, config: object }} content - Conteúdo confirmado.
+ * @param {{ tmdbId: string, mediaType: 'movie'|'tv', season: number|null, episode: number|null }} request - Pedido validado.
+ * @returns {Promise<object|null>} Opção RedeMuvi ou null quando a fonte não tem o conteúdo.
+ * @throws {Error} Se a recuperação falhar, responder inválido ou devolver opção divergente.
+ */
+async function queryImportedOption(content, request) {
+  const ajaxUrl = new URL(content.config.ajax);
+  if (ajaxUrl.protocol !== 'https:' || ajaxUrl.origin !== new URL(content.pageUrl).origin) {
+    throw new Error(`Endpoint de recuperação fora da origem verificada: ${ajaxUrl.origin}`);
+  }
+  const body = new URLSearchParams({
+    action: 'pf12_public_player',
+    provider: 'redemuvi',
+    type: request.mediaType === 'movie' ? 'movie' : 'episode',
+    tmdb: request.tmdbId,
+    post_id: content.postId,
+    season: request.mediaType === 'tv' ? String(request.season) : '1',
+    episode: request.mediaType === 'tv' ? String(request.episode) : '1',
+  });
+
+  let response;
+  try {
+    response = await fetch(ajaxUrl.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+        Accept: 'application/json',
+        'X-Requested-With': 'XMLHttpRequest',
+        'User-Agent': DEFAULT_USER_AGENT,
+        Referer: content.pageUrl,
+      },
+      body: body.toString(),
+    });
+  } catch (error) {
+    throw new Error(`Falha de rede na recuperação pública: ${error.message}`, { cause: error });
+  }
+
+  const text = await response.text();
+  let json;
+  try {
+    json = JSON.parse(text);
+  } catch {
+    json = null;
+  }
+
+  if (response.status === 200 && json && (json.reason === 'source_not_found' || json.reason === 'missing')) {
+    return null;
+  }
+  if (response.status === 404 && json && json.reason === 'invalid_post') {
+    throw new Error(`Recuperação recusou a coordenada do post: ${content.postId}`);
+  }
+  if (response.status !== 200) {
+    throw new Error(`HTTP ${response.status} na recuperação pública: ${json?.reason || json?.message || text}`);
+  }
+  if (!json || typeof json !== 'object') throw new Error('Recuperação pública não retornou JSON válido');
+  if (json.available !== true) {
+    throw new Error(`Recuperação pública sem opção: ${json.reason || json.message || 'motivo ausente'}`);
+  }
+  const option = json.option;
+  if (!option || typeof option !== 'object') throw new Error('Recuperação pública sem opção de mídia');
+  if (option.provider !== 'redemuvi') {
+    throw new Error(`Recuperação pública com provedor divergente: ${option.provider}`);
+  }
+  return option;
+}
+
+/**
+ * Sonda a mídia importada com Range e valida o contêiner MP4/WebM.
+ * @param {string} url - URL HTTPS da mídia.
+ * @param {Record<string, string>} headers - Cabeçalhos de reprodução exigidos.
+ * @returns {Promise<{ totalBytes: number, size: string } | null>} Tamanho validado ou null quando o episódio/filme não existe.
+ * @throws {Error} Se a resposta não for 206, o Content-Range for inválido ou faltar a assinatura.
+ */
+async function probeImportedMedia(url, headers) {
+  const response = await fetch(url, {
+    method: 'GET',
+    headers: { ...headers, Range: 'bytes=0-63' },
+  });
+  if (response.status === 404) {
+    const text = await response.text();
+    if (text.includes('Episode not found') || text.includes('Movie not found')) return null;
+    throw new Error(`Resposta HTTP 404 na sonda de mídia importada: ${text.slice(0, 120)}`);
+  }
+  if (response.status !== 206) {
+    throw new Error(`Resposta HTTP ${response.status} na sonda de mídia importada (esperado 206)`);
+  }
+  const contentRange = response.headers.get('content-range') || '';
+  const match = contentRange.match(/^bytes\s+\d+-\d+\/(\d+)$/i);
+  if (!match) throw new Error(`Content-Range inválido na sonda de mídia importada: "${contentRange}"`);
+  const totalBytes = Number(match[1]);
+  if (!Number.isSafeInteger(totalBytes) || totalBytes <= 0) {
+    throw new Error(`Total de bytes inválido na sonda de mídia importada: "${match[1]}"`);
+  }
+  const buffer = await response.arrayBuffer();
+  if (!hasFtypSignature(buffer)) {
+    throw new Error('Assinatura ftyp não encontrada no contêiner da mídia importada');
+  }
+  return { totalBytes, size: formatSize(totalBytes) };
+}
+
+/**
+ * Confere a caixa `ftyp` nos primeiros bytes do contêiner MP4.
+ * @param {ArrayBuffer} buffer - Primeiros bytes lidos da mídia.
+ * @returns {boolean} True quando a assinatura é encontrada.
+ */
+function hasFtypSignature(buffer) {
+  if (!buffer || buffer.byteLength < 8) return false;
+  const view = new DataView(buffer);
+  const limit = Math.min(buffer.byteLength, 64);
+  let offset = 0;
+  while (offset + 8 <= limit) {
+    const size32 = view.getUint32(offset);
+    let type = '';
+    for (let i = 0; i < 4; i++) type += String.fromCharCode(view.getUint8(offset + 4 + i));
+    if (type === 'ftyp') return true;
+    if (size32 === 1 && offset + 16 > limit) return false;
+    const size = size32 === 1 ? view.getUint32(offset + 12) : size32;
+    if (size <= 0 || offset + size <= offset) break;
+    offset += size;
+  }
+  return false;
+}
+
+/**
+ * Formata um total de bytes com uma casa decimal (GB, MB ou KB), como no bloco de mídia.
+ * @param {number} bytes - Quantidade de bytes.
+ * @returns {string} Texto formatado, ex.: "0.9 GB".
+ * @throws {Error} Se bytes não for um número finito não negativo.
+ */
+function formatSize(bytes) {
+  if (typeof bytes !== 'number' || !Number.isFinite(bytes) || bytes < 0) {
+    throw new Error(`Tamanho em bytes inválido: ${bytes}`);
+  }
+  const GIGA = 1024 * 1024 * 1024;
+  const MEGA = 1024 * 1024;
+  const KILO = 1024;
+  const inGb = bytes / GIGA;
+  if (inGb >= 0.85) return `${inGb.toFixed(1)} GB`;
+  if (bytes >= MEGA) return `${(bytes / MEGA).toFixed(1)} MB`;
+  if (bytes >= KILO) return `${(bytes / KILO).toFixed(1)} KB`;
+  return `${bytes} B`;
+}
+
+/**
+ * Valida a opção RedeMuvi, sonda a mídia e monta o stream com os headers de reprodução.
+ * @param {object} option - Opção pública `{ provider, mode, extension, url, title }`.
+ * @param {{ pageUrl: string, config: object }} content - Página confirmada e configuração.
+ * @param {{ mediaType: 'movie'|'tv', season: number|null, episode: number|null }} request - Pedido validado.
+ * @param {{ title: string, year: number|null }} mediaInfo - Dados do TMDB.
+ * @returns {Promise<Array<object>|null>} Stream validado ou null quando a mídia não existe.
+ * @throws {Error} Se o modo, a origem, o caminho ou a sonda forem inválidos.
+ */
+async function resolveImportedMedia(option, content, request, mediaInfo) {
+  if (option.mode !== 'video') {
+    throw new Error(`Modo de mídia importada não suportado: ${option.mode}`);
+  }
+  const target = new URL(option.url);
+  const base = new URL(content.config.base);
+  if (target.protocol !== 'https:' || target.username || target.password) {
+    throw new Error(`URL de mídia importada inválida: ${option.url}`);
+  }
+  if (target.origin !== base.origin) {
+    throw new Error(`Origem de mídia divergente da base declarada: ${target.origin}`);
+  }
+  if (!IMPORTED_MEDIA_PATH.test(target.pathname)) {
+    throw new Error(`Caminho de mídia importada inválido: ${target.pathname}`);
+  }
+  const headers = playbackHeaders(content.pageUrl);
+  const probe = await probeImportedMedia(target.href, headers);
+  if (probe === null) return null;
+  const format = {
+    addon: 'PobreFlix NixPlay',
+    template: FORMATTER.AUTO,
+    title: mediaInfo.title,
+  };
+  if (mediaInfo.year !== null) format.year = mediaInfo.year;
+  if (request.mediaType === 'tv') {
+    format.season = request.season;
+    format.episode = request.episode;
+  }
+  const languageHints = [option.language, option.label]
+    .filter((value) => typeof value === 'string' && value.trim() !== '');
+  const language = languageHints.length > 0 ? normalizeLanguage(languageHints[0]) : null;
+  const stream = buildStream({
+    url: target.href,
+    type: target.pathname.split('.').pop().toLowerCase(),
+    size: probe.size,
+    provider: option.title || 'RedeMuvi',
+    headers,
+    qualityHints: [option.quality, option.label, option.title, target.href],
+    language: language || undefined,
+    languageHints,
+    format,
+  });
+  return [stream];
+}
+
+/**
+ * Resolve conteúdo importado pela interface pública da origem verificada.
+ * @param {string} effectiveOrigin - Origem verificada.
+ * @param {object} request - Pedido validado.
+ * @param {object} mediaInfo - Dados do TMDB.
+ * @returns {Promise<{ status: 'ok', streams: Array<object> } | { status: 'absent' }>} Streams ou ausência.
+ * @throws {Error} Se a busca, a recuperação ou a mídia falharem.
+ */
+async function resolveImportedPlayer(effectiveOrigin, request, mediaInfo) {
+  const content = await findCatalogContent(effectiveOrigin, request, mediaInfo);
+  if (!content) return { status: 'absent' };
+  const option = await queryImportedOption(content, request);
+  if (!option) return { status: 'absent' };
+  const streams = await resolveImportedMedia(option, content, request, mediaInfo);
+  if (!streams) return { status: 'absent' };
+  return { status: 'ok', streams };
+}
+
+/**
  * Resolve uma opção anunciada, usando a cadeia compartilhada para RedeFlix.
  * @param {object} source - Opção ou recuperação anunciada pela API.
  * @param {string} effectiveOrigin - Origem do catálogo.
@@ -291,6 +632,9 @@ export async function resolvePlayer(effectiveOrigin, request) {
   const playerResult = await queryPlayer(effectiveOrigin, request);
   if (playerResult.status === 'absent') return { status: 'absent' };
   const mediaInfo = await getMediaInfo(request);
+  if (playerResult.status === 'imported') {
+    return resolveImportedPlayer(effectiveOrigin, request, mediaInfo);
+  }
   const data = playerResult.data;
   if (data.options !== undefined && !Array.isArray(data.options)) {
     throw new Error('Player options não é lista');

@@ -1,0 +1,11 @@
+{
+  "available": true,
+  "reason": "ready",
+  "option": {
+    "provider": "redemuvi",
+    "title": "RedeMuvi",
+    "url": "https://media.example/series/multilogado/abc123/406983.mp4",
+    "mode": "video",
+    "extension": "mp4"
+  }
+}

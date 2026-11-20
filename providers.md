@@ -10,7 +10,7 @@
 | [FirePlayer PT-BR](#fireplayer-pt-br) | `fireplayer` | filme, série | HLS | 🟢 Estável | 2026-11-20 |
 | [Baixar Filmes Via-Torrent](#baixar-filmes-via-torrent) | `baixarfilmestorrent123` | filme, série | magnet, torrent:// | 🔴 Instável | 2026-11-20 |
 | [RedeFlix](#redeflix) | `redeflix` | filme, série | MP4 | 🔴 Instável | 2026-11-20 |
-| [PobreFlix NixPlay](#pobreflix-nixplay) | `pobreflix-nixplay` | filme, série | MP4 | 🔴 Instável | 2026-11-20 |
+| [PobreFlix NixPlay](#pobreflix-nixplay) | `pobreflix-nixplay` | filme, série | MP4 | 🟢 Estável | 2026-11-20 |
 | [Pobreflix HD](#pobreflix-hd) | `pobreflixtv` | filme, série | MP4 | 🟢 Estável | 2026-11-20 |
 | [FSHD](#fshd) | `fshd` | série | HLS | 🟢 Estável | 2026-11-20 |
 | [BeTor](#betor) | `betor` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-20 |
@@ -218,22 +218,22 @@
 
 ## PobreFlix NixPlay
 
-**Status: 🔴 Instável.**
+**Status: 🟢 Estável.**
 
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-20T13:19:48.574Z** · ID `2026-11-20T13-19-23-834Z-pobreflix-nixplay-20261120-e0e7` · **Instável** · pacote 1.1.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
-   1. `movie` `872585` · Oppenheimer (2023) · **Falha** · 0/0 streams aproveitáveis · Motivo: [PobreFlix NixPlay] Falha em movie 872585: <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Tema pobreflix-v10-* não identificado em <url>
-   2. `movie` `1570488` · O Natal Perfeito de um Cachorro (2026) · **Falha** · 0/0 streams aproveitáveis · Motivo: [PobreFlix NixPlay] Falha em movie 1570488: <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Tema pobreflix-v10-* não identificado em <url>
-   3. `movie` `361743` · Top Gun: Maverick (2022) · **Falha** · 0/0 streams aproveitáveis · Motivo: [PobreFlix NixPlay] Falha em movie 361743: <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Tema pobreflix-v10-* não identificado em <url>
-   4. `movie` `680` · Pulp Fiction: Tempo de Violência (1994) · **Falha** · 0/0 streams aproveitáveis · Motivo: [PobreFlix NixPlay] Falha em movie 680: <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Tema pobreflix-v10-* não identificado em <url>
-   5. `movie` `155` · Batman: O Cavaleiro das Trevas (2008) · **Falha** · 0/0 streams aproveitáveis · Motivo: [PobreFlix NixPlay] Falha em movie 155: <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Tema pobreflix-v10-* não identificado em <url>
-   6. `tv` `14853` · O Clone (2001) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [PobreFlix NixPlay] Falha em tv 14853 S1E1: <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Tema pobreflix-v10-* não identificado em <url>
-   7. `tv` `45815` · Avenida Brasil (2012) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [PobreFlix NixPlay] Falha em tv 45815 S1E1: <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Tema pobreflix-v10-* não identificado em <url>
-   8. `tv` `4184` · A Usurpadora (1998) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [PobreFlix NixPlay] Falha em tv 4184 S1E1: <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Tema pobreflix-v10-* não identificado em <url>
-   9. `tv` `7448` · A Favorita (2008) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [PobreFlix NixPlay] Falha em tv 7448 S1E1: <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Tema pobreflix-v10-* não identificado em <url>
-   10. `tv` `87108` · Chernobyl (2019) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [PobreFlix NixPlay] Falha em tv 87108 S1E1: <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Origem final não aprovada: <url> <url> (Origem): Tema pobreflix-v10-* não identificado em <url>
+1. **2026-11-20T15:36:17.086Z** · ID `2026-11-20T15-35-24-739Z-pobreflix-nixplay-08ed9121-edc7` · **Estável** · pacote 1.1.1 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `08ed912110133cfa72c600707cc74085` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
+   1. `movie` `1466115` · Se Esse Amor Desaparecesse Hoje (2025) · **Resolvido** · 1/1 streams aproveitáveis
+   2. `movie` `346698` · Barbie (2023) · **Resolvido** · 1/1 streams aproveitáveis
+   3. `movie` `361743` · Top Gun: Maverick (2022) · **Resolvido** · 1/1 streams aproveitáveis
+   4. `movie` `129` · A Viagem de Chihiro (2001) · **Resolvido** · 1/1 streams aproveitáveis
+   5. `movie` `1022789` · Divertida Mente 2 (2024) · **Resolvido** · 1/1 streams aproveitáveis
+   6. `tv` `82856` · The Mandalorian (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   7. `tv` `136283` · The Glory (2022) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   8. `tv` `7979` · Caminho das Índias (2009) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   9. `tv` `60735` · The Flash (2014) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   10. `tv` `1418` · The Big Bang Theory (2007) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 
 ## Pobreflix HD

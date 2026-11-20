@@ -1,4 +1,9 @@
-/** Resolução dos aliases do catálogo PobreFlix, antes de qualquer POST. */
+/**
+ * Resolução dos aliases do catálogo PobreFlix, antes de qualquer POST.
+ *
+ * Evidência de 20/11/2026: `pobreflix.boutique`, `pobreflix.cab` e `pobreflix.garden` redirecionam
+ * para `https://pobreflixtv.camp` (tema `pobreflix-v10`); `pobreflix.monster` virou página provisória.
+ */
 
 import { fetchPage } from '../_blocks/http/index.mjs';
 
@@ -6,7 +11,7 @@ export const ALIASES = Object.freeze([
   'https://pobreflix.boutique',
   'https://pobreflix.cab',
   'https://pobreflix.garden',
-  'https://pobreflix.monster',
+  'https://pobreflixtv.camp',
 ]);
 
 export const APPROVED_ORIGINS = Object.freeze(new Set(ALIASES));
