@@ -34,7 +34,7 @@ async function getStreams(tmdbId, mediaType, season, episode) {
     if (selected === null) return [];
 
     const page = await fetchText(selected.url, { headers: SITE_HEADERS });
-    const streams = extractStreams(page, {
+    const streams = await extractStreams(page, {
       providerName: PROVIDER_NAME,
       media,
       coordinates,

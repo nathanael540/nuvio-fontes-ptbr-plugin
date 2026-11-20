@@ -33,7 +33,7 @@
 | [Animy](#animy) | `animy` | filme, série | MP4 | 🟢 Estável | 2026-11-20 |
 | [AniBunker](#anibunker) | `anibunker` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-20 |
 | [AnimeZeY](#animezey) | `animezey` | filme, série | MKV, MP4 | 🔴 Instável | 2026-11-20 |
-| [AnimesDigital](#animesdigital) | `animesdigital` | filme, série | HLS | 🔴 Instável | 2026-11-20 |
+| [AnimesDigital](#animesdigital) | `animesdigital` | filme, série | HLS | 🟢 Estável | 2026-11-20 |
 | [AnimesFHD](#animesfhd) | `animesfhd` | série | HLS | 🟢 Estável | 2026-11-20 |
 | [Animes Online Blue](#animes-online-blue) | `animesonlineblue` | série | MP4 | 🟢 Estável | 2026-11-20 |
 | [AnimeQ](#animeq) | `animeq` | filme, série | HLS, MP4 | 🔵 Parcial | 2026-11-20 |
@@ -696,24 +696,24 @@ Provedor de filmes e séries de anime em MKV e MP4 pelo índice público AnimeZe
 
 ## AnimesDigital
 
-**Status: 🔴 Instável.**
+**Status: 🟢 Estável.**
 
-Provedor de filmes e séries de anime em HLS pelo player Anivideo, com busca textual pelas variantes de título do TMDB, confirmação de título, ano e tipo e seleção do episódio pelo número declarado. A rodada de 2026-11-14 usou o perfil `anime` e resolveu 1/5 filmes e 3/5 séries. Filmes publicados somente na rota `/filme/`, sem link `/video/a/` na página, ficam fora do contrato atual; séries longas como Bleach e One Piece listam apenas os 50 episódios mais recentes, então episódios antigos não são encontrados. Páginas de arco sem marcador de temporada devolvem ausência em vez de mapear a temporada por posição.
+Provedor de filmes e séries de anime em HLS pelo player Anivideo, com busca textual pelas variantes de título do TMDB, confirmação de título, ano e tipo e seleção do episódio pelo número declarado. A rodada de 2026-11-20 usou o perfil `anime` e resolveu 1/5 filmes e 3/5 séries. O provedor reconhece as duas formas do iframe Anivideo (parâmetro `d` e página `/cdn/`). Filmes publicados somente na rota `/filme/`, sem link `/video/a/` na página, ficam fora do contrato atual; séries longas como Bleach e One Piece listam apenas os 50 episódios mais recentes, então episódios antigos não são encontrados. Páginas de arco sem marcador de temporada devolvem ausência em vez de mapear a temporada por posição.
 
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-20T13:21:39.301Z** · ID `2026-11-20T13-20-44-544Z-animesdigital-20261120-9e00` · **Instável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
+1. **2026-11-20T15:21:22.994Z** · ID `2026-11-20T15-20-38-402Z-animesdigital-20261120-3277` · **Estável** · pacote 1.0.0 · perfil `anime` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
    1. `movie` `128` · Princesa Mononoke (1997) · **Sem resultado** · 0/0 streams aproveitáveis
    2. `movie` `149` · Akira (1988) · **Sem resultado** · 0/0 streams aproveitáveis
    3. `movie` `129` · A Viagem de Chihiro (2001) · **Sem resultado** · 0/0 streams aproveitáveis
-   4. `movie` `372058` · Your Name (2016) · **Sem resultado** · 0/0 streams aproveitáveis
+   4. `movie` `372058` · Your Name (2016) · **Resolvido** · 1/1 streams aproveitáveis
    5. `movie` `635302` · Demon Slayer: Mugen Train (2020) · **Sem resultado** · 0/0 streams aproveitáveis
    6. `tv` `37854` · One Piece (1999) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
-   7. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   7. `tv` `95479` · Jujutsu Kaisen (2020) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
    8. `tv` `30984` · Bleach (2004) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
-   9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
-   10. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   9. `tv` `85937` · Demon Slayer (2019) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
+   10. `tv` `65930` · My Hero Academia (2016) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis
 <!-- online-verification:end -->
 
 

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head><title>STCode Player</title></head>
+  <body>
+    <div id="video-player"></div>
+    <script>
+      var player = jwplayer('video-player');
+      const playerInstance = jwplayer('video-player').setup({
+        image: "https:\/\/animesdigital.org\/wp-content\/uploads\/2026\/01\/Jujutsu-Kaisen.jpg",
+        playlist: [{
+          id: 'player',
+          image: "https:\/\/animesdigital.org\/wp-content\/uploads\/2026\/01\/Jujutsu-Kaisen.jpg",
+          sources: [{
+            file: "https:\/\/cdn.example.test\/stream\/j\/jujutsu-kaisen\/12.mp4\/index.m3u8"
+          }],
+          type: "video/mp4"
+        }],
+        debug: false,
+        width: "100%",
+        height: "100%",
+        aspectratio: "16:9",
+        preload: true,
+        autostart: false
+      });
+    </script>
+  </body>
+</html>

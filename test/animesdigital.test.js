@@ -34,6 +34,10 @@ const videoEmptyD = read('video-empty-d.html');
 const videoInvalidProtocol = read('video-invalid-protocol.html');
 const videoMixedOptions = read('video-mixed-options.html');
 const videoAllInvalid = read('video-all-invalid.html');
+const videoAnivideoCdn = read('video-anivideo-cdn.html');
+const videoMixedAnivideoCdn = read('video-mixed-anivideo-cdn.html');
+const playerAnivideoCdn = read('player-anivideo-cdn.html');
+const playerAnivideoCdnEmpty = read('player-anivideo-cdn-empty.html');
 
 const KIMETSU_ID = '85937';
 const JUJUTSU_ID = '95479';
@@ -42,6 +46,7 @@ const YOUR_NAME_ID = '372058';
 const AKIRA_ID = '149';
 const LANGUAGE_VALUES = ['Dublado', 'Dublado (Não PT-BR?)', 'Legendado', 'Legendado (Não PT-BR?)', 'Gringo', 'Idioma Desconhecido'];
 const ANIVIDEO_SERIES = 'https://cdn.example.test/stream/j/jujutsu-kaisen/24.mp4/index.m3u8';
+const ANIVIDEO_CDN_SERIES = 'https://cdn.example.test/stream/j/jujutsu-kaisen/12.mp4/index.m3u8';
 const ANIVIDEO_MOVIE = 'https://cdn.example.test/stream/k/kimetsu-movie/01cambr.mp4/index.m3u8';
 
 const TMDB_BY_ID = {
@@ -231,6 +236,11 @@ function pageFor(slug) {
   return { status: 404, body: 'Ficha não encontrada' };
 }
 
+function playerFor(url) {
+  if (url.pathname === '/cdn/v1.example-token') return playerAnivideoCdn;
+  return { status: 404, body: 'Player não encontrado' };
+}
+
 function videoFor(id) {
   const normalized = id.replace(/\/$/, '');
   if (normalized === '130927z' || normalized === '84767') return videoEncoded;
@@ -244,6 +254,10 @@ function makeRoute(options = {}) {
   return async (url) => {
     if (url.hostname === 'api.themoviedb.org') {
       return asResponse(options.tmdb === undefined ? defaultTmdb(url) : options.tmdb(url));
+    }
+    if (url.hostname === 'api.anivideo.net') {
+      const player = options.player ? options.player(url) : playerFor(url);
+      return asResponse(player);
     }
     if (url.hostname !== 'animesdigital.org') throw new Error(`Host inesperado: ${url.hostname}`);
     if (url.pathname === '/') {
@@ -281,6 +295,10 @@ function videoCallIds(calls) {
     .map((call) => new URL(call.url))
     .filter((url) => url.pathname.startsWith('/video/a/'))
     .map((url) => decodeURIComponent(url.pathname.slice('/video/a/'.length)).replace(/\/$/, ''));
+}
+
+function playerCalls(calls) {
+  return calls.filter((call) => new URL(call.url).hostname === 'api.anivideo.net');
 }
 
 test('1.1 e 2.5 o pacote carrega sem rede, expõe getStreams e não lê settings', () => {
@@ -473,6 +491,68 @@ test('2.3 parâmetro d fora de http(s) é falha agregada', async () => {
   assert.match(runtime.errors[0], /Nenhuma opção produziu stream/);
 });
 
+test('2.4 iframe /cdn resolve o jwplayer com Sec-Fetch-Dest: iframe', async () => {
+  const runtime = makeRuntime(makeRoute({ video: () => videoAnivideoCdn }));
+  const streams = await runtime.getStreams(JUJUTSU_ID, 'tv', 1, 25);
+
+  assert.equal(streams.length, 1);
+  assert.equal(streams[0].url, ANIVIDEO_CDN_SERIES);
+  assert.equal(streams[0].provider, 'Anivideo');
+  assert.equal(streams[0].type, 'hls');
+  assert.deepEqual(streams[0].headers, { Referer: 'https://animesdigital.org/' });
+
+  const calls = playerCalls(runtime.calls);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].init.headers['Sec-Fetch-Dest'], 'iframe');
+  assert.equal(calls[0].init.headers.Referer, 'https://animesdigital.org/');
+  assert.deepEqual(runtime.warnings, []);
+  assert.deepEqual(runtime.errors, []);
+});
+
+test('2.4 player /cdn sem fonte HLS é falha agregada', async () => {
+  const runtime = makeRuntime(makeRoute({
+    video: () => videoAnivideoCdn,
+    player: () => playerAnivideoCdnEmpty,
+  }));
+  const streams = await runtime.getStreams(JUJUTSU_ID, 'tv', 1, 25);
+
+  assert.deepEqual(Array.from(streams), []);
+  assert.equal(runtime.warnings.length, 1);
+  assert.match(runtime.warnings[0], /^\[AnimesDigital\] Opção iframe 1 descartada: Player Anivideo sem fonte HLS/);
+  assert.equal(runtime.errors.length, 1);
+  assert.match(runtime.errors[0], /Nenhuma opção produziu stream: iframe 1: Player Anivideo sem fonte HLS/);
+});
+
+test('2.4 HTTP 403 no player /cdn é falha agregada sem expor o token', async () => {
+  const runtime = makeRuntime(makeRoute({
+    video: () => videoAnivideoCdn,
+    player: () => ({ status: 403, body: 'bloqueado' }),
+  }));
+  const streams = await runtime.getStreams(JUJUTSU_ID, 'tv', 1, 25);
+
+  assert.deepEqual(Array.from(streams), []);
+  assert.equal(runtime.warnings.length, 1);
+  assert.match(runtime.warnings[0], /^\[AnimesDigital\] Opção iframe 1 descartada: HTTP 403 em \[url\]/);
+  assert.match(runtime.errors[0], /Nenhuma opção produziu stream/);
+  assert.doesNotMatch(runtime.warnings[0], /v1\.example-token/);
+  assert.doesNotMatch(runtime.errors[0], /v1\.example-token/);
+});
+
+test('3.4 iframe /cdn inválido não descarta o iframe legado válido', async () => {
+  const runtime = makeRuntime(makeRoute({
+    video: () => videoMixedAnivideoCdn,
+    player: () => playerAnivideoCdnEmpty,
+  }));
+  const streams = await runtime.getStreams(JUJUTSU_ID, 'tv', 1, 25);
+
+  assert.equal(streams.length, 1);
+  assert.equal(streams[0].url, ANIVIDEO_SERIES);
+  assert.equal(streams[0].headers, undefined);
+  assert.equal(runtime.warnings.length, 1);
+  assert.match(runtime.warnings[0], /^\[AnimesDigital\] Opção iframe 1 descartada: Player Anivideo sem fonte HLS/);
+  assert.deepEqual(runtime.errors, []);
+});
+
 test('3.4 uma opção falha e a outra resolve com aviso', async () => {
   const runtime = makeRuntime(makeRoute({ video: () => videoMixedOptions }));
   const streams = await runtime.getStreams(JUJUTSU_ID, 'tv', 1, 25);
@@ -636,6 +716,10 @@ test('4.1 fixtures sanitizadas sem URL assinada, token ou cookie', () => {
     'video-invalid-protocol.html',
     'video-mixed-options.html',
     'video-all-invalid.html',
+    'video-anivideo-cdn.html',
+    'video-mixed-anivideo-cdn.html',
+    'player-anivideo-cdn.html',
+    'player-anivideo-cdn-empty.html',
   ];
   for (const name of expected) {
     assert.ok(fs.existsSync(path.join(FIXTURES, name)), name);
