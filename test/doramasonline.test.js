@@ -14,10 +14,15 @@ const readJson = (name) => JSON.parse(read(name));
 
 const SOURCE = 'https://doramasonline.net';
 const EP_POUSANDO_1 = `${SOURCE}/br/episodio/pousando-no-amor-temporada-1-episodio-1/`;
+const EP_ROUND_6_1 = `${SOURCE}/br/episodio/round-6-squid-game-temporada-1-episodio-1/`;
+const MOVIE_SE_ESSE_AMOR = `${SOURCE}/br/filmes/even-if-this-love-disappears-tonight-se-esse-amor-desaparecesse-hoje/`;
 
 const tmdbPousando = readJson('tmdb-pousando.json');
 const tmdbParasita = readJson('tmdb-parasita.json');
 const tmdbTheGlory = readJson('tmdb-the-glory.json');
+const tmdbSeEsseAmor = readJson('tmdb-se-esse-amor.json');
+const tmdbRound6 = readJson('tmdb-round-6.json');
+const tmdbWallToWall = readJson('tmdb-wall-to-wall.json');
 // O TMDB em pt-BR publica "A Lição"; o título inglês é o termo da busca observada nesta fonte.
 const tmdbTheGloryNamed = { ...tmdbTheGlory, name: 'The Glory', original_name: 'The Glory' };
 const tmdbItaewon = readJson('tmdb-itaewon.json');
@@ -25,21 +30,33 @@ const searchPousando = read('search-pousando.html');
 const searchItaewon = read('search-itaewon.html');
 const searchParasita = read('search-parasita.html');
 const searchTheGlory = read('search-the-glory.html');
+const searchSeEsseAmor = read('search-se-esse-amor.html');
+const searchRound6 = read('search-round-6.html');
+const searchRound62023 = read('search-round-6-2023.html');
+const searchMeus84 = read('search-meus-84.html');
 const searchEmpty = read('search-empty.html');
 const searchNoLink = read('search-no-link.html');
 const seriesPousando = read('series-pousando.html');
 const seriesPousandoNoList = read('series-pousando-no-list.html');
 const seriesItaewon = read('series-itaewon.html');
+const seriesRound6 = read('series-round-6.html');
 const episodePousando = read('episode-pousando-1-1.html');
 const episodeItaewon = read('episode-itaewon-16.html');
+const episodeRound6 = read('episode-round-6-1-1.html');
 const episodeTrailerOnly = read('episode-trailer-only.html');
 const episodeMissingContainer = read('episode-missing-container.html');
 const movieParasita = read('movie-parasita.html');
+const movieSeEsseAmor = read('movie-se-esse-amor.html');
+const movieWallToWall = read('movie-wall-to-wall.html');
 const booonceivuDubbed = readJson('booonceivu-dubbed.json');
 const booonceivuSubtitled = readJson('booonceivu-subtitled.json');
+const booonceivuHtml = read('booonceivu-html.html');
 const booonceivuInvalid = read('booonceivu-invalid.json');
 const incvideoEmbed = read('incvideo-embed.html');
 const incvideoEmbed907183 = read('incvideo-embed-907183.html');
+const incvideoEmbed798109 = read('incvideo-embed-798109.html');
+const incvideoEmbed966542 = read('incvideo-embed-966542.html');
+const incvideoEmbed966543 = read('incvideo-embed-966543.html');
 const incvideoNoPlayerjs = read('incvideo-no-playerjs.html');
 const doV4 = read('do-v4-warning.html');
 const aviso = read('aviso-strp2p.html');
@@ -138,7 +155,10 @@ function tmdbBody(url) {
   if (url.pathname.endsWith('/tv/94796')) return tmdbPousando;
   if (url.pathname.endsWith('/tv/96162')) return tmdbItaewon;
   if (url.pathname.endsWith('/tv/136283')) return tmdbTheGloryNamed;
+  if (url.pathname.endsWith('/tv/93405')) return tmdbRound6;
   if (url.pathname.endsWith('/movie/496243')) return tmdbParasita;
+  if (url.pathname.endsWith('/movie/1466115')) return tmdbSeEsseAmor;
+  if (url.pathname.endsWith('/movie/1269208')) return tmdbWallToWall;
   throw new Error(`TMDB inesperado: ${url.pathname}`);
 }
 
@@ -147,24 +167,33 @@ function searchBody(term) {
   if (term === 'Itaewon Class') return searchItaewon;
   if (term === 'Parasita') return searchParasita;
   if (term === 'The Glory') return searchTheGlory;
+  if (term === 'Se Esse Amor Desaparecesse Hoje') return searchSeEsseAmor;
+  if (term === 'Round 6') return searchRound6;
+  if (term === 'Meus 84 m²') return searchMeus84;
   return searchEmpty;
 }
 
 function detailBody(pathname) {
   if (pathname === '/br/series/pousando-no-amor/') return seriesPousando;
   if (pathname === '/br/series/itaewon-class/') return seriesItaewon;
+  if (pathname === '/br/series/round-6-squid-game/') return seriesRound6;
   if (pathname === '/br/filmes/parasita/') return movieParasita;
+  if (pathname === '/br/filmes/even-if-this-love-disappears-tonight-se-esse-amor-desaparecesse-hoje/') return movieSeEsseAmor;
+  if (pathname.startsWith('/br/filmes/wall-to-wall-meus-84-m')) return movieWallToWall;
   return null;
 }
 
 function episodeBody(pathname) {
   if (pathname === '/br/episodio/pousando-no-amor-temporada-1-episodio-1/') return episodePousando;
   if (pathname === '/br/episodio/itaewon-class-temporada-1-episodio-16-final/') return episodeItaewon;
+  if (pathname === '/br/episodio/round-6-squid-game-temporada-1-episodio-1/') return episodeRound6;
   return null;
 }
 
 function booonceivuBody(url) {
   const id = url.searchParams.get('id') || '';
+  if (id.startsWith('7MLr')) return booonceivuDubbed;
+  if (id.startsWith('OuGb')) return booonceivuSubtitled;
   return id.startsWith('2WVa') ? booonceivuDubbed : booonceivuSubtitled;
 }
 
@@ -198,6 +227,7 @@ function fullRoute(overrides = {}) {
 
     if (host.endsWith('booonceivu.shop')) {
       if (overrides.booonceivu) return overrides.booonceivu(url);
+      if (host.startsWith('ru-')) return { body: booonceivuHtml, headers: { 'content-type': 'text/html; charset=UTF-8' } };
       return { body: booonceivuBody(url), headers: { 'content-type': 'application/json; charset=utf-8' } };
     }
 
@@ -218,9 +248,18 @@ function fullRoute(overrides = {}) {
       }
       if (overrides.embed) return overrides.embed(url);
       const id = /\/embed\/(\d+)/.exec(url.pathname)[1];
+      const embedBody = id === '798109'
+        ? incvideoEmbed798109
+        : id === '966542'
+          ? incvideoEmbed966542
+          : id === '966543'
+            ? incvideoEmbed966543
+            : id === '907183'
+              ? incvideoEmbed907183
+              : incvideoEmbed;
       return {
         url: `https://incvideo1.online/embed/${id}/`,
-        body: id === '907183' ? incvideoEmbed907183 : incvideoEmbed,
+        body: embedBody,
         headers: { 'content-type': 'text/html; charset=UTF-8', 'set-cookie': 'PHPSESSID=fixture; path=/' },
         setCookies: ['PHPSESSID=fixture; path=/', 'kt_ips=127.0.0.1; path=/'],
       };
@@ -378,6 +417,88 @@ test('filme Parasita confirma título e ano, tria os avisos e resolve os dois In
     assert.equal('Cookie' in call.init.headers, false);
   }
   assert.equal(callsToPath(runtime.calls, '/br/filmes/parasita/'), 1);
+});
+
+test('filme com título decorado confirma a ficha e resolve Booonceivu e IncVideo', async () => {
+  const runtime = makeRuntime(fullRoute(), codes.prism);
+  const streams = await runtime.exports.getStreams('1466115', 'movie', null, null);
+
+  assert.equal(runtime.errors.length, 0, runtime.errors.join(' | '));
+  assert.equal(runtime.warnings.length, 2);
+  assert.match(runtime.warnings[0], /^\[Doramas Online\] Opção DUBLADO \(2\) descartada:/);
+  assert.match(runtime.warnings[0], /em vez de JSON/);
+  assert.match(runtime.warnings[1], /^\[Doramas Online\] Opção LEGENDADO \(2\) descartada:/);
+  assert.match(runtime.warnings[1], /em vez de JSON/);
+  assert.equal(streams.length, 12);
+
+  const hls = streams.filter((stream) => stream.type === 'hls');
+  const mp4 = streams.filter((stream) => stream.type === 'mp4');
+  assert.equal(hls.length, 6);
+  assert.equal(mp4.length, 6);
+  assert.equal(hls.every((stream) => stream.provider === 'Booonceivu'), true);
+  assert.equal(mp4.every((stream) => stream.provider === 'IncVideo'), true);
+  assert.equal(streamByLanguage(streams, 'Dublado').length, 6);
+  assert.equal(streamByLanguage(streams, 'Legendado').length, 6);
+  assert.equal(streams.filter((stream) => stream.quality === '1080p').length, 4);
+  assert.equal(streams.filter((stream) => stream.quality === '720p').length, 4);
+  assert.equal(streams.filter((stream) => stream.quality === '360p').length, 4);
+  assert.equal(streams.filter((stream) => 'subtitles' in stream).length, 3);
+  for (const stream of streams) {
+    assert.equal('headers' in stream, false);
+    assert.equal('format' in stream, false);
+    assert.match(stream.title, /Se Esse Amor Desaparecesse Hoje/);
+    assert.match(stream.title, /\(2025\)/);
+    assert.doesNotMatch(stream.title, /T\d{2}E\d{2}/);
+  }
+
+  assert.equal(callsToHost(runtime.calls, 'ru-boyceta.booonceivu.shop').length, 2);
+  assert.equal(callsToHost(runtime.calls, 'abyssplayer.com').length, 0);
+  assert.equal(callsToHost(runtime.calls, 'png.strp2p.com').length, 0);
+  assert.equal(callCount(runtime.calls, MOVIE_SE_ESSE_AMOR), 1);
+});
+
+test('série com título decorado confirma a ficha e tria os players q1n', async () => {
+  const runtime = makeRuntime(fullRoute(), codes.prism);
+  const streams = await runtime.exports.getStreams('93405', 'tv', 1, 1);
+
+  assert.equal(runtime.errors.length, 0, runtime.errors.join(' | '));
+  assert.equal(runtime.warnings.length, 0);
+  assert.equal(streams.length, 2);
+  assert.deepEqual([...streams.map((stream) => stream.type)], ['mp4', 'mp4']);
+  assert.deepEqual([...streams.map((stream) => stream.provider)], ['IncVideo', 'IncVideo']);
+  assert.deepEqual([...streams.map((stream) => stream.quality)], ['720p', '360p']);
+  assert.deepEqual([...streams.map((stream) => stream.language)], ['Legendado', 'Legendado']);
+  for (const stream of streams) {
+    assert.equal('headers' in stream, false);
+    assert.match(stream.title, /Round 6/);
+    assert.match(stream.title, /\(2021\)/);
+    assert.match(stream.title, /T01E01/);
+  }
+
+  assert.equal(callsToHost(runtime.calls, 'q1n.net').length, 0);
+  assert.equal(callsToPath(runtime.calls, '/br/series/round-6-squid-game/'), 1);
+  assert.equal(callCount(runtime.calls, EP_ROUND_6_1), 1);
+});
+
+test('filme decorado sem mídia suportada confirma a identidade e devolve lista vazia', async () => {
+  const runtime = makeRuntime(fullRoute());
+  const streams = await runtime.exports.getStreams('1269208', 'movie', null, null);
+
+  assert.equal(streams.length, 0);
+  assert.equal(runtime.errors.length, 0, runtime.errors.join(' | '));
+  assert.equal(runtime.warnings.length, 0);
+  assert.equal(callCount(runtime.calls, '/br/filmes/wall-to-wall-meus-84-m'), 1);
+  assert.equal(callsToHost(runtime.calls, 'png.strp2p.com').length, 0);
+});
+
+test('título decorado não supera ano divergente', async () => {
+  const runtime = makeRuntime(fullRoute({ search: () => ({ body: searchRound62023 }) }));
+  const streams = await runtime.exports.getStreams('93405', 'tv', 1, 1);
+
+  assert.equal(streams.length, 0);
+  assert.equal(runtime.errors.length, 0, runtime.errors.join(' | '));
+  assert.equal(runtime.warnings.length, 0);
+  assert.equal(callsToPath(runtime.calls, '/br/series/round-6-squid-game/'), 0);
 });
 
 test('The Glory de 2025 é rejeitado pelo ano do TMDB de 2022', async () => {
@@ -614,5 +735,9 @@ test('fixtures são sanitizadas e mantêm os marcadores da fonte', () => {
   assert.match(read('booonceivu-subtitled.json'), /"Português"/);
   assert.match(read('booonceivu-subtitled.json'), /"English"/);
   assert.match(read('incvideo-embed.html'), /\/get_file\//);
+  assert.match(read('incvideo-embed-798109.html'), /\/get_file\//);
+  assert.match(read('movie-se-esse-amor.html'), /Even If This Love Disappears Tonight \(Se Esse Amor Desaparecesse Hoje\)/);
+  assert.match(read('series-round-6.html'), /episodio-9-final/);
+  assert.match(read('episode-round-6-1-1.html'), /q1n\.net/);
   assert.match(read('series-itaewon.html'), /episodio-16-final/);
 });

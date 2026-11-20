@@ -146,14 +146,45 @@ function searchTerms(media) {
 }
 
 /**
- * Melhor semelhança entre um título da fonte e os títulos do TMDB.
+ * Variantes de um título decorado com parênteses: o título completo, cada segmento entre
+ * parênteses e o título sem os parênteses, sem repetir valores vazios ou iguais.
+ * @param {string} title - Título exibido na fonte (ex.: `Round 6 (Squid Game)`).
+ * @returns {string[]} Variantes na ordem do título completo, do texto sem parênteses e dos segmentos.
+ * @example
+ * titleVariants('Round 6 (Squid Game)');
+ * // ['Round 6 (Squid Game)', 'Round 6', 'Squid Game']
+ */
+function titleVariants(title) {
+  const trimmed = title.trim();
+  const variants = [trimmed];
+
+  const withoutParentheses = trimmed.replace(/\s*\([^)]*\)/g, ' ').replace(/\s+/g, ' ').trim();
+  if (withoutParentheses !== '' && withoutParentheses !== trimmed) variants.push(withoutParentheses);
+
+  for (const match of trimmed.matchAll(/\(([^)]+)\)/g)) {
+    const segment = match[1].trim();
+    if (segment !== '' && !variants.includes(segment)) variants.push(segment);
+  }
+  return variants;
+}
+
+/**
+ * Melhor semelhança entre um título da fonte e os títulos do TMDB, considerando as variantes
+ * do título decorado.
  * @param {string} title - Título exibido na fonte.
  * @param {MediaInfo} media - Dados do TMDB.
  * @returns {number} Semelhança entre 0 e 1.
  */
 function bestTitleScore(title, media) {
   const titles = [media.title, media.originalTitle, ...media.alternativeTitles].filter((value) => typeof value === 'string');
-  return Math.max(...titles.map((value) => titleSimilarity(title, value)));
+  let best = 0;
+  for (const variant of titleVariants(title)) {
+    for (const value of titles) {
+      const score = titleSimilarity(variant, value);
+      if (score > best) best = score;
+    }
+  }
+  return best;
 }
 
 /**

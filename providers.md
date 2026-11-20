@@ -37,7 +37,7 @@
 | [AnimesFHD](#animesfhd) | `animesfhd` | série | HLS | 🟢 Estável | 2026-11-20 |
 | [Animes Online Blue](#animes-online-blue) | `animesonlineblue` | série | MP4 | 🟢 Estável | 2026-11-20 |
 | [AnimeQ](#animeq) | `animeq` | filme, série | HLS, MP4 | 🔵 Parcial | 2026-11-20 |
-| [Doramas Online](#doramas-online) | `doramasonline` | filme, série | HLS, MP4 | 🔵 Parcial | 2026-11-20 |
+| [Doramas Online](#doramas-online) | `doramasonline` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-20 |
 | [AmyFlix](#amyflix) | `amyflix` | filme, série | HLS, MP4 | 🔴 Instável | 2026-11-20 |
 | [SeuDorama](#seudorama) | `seudorama` | série | MP4 | 🟢 Estável | 2026-11-20 |
 | [NoveFlix](#noveflix) | `noveflix` | série | MP4 | 🔴 Instável | 2026-11-20 |
@@ -776,20 +776,20 @@ Provedor de filmes e séries de anime em HLS e MP4 pelo catálogo AnimeQ, com pl
 
 ## Doramas Online
 
-**Status: 🔵 Parcial.**
+**Status: 🟢 Estável.**
 
 Provedor de filmes e séries asiáticos do Doramas Online em HLS e MP4, com busca textual confirmada por título e ano e opções DooPlay resolvidas em isolamento nos players Booonceivu e IncVideo.
 
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-20T13:21:31.454Z** · ID `2026-11-20T13-20-58-691Z-doramasonline-20261120-8b7d` · **Parcial** · pacote 1.0.0 · perfil `dorama` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
+1. **2026-11-20T14:28:14.639Z** · ID `2026-11-20T14-27-36-269Z-doramasonline-20261120-979f` · **Estável** · pacote 1.0.0 · perfil `dorama` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
    1. `movie` `1269208` · Meus 84 m² (2025) · **Sem resultado** · 0/0 streams aproveitáveis
-   2. `movie` `1466115` · Se Esse Amor Desaparecesse Hoje (2025) · **Sem resultado** · 0/0 streams aproveitáveis
+   2. `movie` `1466115` · Se Esse Amor Desaparecesse Hoje (2025) · **Resolvido** · 12/12 streams aproveitáveis
    3. `movie` `962489` · Ditto: Conexões do Amor (2022) · **Sem resultado** · 0/0 streams aproveitáveis
    4. `movie` `734519` · The Fable: The Killer Who Doesn't Kill (2021) · **Sem resultado** · 0/0 streams aproveitáveis
    5. `movie` `437109` · A Vilã (2017) · **Sem resultado** · 0/0 streams aproveitáveis
-   6. `tv` `93405` · Round 6 (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
+   6. `tv` `93405` · Round 6 (2021) · S01E01 · **Resolvido** · 2/2 streams aproveitáveis
    7. `tv` `94796` · Pousando no Amor (2019) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
    8. `tv` `96162` · Itaewon Class (2020) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Doramas Online] Falha em tv 96162: Nenhuma opção de player produziu stream: LEGENDADO=Player Doramas Online respondeu text/html; charset=UTF-8 em vez de JSON
    9. `tv` `90447` · Hotel del Luna (2019) · S01E01 · **Resolvido** · 6/6 streams aproveitáveis
