@@ -22,7 +22,7 @@ export async function findPosts(media, request) {
     categories[slug] = result[0].id;
   }
   for (const term of searchTerms(media)) {
-    const params = new URLSearchParams({ search: term, per_page: '20', _fields: 'id,link,title,categories' });
+    const params = new URLSearchParams({ search: term, per_page: '100', _fields: 'id,link,title,categories' });
     const posts = await fetchJson(`${ORIGIN}/wp-json/wp/v2/posts?${params}`, { profile: 'api' });
     if (!Array.isArray(posts)) throw new Error('Busca da REST não retornou lista JSON');
     const candidates = posts.map(readPost).map((post) => ({ ...post, score: matchScore(post, categories, media, request) }))

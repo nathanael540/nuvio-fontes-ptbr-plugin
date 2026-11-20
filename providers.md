@@ -5,7 +5,7 @@
 | [MegaEmbed](#megaembed) | `megaembed` | filme, série | HLS, MP4 | 🟢 Estável | 2026-11-20 |
 | [DooPlay PT-BR](#dooplay-pt-br) | `dooplay` | filme, série | HLS | 🔵 Parcial | 2026-11-20 |
 | [Filmestorrent](#filmestorrent) | `filmestorrent` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-20 |
-| [LimeFilmes](#limefilmes) | `limefilmes` | filme, série | magnet, torrent:// | 🔵 Parcial | 2026-11-20 |
+| [LimeFilmes](#limefilmes) | `limefilmes` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-20 |
 | [Baixa Rápido](#baixa-rápido) | `baixarapido` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-20 |
 | [FirePlayer PT-BR](#fireplayer-pt-br) | `fireplayer` | filme, série | HLS | 🟢 Estável | 2026-11-20 |
 | [Baixar Filmes Via-Torrent](#baixar-filmes-via-torrent) | `baixarfilmestorrent123` | filme, série | magnet, torrent:// | 🔴 Instável | 2026-11-20 |
@@ -118,15 +118,15 @@
 
 ## LimeFilmes
 
-**Status: 🔵 Parcial.**
+**Status: 🟢 Estável.**
 
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-20T13:19:58.615Z** · ID `2026-11-20T13-19-23-789Z-limefilmes-20261120-78a9` · **Parcial** · pacote 1.3.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
+1. **2026-11-20T14:23:24.635Z** · ID `2026-11-20T14-22-47-860Z-limefilmes-20261120-97ad` · **Estável** · pacote 1.3.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
    1. `movie` `613200` · The King's Avatar: Pela Glória (2019) · **Sem resultado** · 0/0 streams aproveitáveis
    2. `movie` `872585` · Oppenheimer (2023) · **Sem resultado** · 0/0 streams aproveitáveis
-   3. `movie` `150540` · Divertida Mente (2015) · **Sem resultado** · 0/0 streams aproveitáveis
+   3. `movie` `150540` · Divertida Mente (2015) · **Resolvido** · 4/4 streams aproveitáveis
    4. `movie` `346698` · Barbie (2023) · **Sem resultado** · 0/0 streams aproveitáveis
    5. `movie` `569094` · Homem-Aranha: Através do Aranhaverso (2023) · **Sem resultado** · 0/0 streams aproveitáveis
    6. `tv` `60625` · Rick and Morty (2013) · S01E01 · **Resolvido** · 1/1 streams aproveitáveis

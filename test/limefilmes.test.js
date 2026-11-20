@@ -50,6 +50,47 @@ test('busca continua após lista vazia ou sem post aceito', async () => {
   }
 });
 
+test('busca avalia resultados além da 20ª posição', async () => {
+  const outDir = createTempDir('limefilmes-window-');
+  try {
+    const file = await buildProvider('limefilmes', { outDir, formatter: 'gdrive' });
+    // Resposta real capturada em 2026-11-20 para a consulta "Divertida Mente" (X-WP-Total: 23),
+    // sanitizada com os campos id, link, title e categories; a correspondência de 2015 está na 21ª posição.
+    const fixture = path.join(__dirname, 'fixtures', 'limefilmes', 'search-divertida-mente-2026-11-20.json');
+    const posts = JSON.parse(fs.readFileSync(fixture, 'utf8'));
+    assert.equal(posts.length, 23);
+    assert.equal(posts[20].title.rendered, 'Divertida Mente (2015)');
+    const hash = 'd0f2c4a9e5b7481c9f0a6d3e2b8c7a1f4e9d5c6b';
+    const html = `<article class="post-block"><a class="download-btn" href="magnet:?xt=urn:btih:${hash}">1080p | 3.50 GB | Português-BR</a></article>`;
+    const windows = [];
+    const context = {
+      module: { exports: {} }, TMDB_API_KEY: 'teste', URL, URLSearchParams,
+      console: { log() {}, warn() {}, error: console.error },
+      fetch: async (input) => {
+        const url = new URL(input);
+        let body;
+        if (url.hostname === 'api.themoviedb.org') body = { title: 'Divertida Mente', original_title: 'Inside Out', release_date: '2015-06-17', external_ids: { imdb_id: 'tt2096673' }, alternative_titles: { titles: [] }, original_language: 'en', genres: [], origin_country: [] };
+        else if (url.pathname.endsWith('/categories')) body = [{ id: { filmes: 68, series: 77, colecao: 7819 }[url.searchParams.get('slug')] }];
+        else if (url.pathname.endsWith('/posts')) {
+          const perPage = Number(url.searchParams.get('per_page'));
+          windows.push(perPage);
+          // O servidor simulado devolve somente os N primeiros itens, como a API real em cada página.
+          body = posts.slice(0, perPage);
+        } else body = html;
+        return { ok: true, json: async () => body, text: async () => typeof body === 'string' ? body : JSON.stringify(body) };
+      },
+    };
+    vm.runInNewContext(fs.readFileSync(file, 'utf8'), context);
+    const streams = await context.module.exports.getStreams('150540', 'movie', null, null);
+    assert.equal(streams.length, 1);
+    assert.equal(streams[0].infoHash, hash);
+    assert.equal(streams[0].quality, '1080p');
+    assert.deepEqual([...new Set(windows)], [100]);
+  } finally {
+    fs.rmSync(outDir, { recursive: true, force: true });
+  }
+});
+
 test('seleciona temporada e descarta coleção e IMDb divergente', async () => {
   const outDir = createTempDir('limefilmes-match-');
   const previousFetch = global.fetch;
