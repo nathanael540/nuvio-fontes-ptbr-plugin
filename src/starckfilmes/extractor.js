@@ -95,28 +95,31 @@ export function parsePostMeta(html) {
 /**
  * Extrai as opções de download da ficha e decodifica o xid em link magnet.
  *
+ * Lê `.post-buttons .btn-down` (filme e pacote de temporada) e `.post-buttons .epsodios`
+ * (série). Em `.epsodios`, a versão de áudio vem do `h3` e cada link com `xid` herda a faixa
+ * do `strong` e a qualidade do próprio texto; links sem `xid`, como legendas, são ignorados.
+ *
  * @param {string} html - HTML da página da ficha.
  * @param {string} postTitle - Título da postagem para contexto.
  * @param {string} [audioType] - Áudio anunciado no cartão de busca (`Dublado`, `Dual Áudio`, ...).
  * @returns {object[]} Opções preparadas para classifyMagnetOption.
- * @throws {Error} Se a ficha não contiver botões no seletor observado na fonte.
+ * @throws {Error} Se a ficha não tiver `.btn-down` nem `.epsodios` em `.post-buttons`.
  */
 export function extractOptions(html, postTitle, audioType = '') {
   const $ = htmlDocument(html);
   const buttons = $('.post-buttons .btn-down');
-  if (!buttons.length) {
-    throw new Error('Ficha sem botões de download em .post-buttons .btn-down');
+  const episodes = $('.post-buttons .epsodios');
+  if (!buttons.length && !episodes.length) {
+    throw new Error('Ficha sem botões de download em .post-buttons .btn-down nem .post-buttons .epsodios');
   }
 
   const options = [];
   for (let i = 0; i < buttons.length; i++) {
     const btn = buttons.eq(i);
     const a = btn.attr('href') ? btn : btn.find('a');
-    const href = a.attr('href') || btn.attr('href') || '';
-    const xidMatch = /[?&]xid=([^"'\s&]+)/i.exec(href) || /xid=([^"'\s&]+)/i.exec(href);
-    if (!xidMatch) continue;
+    const rawXid = xidFromHref(a.attr('href') || btn.attr('href') || '');
+    if (!rawXid) continue;
 
-    const rawXid = xidMatch[1];
     const spans = btn.find('.text span');
     const parts = [];
     for (let j = 0; j < spans.length; j++) {
@@ -126,24 +129,66 @@ export function extractOptions(html, postTitle, audioType = '') {
       }
     }
     const labelText = parts.length ? parts.join(' ') : btn.text().replace(/download/gi, '').trim();
+    options.push(decodeOption(rawXid, labelText, postTitle, audioType));
+  }
 
-    try {
-      const magnet = decodeXid(rawXid);
-      options.push({
-        href: magnet,
-        labelText,
-        contextText: postTitle,
-        audio: audioType || null,
-      });
-    } catch (error) {
-      options.push({
-        label: `xid ${rawXid.slice(0, 8)}`,
-        failure: error,
-      });
+  for (let i = 0; i < episodes.length; i++) {
+    const block = episodes.eq(i);
+    const version = block.find('h3').text().trim();
+    const paragraphs = block.find('p');
+    for (let j = 0; j < paragraphs.length; j++) {
+      const paragraph = paragraphs.eq(j);
+      const rangeText = paragraph.find('strong').first().text().trim().replace(/:\s*$/, '');
+      const links = paragraph.find('a');
+      for (let k = 0; k < links.length; k++) {
+        const link = links.eq(k);
+        const rawXid = xidFromHref(link.attr('href') || '');
+        if (!rawXid) continue;
+
+        const qualityText = link.text().trim();
+        const labelText = [rangeText, qualityText].filter(Boolean).join(' ');
+        options.push(decodeOption(rawXid, labelText, postTitle, version || audioType));
+      }
     }
   }
 
   return options;
+}
+
+/**
+ * Lê o parâmetro `xid` de um link da ficha.
+ *
+ * @param {string} href - Endereço do link.
+ * @returns {string|null} Valor do `xid` ou `null` quando ausente.
+ */
+function xidFromHref(href) {
+  const match = /[?&]xid=([^"'\s&]+)/i.exec(href) || /xid=([^"'\s&]+)/i.exec(href);
+  return match ? match[1] : null;
+}
+
+/**
+ * Decodifica o xid e monta a opção, preservando a falha para descarte isolado.
+ *
+ * @param {string} rawXid - Valor bruto do `xid`.
+ * @param {string} labelText - Rótulo da opção.
+ * @param {string} contextText - Título da postagem.
+ * @param {string} audio - Versão de áudio observada na ficha.
+ * @returns {object} Opção para classifyMagnetOption ou falha isolada.
+ */
+function decodeOption(rawXid, labelText, contextText, audio) {
+  try {
+    return {
+      href: decodeXid(rawXid),
+      labelText,
+      contextText,
+      audio: audio || null,
+    };
+  } catch (error) {
+    return {
+      label: `xid ${rawXid.slice(0, 8)}`,
+      failure: error,
+    };
+  }
 }
 
 /**

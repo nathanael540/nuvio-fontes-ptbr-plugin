@@ -1,11 +1,14 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const path = require('node:path');
 const vm = require('node:vm');
 const esbuild = require('esbuild');
 const { buildProvider } = require('../build.js');
 const { load } = require('./support/basic-html.js');
 const { createTempDir } = require('./support/temp-dir');
+
+const fixture = (name) => fs.readFileSync(path.join(__dirname, 'fixtures/starckfilmes', name), 'utf8');
 
 const codes = {};
 let code;
@@ -324,6 +327,221 @@ test('1.2 séries: rejeita homônimos e aceita títulos PT-BR, original e altern
       if (accepted) assert.equal(streams[0].infoHash, hash);
     });
   }
+});
+
+test('1.1 fixture de série é sanitizada e traz seis xid sintéticos', () => {
+  const html = fixture('serie-epsodios.html');
+  assert.doesNotMatch(html, /magnet:|cookie|token|\.(?:mkv|mp4|m3u8|torrent)\b/i);
+
+  const options = JSON.parse(JSON.stringify(extractor.extractOptions(html, 'Arcane 1ª Temporada', 'Dual Áudio')));
+  assert.equal(options.length, 6);
+  for (const option of options) {
+    assert.match(option.href, /^magnet:\?xt=urn:btih:([0-9a-f])\1{39}&dn=/);
+  }
+});
+
+test('1.2 ficha de série com .epsodios associa versão, faixa e qualidade', () => {
+  const options = JSON.parse(JSON.stringify(extractor.extractOptions(
+    fixture('serie-epsodios.html'),
+    'Arcane 1ª Temporada',
+    'Dual Áudio'
+  )));
+
+  assert.deepEqual(options.map((option) => option.labelText), [
+    'EPISÓDIOS 01 AO 03 720p',
+    'EPISÓDIOS 04 AO 06 720p',
+    'EPISÓDIOS 07 AO 09 720p',
+    'EPISÓDIOS 01 ao 09 720p',
+    'EPISÓDIOS 01 ao 09 1080p',
+    'EPISÓDIOS 01 ao 09 1080p HDR',
+  ]);
+  assert.deepEqual(options.map((option) => option.audio), [
+    'VERSÃO DUAL ÁUDIO',
+    'VERSÃO DUAL ÁUDIO',
+    'VERSÃO DUAL ÁUDIO',
+    'VERSÃO LEGENDADO',
+    'VERSÃO LEGENDADO',
+    'VERSÃO LEGENDADO',
+  ]);
+  assert.ok(options.every((option) => option.contextText === 'Arcane 1ª Temporada'));
+});
+
+test('1.3 contêiner sem xid devolve lista vazia e ausência dos dois contêineres lança', () => {
+  assert.throws(
+    () => extractor.extractOptions('<div class="post-buttons"></div>', 'Série Teste'),
+    /Ficha sem botões de download/
+  );
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(extractor.extractOptions(
+      `<div class="post-buttons"><span class="btn-down"><a href="https://filmedl.com/">Download</a></span></div>`,
+      'Série Teste'
+    ))),
+    []
+  );
+  assert.deepEqual(
+    JSON.parse(JSON.stringify(extractor.extractOptions(
+      `<div class="post-buttons"><div class="epsodios"><h3>VERSÃO LEGENDADO</h3>
+        <p><strong>EPISÓDIOS 01 AO 03:</strong>
+        <a href="https://legendei.to/?s=Serie">LEGENDAS</a></p></div></div>`,
+      'Série Teste'
+    ))),
+    []
+  );
+});
+
+test('2.1 faixa S01E01-02-03 sai em torrent:// com o índice do episódio', async () => {
+  const hash = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+  const xid = encodeToXid(`magnet:?xt=urn:btih:${hash}&dn=Serie.Teste.S01E01-02-03.720p`);
+  const postUrl = 'https://starckfilmes-v29.com/catalog/serie-teste-1-temporada/';
+  const torrentBuffer = buildTestTorrent(
+    ['Serie.Teste.S01E01.720p.mkv', 'Serie.Teste.S01E02.720p.mkv', 'Serie.Teste.S01E03.720p.mkv'],
+    [100, 100, 100]
+  );
+
+  const app = runtime((url) => {
+    if (url.hostname.includes('themoviedb.org')) {
+      return { body: mockTmdb({ mediaType: 'tv', title: 'Série Teste', originalTitle: 'Serie Teste', firstAirDate: '2023-01-01' }) };
+    }
+    if (url.searchParams.has('s')) {
+      return `<div class="home post-catalog"><div class="item">
+        <h3><a class="title" href="${postUrl}">Série Teste 1ª Temporada</a></h3>
+      </div></div>`;
+    }
+    if (url.hostname.includes('itorrents.org')) {
+      return { buffer: torrentBuffer };
+    }
+    assert.equal(url.href, postUrl);
+    return `<h1>Série Teste 1ª Temporada Torrent (2023) Dual Áudio Download</h1>
+      <h2 class="post-title">Série Teste 1ª Temporada</h2>
+      <div class="post-buttons"><div class="epsodios">
+        <h3><strong>VERSÃO DUAL ÁUDIO</strong></h3>
+        <p><strong>EPISÓDIOS 01 AO 03:</strong>
+          <a href="https://filmedl.com/?xid=${xid}">720p</a></p>
+      </div></div>`;
+  });
+
+  const streams = await app.getStreams('700', 'tv', 1, 1);
+  assert.equal(streams.length, 1);
+  assert.equal(streams[0].url, `torrent://${hash}/0`);
+  assert.equal(streams[0].quality, '720p');
+  assert.equal(streams[0].infoHash, hash);
+  assert.deepEqual(app.warnings, []);
+});
+
+test('2.2 episódio avulso resolve e faixa sem metadados gera apenas aviso', async () => {
+  const singleHash = 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa';
+  const rangeHash = 'bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb';
+  const singleXid = encodeToXid(`magnet:?xt=urn:btih:${singleHash}&dn=Serie.Teste.S01E01.1080p`);
+  const rangeXid = encodeToXid(`magnet:?xt=urn:btih:${rangeHash}&dn=Serie.Teste.S01E01-03.720p`);
+  const postUrl = 'https://starckfilmes-v29.com/catalog/serie-teste-1-temporada/';
+
+  const app = runtime((url) => {
+    if (url.hostname.includes('themoviedb.org')) {
+      return { body: mockTmdb({ mediaType: 'tv', title: 'Série Teste', originalTitle: 'Serie Teste', firstAirDate: '2023-01-01' }) };
+    }
+    if (url.searchParams.has('s')) {
+      return `<div class="home post-catalog"><div class="item">
+        <h3><a class="title" href="${postUrl}">Série Teste 1ª Temporada</a></h3>
+      </div></div>`;
+    }
+    if (url.hostname.includes('itorrents.org')) {
+      throw new Error('cache de metadados indisponível');
+    }
+    assert.equal(url.href, postUrl);
+    return `<h1>Série Teste 1ª Temporada Torrent (2023) Dual Áudio Download</h1>
+      <h2 class="post-title">Série Teste 1ª Temporada</h2>
+      <div class="post-buttons"><div class="epsodios">
+        <h3><strong>VERSÃO DUAL ÁUDIO</strong></h3>
+        <p><strong>EPISÓDIO 01:</strong>
+          <a href="https://filmedl.com/?xid=${singleXid}">1080p</a></p>
+        <p><strong>EPISÓDIOS 01 AO 03:</strong>
+          <a href="https://filmedl.com/?xid=${rangeXid}">720p</a></p>
+      </div></div>`;
+  });
+
+  const streams = await app.getStreams('700', 'tv', 1, 1);
+  assert.equal(streams.length, 1);
+  assert.equal(streams[0].url.startsWith('magnet:?'), true);
+  assert.equal(streams[0].infoHash, singleHash);
+  assert.equal(app.warnings.length, 1);
+  assert.match(app.warnings[0], /\[Starck Filmes\] Opção pacote .* descartada: cache de metadados indisponível/);
+  assert.deepEqual(app.logs, []);
+});
+
+test('2.3 todas as faixas sem metadados devolvem lista vazia e erro agregado', async () => {
+  const firstXid = encodeToXid('magnet:?xt=urn:btih:cccccccccccccccccccccccccccccccccccccccc&dn=Serie.Teste.S01E01-03.720p');
+  const secondXid = encodeToXid('magnet:?xt=urn:btih:dddddddddddddddddddddddddddddddddddddddd&dn=Serie.Teste.S01E01-06.720p');
+  const postUrl = 'https://starckfilmes-v29.com/catalog/serie-teste-1-temporada/';
+
+  const app = runtime((url) => {
+    if (url.hostname.includes('themoviedb.org')) {
+      return { body: mockTmdb({ mediaType: 'tv', title: 'Série Teste', originalTitle: 'Serie Teste', firstAirDate: '2023-01-01' }) };
+    }
+    if (url.searchParams.has('s')) {
+      return `<div class="home post-catalog"><div class="item">
+        <h3><a class="title" href="${postUrl}">Série Teste 1ª Temporada</a></h3>
+      </div></div>`;
+    }
+    if (url.hostname.includes('itorrents.org')) {
+      throw new Error('cache de metadados indisponível');
+    }
+    assert.equal(url.href, postUrl);
+    return `<h1>Série Teste 1ª Temporada Torrent (2023) Dual Áudio Download</h1>
+      <h2 class="post-title">Série Teste 1ª Temporada</h2>
+      <div class="post-buttons"><div class="epsodios">
+        <h3><strong>VERSÃO DUAL ÁUDIO</strong></h3>
+        <p><strong>EPISÓDIOS 01 AO 03:</strong>
+          <a href="https://filmedl.com/?xid=${firstXid}">720p</a></p>
+        <p><strong>EPISÓDIOS 01 AO 06:</strong>
+          <a href="https://filmedl.com/?xid=${secondXid}">720p</a></p>
+      </div></div>`;
+  });
+
+  const streams = await app.getStreams('700', 'tv', 1, 1);
+  assert.deepEqual(streams, []);
+  assert.equal(app.warnings.length, 2);
+  assert.equal(app.logs.length, 1);
+  assert.match(app.logs[0], /\[Starck Filmes\] Todas as opções falharam/);
+  assert.ok(app.warnings.every((warning) => /cache de metadados indisponível/.test(warning)));
+});
+
+test('2.4 hash base32, deduplicação entre contêineres e qualidade Desconhecida', async () => {
+  const base32 = '3D62JGJ2GI7SYECF5UFIGMV4DCDTFCXA';
+  const xid = encodeToXid(`magnet:?xt=urn:btih:${base32}&dn=Serie.Teste.S01E01`);
+  const postUrl = 'https://starckfilmes-v29.com/catalog/serie-teste-1-temporada/';
+
+  const app = runtime((url) => {
+    if (url.hostname.includes('themoviedb.org')) {
+      return { body: mockTmdb({ mediaType: 'tv', title: 'Série Teste', originalTitle: 'Serie Teste', firstAirDate: '2023-01-01' }) };
+    }
+    if (url.searchParams.has('s')) {
+      return `<div class="home post-catalog"><div class="item">
+        <h3><a class="title" href="${postUrl}">Série Teste 1ª Temporada</a></h3>
+      </div></div>`;
+    }
+    assert.equal(url.href, postUrl);
+    return `<h1>Série Teste 1ª Temporada Torrent (2023) Dual Áudio Download</h1>
+      <h2 class="post-title">Série Teste 1ª Temporada</h2>
+      <div class="post-buttons">
+        <span class="btn-down">
+          <a href="https://filmedl.com/?xid=${xid}"></a>
+          <span class="text"><span>Dublado</span><span>Download</span></span>
+        </span>
+        <div class="epsodios">
+          <h3><strong>VERSÃO DUBLADO</strong></h3>
+          <p><strong>EPISÓDIO 01:</strong>
+            <a href="https://filmedl.com/?xid=${xid}">Download</a></p>
+        </div>
+      </div>`;
+  });
+
+  const streams = await app.getStreams('700', 'tv', 1, 1);
+  assert.equal(streams.length, 1);
+  assert.equal(streams[0].quality, 'Desconhecida');
+  assert.match(streams[0].infoHash, /^[0-9a-f]{40}$/);
+  assert.equal(streams[0].infoHash, streams[0].infoHash.toLowerCase());
+  assert.ok(streams[0].url.includes(streams[0].infoHash));
+  assert.ok(!streams[0].url.includes(base32));
 });
 
 test('1.4 ficha sem botões observados registra erro e não usa links de outras seções', async () => {

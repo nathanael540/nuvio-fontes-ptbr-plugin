@@ -14,7 +14,7 @@
 | [Pobreflix HD](#pobreflix-hd) | `pobreflixtv` | filme, série | MP4 | 🟢 Estável | 2026-11-20 |
 | [FSHD](#fshd) | `fshd` | série | HLS | 🟢 Estável | 2026-11-20 |
 | [BeTor](#betor) | `betor` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-20 |
-| [Starck Filmes](#starck-filmes) | `starckfilmes` | filme, série | magnet, torrent:// | 🔵 Parcial | 2026-11-20 |
+| [Starck Filmes](#starck-filmes) | `starckfilmes` | filme, série | magnet, torrent:// | 🟢 Estável | 2026-11-20 |
 | [TheRARBG](#therarbg) | `therarbg` | filme, série | magnet, torrent:// | 🔴 Instável | 2026-11-20 |
 | [VaqueiroFilmes](#vaqueirofilmes) | `vaqueirofilmes` | filme | HLS | 🔴 Instável | 2026-11-20 |
 | [TopFilmes](#topfilmes) | `topfilmes` | filme | MP4 | 🟢 Estável | 2026-11-20 |
@@ -293,18 +293,18 @@
 
 ## Starck Filmes
 
-**Status: 🔵 Parcial.**
+**Status: 🟢 Estável.**
 
 <!-- online-verification:start -->
 ### Verificações online
 
-1. **2026-11-20T13:20:20.682Z** · ID `2026-11-20T13-19-48-648Z-starckfilmes-20261120-b3ee` · **Parcial** · pacote 1.1.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
+1. **2026-11-20T14:26:49.823Z** · ID `2026-11-20T14-26-13-843Z-starckfilmes-20261120-b9ef` · **Estável** · pacote 1.1.0 · perfil `generalista` · catálogos `movie@2026-11-12.1`, `tv@2026-11-12.1` · semente `20261120` · algoritmo `sha256-fisher-yates-v1` · manifest `prism/all/all/all`
    1. `movie` `1070514` · 100 Coisas para Fazer Antes de Virar Zumbi (2023) · **Resolvido** · 1/1 streams aproveitáveis
    2. `movie` `962489` · Ditto: Conexões do Amor (2022) · **Sem resultado** · 0/0 streams aproveitáveis
    3. `movie` `149` · Akira (1988) · **Sem resultado** · 0/0 streams aproveitáveis
    4. `movie` `550` · Clube da Luta (1999) · **Resolvido** · 1/1 streams aproveitáveis
    5. `movie` `128` · Princesa Mononoke (1997) · **Resolvido** · 1/1 streams aproveitáveis
-   6. `tv` `94605` · Arcane (2021) · S01E01 · **Falha** · 0/0 streams aproveitáveis · Motivo: [Starck Filmes] Todas as opções falharam: [Ficha <url> Ficha sem botões de download em .post-buttons .btn-down]
+   6. `tv` `94605` · Arcane (2021) · S01E01 · **Resolvido** · 4/4 streams aproveitáveis
    7. `tv` `96162` · Itaewon Class (2020) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    8. `tv` `124003` · Perfect World [Wanmei Shijie] (2021) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
    9. `tv` `223911` · Renegade Immortal (2023) · S01E01 · **Sem resultado** · 0/0 streams aproveitáveis
