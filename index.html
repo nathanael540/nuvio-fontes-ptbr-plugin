@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#f6f8fa" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#0d1117" media="(prefers-color-scheme: dark)">
+  <title>Encerrando o Nuvio Fontes PT-BR</title>
+  <meta name="description" content="Carta aberta sobre o encerramento do projeto Nuvio Fontes PT-BR.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Encerrando o Nuvio Fontes PT-BR">
+  <meta property="og:description" content="Carta aberta sobre o encerramento do projeto Nuvio Fontes PT-BR.">
+  <meta property="og:image" content="https://nathanael540.github.io/nuvio-fontes-ptbr-plugin/assets/branding/logo.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Encerrando o Nuvio Fontes PT-BR">
+  <meta name="twitter:description" content="Carta aberta sobre o encerramento do projeto Nuvio Fontes PT-BR.">
+  <meta name="twitter:image" content="https://nathanael540.github.io/nuvio-fontes-ptbr-plugin/assets/branding/logo.png">
+  <link rel="icon" type="image/png" href="assets/branding/icon-transparent.png">
+  <link rel="apple-touch-icon" href="assets/branding/icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+  <style>
+    :root {
+      --bg: #f6f8fa;
+      --surface: #ffffff;
+      --border: #dfe4ea;
+      --text: #111827;
+      --text-muted: #4b5563;
+      --accent: #0f766e;
+      --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0d1117;
+        --surface: #161b22;
+        --border: #2a323d;
+        --text: #f3f4f6;
+        --text-muted: #9ca3af;
+        --accent: #2dd4bf;
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #2a323d;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --accent: #2dd4bf;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 17px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    main {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 48px 16px 64px;
+    }
+
+    .logo {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+    }
+
+    h1 {
+      margin: 40px 0 4px;
+      font-size: 2rem;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      margin: 40px 0 8px;
+      font-size: 1.2rem;
+      line-height: 1.4;
+    }
+
+    time {
+      display: block;
+      margin-bottom: 28px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    p, ol, ul {
+      margin: 0 0 16px;
+    }
+
+    ol, ul {
+      padding-left: 1.4em;
+    }
+
+    li + li {
+      margin-top: 8px;
+    }
+
+    a {
+      color: var(--accent);
+      text-underline-offset: 3px;
+    }
+
+    .signature {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+
+    .signature strong {
+      color: var(--text);
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <img class="logo" src="assets/branding/logo.png" alt="Nuvio Fontes PT-BR" width="1376" height="528">
+
+    <h1>Encerrando o Nuvio Fontes PT-BR</h1>
+    <time datetime="2026-11-28">28 de novembro de 2026</time>
+
+    <p>Comecei o Nuvio Fontes PT-BR como um projeto pessoal: provedores para assistir a filmes, séries e animes dublados e legendados em português do Brasil no <a href="https://github.com/tapframe/NuvioStreaming">Nuvio</a>. Como ficou bom, resolvi abrir o código de graça para a comunidade.</p>
+
+    <p>Em 25 dias, o projeto foi muito além do que eu imaginava:</p>
+    <ul>
+      <li>65 provedores funcionando</li>
+      <li>mais de 450 sessões orquestrando diferentes agentes de IA, somando mais de 250 horas de execução</li>
+      <li>quase 150 mudanças propostas no OpenSpec, entre investigação de provedores, melhorias de arquitetura e correções</li>
+      <li>quase mil usuários únicos</li>
+      <li>27 estrelas e 7 forks no GitHub</li>
+    </ul>
+
+    <p>São bons números para tão pouco tempo de vida.</p>
+
+    <p>Hoje descobri que parte desse trabalho está sendo usada em produtos pagos e de código fechado, sem me dar crédito e sem manter a licença. Tem gente cobrando de outras pessoas pelo acesso aos provedores que eu criei e mantinha de graça.</p>
+
+    <p>Eu escolhi a <a href="https://www.gnu.org/licenses/gpl-3.0.html">GPL-3.0</a> sabendo bem o que ela permite. Uso comercial não é problema, desde que as condições sejam cumpridas: quem distribui o código, modificado ou não, precisa manter os avisos de autoria, usar a mesma licença e entregar o código-fonte para quem recebe o produto. Nada disso está acontecendo. Fica uma decepção grande ver a minha boa-fé sendo usada para outros lucrarem.</p>
+
+    <p>Isso cansa e tira a vontade de continuar. Não faz mais sentido gastar meu tempo livre mantendo tudo funcionando para ver meu código ser usado assim. Por isso, decidi encerrar o Nuvio Fontes PT-BR.</p>
+
+    <h2>O que muda</h2>
+    <ol>
+      <li>Retirei deste repositório o código, os provedores, os manifests e o gerador de manifest, e limpei o histórico.</li>
+      <li>Os manifests que você adicionou no Nuvio deixam de funcionar. Você já pode remover o repositório em <strong>Configurações &gt; Conteúdo e descoberta &gt; Plugins</strong>.</li>
+      <li>Não vou mais lançar versões novas, fazer correções nem dar suporte.</li>
+    </ol>
+
+    <h2>Se você pagou para usar esses provedores</h2>
+    <p>Sinto muito. Você pagou por algo que eu fiz para ser gratuito e aberto. Pela GPL-3.0, quem distribuiu esse produto para você tem a obrigação de entregar o código-fonte completo, sob a mesma licença. Você tem todo o direito de pedir isso.</p>
+
+    <h2>Obrigado</h2>
+    <p>A todo mundo que usou o projeto, testou, avisou quando algo parava de funcionar, sugeriu fontes novas e contribuiu de boa-fé: obrigado de verdade. Foi por causa de vocês que valeu a pena manter o Nuvio Fontes PT-BR até aqui. Um agradecimento especial à galera do <a href="https://www.reddit.com/r/nuvioptbr/">r/nuvioptbr</a>, que abraçou o projeto desde o começo.</p>
+
+    <p class="signature">Um abraço,<br><strong>Nathanael Ferreira</strong></p>
+  </main>
+</body>
+</html>
